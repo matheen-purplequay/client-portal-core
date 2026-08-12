@@ -1,0 +1,123 @@
+<ng-container *ngIf="isGettingHealth">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                Getting system health...
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="progress rounded-pill overflow-hidden" role="progressbar" style="height: 15px;">
+                    <div class="bg-warning shadow-input-2 progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!isGettingHealth">
+    <div class="container">
+        <div class="row">
+    
+            <div class="col-sm-4 h-100" *ngIf="clientApp.data">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body h-100">
+                        <div class="lead fw-400">{{ clientApp.data.name }}</div>
+                        <div *ngIf="clientApp.data.type" class="small disabled hstack gap-1 flex-wrap align-items-start">
+                            <span class="fw-500 badge text-dark bg-color-light rounded-pill shadow-input-2">Version. <strong>{{ clientApp.data.version }}</strong></span>
+                            <span class="fw-500 badge text-dark bg-color-light rounded-pill shadow-input-2">{{ clientApp.data.type }}</span>
+                        </div>
+                        <div class="hstack gap-2 justify-content-end align-items-center">
+                            <div *ngIf="clientApp.status == 'healthy'" class="badge bg-success text-light rounded-pill">Status Healthy</div>
+                            <div *ngIf="clientApp.status == 'network-issues'" class="badge bg-warning text-dark rounded-pill">Issues</div>
+                            <div *ngIf="clientApp.status == 'unhealthy'" class="badge bg-danger text-light rounded-pill">Critical</div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-0 bg-color-lightest border-top">
+                        <ul class="list-group list-group-flush small">
+                            <li class="list-group-item bg-transparent hstack gap-2 justify-content-between align-items-center">
+                                <div class="disabled fw-500 hstack align-items-center gap-2">
+                                    <span class="material-symbols-rounded small">dns</span>
+                                    Server Connectivity
+                                </div>
+                                <div class="fw-400" [ngClass]="( clientApp.serverHealth == 'Operational' )? 'text-success' : 'text-danger'">{{ clientApp.serverHealth }}</div>
+                            </li>
+                            <li class="list-group-item bg-transparent hstack gap-2 justify-content-between align-items-center">
+                                <div class="disabled fw-500 hstack align-items-center gap-2">
+                                    <span class="material-symbols-rounded small">database</span>
+                                    Database Connectivity
+                                </div>
+                                <div class="fw-400" [ngClass]="( clientApp.serverHealth == 'Operational' )? 'text-success' : 'text-danger'">{{ clientApp.databaseHealth }}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-sm-4 h-100" *ngIf="adminApp.data">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body h-100">
+                        <div class="lead fw-400">{{ adminApp.data.name }}</div>
+                        <div *ngIf="adminApp.data.type" class="small disabled hstack gap-1 flex-wrap align-items-start">
+                            <span class="fw-500 badge text-dark bg-color-light rounded-pill shadow-input-2">Version. <strong>{{ adminApp.data.version }}</strong></span>
+                            <span class="fw-500 badge text-dark bg-color-light rounded-pill shadow-input-2">{{ adminApp.data.type }}</span>
+                        </div>
+                        <div class="hstack gap-2 justify-content-end align-items-center">
+                            <div *ngIf="adminApp.status == 'healthy'" class="badge bg-success text-light rounded-pill">Status Healthy</div>
+                            <div *ngIf="adminApp.status == 'network-issues'" class="badge bg-warning text-dark rounded-pill">Issues</div>
+                            <div *ngIf="adminApp.status == 'unhealthy'" class="badge bg-danger text-light rounded-pill">Critical</div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-0 bg-color-lightest border-top">
+                        <ul class="list-group list-group-flush small">
+                            <li class="list-group-item bg-transparent hstack gap-2 justify-content-between align-items-center">
+                                <div class="disabled fw-500 hstack align-items-center gap-2">
+                                    <span class="material-symbols-rounded small">dns</span>
+                                    Server Connectivity
+                                </div>
+                                <div class="fw-400" [ngClass]="( clientApp.serverHealth == 'Operational' )? 'text-success' : 'text-danger'">{{ adminApp.serverHealth }}</div>
+                            </li>
+                            <li class="list-group-item bg-transparent hstack gap-2 justify-content-between align-items-center">
+                                <div class="disabled fw-500 hstack align-items-center gap-2">
+                                    <span class="material-symbols-rounded small">database</span>
+                                    Database Connectivity
+                                </div>
+                                <div class="fw-400" [ngClass]="( clientApp.serverHealth == 'Operational' )? 'text-success' : 'text-danger'">{{ adminApp.databaseHealth }}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 h-100" *ngIf="worksManagerServer.data">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body h-100">
+                        <div class="lead fw-400">{{ worksManagerServer.data.name ?? 'Works Manager Server' }}</div>
+                        <div *ngIf="worksManagerServer.data.type" class="small disabled hstack gap-1 flex-wrap align-items-start">
+                            <span class="fw-500 badge text-dark bg-color-light rounded-pill shadow-input-2">{{ worksManagerServer.data.type }}</span>
+                        </div>
+                        <div class="hstack gap-2 justify-content-end align-items-center">
+                            <div *ngIf="worksManagerServer.status == 'healthy'" class="badge bg-success text-light rounded-pill">Status Healthy</div>
+                            <div *ngIf="worksManagerServer.status == 'network-issues'" class="badge bg-warning text-dark rounded-pill">Issues</div>
+                            <div *ngIf="worksManagerServer.status == 'unhealthy'" class="badge bg-danger text-light rounded-pill">Critical</div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-0 bg-color-lightest border-top">
+                        <ul class="list-group list-group-flush small">
+                            <li class="list-group-item bg-transparent">
+                                <div class="hstack gap-2 justify-content-between align-items-center">
+                                    <div class="disabled fw-500 hstack align-items-center gap-2">
+                                        <span class="material-symbols-rounded small">database</span>
+                                        Database Connectivity
+                                    </div>
+                                    <div class="fw-400" [ngClass]="( worksManagerServer.databaseHealth == 'Operational' )? 'text-success' : 'text-danger'">{{ worksManagerServer.databaseHealth }}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+</ng-container>

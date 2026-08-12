@@ -1,0 +1,109 @@
+<ng-container *ngIf="job.jobid != 0">
+    <div class="pt-2 vstack gap-2" [ngClass]="{ 'disabled': (job.jobid === 0) || isCommentsLoading}">
+        <div class="flex-fill toolbar-container px-3 hstack gap-2 justify-content-between align-items-center">
+            <div *ngIf="job">
+                <div>{{ job.JobName }}</div>
+                <!-- <div *ngIf="job.jobid != 0" class="small">Job ID <span class="fw-500">{{ job.jobid }}</span></div> -->
+            </div>
+            <pq-button buttonClass="bg-color-success" (clickEvent)="markAsRead()">
+                Mark as read
+            </pq-button>
+        </div>
+    
+        <div class="bg-light shadow-input-1 vstack gap-2 border rounded-top-3" 
+            style="min-height: 500px;">
+            <div class="message-container flex-fill">
+                <div class="comments-container">
+                    <div class="comments vstack gap-2 p-3" id="comments" style="height: 440px; overflow-y: auto;">
+                        <div *ngIf="isCommentsLoading" class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span>Loading instructions...</span>
+                        </div>
+                        <ng-container *ngIf="!isCommentsLoading && comments.length <= 0">
+                            <div class="small disabled text-center p-4">
+                                No instructions added yet
+                            </div>
+                        </ng-container>
+                        <div id="comments-list">
+                            <ng-container *ngIf="!isCommentsLoading">
+                                <ng-container *ngTemplateOutlet="commentsTemplate"></ng-container>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="comments-input-container vstack flex-wrap">
+                        <ng-container *ngTemplateOutlet="commentsInput"></ng-container>
+                    </div>
+                </div>
+                
+    
+                <ng-template #commentsTemplate>
+                    <div *ngFor="let comment of comments" class="pb-3" [ngClass]="{ 'comment_owner': user_id == comment.UserId }">
+                        <div class="w-75" [ngClass]="{ 'ms-auto': user_id == comment.UserId }">
+                            <div class="hstack gap-2 align-items-start" [ngClass]="{ 'flex-row-reverse': user_id == comment.UserId }">
+                                <img class="image h-32 rounded-pill border user-profile-picture" [src]="(comment.profile_picture)? comment.profile_picture : '/assets/images/profile_placeholder.png'" alt="user photo">
+                                <div class="vstack">
+                                    <div class="sender-comment p-2 rounded-1" [ngClass]="(user_id != comment.UserId)? 'bg-color-primary-lightest text-dark comment_user' : 'bg-white text-dark border-bottom comment_owner'">
+                                        <div class="hstack gap-2 justify-content-between">
+                                            <div class="user-name small fw-500">{{ comment.username }}</div>
+                                        </div>
+                                        <div class="comment">{{ comment.Comments }}</div>
+                                    </div>
+                                    <div class="mt-1" [ngClass]="{ 'text-end': comment.UserId == user_id, 'text-start': comment.UserId != user_id }">
+                                        <div class="smaller disabled">Posted on {{ comment.CreatedOn | date: 'dd-MM-YYYY hh:mm' }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                
+                <ng-template #commentsInput>
+                    <div class="comments-input-container vstack flex-wrap p-2">
+                        <!-- <div class="hstack justify-content-center">
+                            <div class="border rounded hstack overflow-hidden cursor-pointer smaller">
+                                <div class="px-2 py-1" [ngClass]="(!isCustomInstruction)? 'bg-transaprent text-dark shadow-input-1' : 'bg-white text-dark'" (click)="isCustomInstruction = false;">Standard Instructions</div>
+                                <div class="px-2 py-1" [ngClass]="(isCustomInstruction)? 'bg-transaprent text-dark shadow-input-1' : 'bg-white text-dark'" (click)="isCustomInstruction = true;">Custom Instructions</div>
+                            </div>
+                        </div> -->
+                        <label for="inpinstruction" class="form-label mb-0">Reply Instruction</label>
+                        <div class="bg-white hstack gap-2 align-items-center justify-content-between comment-input-wrapper rounded py-1 pe-1 ps-2">
+                            <div class="flex-fill">
+                                <input class="form-control border-0 p-0" list="datalistOptions" [(ngModel)]="comment" #inpcomment (change)="handleInstruction(inpcomment.value)"
+                                    id="inpinstruction" placeholder="Select or add your instruction here...">
+                                <datalist id="datalistOptions">
+                                  <option *ngFor="let instruction of dropDownComments.list" [value]="instruction.title">
+                                </datalist>
+                            </div>
+    
+                            <pq-button (clickEvent)="sendComment()" [isLoading]="isSendingComment" [isDisabled]="isSendingComment || !comment" buttonContentClass="hstack gap-1 align-items-center">
+                                <span class="material-symbols-rounded">send</span>
+                            </pq-button>
+                        </div>
+                        <!-- <div class="text-end hstack gap-2 align-items-start justify-content-between">
+                            <ng-container *ngIf="!isCustomInstruction">
+                                <pq-dropdown [ngClass]="(isCustomInstruction)? 'disabled' : ''" dropDownButtonClass="text-truncate" [hideError]="true"
+                                    [text]="(dropDownComments.selectedComment.title)? dropDownComments.selectedComment.title : 'Choose an instruction'" [setOptionAsText]="true" [keys]="dropDownComments.keys"
+                                    [options]="dropDownComments.list" dropDownType="advanced" (outputObject)="handleInstruction($event)"></pq-dropdown>
+                            </ng-container>
+        
+                            <ng-container *ngIf="isCustomInstruction">
+                                <div [ngClass]="{ 'disabled': !isCommentCodesLoaded }" class="vstack gap-1 align-items-start flex-fill">
+                                    <pq-textbox [ngClass]="(isCustomInstruction)? '' : 'disabled'" class="flex-fill w-100" [hideError]="true"
+                                        placeholder="Add your custom instructions here..." [textBoxContent]="customInstruction" (outputValue)="customInstruction = $event"></pq-textbox>
+                                    <label class="small disabled">Max {{ maxCharsForComments }} characters</label>
+                                </div>
+                            </ng-container>
+                        </div> -->
+                
+                        <div *ngIf="commentsError" class="text-danger py-2 px-2 smaller">
+                            {{ commentsError }}
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</ng-container>
+

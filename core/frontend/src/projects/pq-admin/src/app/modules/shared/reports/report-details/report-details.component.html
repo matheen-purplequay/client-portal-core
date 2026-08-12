@@ -1,0 +1,182 @@
+<div class="vstack gap-2 p-3">
+
+    <div *ngIf="client && client.name" class="mb-2">
+        <label class="opacity-75">For Client</label>
+        <div class="h5 mb-0 hstack gap-2 align-items-center">
+            <span>{{ client.name }}</span>
+        </div>
+    </div>
+
+    <div class="vstack gap-4 flex-wrap py-3">
+        <!-- Other Details -->
+        <div class="hstack gap-4 align-items-start">
+            <div class="mb-2">
+                <label class="opacity-75">For Month & Year</label>
+                <div class="h6 mb-0">{{ report.month }}, {{ report.year }}</div>
+            </div>
+            <div class="mb-2">
+                <label class="opacity-75">Uploaded Date</label>
+                <div class="h6 mb-0">{{ report.uploaded_date }}</div>
+            </div>
+            <div *ngIf="report.status_type == 'rejected'" class="mb-2">
+                <label class="text-danger opacity-75">Reason for rejection</label>
+                <div class="h6 mb-0 text-danger">{{ report.reason }} &nbsp;</div>
+            </div>    
+        </div>
+        
+        <!-- Uploaded By -->
+        <div class="mb-2 ">
+            <label class="opacity-75">Uploaded by</label>
+            <div class="hstack gap-2 mt-2">
+                <img src="/assets/images/profile_placeholder.png" alt="user photo" class="image h-40 rounded-pill user-profile-picture">
+                <div>
+                    <div class="lead lh-1 fw-400 mb-0">{{ report.uploaded_by }}</div>
+                    <div class="small mb-0 hstack gap-2" *ngIf="report.uploaded_by_email">
+                        <a href="mailto:{{ report.uploaded_by_email }}" target="_blank">{{ report.uploaded_by_email }}</a>
+                        <span class="smaller text-decoration-none fw-500 text-dark disabled">(right click to copy)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="report.status == 0" class="d-none mb-2 position-relative" style="height: 300px; width: 100%; overflow: hidden;">
+            <label class="opacity-75">Custom section for report</label>
+            <ckeditor [editor]="Editor" [data]="report.custom_section" [config]="config"></ckeditor>
+            <div class="mt-1 small px-2 fw-400 py-1 hstack gap-1 align-items-center fs-italic rounded bg-color-warning shadow-input-1">
+                <span class="material-symbols-outlined small opacity-70">info</span>
+                <span class="opacity-70">Custom section will be shown in Delivery Dashboard (not in PDF report).</span>
+            </div>
+        </div>
+
+        <!-- Important Note -->
+        <div *ngIf="roleCategory == 'management'" class="mb-2">
+            <label class="opacity-75">Important Note</label>
+            <div class="hstack gap-2 align-items-start mt-2">
+                <span class="material-symbols-rounded text-warning">error</span>
+                <div>
+                    <span>Kindly verify the data in the monthly connect report against the delivery dashboard metrics available in the Client portal. </span> 
+                    <span *ngIf="portal_links">To perform this validation, please log in to <a [href]="portal_links.client_portal.link" target="_blank">{{ portal_links.client_portal.title }}</a> using the provided credentials.</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="bottom-0 start-0 end-0" id="confetti-container">
+        <ng-container *ngIf="report.status == 0 && roleCategory == 'management'">
+            <div *ngIf="userPermissions.review">
+                <div class="vstack gap-2 mt-3 px-3 py-3 bg-light shadow-input-1 rounded-4">
+                    <ng-container *ngIf="report.status == 0">
+                        <ng-container *ngIf="!toggleRejectMode && !toggleDeleteMode">
+                            <div class="hstack justify-content-center">
+                                <div class="form-check">
+                                    <input class="form-check-input rounded-pill border border-2 border-primary" type="checkbox" value="" id="chkConfirm" #chkConfirm (change)="setIsConfirmed(chkConfirm.checked)" [checked]="isConfirmed">
+                                    <label class="form-check-label text-dark" for="chkConfirm">
+                                        Acknowledgement: I hereby confirm that the monthly connect report has been thoroughly reviewed and validated against the delivery dashboard metrics in the client portal
+                                    </label>
+                                </div>
+                            </div>
+
+                            <ng-container *ngIf="!isClientManagementUsersLoaded">
+                                <div class="hstack gap-2 justify-content-between" [ngClass]="{ 'disabled': !isConfirmed }">
+                                    <ng-container [ngClass]="{ 'disabled': (isApproving || isRejecting) }">
+                                        <!-- <app-slide-button class="flex-fill" 
+                                            [isLoading]="isApproving || isRejecting"
+                                            sliderText="<span class='fw-500'>Slide to approve</span> <span class='material-symbols-rounded small'>arrow_right_alt</span> <span class='material-symbols-rounded small'>verified</span>" sliderTextClass="hstack gap-1 align-items-center"
+                                            (completedEvent)="approveReport()">
+                                            Approve
+                                        </app-slide-button> -->
+                                        <pq-button buttonStyle="simple" [isDisabled]="isApproving || isRejecting"
+                                            [isLoading]="isApproving" (clickEvent)="approveReport()" 
+                                            buttonClass="bg-success text-light fw-bold shadow rounded-pill" 
+                                            buttonContentClass="hstack gap-2 px-4 align-items-center">
+                                            <span class='material-symbols-rounded'>verified</span>
+                                            Approve
+                                        </pq-button>
+
+                                        <pq-button buttonStyle="simple" [isDisabled]="isApproving || isRejecting" 
+                                            buttonClass="bg-danger text-light fw-bold shadow rounded-pill"
+                                            buttonContentClass="hstack gap-2 px-3 align-items-center"
+                                            [isLoading]="isRejecting" (clickEvent)="toggleRejectMode = true;">
+                                            <span class="material-symbols-outlined">cancel</span>
+                                            Reject
+                                        </pq-button>
+                                    </ng-container>
+                                </div>
+                                <div class="mt-3 vstack gap-2">
+                                    <div class="hstack gap-1 align-items-center">
+                                        <input type="checkbox" class="form-check-input rounded-pill" id="chknotifypartners" [(ngModel)]="notifyClientUsers">
+                                        <label class="pt-1" for="chknotifypartners">Notify the partners if reports are approved</label>
+                                    </div>
+                                    <div class="hstack gap-2 align-items-center flex-wrap">
+                                        <div *ngFor="let clientUser of clientManagementUsers" 
+                                            class="badge bg-white shadow-sm text-dark text-start">
+                                            <div class="small fw-400">{{ clientUser.first_name }} {{ clientUser.last_name }}</div>
+                                            <div class="small fw-400 disabled">{{ clientUser.email }}</div>
+                                        </div>
+                                    </div>
+                                </div>               
+                            </ng-container>
+                            <ng-container *ngIf="isClientManagementUsersLoaded">
+                                <app-simple-loading-text containerClass="bg-white">Fetching notifiable users...</app-simple-loading-text>
+                            </ng-container>
+
+                        </ng-container>
+                        <ng-container *ngIf="toggleRejectMode">
+                            <div>
+                                <pq-textbox label="Please specify reason for rejecting the report"
+                                    [maxLength]="150"
+                                    [textBoxContent]="rejectReason" 
+                                    helper="Give a reason with not more than 150 letters"
+                                    (outputValue)="rejectReason = $event"></pq-textbox>
+
+                                <div class="hstack gap-2 justify-content-between">
+                                    <pq-button buttonStyle="dark" (clickEvent)="rejectReport()">Reject Now</pq-button>
+                                    <pq-button buttonStyle="simple" buttonClass="shadow-sm bg-white" (clickEvent)="toggleRejectMode = false;">Cancel & Go Back</pq-button>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="report.status == 0 && roleCategory != 'management'">
+            <div class="mt-3 p-3 hstack gap-2 align-items-center justify-content-between opacity-75 bg-warning shadow-input-1 rounded">
+                <div class="hstack gap-2 align-items-center">
+                    <span class="material-symbols-rounded">hourglass_top</span>
+                    <div>Review pending for report</div>
+                </div>
+                <ng-container *ngIf="report.mail_sent_count < maxEmails">
+                    <pq-button buttonStyle="light">Send Request</pq-button>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="report.status != 0">
+            <div class="mt-3 px-2 pt-2 pb-1 hstack gap-2 align-items-center justify-content-center opacity-75 bg-light shadow-input-1 rounded">
+                <div class="h3 mb-0" [ngClass]="(report.status_type == 'approved')? 'text-success' : 'text-danger'">
+                    <span *ngIf="report.status_type == 'approved'" class="material-symbols-rounded" style="font-size: 45px;">verified</span>
+                    <span *ngIf="report.status_type == 'rejected'" class="material-symbols-rounded" style="font-size: 45px;">unpublished</span>
+                </div>
+                <div>
+                    <div class="text-success fw-bold smaller" [ngClass]="{ 'text-sucess': report.status_type == 'approved', 'text-danger': report.status_type == 'rejected' }">
+                        <ng-container *ngIf="report.status_type == 'approved'">
+                            Approved by
+                        </ng-container>
+                        <ng-container *ngIf="report.status_type == 'rejected'">
+                            Rejected by
+                        </ng-container>
+                    </div>
+                    <div class="lead fw-medium">
+                        <ng-container *ngIf="report.status_type == 'approved'">
+                            {{ report.approved_by }}
+                        </ng-container>
+                        <ng-container *ngIf="report.status_type == 'rejected'">
+                            {{ report.rejected_by }}
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+</div>

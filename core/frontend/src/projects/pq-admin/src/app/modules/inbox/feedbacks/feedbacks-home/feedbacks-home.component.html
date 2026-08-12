@@ -1,0 +1,76 @@
+<!-- <div *ngIf="isFeedbackLoading" class="w-100 text-center p-5">
+    <pq-simple-horizontal-loading loadingText="Getting associated feedback for you..."></pq-simple-horizontal-loading>
+</div> -->
+
+<pq-section-card *ngIf="!isFeedbackLoading" 
+    sectionTitle="Feedback" cardClass="shadow-sm" cardBodyClass="p-0" cardFooterClass="p-0" 
+    [showLoading]="isFeedbackLoading" showLoadingText="Getting associated feedback for you" [enableSettings]="false">
+
+    <div body>
+        <div class="h-100 overflow-y-auto">
+            <div *ngIf="feedback.length <= 0" class="p-5 disabled text-center">
+                No feedback available
+            </div>
+            <table *ngIf="feedback && feedback.length > 0" class="w-100 ">
+                <thead>
+                    <th class="small"></th>
+                    <th class="small">Date</th>
+                    <th class="small">Client</th>
+                    <th class="small">Job</th>
+                    <th class="small">Process Area</th>
+                    <th class="small">Sub Process Area</th>
+                    <th class="small">Feedback</th>
+                    <th class="small">DT Comments</th>
+                    <th class="small">Status</th>
+                    <th class="small text-center">Action</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let fb of feedback"
+                        class="row-truncate">
+                        <td class="cursor-pointer" onclick="this.parentElement.classList.toggle('row-truncate'); this.parentElement.classList.toggle('selected-row');">
+                            <span class="material-symbols-rounded">unfold_more</span>
+                        </td>
+                        <td class="small">
+                            <div class="smaller">{{ fb.Createddate | date: 'dd-MM' }}</div>
+                            <div class="smaller">{{ fb.Createddate | date: 'yyyy' }}</div>
+                        </td>
+                        <td><div class="smaller truncated-text">{{ fb.Clientname }}</div></td>
+                        <td class="small">
+                            <div class="truncated-text">{{ fb.JobDescription }}</div>
+                            <div class="smaller truncated-text">{{ fb.Status }}</div>
+                        </td>
+                        <td class="small">{{ fb.ProcessArea }}</td>
+                        <td>
+                            <select class="form-select" [(ngModel)]="fb.SubProcessArea">
+                                <option *ngFor="let op of getSubProcessArea(fb.ProcessArea)" 
+                                    [value]="op">{{ op }}
+                                </option>
+                            </select>
+                        </td>
+                        <td class="w-200p small">
+                            <div class="truncated-text">
+                                {{ fb.Feedback }}
+                            </div>
+                        </td>
+                        <td>
+                            <pq-textbox [hideError]="true" placeholder="Comments" [textBoxContent]="fb.DTComments" (outputValue)="fb.DTComments = $event;"></pq-textbox>
+                        </td>
+                        <td class="small w-90p">
+                            <div class="truncated-text" *ngIf="fb.FeedbackStatus == 1">Open</div>
+                            <div class="truncated-text" *ngIf="fb.FeedbackStatus == 2">Replied</div>
+                            <div class="truncated-text" *ngIf="fb.FeedbackStatus == 3">Waiting for ack</div>
+                            <div class="truncated-text" *ngIf="fb.FeedbackStatus == 4">Closed</div>
+                        </td>
+                        <td>
+                            <pq-button [ngClass]="{ 'disabled': fb.FeedbackStatus > 2 }"
+                                buttonStyle="link" (clickEvent)="markAsResolved(fb)">
+                                Mark as resolved
+                            </pq-button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</pq-section-card>

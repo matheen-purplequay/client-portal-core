@@ -1,0 +1,35 @@
+<div class="row h-100 body-main-content">
+	<div class="col-sm-3 col-lg-2 h-100 pe-0 sidebar-wrapper" id="sidebarWrapper" #sidebarWrapper>
+		<div class="sticky-top">
+			<app-sidebar></app-sidebar>
+		</div>
+	</div>
+	<div class="col-sm-9 col-lg-9 ps-0 page-main-content">
+		<app-navbar></app-navbar>
+
+        <section class="container">
+            <div class="row">
+                <div class="col-sm-12 hstack align-items-center justify-content-center mb-3">
+                    <!-- <div class="display-6 mb-0">Job Instructions</div> -->
+                    <pq-simple-tab [tabs]="inboxViews.list" [selectedTab]="inboxViews.selectedView.index" tabStyle="island"
+                        (tabSelectedEvent)="inboxViews.selectedView = $event;"></pq-simple-tab>
+                </div>
+            </div>
+        </section>
+
+        <ng-container *ngIf="inboxViews.selectedView === inboxViewsList.instructions">
+            <app-instructions-home></app-instructions-home>
+        </ng-container>
+
+        <ng-container *ngIf="inboxViews.selectedView === inboxViewsList.feedback">
+            <app-feedbacks-home></app-feedbacks-home>
+        </ng-container>
+
+        <ng-container *ngIf="inboxViews.selectedView === inboxViewsList.queries">
+            <!-- <app-queries-home></app-queries-home> -->
+             <dash-queries [attr.user-data]="data | json"></dash-queries>
+        </ng-container>
+	</div>
+</div>
+
+<app-floating-support></app-floating-support>

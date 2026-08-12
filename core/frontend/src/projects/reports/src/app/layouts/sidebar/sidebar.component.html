@@ -1,0 +1,103 @@
+<div *ngIf="config.seasonalConfig.christmas.christmasGreeting && config.seasonalConfig.christmas.snowEffect"
+    class="d-block position-relative">
+    <div *ngFor="let i of snowFlakesCount" class="snowflake"></div>
+</div>
+<div class="offcanvas-lg offcanvas-end sidebar-links-container h-100" tabindex="-1" id="offcanvasResponsive"
+    aria-labelledby="offcanvasResponsiveLabel">
+    <div class="offcanvas-header d-block d-sm-none">
+
+        <h5 class="offcanvas-title" id="offcanvasResponsiveLabel">Responsive offcanvas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive"
+            aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body h-100">
+        <div class="vstack h-100">
+            <div class="flex-fill">
+                <nav class="navbar bg-transparent">
+                    <div class="container-fluid">
+                        <a class="navbar-brand">
+                            <ng-container *ngIf="config.seasonalConfig.christmas.christmasGreeting">
+                                <img class="image h-48" alt="" [src]="config.seasonalConfig.christmas.csLogo" />
+                            </ng-container>
+                            <ng-container *ngIf="!config.seasonalConfig.christmas.christmasGreeting">
+                                <!-- <img class="image h-48" alt=""
+                                    [src]="(master_company.logo)? master_company.logo : fallback_logo" /> -->
+                                <img class="image h-48" alt=""
+                                    src="https://admin-clientportal.purplequay.com.au/assets/assets/images/cs-logo.png" />
+                            </ng-container>
+                        </a>
+                    </div>
+                </nav>
+                <div class="py-2">
+                    <div class="list-group list-group-flush sidebar-links-wrapper">
+
+                        <ng-container *ngFor="let pl of primary_links">
+                            <ng-container *ngIf="pl.type == 'divider'">
+                                <div class="list-vertical-divider-primary my-2" [ngClass]="pl.class"></div>
+                            </ng-container>
+                            <ng-container *ngIf="pl.type == 'link'">
+                                <button type="button"
+                                    class="list-group-item list-group-item-action sidebar-link small rounded-end-pill position-relative overflow-hidden"
+                                    [attr.data-link]="currentURL"
+                                    [ngClass]="(currentURL.includes(pl.link))? 'active' : ''" [attr.data-link]="pl.link"
+                                    [attr.current-link]="currentURL" [attr.data-include]="currentURL.includes(pl.link)"
+                                    (click)="openPage(pl.link)">
+                                    <span class="material-symbols-rounded pe-2 mt--2">{{ pl.material_icon }}</span>
+                                    <div>{{ pl.title }}</div>
+                                </button>
+                            </ng-container>
+                        </ng-container>
+
+                        <div class="list-vertical-divider-primary my-2"></div>
+
+                        <button type="button" class="list-group-item list-group-item-action sidebar-link rounded-pill"
+                            [attr.data-link]="currentURL"
+                            [ngClass]="(currentURL.includes('by-carisma'))? activeLinkClass : ''"
+                            (click)="openPage('/pages/by-carisma')">
+                            <span class="material-symbols-rounded pe-2 mt--2">apartment</span>
+                            <!-- <img class="image me-2 rounded-pill" [ngClass]="(currentURL.includes('by-carisma'))? 'bg-white' : ''" [src]="(currentURL.includes('purplequay.com.au'))? '/assets/icons/CSBrandmark.png' : '/assets/icons/PQBrandmark.png'" alt="carisma logo" style="height: 15px;"> -->
+                            <span *ngIf="master_company_short_name.toLowerCase() == 'cs'">About Carisma</span>
+                            <span *ngIf="master_company_short_name.toLowerCase() == 'pq'">About PurpleQuay</span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="list-group list-group-flush mt-4 sidebar-links-wrapper smooth-all">
+
+                    <ng-container *ngIf="config.seasonalConfig.christmas.christmasGreeting">
+                        <button class="list-group-item list-group-item-action sidebar-link rounded-end-3 mb-3"
+                            [ngClass]="currentURL.includes('/engage/greetings')? 'bg-color-primary-lighter shadow-input-2' : 'bg-color-primary-lightest'">
+                            <img class="w-100 flt-mix-blend-multiply cursor-pointer"
+                                [src]="config.seasonalConfig.christmas.greetingImage" alt="season greeting"
+                                (click)="openPage('/engage/greetings')">
+                        </button>
+                    </ng-container>
+
+                    <button *ngFor="let sl of secondary_links" type="button"
+                        class="list-group-item list-group-item-action sidebar-link rounded-end-pill"
+                        [ngClass]="{'active' : currentURL.includes(sl.link)}" (click)="openPage(sl.link)">
+                        <span class="material-symbols-rounded pe-2 mt--2">{{ sl.material_icon }}</span>
+                        <ng-container *ngIf="sl.module == 'system'">
+                            Version <span *ngIf="appStatus" class="ps-1 d-inline-block">{{ appStatus.major_version }}.{{
+                                appStatus.minor_version }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="sl.module != 'system'">
+                            {{ sl.title }}
+                        </ng-container>
+                    </button>
+                    <div class="list-vertical-divider-primary my-2"></div>
+                    <button type="button"
+                        class="list-group-item list-group-item-action sidebar-link rounded-end-pill mb-2"
+                        (click)="openPage('/logout')">
+                        <span class="material-symbols-rounded pe-2 mt--2">logout</span>
+                        Logout
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

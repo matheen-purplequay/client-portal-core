@@ -1,0 +1,21 @@
+.accordion {
+    .accordion-item {
+        .accordion-header {
+            .accordion-button {
+                border-top: 1px solid rgba(var(--primary-color-rgb), 0.1);
+                &:not(.collapsed) {
+                    background: transparent;
+                    box-shadow: unset !important;
+                }
+            }
+        }
+
+        &:first-child {
+            .accordion-header {
+                .accordion-button {
+                    border-top: 0px solid !important;
+                }
+            }
+        }
+    }
+}

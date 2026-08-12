@@ -1,0 +1,55 @@
+.inline-alert {
+    .accordion-item {
+        background: var(--light-color);
+    }
+
+    &* {
+        outline: none;
+    }
+
+    &.hide-message {
+        .accordion-button::after {
+            display: none;
+        }
+    }
+
+    .accordion-header {
+        .accordion-button {
+            background: inherit;
+            color: inherit;
+            box-shadow: unset;
+
+            &:focus {
+                border: 0px solid;
+                box-shadow: unset;
+            }
+            &:not(.collapsed) {
+                background: transparent !important;
+            }
+        }
+    }
+}
+
+.alert-danger {
+    background: var(--danger-color) !important;
+    color: var(--light-color) !important;
+    box-shadow: rgba(var(--danger-color-rgb), 0.2) 0px 6px 24px -10px, rgba(var(--danger-color-rgb), 0.08) 0px 0px 0px 1px;
+}
+
+.alert-error {
+    background: var(--danger-light-color) !important;
+    color: var(--danger-color) !important;
+    box-shadow:  rgba(var(--danger-color-rgb), 0.2) 0px 6px 24px -10px, rgba(var(--danger-color-rgb), 0.08) 0px 0px 0px 1px;
+}
+
+.alert-warning { 
+    background: var(--warning-color) !important;
+    color: var(--dark-text-color) !important;
+    box-shadow:  rgba(var(--warning-color-rgb), 0.2) 0px 6px 24px -10px, rgba(var(--warning-color-rgb), 0.08) 0px 0px 0px 1px;
+}
+
+.alert-info {
+    background: var(--light-color) !important;
+    color: var(--dark-text-color) !important;
+    box-shadow:  rgba(var(--dark-color-rgb), 0.2) 0px 6px 24px -10px, rgba(var(--dark-color-rgb), 0.08) 0px 0px 0px 1px;
+}

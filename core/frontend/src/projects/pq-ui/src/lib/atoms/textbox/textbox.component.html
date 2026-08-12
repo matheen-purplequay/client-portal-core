@@ -1,0 +1,114 @@
+<div class="" [ngClass]="containerClass + ' ' + textBoxStyle + ' ' + ((isErrorShown)? 'has-errors' : '')" [id]="componentId">
+    <!-- Label -->
+    <label
+        [ngClass]="labelClass + ' isContentExists ' + isContentExists + ' ' + ((isContentExists === true)? _floatingLabelClasses.fixedClass : '') + ' ' + ((floatingLabel === 'true')? _floatingLabelClasses.floatingClass : '')">
+        <span class="required-indicator badge" [ngClass]="(required)? 'required' : ''">
+            <i *ngIf="(required && textBoxContent == '')" class="fa-solid fa-exclamation text-danger"></i>
+            <i *ngIf="(required && textBoxContent != '')" class="fa-solid fa-check text-success"></i>
+        </span>{{ label }}
+    </label>
+
+    <!-- Textbox container -->
+    <div class="textbox-wrapper">
+        <input 
+            *ngIf="((!showAsTextArea) && (type != 'date'))"
+            (input)="setContentState()"
+            [type]="type" 
+            [attr.spellcheck]="spellCheck"
+            [attr.readonly]="(readonly)? required : null"
+            [ngClass]="textBoxClass" 
+            [(ngModel)]="textBoxContent"
+            (ngModelChange)="setContentState()"
+            [attr.maxlength]="(maxLength != 0)? maxLength : null"
+            [attr.minLength]="(minLength != 0)? minLength : null"
+            [attr.min]="(minLength != 0 && type == 'number')? minLength : null"
+            [attr.max]="(maxLength != 0 && type == 'number')? maxLength : null"
+            [attr.autocomplete]="(!autocomplete)? 'off' : 'on'"
+            [attr.placeholder]="(floatingLabel != 'true')? placeholder : null" [attr.required]="(required)? required : null"
+            (change)="setContentState()" (blur)="setContentState('blur')" (keyup)="onKeyup($event)"/>
+        <div *ngIf="((!showAsTextArea) && (type == 'date'))" class="d-flex align-items-center">      
+            <ng-template #t let-date let-focused="focused">
+                <span
+                    class="custom-day"
+                    [class.focused]="focused"
+                    [class.range]="isRange(date)"
+                    [class.faded]="isHovered(date) || isInside(date)"
+                    (mouseenter)="hoveredDate = date"
+                    (mouseleave)="hoveredDate = null"
+                >
+                    {{ date.day }}
+                </span>
+            </ng-template>
+            <ng-container *ngIf="dateSelectionType == 'single'">
+                <input 
+                    ngbDatepicker #d="ngbDatepicker"
+                    type="text"
+                    [attr.spellcheck]="spellCheck"
+                    [attr.readonly]="(readonly)? required : null"
+                    [ngClass]="textBoxClass" 
+                    [(ngModel)]="dateContent"
+                    (ngModelChange)="setContentState()"
+                    [attr.maxlength]="(maxLength != 0)? maxLength : null"
+                    [attr.minLength]="(minLength != 0)? minLength : null"
+                    [attr.placeholder]="(floatingLabel != 'true')? placeholder : null" [attr.required]="(required)? required : null"
+                    (change)="setContentState()" (blur)="setContentState('blur');" (click)="d.toggle()"/>
+                    <button class="btn pointer-events-none bg-white rounded-0 border-0">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </button>
+            </ng-container>
+            <ng-container *ngIf="dateSelectionType == 'range'">
+                <input 
+                    ngbDatepicker #d="ngbDatepicker"
+                    type="text"
+                    [attr.spellcheck]="spellCheck"
+                    [attr.readonly]="(readonly)? required : null"
+                    [ngClass]="textBoxClass" 
+                    [(ngModel)]="dateContent"
+                    [autoClose]="'outside'"
+					(dateSelect)="onDateSelection($event)"
+					[displayMonths]="2"
+					[dayTemplate]="t"
+					outsideDays="hidden"
+					[startDate]="fromDate!"
+					tabindex="-1"
+                    [attr.maxlength]="(maxLength != 0)? maxLength : null"
+                    [attr.minLength]="(minLength != 0)? minLength : null"
+                    (ngModelChange)="setContentState()"
+                    [attr.placeholder]="(floatingLabel != 'true')? placeholder : null" [attr.required]="(required)? required : null"
+                    (change)="setContentState()" (blur)="setContentState('blur');" (click)="d.toggle()"/>
+                    <button class="btn pointer-events-none bg-white rounded-0 border-0">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </button>
+            </ng-container>
+        </div>
+        <textarea
+            *ngIf="showAsTextArea"
+            (input)="setContentState()"
+            [attr.spellcheck]="spellCheck"
+            [ngClass]="textBoxClass" 
+            [attr.readonly]="(readonly)? required : null"
+            [(ngModel)]="textBoxContent"
+            [attr.maxlength]="(maxLength != 0)? maxLength : null"
+            [attr.minLength]="(minLength != 0)? minLength : null"
+            [attr.placeholder]="(floatingLabel != 'true')? placeholder : null" [attr.required]="(required)? required : null"
+            (change)="setContentState()" (blur)="setContentState('blur')" (keyup)="onKeyup($event)">
+        </textarea>
+    </div>
+
+    <!-- Error container -->
+    <div 
+        *ngIf="!hideError"
+        [class]="errorsClass" tabindex="-1"
+        [ngClass]="(isErrorShown == true)? 'show-error' : ''">
+
+        <!-- Injecting InlineAlert component to show error -->
+        <pq-inline-alert 
+            *ngFor="let error of errors; let index = index;"
+            [index]="index" [error]="error"></pq-inline-alert>
+        <span>&nbsp;</span>
+
+    </div>
+
+    <!-- Helper text container -->
+    <div *ngIf="helper != ''" [ngClass]="helperClass + ' ' + ((isErrorShown === true)? 'hide-helper' : '')" [innerHTML]="helper" tabindex="-1"></div>
+</div>

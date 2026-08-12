@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Query Confirmation</title>
+</head>
+<body>
+<p>
+    Dear all,
+</p>
+<p>
+    I hope this message finds you well. I wanted to bring to your attention that a query has been raised and action is required. The details of the query are as follows:
+</p>
+
+<p><b>
+    Query Details:
+</b></p>
+<p>
+    Query ID: [Insert Query ID]
+</p>
+<p>
+    Date Raised: [Insert Date]
+</p>
+<p>
+    Raised By: [Name of the Person Raising the Query]
+</p>
+<p>
+    Query Description: [Describe the Query]
+</p>
+<p>
+    This query is important and requires immediate attention. To ensure that we address it promptly and effectively, we kindly request your involvement and expertise.
+    Thank you for your cooperation and commitment to resolving this query promptly.
+</p>
+<div>
+    -------------------------
+</div>
+<p>
+    Best regards,
+</p>
+<p>
+    Team Carisma
+</p>
+</body>
+</html>
+

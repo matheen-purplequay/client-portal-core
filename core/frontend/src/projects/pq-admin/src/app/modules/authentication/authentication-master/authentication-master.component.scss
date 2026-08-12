@@ -1,0 +1,29 @@
+.authentication-container {
+    .card {
+        height: 90vh;
+        width: 100%;
+        border-radius: 25px;
+        overflow: hidden;
+        transform: translateX(-32px);
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;        
+
+        .card-img {
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-img-overlay {
+            background: linear-gradient(to top, rgba(0,0,0, 0.6) 1%, transparent, transparent 90%);
+
+            .card-body-content {
+                text-shadow: rgba(0,0,0, 0.4) 0px 2px 5px !important;
+            }
+
+            .badge {
+                background: linear-gradient(to bottom, #FFF, rgba(255,255,255,0.8));
+                text-shadow: rgba(0,0,0, 0.2) 0px 2px 5px !important;
+            }
+        }
+    }
+
+}

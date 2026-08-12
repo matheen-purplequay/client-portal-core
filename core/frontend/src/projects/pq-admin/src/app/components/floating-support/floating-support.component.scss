@@ -1,0 +1,50 @@
+.ticket-container {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+
+    * {
+        transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+    }
+
+    .ticket-button {
+        &.hide {
+            display: none;
+        }
+    }
+
+    .ticket-form-content {
+        &.minimized {
+            height: 0px;
+            overflow: hidden;
+        }
+    }
+
+    .ticket-form-container {
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+        min-width: 400px;
+        max-width: 400px;
+        
+        &.hide {
+            display: none;
+        }
+    }
+}
+
+.hover-show {
+    .hover-show-content {
+        display: none;
+    }
+
+    &:hover {
+        .hover-show-content {
+            display: unset;
+        }
+    }
+}
+
+.mh-300 {
+    height: 300px;
+}

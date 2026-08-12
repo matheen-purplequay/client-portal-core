@@ -1,0 +1,16 @@
+.list-group {
+    .list-group-item {
+        transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        background-color: transparent;
+        
+        &:hover {
+            transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -webkit-transition: all 0.3s ease-in-out;
+            // background-color: rgba(var(--primary-color-rgb), 0.05) !important;
+            font-weight: 700;
+        }
+    }
+}

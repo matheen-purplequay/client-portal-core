@@ -1,0 +1,72 @@
+[
+    {
+        "name": "Carisma Solutions",
+        "short_name" : "carisma_solutions",
+        "client_type": "self",
+        "industry_type": "Finance",
+        "dashboards": "0,1",
+        "works_manager_client_id": 1,
+        "parent_company_id": 0,
+        "company_logo": "https://www.carisma-solutions.com.au/assets/img/icons/CS%20logo.png"
+    },
+    {
+        "name": "Grimsey Pty Ltd",
+        "short_name" : "grimsey",
+        "client_type": "client",
+        "industry_type": "Finance",
+        "dashboards": "1",
+        "works_manager_client_id": 234,
+        "parent_company_id": 0,
+        "company_logo": "https://www.grimsey.com.au/wp-content/uploads/grimsey-pty-ltd.png"
+    },
+    {
+        "name": "Supervision Superannuation",
+        "short_name" : "supervision",
+        "client_type": "client",
+        "industry_type": "Finance",
+        "dashboards": "1",
+        "works_manager_client_id": 217,
+        "parent_company_id": 0,
+        "company_logo": "https://supervision.com.au/wp-content/uploads/2023/08/Long-Grey-Logo2023.png"
+    },
+    {
+        "name": "Neo",
+        "short_name" : "neo",
+        "client_type": "client",
+        "industry_type": "Finance",
+        "dashboards": "0,1",
+        "works_manager_client_id": 205,
+        "parent_company_id": 0,
+        "company_logo": "https://neo-super.com.au/wp-content/uploads/2020/08/Neo-Super-Logo-for-Xero.png"
+    },
+    {
+        "name": "Neo Super",
+        "short_name" : "neo_super",
+        "client_type": "client",
+        "industry_type": "Finance",
+        "dashboards": "0,1",
+        "works_manager_client_id": 205,
+        "parent_company_id": 4,
+        "company_logo": "https://neo-super.com.au/wp-content/uploads/2020/08/Neo-Super-Logo-for-Xero.png"
+    },
+    {
+        "name": "Neo SMSF Work",
+        "short_name" : "neo_smsf_work",
+        "client_type": "sub_client",
+        "industry_type": "Finance",
+        "dashboards": "0,1",
+        "works_manager_client_id": 205,
+        "parent_company_id": 4,
+        "company_logo": "https://neo-super.com.au/wp-content/uploads/2020/08/Neo-Super-Logo-for-Xero.png"
+    },
+    {
+        "name": "Maple Plan",
+        "short_name" : "maple_plan",
+        "client_type": "sub_client",
+        "industry_type": "Finance",
+        "dashboards": "1",
+        "works_manager_client_id": 95,
+        "parent_company_id": 0,
+        "company_logo": "https://www.mapleplan.com.au/contents/website/img/logo.png"
+    }
+]

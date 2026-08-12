@@ -1,0 +1,102 @@
+<div class="h-100 overflow-y-auto">
+    <div *ngIf="isFeedbacksLoading"
+        class="hstack align-items-center justify-content-center p-5">
+        <pq-simple-horizontal-loading *ngIf="isFeedbacksLoading" loadingText="Getting feedback for this job..."></pq-simple-horizontal-loading>
+    </div>
+    <div *ngIf="isNewFeedback" class="container py-5">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="h5">Post Feedback</div>
+                <div class="vstack gap-2">
+                    <div class="vstack">
+                        <label>Select Process Area</label>
+                        <pq-simple-tab [tabs]="filterProcessAreas.list" tabStyle="form"
+                            (tabSelectedEvent)="filterProcessAreas.selectedType = $event;"></pq-simple-tab>
+                    </div>
+
+                    <textarea class="form-textarea rounded border shadow-input-1" style="height: 150px;"
+                        [(ngModel)]="newFeedback.Feedback"></textarea>
+                    
+                    <div class="hstack gap-2 align-items-center justify-content-between">
+                        <pq-button class="flex-fill" buttonWidth="full" (clickEvent)="saveFeedback()"
+                            [isDisabled]="!newFeedback.Feedback"
+                            [isLoading]="isSavingFeedback">Post Feedback</pq-button>
+    
+                        <pq-button class="flex-fill" buttonStyle="outline" buttonWidth="full" (clickEvent)="isNewFeedback = false;">Cancel</pq-button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="h5">Additional Details</div>
+                <div class="vstack gap-3">
+                    <div>
+                        <label>Feedback posting date</label>
+                        <input type="text" class="form-control disabled" disabled [value]="newFeedback.Date | date: 'dd-MM-yyyy'">
+                    </div>
+                    <div>
+                        <label>Job status while posting</label>
+                        <input type="text" class="form-control disabled" disabled [value]="job.Status">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table *ngIf="!isFeedbacksLoading && !isNewFeedback"
+        class="w-100">
+        <thead>
+            <th></th>
+            <th>Date</th>
+            <th>Job Status</th>
+            <th>Process Area</th>
+            <th>Feedback</th>
+            <th>Status</th>
+            <th>DT Comments</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <tr *ngIf="!isNewFeedback">
+                <td class="text-center" colspan="100%" (click)="isNewFeedback = true;">
+                    <pq-button buttonStyle="outline_primary" buttonContentClass="px-4">
+                        Add new feedback
+                    </pq-button>
+                </td>
+            </tr>
+            <tr *ngIf="!isFeedbacksLoading && (feedback && feedback.length <= 0)">
+                <td class="text-center" colspan="100%">
+                    No feedback added!
+                </td>
+            </tr>
+
+
+            <tr *ngFor="let fb of feedback"
+                class="row-truncate">
+                <td class="cursor-pointer" onclick="this.parentElement.classList.toggle('row-truncate'); this.parentElement.classList.toggle('selected-row');">
+                    <span class="material-symbols-rounded">unfold_more</span>
+                </td>
+                <td>{{ fb.Date }}</td>
+                <td>{{ fb.Status }}</td>
+                <td>{{ fb.ProcessArea }}</td>
+                <td class="w-200p">
+                    <div class="truncated-text">
+                        {{ fb.Feedback }}
+                    </div>
+                </td>
+                <td>
+                    <span *ngIf="fb.FeedbackStatus == 1">Open</span>
+                    <span *ngIf="fb.FeedbackStatus == 2">Replied</span>
+                    <span *ngIf="fb.FeedbackStatus == 3">Closed</span>
+                    <span *ngIf="fb.FeedbackStatus == 4">Closed</span>
+                </td>
+                <td>{{ fb.DTComments }}</td>
+                <td>
+                    <pq-button [ngClass]="{ 'disabled': fb.FeedbackStatus > 2 }" buttonStyle="link" buttonContentClass="small"
+                        [isLoading]="(fb.id == resolvingFeedbackId)? true : false"
+                        (clickEvent)="markAsResolved(fb)">
+                        Mark as closed
+                    </pq-button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

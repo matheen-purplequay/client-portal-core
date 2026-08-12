@@ -1,0 +1,44 @@
+<section *ngIf="!isEmbedded" class="container mb-3">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">Contact Us</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+
+<section class="container">
+    <div class="row">
+        <div [ngClass]="(isEmbedded)? 'col-sm-12' : ' col-sm-8 offset-sm-2'">
+
+            <pq-section-card [sectionTitle]="title" [sectionSubtitle]="subtitle"
+                [cardClass]="'shadow-sm ' + (isEmbedded)? 'rounded-0 bg-transparent' : ''" cardBodyClass="pb-0"
+                [enableSettings]="false">
+                <div body>
+                    <div class="vstack gap-3">
+                        <div class="">
+                            <textarea class="form-control shadow-input-2" [(ngModel)]="query"
+                                placeholder="Your message here" id="txtMessage" style="height: 150px;"></textarea>
+                        </div>
+                        <div>
+                            <div class="hstack gap-3 align-items-center" [ngClass]="(isSendingQuery)? 'disabled' : ''">
+                                <pq-button (clickEvent)="sendMessage()">
+                                    <div *ngIf="isSendingQuery" class="spinner-border spinner-border-sm text-light me-1"
+                                        role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span>Send Message</span>
+                                </pq-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>

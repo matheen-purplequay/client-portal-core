@@ -1,0 +1,139 @@
+<section class="container mb-3">
+    <div class="row">
+        <div class="col-sm-12 text-center lh-1">
+            <div class="hstack gap-1 align-items-baseline justify-content-center">
+                <div class="display-6 mb-0">{{ appStatus.name }}</div>
+                <div class="small px-2 fw-bold opacity-50">v {{ appStatus.major_version }}.{{ appStatus.minor_version }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div>
+    <div class="row">
+        <div class="col-sm-4">
+            <app-system-health></app-system-health>
+    
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col-sm-12 py-2">
+                        <div class="lead fw-500 disabled">Login Details</div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="pe-none opacity-75 small">
+                            <div class="py-2 border-bottom hstack gap-2 align-items-center justify-content-start">
+                                <span class="material-symbols-rounded opacity-50">account_circle</span>
+                                <span>{{ user.first_name }} {{ user.last_name }}</span>
+                            </div>
+                            <div class="py-2 border-bottom hstack gap-2 align-items-center justify-content-start">
+                                <span class="material-symbols-rounded opacity-50">mail</span>
+                                <span>{{ user.email }}</span>
+                            </div>
+                            <div class="py-2 border-bottom hstack gap-2 align-items-center justify-content-start">
+                                <span class="material-symbols-rounded opacity-50">schedule</span>
+                                <span class="hstack gap-1">
+                                    <span *ngIf="loginDate">{{ loginDate | date: 'd-M-y hh:mm a' }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+    
+            <div class="container">
+    
+                <!-- App Alerts Loading -->
+                <ng-container *ngIf="isGettingAppMessage">
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <div class="mb-2 fw-500 hstack gap-2 align-items-center justify-content-start disabled">
+                                <span class="material-symbols-rounded small">dns</span>
+                                Checking for any alerts...
+                            </div>
+                            <div class="progress rounded-pill overflow-hidden" role="progressbar"
+                                style="height: 15px;">
+                                <div class="bg-warning shadow-input-2 progress-bar progress-bar-striped progress-bar-animated"
+                                    style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+    
+                <div *ngIf="appMessage" class="row mb-3">
+                    <div class="col-sm-12 py-2">
+                        <div class="lead fw-500 disabled">Noticeboard</div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="card border-0 shadow-sm overflow-hidden">
+                            <div class="card-body">
+                                <div class="lead color-primary">{{ appMessage.title }}</div>
+                                <div [innerHTML]="appMessage.message"></div>
+                            </div>
+                            <div class="card-footer border-0 bg-transparent">
+                                <div class="small text-end opacity-70 ff-garamond fw-500">
+                                    Last refreshed on {{ appMessage.updated_at | date: 'd-MMM-Y h:m a' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- App Updates Loading -->
+                <ng-container *ngIf="isGettingAppUpdates">
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <div class="mb-2 fw-500 hstack gap-2 align-items-center justify-content-start disabled">
+                                <span class="material-symbols-rounded small">dns</span>
+                                Loading recent app updates...
+                            </div>
+                            <div class="progress rounded-pill overflow-hidden" role="progressbar"
+                                style="height: 15px;">
+                                <div class="bg-warning shadow-input-2 progress-bar progress-bar-striped progress-bar-animated"
+                                    style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+    
+                <div *ngIf="appUpdates && appUpdates.length > 0" class="row">
+                    <div class="col-sm-12 py-2">
+                        <div class="lead fw-500 disabled">Recent Updates</div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="card border-0 shadow-sm overflow-hidden">
+                            <div class="card-body p-0">
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
+                                    <div class="accordion-item" *ngFor="let update of appUpdates; let index = index; let first = first; let last = last;">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button border-0" type="button" [ngClass]="{ 'collapsed': !first }"
+                                                data-bs-toggle="collapse" [attr.data-bs-target]="'#update-' + index"
+                                                aria-expanded="false" aria-controls="flush-collapseOne">
+                                                <div class="vstack">
+                                                    <div class="fw-400 text-dark">{{ update.title }}</div>
+                                                    <div class="small opacity-70 text-dark">Version <span class="fw-700">{{ update.major_version }}.{{ update.minor_version }}</span>, Updated at {{ update.created_at | date: 'd-M-y' }}</div>
+                                                </div>
+                                            </button>
+                                        </h2>
+                                        <div [id]="'update-' + index" class="accordion-collapse collapse" [ngClass]="{ 'show': first }"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body px-1 pt-0 pb-1">
+                                                <div class="bg-color-lighter rounded shadow-input-2 px-3 py-2">
+                                                    <div class="small opacity-50 mb-2 fw-medium">What&apos;s new?</div>
+                                                    <div class="fw-400 opacity-90" [innerHTML]="update.notes"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+</div>
+

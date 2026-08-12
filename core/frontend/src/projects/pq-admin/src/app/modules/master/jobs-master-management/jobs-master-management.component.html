@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-sm-4">
+        <div class="border rounded overflow-hidden">
+            <ul class="list-group list-group-flush">
+                <li *ngFor="let item of filterMasterItems.list" 
+                    class="list-group-item cursor-pointer"
+                    [ngClass]="{ 'bg-color-primary-lighter': filterMasterItems.selectedItem === item}"
+                    (click)="filterMasterItems.selectedItem = item;">{{ item }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-8">
+
+        <!-- Job Status Master -->
+        <ng-container *ngIf="filterMasterItems.selectedItem == masterItems.jobStatus">
+            <div class="hstack gap-2 align-items-end justify-content-between p-2 rounded bg-light shadow-inner-1 border-bottom border-start border-end">
+                <pq-textbox class="flex-fill" label="New Job Status Name" [hideError]="true"></pq-textbox>
+                <pq-button>Add Job Status</pq-button>
+            </div>
+
+            <div class="mt-3 rounded border p-2">
+                <div class="lead">Available Job Status</div>
+            </div>
+        </ng-container>
+
+        <!-- Standard Instructions Master -->
+        <ng-container *ngIf="filterMasterItems.selectedItem == masterItems.standardInstructions">
+            Standard Instructions
+        </ng-container>
+
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="toast fade show shadow-lg" *ngIf="message" [ngClass]="toastTypes[toastType!].class">
+    <div class="toast-header">
+        <strong class="me-auto">{{ title }}</strong>
+        <button type="button" class="btn-close" (click)="dismissToast()"></button>
+    </div>
+    <div class="d-flex justify-content-between align-items-center w-100">
+        <div class="toast-body flex-fill" [innerHTML]="message">
+        </div>
+    </div>
+</div>

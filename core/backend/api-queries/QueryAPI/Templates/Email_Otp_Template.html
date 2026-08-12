@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>OTP Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h4 {
+            color: #d32f2f;
+        }
+
+        .footer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <p>
+        Dear {{ $name }},
+    </p>
+
+    <p>
+        We are committed to ensuring the security of your account. To complete your login or transaction, please use the following One-Time Password (OTP):
+    </p>
+
+    <h4>
+        <b>
+            OTP: {{ $otp }}
+        </b>
+    </h4>
+
+    <p>
+        <small>
+            <i>
+                * Please note that this OTP is valid for 5 minutes. Do not share this OTP with anyone, as it provides access to your account.
+            </i>
+        </small>
+    </p>
+
+    <div class="footer">
+        <p>Best regards,</p>
+        <p><b>Team Carisma</b></p>
+    </div>
+
+</body>
+</html>

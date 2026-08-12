@@ -1,0 +1,143 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12 text-start">
+            <div class="display-6 mb-0">Information Technology Policies</div>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+
+            <pq-section-card sectionTitle="Policies List" sectionSubtitle="Choose policy from the list to preview"
+                cardClass="shadow-sm" cardBodyClass="pb-0 rounded overflow-hidden"
+                [showLoading]="isSavingPolicy || isLoadingPolicy" [showLoadingText]="(isLoadingPolicy)? 'Loading policies' : (isSavingPolicy)? 'Saving Policy' : 'Loading...'"
+                [enableSettings]="false">
+
+                <div actions class="hstack gap-3">
+                    <pq-button data-bs-toggle="modal" data-bs-target="#addITPolicyPopup">Add IT Policy</pq-button>
+                </div>
+
+                <div body>
+
+                    <div class="container rounded border overflow-hidden">
+                        <div class="row">
+                            <div class="col-sm-3 px-0">
+                                <ul class="list-group list-group-flush">
+                                    <li *ngFor="let policy of policies; let index = index;" 
+                                        class="list-group-item cursor-pointer" 
+                                        [ngClass]="{ 'bg-color-primary text-light': currentIndex === index }"
+                                        (click)="previewITPolicy(policy.id!, index)">
+                                        <div class="hstack justify-content-between">
+                                            <div class="vstack flex-fill">
+                                                <div class="fw-bold">{{ policy.title }}</div>
+                                                <div class="small fw-medium">
+                                                    {{ policy.date_of_issue }}
+                                                </div>
+                                            </div>
+                                            <pq-button buttonStyle="link" [buttonContentClass]="(currentIndex === index)? 'text-light' : 'color-primary'" 
+                                                data-bs-toggle="modal" data-bs-target="#editITPolicyPopup"
+                                                (clickEvent)="policiyPayload = policy ">
+                                                <span class="material-symbols-rounded">edit</span>
+                                            </pq-button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-9 border-start px-0" style="margin-bottom: -7px; min-height: 720px;">
+                                <div *ngIf="isPolicyLoading" class="p-4 bg-white disabled rounded text-center">
+                                    <div class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                                        <div class="spinner-border spinner-border-sm" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <span>Loading newsletter...</span>
+                                    </div>
+                                    <div *ngIf="!isPolicyLoading" class="fw-medium">Details will be updated shortly</div>
+                                </div>
+                                <iframe [ngClass]="{ 'd-none': isPolicyLoading }" [src]="pdfURL" width="100%" height="720px" frameborder="0"
+                                    (load)="isPolicyLoading = false"></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="addITPolicyPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header py-2 hstack gap-3 align-items-center justify-content-between" #dialogHandle>
+                <h1 class="modal-title fs-5">Add New IT Policy</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <pq-textbox label="Policy Title"
+                            [textBoxContent]="policiyPayload.title"
+                            (outputValue)="policiyPayload.title = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div>
+                            <label for="formFile" class="form-label">Upload Policy File</label>
+                            <input class="form-control" type="file" id="formFile" 
+                                accept="application/pdf"
+                                (change)="onFileSelected($event)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-12 text-end">
+                        <pq-button (clickEvent)="saveITPolicy()" data-bs-dismiss="modal">Save IT Policy</pq-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editITPolicyPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header py-2 hstack gap-3 align-items-center justify-content-between" #dialogHandle>
+                <h1 class="modal-title fs-5">Edit IT Policy</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <pq-textbox label="Policy Title"
+                            [textBoxContent]="policiyPayload.title"
+                            (outputValue)="policiyPayload.title = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div>
+                            <label for="formFile" class="form-label">Upload Policy File</label>
+                            <input class="form-control" type="file" id="formFile" 
+                                accept="application/pdf"
+                                (change)="onFileSelected($event)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-12 text-end">
+                        <pq-button (clickEvent)="saveITPolicy()" data-bs-dismiss="modal">Update IT Policy</pq-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

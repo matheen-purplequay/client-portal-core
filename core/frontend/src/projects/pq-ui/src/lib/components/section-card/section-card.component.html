@@ -1,0 +1,72 @@
+<section [ngClass]="containerClass">
+    <div class="row" [ngClass]="rowClass">
+        <div class="col-sm-12" [ngClass]="colClass">
+            <div class="card bg-white rounded-4 h-100" [ngClass]="cardClass">
+                
+                <!-- Card Header / Toolbar -->
+                <div class="card-header bg-transparent border-0 hstack align-items-center justify-content-between pe-1" [ngClass]="cardHeaderClass + ' ' + ((disableActions)? 'disabled' : '')">
+                    <div *ngIf="sectionTitle || sectionSubtitle" class="vstack">
+                        <div *ngIf="sectionTitle" class="card-title h5 mb-0 color-primary" [innerHTML]="sectionTitle"></div>
+                        <div *ngIf="sectionSubtitle" class="small opacity-80" [innerHTML]="sectionSubtitle"></div>
+                    </div>
+                    <div class="hstack justify-content-end {{ (enableSettings)? '' : 'pe-2' }}" [ngClass]="actionClass">
+                        <ng-content select="[actions]"></ng-content>
+                        <button *ngIf="enableSettings" class="btn ms-1" data-bs-toggle="offcanvas" [attr.data-bs-target]="'#staticBackdrop-' + sectionID">
+                            <i class="fa-solid fa-gear"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card Body -->
+                <div *ngIf="!emptyBody" class="card-body bg-transparent" [ngClass]="cardBodyClass + ' ' + ((disableBody)? 'disabled' : '')">
+                    <ng-content select="[body]"></ng-content>
+                </div>
+                <!-- Empty Card Body -->
+                <div *ngIf="emptyBody" class="card-body bg-transparent disabled" [ngClass]="cardBodyClass">
+                    <div class="row">
+                        <div class="col-sm-12 py-2">
+                            <div class="p-5 text-center disabled">
+                                No data received...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Footer -->
+                <div class="card-footer border-0 bg-transparent" [ngClass]="cardFooterClass">
+                    <ng-content select="[footer]"></ng-content>
+                </div>
+
+                <!-- Card Sidebar -->
+                <div class="offcanvas offcanvas-end shadow" data-bs-scroll="true" tabindex="-1" [attr.id]="'staticBackdrop-' + sectionID"
+                    aria-labelledby="staticBackdropLabel">
+                    <div class="offcanvas-header">
+                        <div class="h5 offcanvas-title" id="staticBackdropLabel">Options</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ng-content select="[sidebar]"></ng-content>
+                    </div>
+                </div>
+
+                <!-- Card Alert -->
+                <ng-container *ngIf="showLoading">
+                    <div class="position-absolute top-0 start-0 bottom-0 end-0 bg-blur-2 bg-color-lighter text-center pt-2 z-2">
+                        <div class="alert alert-dark bg-dark text-light border-0 d-inline-block py-1 px-2 mt-4 align-items-center rounded-2 shadow-lg fw-500" role="alert">
+                            <div class="spinner-border spinner-border-sm me-2" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="fw-600">{{ showLoadingText }}</span>
+                        </div>
+
+                        <div *ngIf="isPageRefreshRequired" class="hstack align-items-center justify-content-center">
+                            <div class="mt-2 bg-color-lighter bg-blur-8 px-3 py-2 rounded-3 border border-light shadow-lg small">
+                                This is taking too long to load. Please <span class="text-decoration-underline cursor-pointer" (click)="reload()">click here</span> to refresh the page.
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</section>

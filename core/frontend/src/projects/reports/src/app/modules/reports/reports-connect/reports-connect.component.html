@@ -1,0 +1,152 @@
+<section class="container mt-3 mb-4">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">Reports</div>
+
+                <div class="py-2">
+                    <div
+                        class="ps-1 pe-3 py-1 bg-white rounded-pill small hstack gap-2 align-items-center shadow-input-2">
+                        <span class="material-symbols-rounded opacity-40">info</span>
+                        Updated by 1st week of every month
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<pq-section-card sectionTitle="FY {{ fy }}" cardClass="shadow-sm" cardBodyClass="pb-0" [clipContents]="false"
+    [enableSettings]="false" cardHeaderClass="pe-2">
+    <div actions class="hstack gap-2">
+        <pq-dropdown [text]="currentMonth.name" [setOptionAsText]="true" dropDownType="advanced"
+            [options]="reportMonths" [keys]="{ key: 'index', value: 'name' }"
+            (outputObject)="currentMonth = $event; getReport();" [hideError]="true"></pq-dropdown>
+
+        <pq-dropdown [text]="selectedYear" [setOptionAsText]="true" dropDownType="simple" [options]="reportYears"
+            (outputValue)="selectedYear = parseInt($event); getReport();" [hideError]="true"></pq-dropdown>
+    </div>
+
+    <div body>
+        <div *ngIf="isLoading" class="p-4 disabled text-center hstack gap-2 justify-content-center align-items-center">
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            Loading connect reports...
+        </div>
+        <table *ngIf="!isLoading" style="width: 100%;">
+            <thead>
+                <th class="px-3">Report Name</th>
+                <th>Month</th>
+                <th>Year</th>
+                <!-- 
+                Hidden because not required
+                <th>Page</th>
+                <th>Client Director</th>
+                <th>Team Lead</th> 
+                -->
+                <th class="px-3 text-end">Actions</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let report of connectReports">
+                    <tr [ngClass]="{ 'disabled bg-light': report.status == 0}">
+                        <td>
+                            <div class="px-3">{{ report.name }}</div>
+                        </td>
+                        <td>{{ report.month }}</td>
+                        <td>{{ report.year }}</td>
+                        <!--
+                        Hidden because not required 
+                        <td>{{ report.pages }}</td>
+                        <td>{{ report.client_director }}</td>
+                        <td>{{ report.team_lead }}</td> 
+                        -->
+                        <td>
+                            <div *ngIf="report.status == 0" class="text-end">
+                                <div class="small py-2 d-inline-block">
+                                    <i class='fa-solid fa-circle-info me-1 opacity-90 color-primary'></i> Report will be
+                                    made available soon.
+                                </div>
+                            </div>
+
+                            <div *ngIf="report.status != 0" class="hstack gap-2 justify-content-end">
+                                <pq-button (clickEvent)="downloadReport(report)">Download Report</pq-button>
+                                <pq-button buttonStyle="outline_primary" (clickEvent)="previewReport(report)"
+                                    data-bs-toggle="modal" data-bs-target="#pdfPopup">View Report</pq-button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+
+        <div class="py-2 d-inline-block">
+            <div class="px-2 py-1 bg-light rounded small hstack gap-1 align-items-center border">
+                <span class="material-symbols-rounded small">info</span>
+                <span>For any queries, please </span>
+                <pq-button buttonStyle="link" buttonClass="smaller text-decoration-underline" data-bs-toggle="modal"
+                    data-bs-target="#contactPopup">Contact Us</pq-button>
+            </div>
+        </div>
+    </div>
+</pq-section-card>
+
+
+
+<!-- Modal -->
+<div class="modal fade smooth-transition" id="pdfPopup" tabindex="-1" data-bs-backdrop="false">
+    <div class="modal-dialog modal-xl h-body">
+        <div class="modal-content border-0 h-100 bg-transparent rounded-3"
+            style="box-shadow: 0 34px 106px -20px rgba(0,0,0,.5);">
+            <div class="modal-header py-2 hstack gap-3 align-items-center justify-content-between bg-color-lighter bg-blur-8 border-top"
+                #dialogHandle>
+                <h1 class="modal-title fs-5">Report Preview</h1>
+                <div class="hstack gap-3 align-items-center">
+                    <a class="color-primary text-decoration-none" [href]="pdfURL" target="_blank"
+                        onclick="alert(`Please click “Allow” if your browser displays a security pop-up. If you've already enabled it, you can ignore this message.`); return true;">Open
+                        in New Tab</a>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="resetPDFData()"></button>
+                </div>
+            </div>
+            <div class="modal-body p-0 rounded-bottom-2 overflow-hidden bg-white">
+                <div *ngIf="isPDFLoading"
+                    class="p-4 disabled text-center hstack gap-2 justify-content-center align-items-center">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    Loading Report...
+                </div>
+                <!-- <embed *ngIf="!isPDFLoading" class="d-block" [src]="pdfURL" width="100%" height="100%" type="application/pdf"> -->
+                <iframe *ngIf="!isPDFLoading" #pdfFrame class="d-block" [src]="pdfURL" width="100%" height="100%"
+                    onload="document.body.scrollTo({ top: 0, behavior: 'smooth' });" type="application/pdf"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="contactPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content border-0 shadow-lg h-100 bg-color-lighter bg-blur-8 rounded-3">
+            <div class="modal-header py-2 border-0 hstack gap-3 align-items-center justify-content-between"
+                #dialogHandle>
+                <h1 class="modal-title fs-5"></h1>
+                <div class="hstack gap-3 align-items-center position-absolute end-0 top-0 px-3 py-2">
+                    <button type="button" class="btn-close z-3" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="resetPDFData()"></button>
+                </div>
+            </div>
+            <div class="modal-body overflow-hidden">
+                <div class="bg-white rounded shadow-sm">
+                    <app-contact [isEmbedded]="true" title="Monthly Connect Report Query"
+                        query="Hi, I need a clarification on monthly connect report. Please get in touch with me soon."></app-contact>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,115 @@
+<section class="container mb-3">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">Team</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <!-- Associates and Team Lead Roles Table -->
+            <pq-section-card sectionTitle="Team lead and Associates" class="d-none"
+                cardClass="shadow-sm" [enableSettings]="false"
+                [showLoading]="isTeamLoading" showLoadingText="Loading team details">
+                <div body>
+                    <div *ngIf="associates.length <= 0" class="p-4 bg-white disabled rounded text-center">
+                        <div *ngIf="!isTeamLoading" class="fw-medium">Details will be updated shortly</div>
+                    </div>
+                    <table *ngIf="associates.length > 0" class="w-100">
+                        <thead>
+                            <th>S.No</th>
+                            <th>Name</th>
+                            <th>Title</th>
+                            <th>Vertical</th>
+                            <th>Email</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let team of associates; let index = index;">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ team.name }}</td>
+                                <td>{{ team.role.title }}</td>
+                                <td>{{ team.vertical.title }}</td>
+                                <td>
+                                    <a [href]="'mailto:' + team.email">{{ team.email }}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </pq-section-card>
+
+
+            <!-- Other Roles Table -->
+            <pq-section-card sectionTitle="Key Roles" class="d-none"
+                cardClass="shadow-sm" [enableSettings]="false"
+                [showLoading]="isTeamLoading" showLoadingText="Loading team details">
+                <div body>
+                    <div *ngIf="others.length <= 0" class="p-4 bg-white disabled rounded text-center">
+                        <div *ngIf="!isTeamLoading" class="fw-medium">Details will be updated shortly</div>
+                    </div>
+                    <table *ngIf="others.length > 0" class="w-100">
+                        <thead>
+                            <th>S.No</th>
+                            <th>Name</th>
+                            <th>Title</th>
+                            <th>Vertical</th>
+                            <th>Email</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let team of others; let index = index;">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ team.name }}</td>
+                                <td>{{ team.role.title }}</td>
+                                <td>{{ team.vertical.title }}</td>
+                                <td>
+                                    <a [href]="'mailto:' + team.email">{{ team.email }}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </pq-section-card>
+
+
+            <!-- Directors Roles Table -->
+            <pq-section-card sectionTitle="Key Roles"
+                cardClass="shadow-sm" [enableSettings]="false"
+                [showLoading]="isTeamLoading" showLoadingText="Loading team details">
+                <div body>
+                    <div *ngIf="directors.length <= 0" class="p-4 bg-white disabled rounded text-center">
+                        <div *ngIf="!isTeamLoading" class="fw-medium">Details will be updated shortly</div>
+                    </div>
+                    <table *ngIf="directors.length > 0" class="w-100">
+                        <thead>
+                            <th>S.No</th>
+                            <th>Name</th>
+                            <th>Title</th>
+                            <th>Vertical</th>
+                            <th>Email</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let team of directors; let index = index;">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ team.name }}</td>
+                                <td>{{ team.role.title }}</td>
+                                <td>{{ team.vertical.title }}</td>
+                                <td>
+                                    <a [href]="'mailto:' + team.email">{{ team.email }}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>

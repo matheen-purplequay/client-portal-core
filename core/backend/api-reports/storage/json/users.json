@@ -1,0 +1,20 @@
+[
+    {
+        "first_name": "Super",
+        "last_name" : "Admin",
+        "email" : "matheen.abdul@purplequay.com.au",
+        "role" : "admin"
+    },
+    {
+        "first_name": "Arun",
+        "last_name" : "Kumar",
+        "email" : "arun.kumar@gmail.com",
+        "role" : "client_director"
+    },
+    {
+        "first_name": "John",
+        "last_name" : "Mathew",
+        "email" : "john.mathew@gmail.com",
+        "role" : "team_lead"
+    }
+]

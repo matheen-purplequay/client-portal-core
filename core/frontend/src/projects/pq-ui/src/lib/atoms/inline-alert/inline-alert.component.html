@@ -1,0 +1,32 @@
+<div 
+    class="rounded my-1" 
+    [id]="componentId + '-accordion'"
+    [ngClass]="alertClass + ((error?.errorMessage)? '' : 'hide-message')">
+
+    <div 
+        class="accordion-item border-0 rounded"
+        [ngClass]="error?._errorClass">
+        <h2 class="accordion-header border-0">
+            <button tabindex="-1"
+                class="accordion-button collapsed py-1 ps-3 pe-2 rounded" 
+                type="button" 
+                data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#' + componentId + '-error-message-' + index">
+
+                <i class="fa-solid fa-list-check pe-1"></i> 
+                <span class="ps-1">{{ error?.errorTitle }}</span>
+            </button>
+        </h2>
+        <div 
+            *ngIf="error?.errorMessage"
+            id="{{ componentId }}-error-message-{{ index }}" 
+            class="accordion-collapse collapse" 
+            [attr.data-bs-parent]="'#' + componentId + '-accordion'">
+
+            <div class="accordion-body py-1 ps-3 pe-2">
+                {{ error?.errorMessage }}
+            </div>
+        </div>
+    </div>
+
+</div>

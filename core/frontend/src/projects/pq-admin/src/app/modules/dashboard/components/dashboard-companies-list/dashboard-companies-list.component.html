@@ -1,0 +1,142 @@
+<div class="row">
+    <!-- All Available Clients -->
+    <div class="col-sm-4">
+        <pq-section-card *ngIf="availableCompanies && availableCompanies.length > 0" [fluidContainer]="true"
+            cardClass="shadow-sm" cardBodyClass="p-1 rounded-bottom-4 overflow-hidden"
+            sectionTitle="All Clients" sectionSubtitle="Available clients assigned to you"
+            cardFooterClass="d-none" [enableSettings]="false" [clipContents]="false">
+
+            <div actions class="hstack gap-2 align-items-center justify-content-end">
+                <pq-button buttonStyle="link" (clickEvent)="copyTableToClipboard(tblAvailableCompanies.outerHTML)">Copy List</pq-button>
+            </div>
+
+            <div body class="rounded-bottom-4 rounded-top-3 border overflow-hidden">
+                <div class="input-group border-bottom shadow-input-1 bg-color-lighter">
+                    <input #inpsearchallclient type="text" class="form-control py-0 border-0 bg-transparent"
+                        placeholder="Search client...">
+                    <button class="btn hstack align-items-center" (click)="inpsearchallclient.value = ''">
+                        <span class="material-symbols-rounded">backspace</span>
+                    </button>
+                </div>
+                <div style="min-height: 100px; max-height: 400px; overflow-y: auto;">
+                    <table #tblAvailableCompanies class="w-100">
+                        <thead>
+                            <th class="small">S.No</th>
+                            <th class="small">Client Name</th>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let company of availableCompanies | objectFilter: inpsearchallclient.value; let index = index;">
+                                <td class="small">{{ index + 1 }}</td>
+                                <td class="small user-select-all">{{ company.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </pq-section-card>
+    </div>
+
+    <!-- List of Clients report uploaded -->
+    <div class="col-sm-4">
+        <pq-section-card *ngIf="!isReportsLoading" [fluidContainer]="true" cardClass="shadow-sm"
+            cardBodyClass="p-1 rounded-bottom-4 overflow-hidden" sectionTitle="Reports ready for clients"
+            sectionSubtitle="Clients with available reports uploaded for them" showLoadingText="Loading updates"
+            [showLoading]="isReportsLoading" cardFooterClass="d-none" [enableSettings]="false"
+            [clipContents]="false">
+
+            <div actions class="hstack gap-2 align-items-center justify-content-end">
+                <pq-button buttonStyle="link" (clickEvent)="copyTableToClipboard(tblCompaniesWithReports.outerHTML)">Copy List</pq-button>
+            </div>
+
+            <div body class="rounded-bottom-4 rounded-top-3 border overflow-hidden">
+                <ng-container>
+                    <div class="input-group border-bottom shadow-input-1 bg-color-lighter">
+                        <input #inpsearchavailableclient type="text"
+                            class="form-control py-0 border-0 bg-transparent" placeholder="Search client...">
+                        <button class="btn hstack align-items-center"
+                            (click)="inpsearchavailableclient.value = ''">
+                            <span class="material-symbols-rounded">backspace</span>
+                        </button>
+                    </div>
+                    <div style="min-height: 100px; max-height: 400px; overflow-y: auto;">
+                        <table #tblCompaniesWithReports class="w-100">
+                            <thead>
+                                <th class="small">S.No</th>
+                                <ng-container
+                                    *ngFor="let column of getObjectValuesAsArray(companiesWithReports.columns);">
+                                    <th class="px-2" *ngIf="column.showColumn">
+                                        <span class="small" (click)="sortBy(column.id)">{{column.title}}</span>
+                                    </th>
+                                </ng-container>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let data of companiesWithReports.data | objectFilter: inpsearchavailableclient.value; let index = index;">
+                                    <td class="small">{{ index + 1 }}</td>
+                                    <ng-container *ngFor="let td of getObjectKeysAsArray(data);">
+                                        <td *ngIf="checkIfColumnExists(td)" class="px-2 small user-select-all">
+                                            {{ data[td] }}
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+            </div>
+        </pq-section-card>
+    </div>
+
+    <!-- List of Clients not yet report uploaded -->
+    <div class="col-sm-4">
+        <pq-section-card *ngIf="!isReportsLoading" [fluidContainer]="true" cardClass="shadow-sm"
+            cardBodyClass="p-1 rounded-bottom-4 overflow-hidden" sectionTitle="Clients without reports"
+            sectionSubtitle="Clients without any reports uploaded for them" showLoadingText="Loading updates"
+            [showLoading]="isReportsLoading" cardFooterClass="d-none" [enableSettings]="false"
+            [clipContents]="false">
+
+            <div actions class="hstack gap-2 align-items-center justify-content-end">
+                <pq-button buttonStyle="link" (clickEvent)="copyTableToClipboard(tblCompaniesWithoutReports.outerHTML)">Copy List</pq-button>
+            </div>
+
+            <div body class="rounded-bottom-4 rounded-top-3 border overflow-hidden">
+                <ng-container>
+                    <div class="input-group border-bottom shadow-input-1 bg-color-lighter">
+                        <input #inpsearchunavailableclient type="text"
+                            class="form-control py-0 border-0 bg-transparent" placeholder="Search client...">
+                        <button class="btn hstack align-items-center"
+                            (click)="inpsearchunavailableclient.value = ''">
+                            <span class="material-symbols-rounded">backspace</span>
+                        </button>
+                    </div>
+                    <div style="min-height: 100px; max-height: 400px; overflow-y: auto;">
+                        <table #tblCompaniesWithoutReports class="w-100">
+                            <thead>
+                                <th class="small">S.No</th>
+                                <ng-container
+                                    *ngFor="let column of getObjectValuesAsArray(companiesWithoutReports.columns);">
+                                    <th class="px-2" *ngIf="column.showColumn">
+                                        <span class="small" (click)="sortBy(column.id)">{{column.title}}</span>
+                                    </th>
+                                </ng-container>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let data of companiesWithoutReports.data | objectFilter: inpsearchunavailableclient.value; let index = index;">
+                                    <td class="small">{{ index + 1 }}</td>
+                                    <ng-container *ngFor="let td of getObjectKeysAsArray(data);">
+                                        <td *ngIf="checkIfColumnExists(td)" class="px-2 small user-select-all">
+                                            {{ data[td] }}
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+            </div>
+        </pq-section-card>
+    </div>
+</div>

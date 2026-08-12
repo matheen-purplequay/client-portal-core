@@ -1,0 +1,264 @@
+<!-- Connect Report Statistics -->
+<ng-container>
+    <section class="container-fluid">
+        <div class="row align-items-end">
+            <div class="col-sm-6">
+                <div class="display-6 mb-0">
+                    Dashboard
+                </div>
+            </div>
+            <div class="col-sm-6 text-end">
+                <div class="py-2 hstack gap-2 justify-content-end align-items-center">
+                    <pq-dropdown label="Year" [text]="selectedYear.toString()" [hideError]="true"
+                        [setOptionAsText]="true" [fullWidth]="true" [options]="availableYears" dropDownType="simple"
+                        (outputValue)="handleYearChange(parseInt($event)); getReportByMonthYear()">
+                    </pq-dropdown>
+        
+                    <pq-dropdown label="Month" [text]="period.monthNames[period.selectedPeriod.month]" [setOptionAsText]="true" 
+                        dropDownType="simple" [hideError]="true"
+                        [options]="period.monthNames"
+                        (outputKey)="setSelectedMonth($event);getReportByMonthYear()">
+                    </pq-dropdown>
+                </div>        
+            </div>
+        </div>
+    </section>
+    
+    <section class="container-fluid p-0" >
+
+        <div class="container hstack gap-3 flex-wrap py-2">
+            <div class="vstack align-items-center bg-white shadow-sm px-2 py-2 flex-fill rounded-1 border-bottom border-secondary border-2">
+                <div class="h4">{{ counts.totalClients }}</div>
+                <div class="text-end lh-1 fw-500 disabled">Available Clients</div>
+            </div>
+            <div class="border-start">&nbsp;</div>
+            <div class="vstack align-items-center bg-white shadow-sm px-2 py-2 flex-fill rounded-1 border-bottom border-2 border-info">
+                <div class="h4">{{ counts.availableReports }}</div>
+                <div class="text-end lh-1 fw-500 disabled">Uploaded Reports</div>
+            </div>
+            <div class="vstack align-items-center bg-white shadow-sm px-2 py-2 flex-fill rounded-1 border-bottom border-2 border-warning">
+                <div class="h4">{{ counts.unavailableReports }}</div>
+                <div class="text-end lh-1 fw-500 disabled">Yet To Upload</div>
+            </div>
+            <div class="border-start">&nbsp;</div>
+            <div class="vstack align-items-center bg-white shadow-sm px-2 py-2 flex-fill rounded-1 border-bottom border-2 border-primary">
+                <div class="h4">{{ counts.pendingApproval }}</div>
+                <div class="text-end lh-1 fw-500 disabled">Pending Approval</div>
+            </div>
+            <div class="vstack align-items-center bg-white shadow-sm px-2 py-2 flex-fill rounded-1 border-bottom border-2 border-danger">
+                <div class="h4">{{ counts.rejectedReports }}</div>
+                <div class="text-end lh-1 fw-500 disabled">Rejected Reports</div>
+            </div>
+            <div class="vstack align-items-center bg-white shadow-sm px-2 py-2 flex-fill rounded-1 border-bottom border-2 border-success">
+                <div class="h4">{{ counts.approvedReports }}</div>
+                <div class="text-end lh-1 fw-500 disabled">Approved Reports</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 pt-3 pb-1">
+                    <div class="vstack gap-2">
+                        <div *ngIf="counts.totalClients < (counts.availableReports + counts.unavailableReports)" class="bg-white shadow-input-1 rounded-1 fw-500 small text-dark hstack gap-3 align-items-center overflow-hidden border border-warning">
+                            <div class="px-2 py-1 border-end lh-1 border-light hstack align-items-center">
+                                <span class="material-symbols-rounded text-warning">warning</span>
+                            </div>
+                            <div class="lh-1">
+                                Looks like multiple reports have been uploaded for same client. Please check below for any duplicate or unnecessary reports.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <pq-section-card *ngIf="!isReportsLoading" [fluidContainer]="true" cardClass="shadow-sm" cardBodyClass="px-0"
+            sectionTitle="Monthy Connect Report Tracker {{ period.monthNames[period.selectedPeriod.month] }} {{ selectedYear }}" sectionSubtitle="Choose month and year to view connect reports statistics"
+             [showLoadingText]="(isReportsLoading)? 'Loading reports' : 'Sending Request'" [showLoading]="isReportsLoading || isSendingRequest"
+            [enableSettings]="false" [clipContents]="false" > 
+    
+            <div body>
+                <ng-container *ngIf="availableReports">
+                    <div style="min-height: 100px; max-height: 500px; overflow-y: auto;">
+                        <table class="w-100">
+                            <thead>
+                                <ng-container *ngFor="let column of getObjectValuesAsArray(availableReports.columns);">
+                                    <th class="px-2" *ngIf="column.showColumn">
+                                        <span class="small" (click)="sortBy(column.id)">{{column.title}}</span>
+                                    </th>
+                                </ng-container>
+                                <th>Action</th>
+                            </thead>
+                            <tbody class="no-background">
+                                <tr
+                                    *ngFor="let data of availableReports.data; let index = index;"
+                                    class="border-bottom border-start-0 border-top-0 border-end-0 border-width-3"
+                                    [ngClass]="{ 'bg-color-warning-light': data.status_type == 'pending', 'bg-color-success-light': data.status_type == 'approved', 'bg-color-danger-light': data.status_type == 'rejected' }">
+                                    <ng-container *ngFor="let td of getObjectKeysAsArray(data);">
+                                        <td *ngIf="checkIfColumnExists(td)" class="px-2 small">
+                                            {{ data[td] }}
+                                        </td>
+                                    </ng-container>
+                                    <td>
+                                        <pq-button [isDisabled]="checkDuplicateExists(data)"
+                                            buttonStyle="link" buttonContentClass="small"
+                                            (clickEvent)="getReport(data)">
+                                            View Report
+                                        </pq-button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+    
+            </div> 
+    
+            <div footer>
+                <div *ngIf="availableReports" class="hstack gap-2 align-items-center">
+                    <div class="small fw-500 opacity-75">Total <span class="fw-700">{{ availableReports.data.length }}</span> reports uploaded</div>
+                </div>
+            </div>
+        </pq-section-card>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <pq-section-card  *ngIf="availableCompanies && availableCompanies.length > 0" [fluidContainer]="true" cardClass="shadow-sm" cardBodyClass="px-0"
+                    sectionTitle="All Clients" sectionSubtitle="Available clients assigned to you"
+                    [enableSettings]="false" [clipContents]="false" > 
+
+                    <div body>
+                        <div style="min-height: 100px; max-height: 500px; overflow-y: auto;">
+                            <table class="w-100">
+                                <thead>
+                                    <th class="small">S.No</th>
+                                    <th class="small">Client Name</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let company of availableCompanies; let index = index;">
+                                        <td class="small">{{ index + 1 }}</td>
+                                        <td class="small">{{ company.name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </pq-section-card>
+            </div>
+
+            <!-- List of Clients report uploaded -->
+            <div class="col-sm-4">
+                <pq-section-card *ngIf="!isReportsLoading" [fluidContainer]="true" cardClass="shadow-sm" cardBodyClass="px-0"
+                    sectionTitle="Reports ready for clients" sectionSubtitle="Clients with available reports uploaded for them"
+                     showLoadingText="Loading updates" [showLoading]="isReportsLoading"
+                    [enableSettings]="false" [clipContents]="false" > 
+            
+                    <div body>
+                        <ng-container *ngIf="companiesWithReports && companiesWithReports.data.length > 0">
+                            <div style="min-height: 100px; max-height: 500px; overflow-y: auto;">
+                                <table class="w-100">
+                                    <thead>
+                                        <th class="small">S.No</th>
+                                        <ng-container *ngFor="let column of getObjectValuesAsArray(companiesWithReports.columns);">
+                                            <th class="px-2" *ngIf="column.showColumn">
+                                                <span class="small" (click)="sortBy(column.id)">{{column.title}}</span>
+                                            </th>
+                                        </ng-container>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of companiesWithReports.data; let index = index;">
+                                            <td class="small">{{ index + 1 }}</td>
+                                            <ng-container *ngFor="let td of getObjectKeysAsArray(data);">
+                                                <td *ngIf="checkIfColumnExists(td)" class="px-2 small">
+                                                    {{ data[td]  }}
+                                                </td>
+                                            </ng-container>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ng-container>
+                    </div> 
+                </pq-section-card>
+            </div>
+
+            <!-- List of Clients not yet report uploaded -->
+            <div class="col-sm-4">
+                <pq-section-card *ngIf="!isReportsLoading" [fluidContainer]="true" cardClass="shadow-sm" cardBodyClass="px-0"
+                    sectionTitle="Clients without reports" sectionSubtitle="Clients without any reports uploaded for them"
+                     showLoadingText="Loading updates" [showLoading]="isReportsLoading"
+                    [enableSettings]="false" [clipContents]="false" > 
+            
+                    <div body>
+                        <ng-container *ngIf="companiesWithoutReports.data.length > 0">
+                            <div style="min-height: 100px; max-height: 500px; overflow-y: auto;">
+                                <table class="w-100">
+                                    <thead>
+                                        <th class="small">S.No</th>
+                                        <ng-container *ngFor="let column of getObjectValuesAsArray(companiesWithoutReports.columns);">
+                                            <th class="px-2" *ngIf="column.showColumn">
+                                                <span class="small" (click)="sortBy(column.id)">{{column.title}}</span>
+                                            </th>
+                                        </ng-container>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of companiesWithoutReports.data; let index = index;">
+                                            <td class="small">{{ index + 1 }}</td>
+                                            <ng-container *ngFor="let td of getObjectKeysAsArray(data);">
+                                                <td *ngIf="checkIfColumnExists(td)" class="px-2 small">
+                                                    {{ data[td]  }}
+                                                </td>
+                                            </ng-container>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ng-container>
+                    </div> 
+                </pq-section-card>
+            </div>
+        </div>
+    </section>
+</ng-container>
+
+
+
+
+<div class="modal fade" [ngClass]="{ 'show d-block bg-modal-background': showReportPopup }" 
+    id="reportPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg overflow-hidden">
+            <div class="modal-body p-0">
+                <div class="row">
+                    <div class="col-sm-6 pe-0 border-end" style="min-height: 90vh;">
+                        <div *ngIf="isPDFLoading" class="hstack justify-content-center align-items-center" style="min-height: 90vh;">
+                            <div class="text-center disabled">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="mt-2">Loading report preview . . .</div>
+                            </div>
+                        </div>
+                        <iframe *ngIf="!isPDFLoading" class="d-block" [src]="pdfURL" width="100%" height="100%"
+                        type="application/pdf"></iframe>
+                    </div>
+                    <div class="col-sm-6 ps-0" style="min-height: 90vh;">
+                        <div class="position-relative h-100">
+                            <div class="modal-header py-2 ps-3 ps-0 border-0 hstack gap-3 align-items-center justify-content-between" #dialogHandle>
+                                <h1 class="modal-title fs-5 mb-0 disabled">
+                                    {{ report.company_name }}
+                                </h1>
+                                <div class="hstack gap-3 align-items-center">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="showReportPopup = false;"></button>
+                                </div>
+                            </div>
+
+                            <app-report-details [report]="report" roleCategory="employee"></app-report-details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

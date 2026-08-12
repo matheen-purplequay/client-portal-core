@@ -1,0 +1,141 @@
+<div [ngClass]="{ 'has-error': isErrorShown }">
+    <div [ngClass]="dropDownClass">
+        <label *ngIf="label" class="hstack justify-content-between" [ngClass]="labelClass">
+            {{ label }}
+            <ng-container *ngIf="selectType == 'single'">
+                <span *ngIf="dropDownType == 'simple'" class="required-indicator badge" [ngClass]="(required)? 'required' : ''">
+                    <i *ngIf="(required && selectedOption == '')" class="fa-solid fa-exclamation text-danger"></i>
+                    <!-- <i *ngIf="((required || revalidate) && textBoxContent != '')" class="fa-solid fa-check text-success"></i> -->
+                </span>
+                <span *ngIf="dropDownType == 'advanced'" class="required-indicator badge" [ngClass]="(required)? 'required' : ''">
+                    <i *ngIf="(required && selectedOption == '')" class="fa-solid fa-exclamation text-danger"></i>
+                    <!-- <i *ngIf="((required || revalidate) && textBoxContent != '')" class="fa-solid fa-check text-success"></i> -->
+                </span>
+            </ng-container>
+            <ng-container *ngIf="selectType == 'multiple'">
+                <span *ngIf="dropDownType == 'simple'" class="required-indicator badge" [ngClass]="(required)? 'required' : ''">
+                    <i *ngIf="(required && selectedOptions.length <= 0)" class="fa-solid fa-exclamation text-danger"></i>
+                    <!-- <i *ngIf="((required || revalidate) && textBoxContent != '')" class="fa-solid fa-check text-success"></i> -->
+                </span>
+            </ng-container>
+            
+        </label>
+        <div class="dropdown">
+    
+            <button class="btn text-start hstack justify-content-between"
+                [ngClass]="dropDownButtonClass"
+                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="text-wrap" *ngIf="!setOptionAsText">{{ text }}</span>
+
+                <ng-container *ngIf="setOptionAsText">
+                    <ng-container *ngIf="selectType == 'single'">
+                        <span *ngIf="dropDownType == 'simple'">
+                            <span class="text-wrap" *ngIf="setOptionAsText">
+                                {{ (selectedOption)? options[selectedOption] : text }}
+                            </span>
+                        </span>
+                        <span *ngIf="dropDownType == 'advanced'">
+                            <span class="text-wrap" *ngIf="setOptionAsText">
+                                {{ (selectedOption)? (getOptionValue(selectedOption) != '')? getOptionValue(selectedOption) : text : text }}
+                            </span>
+                        </span>
+                    </ng-container>
+                    <ng-container *ngIf="selectType == 'multiple'">
+                        {{ (optionsCount > 0)? optionsCount + ' option(s) selected' : text }}
+                    </ng-container>
+                </ng-container>
+
+                <span class="text-dark small d-inline-block ms-2 dropdown-icon">&#11206;</span>
+            </button>
+    
+            <!-- Injecting InlineAlert component to show error -->
+            <div *ngIf="!hideError" class="dropdown-error">
+                <pq-inline-alert *ngIf="error" [index]="0" [error]="error"></pq-inline-alert>
+                <span>&nbsp;</span>
+            </div>
+    
+            <ul class="dropdown-menu w-100 border-0 pb-0" [ngClass]="((originalOptions && originalOptions.length > 5) || showSearch)? 'pt-40' : 'pt-0'">
+                <div *ngIf="(originalOptions && originalOptions.length > 5 || showSearch)" 
+                    class="searchbox-container pt-1 px-0">
+                    <div class="input-group bg-white border-bottom searchbox">
+                        <span class="input-group-text bg-transparent border-0 pe-0">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="text" class="form-control bg-transparent border-0" placeholder="Search..." autofocus
+                            [(ngModel)]="searchTerm" (input)="search($event)">
+                    </div>
+                </div>
+                <div class="dropdown-menu-options">
+                    <ng-container *ngIf="selectType == 'single'">
+                        <ng-container *ngIf="dropDownType == 'advanced'">
+                            <li *ngFor="let option of options; let index = index;" (click)="emitOption(option, index)">
+                                <a class="dropdown-item" [ngClass]="(selectedOption == option[keys['key']])? 'selected' : ''">
+                                    <div>{{ option[keys['value']] }}</div>
+                                    <div class="small opacity-50">{{ keys['description'] && option[keys['description']] }}</div>
+                                </a>
+                            </li>
+                        </ng-container>
+                        <ng-container *ngIf="dropDownType == 'simple'">
+                            <li *ngFor="let option of options | keyvalue : returnZero"
+                                (click)="emitValue(option.key, option.value)">
+                                <a class="dropdown-item" [ngClass]="(selectedOption == option.key)? 'selected' : ''">
+                                    {{ option.value }}
+                                </a>
+                            </li>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="selectType == 'multiple'">
+                        <ng-container *ngIf="dropDownType == 'advanced'">
+                            <li *ngFor="let option of options; let index = index;" (click)="emitOptions(option, $event)">
+                                <a class="dropdown-item" [ngClass]="isOptionSelected(option[keys['key']])? 'selected' : ''">
+                                    <div>{{ option[keys['value']] }}</div>
+                                    <div class="small opacity-50">{{ keys['description'] && option[keys['description']] }}</div>
+                                </a>
+                            </li>
+                        </ng-container>
+                        <ng-container *ngIf="dropDownType == 'simple'">
+                            <li *ngFor="let option of options"
+                                (click)="emitOptions(option, $event)">
+                                <a class="dropdown-item" [ngClass]="isOptionSelected(selectedOption == option)? 'selected' : ''">
+                                    {{ option.value }}
+                                </a>
+                            </li>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </ul>
+        </div>
+
+        <!-- Helper text container -->
+        <div *ngIf="helper != ''" [ngClass]="helperClass + ' ' + ((isErrorShown === true)? 'hide-helper' : '')" [innerHTML]="helper" tabindex="-1"></div>
+        
+        <ng-container *ngIf="selectType == 'multiple'">
+            <div class="selected-options mb-3">
+                <div *ngIf="dropDownType == 'advanced' && selectedOptions" class="hstack gap-2 flex-wrap">
+                    <div
+                        *ngFor="let option of selectedOptions" 
+                        class="badge bg-dark text-light rounded-pill hstack gap-2 align-items-center py-2"
+                            (click)="removeSelectedOption(option)">
+                        {{ option[keys['value']] }}
+
+                        <div>
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="dropDownType == 'simple' && selectedOptions" class="hstack gap-2 flex-wrap">
+                    <div
+                        *ngFor="let option of selectedOptions" 
+                        class="badge bg-dark text-light rounded-pill hstack gap-2 align-items-center py-2"
+                            (click)="removeSelectedOption(option)">
+                        {{ option }}
+
+                        <div>
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

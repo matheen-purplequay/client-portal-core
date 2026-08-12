@@ -1,0 +1,65 @@
+<ng-container>
+    <div class="container">
+        <ng-container>
+
+            <!-- Health Details -->
+            <ng-container>
+                <div class="row mb-4">
+                    <div class="col-sm-12 py-2">
+                        <div class="lead fw-500 disabled">Connectivity Status</div>
+                    </div>
+                    <div class="col-sm-12 h-100">
+                        <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                            <div class="card-body h-100">
+                                <div class="lead fw-400">All Systems</div>
+                            </div>
+                            <div class="card-footer p-0 bg-color-lightest border-top">
+                                <ul *ngIf="portalHealth" class="list-group list-group-flush small">
+                                    <li
+                                        class="list-group-item bg-transparent">
+                                        <div class="hstack gap-2 justify-content-between align-items-center position-relative z-2">
+                                            <div class="disabled fw-500 hstack align-items-center gap-2">
+                                                <span class="material-symbols-rounded" [ngClass]="( portalHealth.code === 1 )? 'text-success' : 'text-danger'">dns</span>
+                                                <span [ngClass]="( portalHealth.code === 1 )? 'text-success' : 'text-danger'"><span *ngIf="isGettingPortalHealth">Checking </span>Portal Server</span>
+                                            </div>
+                                            <div class="fw-400 text-end" *ngIf="!isGettingPortalHealth"
+                                                [ngClass]="( portalHealth.code === 1 )? 'text-success' : 'text-danger'">
+                                                {{ portalHealth.message }}
+                                            </div>
+                                        </div>
+                                        <div *ngIf="isGettingPortalHealth">
+                                            <div class="progress rounded-0 opacity-70 position-absolute top-0 bottom-0 start-0 end-0 h-100" role="progressbar">
+                                                <div class="bg-warning progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li
+                                        class="list-group-item bg-transparent">
+                                        <div class="hstack gap-2 justify-content-between align-items-center position-relative z-2">
+                                            <div class="disabled fw-500 hstack align-items-center gap-2">
+                                                <span class="material-symbols-rounded"[ngClass]="( portalHealth.code === 1 )? 'text-success' : 'text-danger'">dashboard</span>
+                                                <span [ngClass]="( portalHealth.code === 1 )? 'text-success' : 'text-danger'"><span *ngIf="isGettingJobsServerHealth">Checking </span>Dashboard Server</span>
+                                            </div>
+                                            <div *ngIf="!isGettingJobsServerHealth" class="fw-400"
+                                                [ngClass]="( jobsServerHealth.code == 1 )? 'text-success' : 'text-danger'">
+                                                {{ jobsServerHealth.message }}
+                                            </div>
+                                        </div>
+                                        <div *ngIf="isGettingJobsServerHealth">
+                                            <div class="progress rounded-0 opacity-70 position-absolute top-0 bottom-0 start-0 end-0 h-100" role="progressbar">
+                                                <div class="bg-warning progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </ng-container>
+        </ng-container>
+
+    </div>
+</ng-container>
+

@@ -1,0 +1,442 @@
+<!-- Statistics -->
+<div class="animate-sizing smooth"
+    [ngClass]="((activities.selectedActivity.code == activitiesList.new_query.code) || hideStatistics)? 'h-0 opacity-0 overflow-hidden' : 'h-auto opacity-100'">
+    <app-query-statistics [selectedClientId]="clients.selected.client_id"></app-query-statistics>
+</div>
+<!-- End of Statistics -->
+
+<!-- Breadcrumbs -->
+<div class="container-fluid">
+    <div class="row align-items-end">
+        <div class="col-sm-4 py-2">
+            <nav [ngClass]="{'opacity-0 pe-none': activities.selectedActivity.hiddenActivity}" class="px-2"
+                aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <ng-container *ngFor="let activity of activities.list; let activityIndex = index;">
+                        <li *ngIf="activities.selectedActivity.index >= activityIndex" class="breadcrumb-item"
+                            (click)="switchActivity(activity)">
+                            <a class="link text-decoration-none badge bg-white text-dark shadow-sm rounded-pill border"
+                                [ngClass]="(activity.code === activities.selectedActivity.code) ? 'fw-bold border-color-primary' : 'fw-medium'">
+                                {{ activity.label }}
+                            </a>
+                        </li>
+                    </ng-container>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-8">
+            <div *ngIf="activities.selectedActivity.code != activitiesList.new_query.code"
+                class="hstack gap-3 align-items-center justify-content-end">
+
+                <div class="w-25 my-1 hstack align-items-center rounded-pill bg-white shadow-input-2 pe-2 ps-1"
+                    [ngClass]="!job.isJobSelected && searchdata? 'border border-primary' : job.isJobSelected && queriesSearchTerm? 'border border-primary' : 'border border-transparent'">
+                    <span class="material-symbols-outlined mt-1 opacity-50">search</span>
+                    <input *ngIf="!job.isJobSelected" type="text" class="form-control border-0 bg-transparent"
+                        placeholder="Search Jobs..." [(ngModel)]="searchdata">
+                    <input *ngIf="job.isJobSelected" type="text" class="form-control border-0 bg-transparent"
+                        placeholder="Search Queries..." [(ngModel)]="queriesSearchTerm">
+                    <span *ngIf="(!job.isJobSelected && searchdata) || (job.isJobSelected && queriesSearchTerm)"
+                        class="material-symbols-outlined cursor-pointer opacity-50 hstack" style="margin-top: 2px;"
+                        (click)="job.isJobSelected? queriesSearchTerm = '' : searchdata = ''">backspace</span>
+                </div>
+                <ng-container *ngIf="!job.isJobSelected">
+                    <!-- <pq-button *ngIf="activities.selectedActivity.code != activitiesList.approve_queries.code"
+                        buttonStyle="simple" buttonContainerClass="bg-white shadow-sm rounded-3" buttonClass="py-0 ps-1"
+                        buttonContentClass="small hstack gap-1" [isDisabled]="true">
+                        <span class="material-symbols-outlined">download</span>
+                        Reports
+                    </pq-button> -->
+                </ng-container>
+
+                <div class="list-horizontal-divider-primary">&nbsp;</div>
+                <div class="hstack gap-2 align-items-center pe-3">
+                    <div class="btn border-0 hstack align-items-center gap-2 cursor-pointer lh-1 small px-3 py-1 rounded-top rounded-bottom-0 z-3"
+                        [ngClass]="activities.selectedActivity != activitiesList.approve_queries? 'bg-color-primary-light color-primary shadow-up fw-500' : 'bg-light text-dark'"
+                        (click)="switchActivity(activities.previousActivity)">
+                        <span *ngIf="activities.selectedActivity != activitiesList.approve_queries"
+                            class="material-symbols-outlined">inbox_text</span>
+                        <div class="vstack align-items-start justify-content-center">
+                            <span>Query</span>
+                            <span>Inbox</span>
+                        </div>
+                    </div>
+                    <div class="btn border-0 hstack align-items-center gap-2 lh-1 small cursor-pointer px-3 py-1 rounded-top rounded-bottom-0 z-3"
+                        [ngClass]="[activities.selectedActivity == activitiesList.approve_queries? 'bg-color-primary-light color-primary shadow-up fw-500' : 'bg-light text-dark', user.role === 'associate' ? '' : '']"
+                        (click)="activities.previousActivity = activities.selectedActivity; switchActivity(activitiesList.approve_queries); approveQueries();">
+                        <span *ngIf="activities.selectedActivity == activitiesList.approve_queries"
+                            class="material-symbols-outlined">verified</span>
+                        <div class="vstack align-items-start justify-content-center">
+                            <span>Approve</span>
+                            <span>Queries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Breadcrumbs -->
+
+<!-- Main Template -->
+<pq-section-card containerClass="pt-0" cardClass="shadow-sm border-top border-2 border-color-primary-lightest"
+    cardHeaderClass="d-none" cardBodyClass="p-0" [fluidContainer]="true" [clipContents]="false" cardFooterClass="d-none"
+    [showLoading]="isGettingFilters || isGettingJobs || isGettingQueries" [showLoadingText]="isGettingMessage"
+    [enableSettings]="false">
+
+    <div body style="min-height: 400px;">
+
+        <!-- Toolbar Outlet -->
+        <ng-container *ngTemplateOutlet="tplToolbar"></ng-container>
+        <!-- End of Toolbar Outlet -->
+
+        <!-- Job Table Outlet -->
+        <ng-container *ngIf="activities.selectedActivity.code == activitiesList.jobs.code">
+            <ng-container *ngTemplateOutlet="tplJobTable"></ng-container>
+        </ng-container>
+        <!-- End of Job Table Outlet -->
+
+        <!-- Queries Outlet -->
+        <ng-container
+            *ngIf="activities.selectedActivity.code == activitiesList.queries.code || activities.selectedActivity.code == activitiesList.quick_query.code">
+            <!-- Queries Table Outlet -->
+            <ng-container *ngIf="queryViews.selectedQueryView.index == queryViewsList.table.index">
+                <ng-container *ngTemplateOutlet="tplQueriesTable"></ng-container>
+            </ng-container>
+            <!-- End of Queries Table Outlet -->
+
+            <!-- Queries Cards Outlet -->
+            <ng-container *ngIf="activities.selectedActivity.code == activitiesList.quick_query.code">
+                <div class="my-2 p-3 bg-light rounded-0">
+                    <div class="hstack gap-1 align-items-start">
+                        <div class="flex-fill">
+                            <pq-dropdown label="Category" [text]="masterFilters.category.selected.name ?? ''"
+                                dropDownType="advanced" [keys]="categories.keys" [hideError]="true"
+                                [options]="masterFilters.category.list"
+                                (outputObject)="query.category_id = $event.id; query.filters.category_name = $event.master_name;"></pq-dropdown>
+                        </div>
+                        <div class="flex-fill">
+                            <pq-dropdown label="Sub Category" [text]="masterFilters.sub_category.selected.name ?? ''"
+                                dropDownType="advanced" [hideError]="true" [options]="masterFilters.sub_category.list"
+                                (outputObject)="query.sub_category_id = $event.id; query.filters.sub_category_name = $event"></pq-dropdown>
+                        </div>
+                        <div class="flex-fill">
+                            <pq-dropdown label="Query Criticality"
+                                [text]="query.criticality_id? criticalities.list[query.criticality_id].label : 'Choose a criticality'"
+                                dropDownType="advanced" [options]="criticalities.list" [keys]="criticalities.keys"
+                                [hideError]="true" (outputObject)="query.criticality_id = $event;"></pq-dropdown>
+                        </div>
+                        <div class="flex-fill">
+                            <pq-dropdown class="flex-fill" label="Raise Query To" text="Marks" dropdownType="simple"
+                                [hideError]="true" [options]="['Marks', 'Fabianem']"></pq-dropdown>
+                        </div>
+                    </div>
+
+                    <div class="hstack gap-2 justify-content-end">
+                        <button class="btn text-dark"
+                            (click)="activities.selectedActivity = activitiesList.queries">Cancel</button>
+                        <button class="btn bg-color-primary text-light">Send</button>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="queryViews.selectedQueryView.index == queryViewsList.card.index">
+                <ng-container *ngTemplateOutlet="tplQueriesCards"></ng-container>
+            </ng-container>
+            <!-- End of Queries Cards Outlet -->
+        </ng-container>
+        <!-- End of Queries Outlet -->
+
+        <!-- New Query Outlet -->
+        <ng-container *ngIf="activities.selectedActivity.code == activitiesList.new_query.code">
+            <ng-container *ngTemplateOutlet="tplNewQuery"></ng-container>
+        </ng-container>
+        <!-- End of New Query Outlet -->
+
+        <!-- New Query Outlet -->
+        <ng-container *ngIf="activities.selectedActivity.code == activitiesList.approve_queries.code">
+            <ng-container *ngTemplateOutlet="tplApproveQueries"></ng-container>
+        </ng-container>
+        <!-- End of New Query Outlet -->
+
+    </div>
+
+</pq-section-card>
+<!-- End of Main Template -->
+
+<!-- Toolbar Template -->
+<ng-template #tplToolbar>
+    <div class="toolbar vstack">
+        <!-- JOB TOOLBAR -->
+        <div class="job-toolbar horizontal-filter-toolbar justify-content-between"
+            [ngClass]="{ 'ps-0': job.isJobSelected}">
+            <div class="flex-fill">
+                <!-- Show Toolbar Label if no JOB is selected -->
+                <ng-container *ngIf="!job.isJobSelected">
+                    <div class="hstack gap-2 align-items-center">
+                        <span class="material-symbols-outlined opacity-50">work</span>
+                        <label>Please select a job to begin</label>
+                    </div>
+                </ng-container>
+
+                <!-- Show JOB DETAILS if a JOB is selected -->
+                <ng-container *ngIf="job.isJobSelected">
+                    <div class="hstack gap-1 justify-content-between align-items center">
+                        <div class="hstack gap-2">
+
+                            <pq-button *ngIf="activities.selectedActivity.code !== activitiesList.approve_queries.code" 
+                                buttonStyle="simple" buttonClass="rounded-pill"
+                                buttonContentClass="hstack align-items-center"
+                                (clickEvent)="switchActivity(activitiesList.jobs)">
+                                <span class="material-symbols-outlined opacity-75">arrow_back</span>
+                            </pq-button>
+                            <pq-button *ngIf="activities.selectedActivity.code === activitiesList.approve_queries.code" 
+                                buttonStyle="simple" buttonClass="rounded-pill"
+                                buttonContentClass="hstack align-items-center"
+                                (clickEvent)="job.isJobSelected = false;">
+                                <span class="material-symbols-outlined opacity-75">arrow_back</span>
+                            </pq-button>
+
+                            <div class="vstack gap-1 lh-1 align-items-start"
+                                [ngClass]="{ 'ps-3': activities.selectedActivity.code === activitiesList.new_query.code }">
+                                <div class="fw-medium">{{ job.selectedJob.job_name }}</div>
+                                <div class="hstack gap-2 align-items-center">
+
+                                    <div class="badge bg-color-light hstack gap-1 text-dark fw-bold opacity-75">
+                                        Job ID {{job.selectedJob.job_id }}
+                                        <span class="material-symbols-outlined small cursor-pointer"
+                                            (click)="copyToClipboard(job.selectedJob.job_id.toString())">content_copy</span>
+                                    </div>
+                                    <div class="list-horizontal-divider-primary"></div>
+
+                                    <div class="badge bg-color-light text-dark fw-bold opacity-75">{{ job.selectedJob.fy
+                                        }}</div>
+                                    <div class="badge bg-color-light text-dark fw-bold opacity-75">{{ job.selectedJob.jy
+                                        | date: 'dd-MM-yyyy' }}</div>
+                                    <div class="badge bg-color-light text-dark fw-bold opacity-75">{{
+                                        job.selectedJob.job_touchpoint }}</div>
+
+                                    <div class="list-horizontal-divider-primary"></div>
+
+                                    <div class="badge bg-light text-dark rounded-pill fw-bold opacity-75">{{
+                                        job.selectedJob.total_queries }} queries</div>
+                                    <div class="badge bg-color-warning text-dark rounded-pill fw-bold opacity-75">{{
+                                        job.selectedJob.open }} open</div>
+                                    <div
+                                        class="badge bg-color-success-light text-success rounded-pill fw-bold opacity-75">
+                                        {{ job.selectedJob.resolved }} closed</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hstack gap-3 align-items-center">
+
+                            <ng-container *ngIf="activities.selectedActivity.code != activitiesList.new_query.code">
+                                <div class="hstack gap-1 align-items-center">
+                                    <span *ngIf="queryViews.selectedQueryView.index == queryViewsList.card.index"
+                                        class="material-symbols-outlined">view_agenda</span>
+                                    <span *ngIf="queryViews.selectedQueryView.index == queryViewsList.table.index"
+                                        class="material-symbols-outlined">table</span>
+                                    <pq-dropdown [text]="queryViews.selectedQueryView.label" [hideError]="true" [selectedOption]="queryViews.selectedQueryView.index.toString()"
+                                        [options]="queryViews.list" dropDownType="advanced" [keys]="queryViews.keys"
+                                        (outputObject)="queryViews.selectedQueryView = $event;"></pq-dropdown>
+                                </div>
+
+                                <div class="list-horizontal-divider-primary"></div>
+
+
+                                <!-- Example split danger button -->
+                                <!-- <div class="btn-group">
+                                    <button type="button" class="btn bg-color-primary text-light"
+                                        data-bs-toggle="offcanvas" data-bs-target="#query-template-selector">New
+                                        Query</button>
+                                    <ng-container *ngIf="canAddCustomQuery">
+                                        <button type="button"
+                                            class="btn bg-color-primary border-0 border-start border-light text-light dropdown-toggle dropdown-toggle-split"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="visually-hidden">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu overflow-hidden border-0 shadow-lg">
+                                            <li>
+                                                <button class="btn btn-light text-dark rounded-0 border-0 w-100"
+                                                    (click)="activities.selectedActivity = activitiesList.quick_query">
+                                                    Custom Query
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </ng-container>
+                                </div> -->
+
+                                <pq-button buttonStyle="secondary" buttonContentClass="hstack gap-1"
+                                    buttonClass="rounded-3" data-bs-toggle="offcanvas"
+                                    data-bs-target="#query-template-selector">
+                                    <span class="material-symbols-outlined">add_circle</span>
+                                    New Query
+                                </pq-button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div *ngIf="!job.isJobSelected" class="hstack gap-3 align-items-center">
+                <div class="hstack gap-2 align-items-center flex-1">
+                    <ng-container *ngIf="clients.originalList.length > 0">
+                        <label class="lh-1 text-end small">Selected <br />Client</label>
+                        <div class="hstack gap-3 align-items-center">
+                            <pq-dropdown *ngIf="clients.originalList.length > 0" [options]="clients.originalList"
+                                [keys]="clients.keys" [text]="clients.selected.client" dropDownType="advanced"
+                                dropDownButtonClass="flex-1 w-100" [hideError]="true" [selectedOption]="clients.selected.client_id.toString()"
+                                (outputObject)="clients.selected = $event; getJobs();  approveQueries();"></pq-dropdown>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <div class="list-horizontal-divider-primary"></div>
+
+                <div class="hstack gap-2 align-items-center">
+                    <label class="lh-1 text-end small">Job <br />Priority</label>
+                    <pq-toggle-switch toggleStyle="primary"></pq-toggle-switch>
+                </div>
+
+                <pq-dropdown label="FY" text="2024" dropDownStyle="link" [hideError]="true"
+                    dropDownButtonClass="flex-fill small"></pq-dropdown>
+                <pq-dropdown label="JY" text="Any" dropDownStyle="link" [hideError]="true"
+                    dropDownButtonClass="flex-fill small"></pq-dropdown>
+                <div class="list-horizontal-divider-primary"></div>
+
+            </div>
+
+            <pq-button buttonStyle="simple" buttonContentClass="hstack gap-0 align-items-center"
+                (clickEvent)="hideStatistics = !hideStatistics">
+                <span *ngIf="!hideStatistics" class="material-symbols-outlined small">open_in_full</span>
+                <span *ngIf="hideStatistics" class="material-symbols-outlined small">close_fullscreen</span>
+            </pq-button>
+        </div>
+
+        <!-- QUERIES TOOLBAR -->
+        <div *ngIf="activities.selectedActivity.code != activitiesList.new_query.code"
+            class="query-toolbar horizontal-filter-toolbar justify-content-between bg-color-lighter shadow-input-1 border-top border-bottom">
+            <div class="hstack gap-2 align-items-center">
+                <span class="material-symbols-outlined opacity-50">unknown_document</span>
+                <label>Query Filters</label>
+            </div>
+
+            <!-- <div *ngIf="!job.isJobSelected" class="hstack gap-2 align-items-center flex-fill" >
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchdata">
+                </div>
+            </div> -->
+
+            <div class="hstack gap-3 align-items-center">
+                <!-- Added search box above toolbar
+                <div *ngIf="job.isJobSelected" class="position-relative">
+                    <div class="input-group rounded-pill bg-white border-bottom shadow-input-1">
+                        <input type="text" class="form-control border-0 bg-transparent" placeholder="Search Queries"
+                            [(ngModel)]="queriesSearchTerm">
+                        <span class="input-group-text border-0 bg-transparent">
+                            <span class="material-symbols-outlined">search</span>
+                        </span>
+                    </div>
+                </div> -->
+
+                <pq-dropdown label="Query Status" [text]="queryStatus.selectedStatus.master_name"
+                    dropDownType="advanced" dropDownStyle="link" class="flex-fill px-1 fw-medium"
+                    labelClass="small mb-1 d-block" dropDownButtonClass="small" [options]="queryStatus.list"
+                    [keys]="queryStatus.keys" [hideError]="true"
+                    (outputObject)="queryStatus.selectedStatus = $event; queryFilters.query_status.value = $event.id; masterFilters.query_status.selected.value = $event.id;"></pq-dropdown>
+
+                <pq-dropdown label="Query Criticality" [text]="criticalities.selectedCriticality.master_name"
+                    dropDownType="advanced" dropDownStyle="link" class="flex-fill px-1 fw-medium"
+                    labelClass="small mb-1 d-block" dropDownButtonClass="small" [options]="criticalities.list"
+                    [keys]="criticalities.keys" [hideError]="true"
+                    (outputObject)="criticalities.selectedCriticality = $event; queryFilters.criticality.value = $event.id; masterFilters.criticality.selected.value = $event.id;"></pq-dropdown>
+
+                <div class="list-horizontal-divider-primary"></div>
+
+                <pq-dropdown *ngIf="categories.list.length > 0" label="Category"
+                    [text]="categories.selectedCategory.master_name" dropDownType="advanced" [keys]="categories.keys"
+                    [hideError]="true" dropDownStyle="link" labelClass="small mb-1 d-block" dropDownButtonClass="small"
+                    [options]="categories.list"
+                    (outputObject)="categories.selectedCategory = $event; queryFilters.category.value = $event.id; masterFilters.category.selected.value = $event.id;"></pq-dropdown>
+
+                <pq-dropdown *ngIf="subCategories.list.length > 0" label="Sub Category"
+                    [text]="subCategories.selectedSubCategory.master_name" dropDownType="advanced" [hideError]="true"
+                    dropDownStyle="link" labelClass="small mb-1 d-block" dropDownButtonClass="small"
+                    [options]="subCategories.list" [keys]="subCategories.keys"
+                    (outputObject)="subCategories.selectedSubCategory = $event; queryFilters.category.value = $event.id; masterFilters.sub_category.selected.value = $event.id;"></pq-dropdown>
+
+                <div class="list-horizontal-divider-primary"></div>
+
+                <pq-button buttonStyle="link" (clickEvent)="applyFilters(); ">Apply Filter</pq-button>
+
+                <!-- <pq-dropdown [hideError]="true" dropDownStyle="link" class="flex-fill px-1 fw-medium"
+                    dropDownButtonClass="small" labelClass="small mb-1 d-block" label="Assigned To"
+                    text="Any"></pq-dropdown> -->
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!-- End of Toolbar Template -->
+
+
+<!-- Job TABLE Placeholder -->
+<ng-template #tplJobTable>
+    <app-job-queries [jobQueries]="jobQueries | objectFilter:searchdata" (jobSelected)="getQueries($event);"
+        (raiseQueryForJob)="btnOfcTemplates.click(); raiseQueryForJobSilently($event);"></app-job-queries>
+    <button class="opacity-0 h-0 w-0 d-none" data-bs-toggle="offcanvas" data-bs-target="#query-template-selector"
+        #btnOfcTemplates></button>
+</ng-template>
+<!-- End of TABLE Placeholder -->
+
+
+<!-- Queries TABLE Placeholder -->
+<ng-template #tplQueriesTable>
+    <app-admin-queries [job]="job.selectedJob" [queries]="queries | objectFilter:queriesSearchTerm"></app-admin-queries>
+</ng-template>
+<!-- End of Queries TABLE Placeholder -->
+
+
+<!-- Queries CARDS Placeholder -->
+<ng-template #tplQueriesCards>
+    <app-associate-queries [job]="job.selectedJob" [queries]="queries" [refreshQueries]="refreshQueries"
+        [queriesSearchTerm]="queriesSearchTerm" (querySelected)="selectQuery($event);"
+        (queryUnSelected)="unselectQuery();" (queryResolved)="getQueries(job)"
+        (goBackToJobs)="switchActivity(activitiesList.jobs);"></app-associate-queries>
+</ng-template>
+<!-- End of Queries CARDS Placeholder -->
+
+
+<!-- NEW Query Placeholder -->
+<ng-template #tplNewQuery>
+    <app-new-query [job]="job.selectedJob" [masterFilters]="masterFilters" [queryFilters]="queryFilters"
+        [initialQueryTemplate]="initialQueryTemplate" (queriesPosted)="switchActivity(activitiesList.jobs);"
+        (dismissNewQuery)="switchActivity(activitiesList.jobs)"></app-new-query>
+</ng-template>
+<!-- End of NEW Query Placeholder -->
+
+<!-- Approve Draft Queries Placeholder -->
+<ng-template #tplApproveQueries>
+    <app-approve-queries 
+        [queries]="draftQueries"
+        (refresh)="getDraftQueries();"
+        [client_id]="clients.selected.client_id"
+        (isJobSelected)="job.selectedJob = $event; job.isJobSelected = true;"
+        [job]="job.selectedJob"
+    ></app-approve-queries>
+    <!-- <app-job-approve-queries 
+        [queries]="approverJobData" 
+        [jobQueries]="draftQueries"
+        (onBulkApproveSuccess)="handleBulkApproveRefresh()"
+        >
+    </app-job-approve-queries> -->
+</ng-template>
+<!-- Approve Draft Queries Placeholder -->
+
+
+<!-- Query Template Selector -->
+<app-query-template-selector queryTemplateSelectorId="query-template-selector" [masterFilters]="masterFilters"
+    [categories]="categories" [subCategories]="subCategories" [job]="job.selectedJob"
+    (selectedTemplate)="showNewQueryForm($event);"
+    (queriesPosted)="switchActivity(activitiesList.jobs);"></app-query-template-selector>
+<!-- End of Query Template Selector -->

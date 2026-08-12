@@ -1,0 +1,827 @@
+<section class="container-fluid mb-2">
+    <div class="row">
+        <div class="col-sm-12">
+            <div
+                class="bg-light rounded hstack gap-2 align-items-center justify-content-between overflow-hidden border">
+                <div class="hstack gap-1 align-items-center px-3">
+                    <div class="fs-6 fw-medium opacity-75">
+                        Raise Quer{{ (queries.length > 1)? 'y' : 'ies' }}
+                    </div>
+                </div>
+                <div class="hstack gap-2 align-items-center">
+                    <!-- <div class="hstack gap-2 align-items-center justify-content-end">
+                        <div class="hstack gap-1 align-items-center ps-3 pe-2 border-start border-end">
+                            <label class="disabled lh-1 small text-end">New Query<br>Views</label>
+                            <div *ngFor="let view of newQueryView.list"
+                                [ngClass]="{ 'bg-white border-bottom border-color-primary': newQueryView.selectedView == view }"
+                                class="btn bg-transparent border-top-0 border-start-0 border-0 rounded-0"
+                                (click)="newQueryView.selectedView = view;">{{ view.label }}</div>
+                        </div>
+                    </div> -->
+
+                    <div class="hstack gap-3 align-items-center justify-content-end">
+                        <div class="pe-2">
+                            <pq-button *ngIf="this.queries.length < this.maxQueryLimit" buttonStyle="simple"
+                                buttonContentClass="hstack gap-1 align-items-center" data-bs-toggle="offcanvas"
+                                data-bs-target="#query-template-selector">
+                                <span class="material-symbols-outlined">add_circle</span>
+                                Add More Query
+                            </pq-button>
+                            <label *ngIf="this.queries.length >= this.maxQueryLimit"
+                                class="btn border-0 small fw-semibold hstack gap-2 align-items-center">
+                                <span class="material-symbols-outlined">info</span>
+                                Maximum new query limit reached
+                            </label>
+                        </div>
+                        <pq-button [isDisabled]="queries.length <= 0" buttonStyle="simple"
+                            [isLoading]="isSendingQueries" [isDisabled]="isSendingQueries" buttonClass="bg-color-primary text-light"
+                            (clickEvent)="sendQuery();">
+                            Send Queries
+                        </pq-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section *ngIf="isMounted" class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <ng-container *ngIf="clientUsers.isGettingUsers">
+                <div class="p-4 hstack align-items-center justify-content-center gap-2 mx-auto bg-light rounded">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="text-center disabled">
+                        Preparing template with the latest data. Please wait a moment ...
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="!clientUsers.isGettingUsers && queries.length <= 0">
+                <div class="p-2">
+                    <div class="text-center bg-light rounded p-2">
+                        <pq-button buttonStyle="link" data-bs-toggle="offcanvas"
+                            data-bs-target="#query-template-selector">
+                            Add new query
+                        </pq-button>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="!clientUsers.isGettingUsers && queries.length > 0">
+                <ng-container *ngIf="newQueryView.selectedView.index == newQueryViews.table.index">
+                    <ng-container *ngTemplateOutlet="tplNewQueryTableTemplate"></ng-container>
+                </ng-container>
+
+                <ng-container *ngIf="newQueryView.selectedView.index == newQueryViews.card.index">
+                    <ng-container *ngTemplateOutlet="tplNewQueryCardTemplate"></ng-container>
+                </ng-container>
+            </ng-container>
+
+            <!-- <ng-container *ngIf="newQueryView.selectedView.index == newQueryViews.form.index">
+                <ng-container *ngTemplateOutlet="tplNewQueryFormTemplate"></ng-container>
+            </ng-container> -->
+        </div>
+    </div>
+</section>
+
+
+<!-- New Query Table Template -->
+<ng-template #tplNewQueryTableTemplate>
+    <div *ngIf="alertMessage.show" 
+        class="alert" 
+        [ngClass]="{ 'bg-color-success text-light': alertMessage.type == 'success', 'bg-danger text-light': alertMessage.type == 'error' }">
+        <div class="font-bold">{{ alertMessage.message }}</div>
+    </div>
+    <table class="w-100">
+        <thead>
+            <th></th>
+            <th>Query</th>
+            <th>Category</th>
+            <th>Sub Category</th>
+            <th>Criticality</th>
+            <th>Raise To</th>
+            <th>Additional Details</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let query of queries; let index = index; let first = first; let last = last;">
+                <tr
+                    [ngClass]="{'bg-color-primary-lightest': currentQuery.selectedQueryId == index, 'blur-8': (currentQuery.isQuerySelected && currentQuery.selectedQueryId != index)}">
+                    <td>
+                        <pq-button buttonStyle="link_danger" buttonContentClass="hstack"
+                            [isDisabled]="currentQuery.isQuerySelected" (clickEvent)="removeNewQuery(index)">
+                            <span class="material-symbols-outlined">delete</span>
+                        </pq-button>
+                    </td>
+
+
+                    <!-- Query Title and description -->
+                    <td>
+                        <div class="lh-1 vstack gap-1">
+                            <div class="hstack gap-1 align-items-center">
+                                <div class="smaller badge bg-light opacity-50 text-dark fw-normal">Title</div>
+                                <div *ngIf="query.query_template_code == 'C0001'" class="color-primary fw-medium cursor-pointer" (click)="currentQuery.selectedNewQuery = query; currentQuery.selectedQueryId = index; setQueryEditActivity(index, query, 'edit_options');">{{ query.title }}</div>
+                                <div *ngIf="query.query_template_code != 'C0001'" class="text-dark fw-medium">{{ query.title }}</div>
+                            </div>
+                            <div class="text-truncate hstack gap-2 align-items-center"
+                                style="max-width: 400px; max-height: 74px;">
+
+                                <div class="smaller badge bg-light opacity-50 text-dark fw-normal">Description</div>
+                                <span class="hstack gap-1 align-items-center cursor-pointer color-primary"
+                                    (click)="currentQuery.selectedNewQuery = query; currentQuery.selectedQueryId = index; setQueryEditActivity(index, query, 'edit_options');">
+                                    <span *ngIf="query.query_code != 'C0001'" class="text-truncate p-1 rounded bg-light rounded border"
+                                        [innerHTML]="query.query"
+                                        style="height: 1.5rem; max-width: 200px; overflow: hidden; display: block;"></span>
+                                    <span class="color-primary cursor-pointer hstack align-items-center">
+                                        <span class="material-symbols-outlined small">edit</span> {{ query.query.trim() == ''?
+                                        'Add Query' : '' }}
+                                    </span>
+                                </span>
+
+                            </div>
+
+                            <div *ngIf="query.isCheckingQueryExists" class="hstack gap-1 items-center p-1">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div> Checking for existing queries...</div>
+                            </div>
+
+                            <div *ngIf="query.isQueryExists" class="small badge bg-color-warning text-dark border border-warning fw-normal rounded-0 shadow-sm vstack gap-2 align-items-start">
+                                <div>Same unresolved query exists already. <u>This query won't be raised.</u></div>
+                                <div *ngFor="let existingQuery of query.existingQueries; let eqIndex = index;">
+                                    <div class="fs-6">Query code: <span class="fw-semibold user-select-all">{{ existingQuery.query_code }}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <!-- End of Query Title and description -->
+
+                    <!-- Query Dropdown Options -->
+                    <td>
+                        <!-- <div class="text-dark fw-medium">{{ query.category_name }}</div> -->
+                        <pq-dropdown *ngIf="masterFilters.category.list.length > 0"
+                            [text]="query.category_name"
+                            dropDownType="advanced" [keys]="categories.keys" [hideError]="true" dropDownStyle="link"
+                            labelClass="small mb-1 d-block"
+                            [options]="masterFilters.category.list"
+                            (outputObject)="query.category_id = $event.id; query.category_name = $event.master_name; getFilters($event.id, index);"></pq-dropdown>
+                    </td>
+                    <td>
+                        <!-- <div class="text-dark fw-medium">{{ query.sub_category_name }}</div> -->
+                        <pq-dropdown *ngIf="masterFilters.sub_category.list.length > 0"
+                            [text]="query.sub_category_name"
+                            dropDownType="advanced" [hideError]="true" dropDownStyle="link"
+                            labelClass="small mb-1 d-block"
+                            [options]="masterFilters.sub_category.list" [keys]="subCategories.keys"
+                            (outputObject)="query.sub_category_id = $event.id; query.sub_category_name = $event.master_name;"></pq-dropdown>
+                    </td>
+                    <td>
+                        <!-- <div class="text-dark fw-medium">{{ query.criticality_name }}</div> -->
+                        <pq-dropdown *ngIf="masterFilters.criticality.list.length"
+                            [text]="query.criticality_name"
+                            dropDownType="advanced" dropDownStyle="link" class="flex-fill px-1 fw-medium"
+                            labelClass="small mb-1 d-block"
+                            [options]="masterFilters.criticality.list" [keys]="criticalities.keys" [hideError]="true"
+                            (outputObject)="query.criticality_id = $event.id; query.criticality_name = $event.master_name;"></pq-dropdown>
+                    </td>
+                    <td>
+                        <pq-dropdown class="flex-fill" [text]="query.raised_to_name" dropDownStyle="link"
+                            dropDownType="advanced" [hideError]="true" [options]="clientUsers.list"
+                            [keys]="clientUsers.keys"
+                            (outputObject)="query.raised_to_id = $event.wm_client_id; query.raised_to_name = $event.full_name;"></pq-dropdown>
+                    </td>
+                    <!-- End of Query Dropdown Options -->
+
+                    <!-- Query Options -->
+                    <td>
+                        <div class="text-truncate" style="max-width: 200px;">
+                            <div class="small fw-medium hstack gap-1 align-items-center">
+                                <div class="smaller badge bg-light opacity-50 text-dark fw-normal">Response Type</div>
+                                {{ (query.response_type != '')? (query.response_type | titlecase) : 'None selected' }}
+                            </div>
+                            <div class="small fw-medium hstack gap-1 align-items-center">
+                                <div class="smaller badge bg-light opacity-50 text-dark fw-normal">Template ID</div>
+                                {{ initialQueryTemplate.query_template_code }}
+                            </div>
+                        </div>
+                    </td>
+                    <!-- End of Query Options -->
+                    
+                    <!-- Action -->
+                    <td>
+                        <pq-button buttonStyle="link"
+                            (clickEvent)="setQueryEditActivity(index, query, 'edit_options')">
+                            Edit
+                        </pq-button>
+                    </td>
+                    <!-- End of Action -->
+                </tr>
+
+                <tr
+                    [ngClass]="(currentQuery.selectedQueryId == index)? 'bg-color-primary-lightest border-bottom' : 'bg-light'">
+
+                    <td colspan="100%" class="bg-transparent">
+
+                        <div *ngIf="currentQuery.editActivity == 'edit_options' && currentQuery.selectedQueryId == index"
+                            class="position-fixed overflow-y-auto top-0 start-0 end-0 bottom-0 bg-color-lightest z-index-999 hstack justify-content-center align-items-center py-3">
+                            <div class="bg-white rounded-4 shadow-lg z-9999 position-relative overflow-hidden"
+                                style="width: 800px;">
+                                <div *ngIf="currentQuery.editActivity == 'edit_options'">
+
+                                    <!-- Query Options Popup -->
+                                    <div [ngClass]="(currentQuery.isQuerySelected && currentQuery.selectedQueryId == index) ? 'd-block' : 'd-none'"
+                                        (blur)="resetSelectedQuery();">
+
+                                        <!-- Popup Header -->
+                                        <div
+                                            class="h-100 hstack gap-2 align-items-center justify-content-between ps-1 pe-2">
+                                            <div class="vstack lh-1 gap-1 py-2">
+                                                <label>{{ currentQuery.selectedNewQuery.title }}</label>
+                                                <div class="small hstack gap-2 align-items-center">
+                                                    <div
+                                                        class="badge bg-light text-dark fw-400 opacity-7 rounded-pill px-2 hstack gap-1 align-items-center">
+                                                        {{ currentQuery.selectedNewQuery.category_name }}
+                                                        <span
+                                                            class="material-symbols-outlined small opacity-50">arrow_forward_ios</span>
+                                                        {{ currentQuery.selectedNewQuery.sub_category_name }}
+                                                    </div>
+                                                    <div class="list-horizontal-divider-primary"></div>
+                                                    <div
+                                                        class="badge bg-light text-dark fw-400 opacity-7 rounded-pill px-2 hstack gap-1 align-items-center">
+                                                        <span
+                                                            class="material-symbols-outlined small opacity-50">priority_high</span>
+                                                        {{ currentQuery.selectedNewQuery.criticality_name }}</div>
+                                                    <div class="list-horizontal-divider-primary"></div>
+                                                    <div
+                                                        class="badge bg-light text-dark fw-400 opacity-7 rounded-pill px-2 hstack gap-1 align-items-center">
+                                                        <span
+                                                            class="material-symbols-outlined small opacity-50">person</span>
+                                                        {{ currentQuery.selectedNewQuery.raised_to_name }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End of Popup Header -->
+
+                                        <!-- Stepper List -->
+                                        <div
+                                            class="px-4 pt-1 hstack justify-content-around align-items-center bg-color-light shadow-input-1">
+                                            <ng-container
+                                                *ngFor="let activity of stepperActivity.list; let index = index; let last = last;">
+                                                <div class="fs-5 hstack gap-1 align-items-center cursor-pointer border-bottom border-2 pb-1"
+                                                    [ngClass]="{ 'color-primary border-color-primary': stepperActivity.selected == activity }"
+                                                    (click)="stepperActivity.selected = activity;">
+                                                    <span class="material-symbols-outlined">counter_{{ index + 1
+                                                        }}</span>
+                                                    {{ activity.label }}
+                                                </div>
+                                                <span *ngIf="!last"
+                                                    class="material-symbols-outlined">arrow_forward</span>
+                                            </ng-container>
+                                        </div>
+                                        <!-- End of Stepper List -->
+
+                                        <!-- Popup Body -->
+                                        <div class="stepperTabs position-relative p-3 vstack gap-2 overflow-y-auto border-top bg-light"
+                                            style="height: 450px; max-height: 450px; z-index: 9999;">
+
+                                            <!-- Stepper Tabs -->
+                                            <ng-container>
+                                                <!-- Query Options Stepper Tab -->
+                                                <div class="stepperTab p-3"
+                                                    [ngClass]="(stepperActivity.selected == stepperActivityList.queryOptions)? 'showTab' : ''">
+                                                    <div *ngIf="query.query_template_code == 'C001'" class="py-2">
+                                                        <label>Query Title</label>
+                                                        <div class="ps-3">
+                                                            <pq-textbox [textBoxContent]="currentQuery.selectedNewQuery.title" 
+                                                                (outputValue)="currentQuery.selectedNewQuery.title = $event; queries[index].title = $event;"></pq-textbox>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of Query Title -->
+                                                    <div class="py-2">
+                                                        <!-- Query Description -->
+                                                        <label>Query Description</label>
+                                                        <div class="ps-3">
+                                                            <div class="position-relative small-editor"
+                                                                style="z-index: 9999;">
+                                                                <ckeditor [editor]="Editor"
+                                                                    [data]="currentQuery.selectedNewQuery.query"
+                                                                    (blur)="currentQuery.selectedNewQuery.query = $event.editor.getData(); queryDescription = $event.editor.getData(); onEditorChange($event, index);"
+                                                                    [config]="newQueryEditorConfig">
+                                                                </ckeditor>
+                                                            </div>
+                                                            <div
+                                                                class="small disabled hstack gap-1 align-items-center pt-2 fst-italic">
+                                                                <span
+                                                                    class="material-symbols-outlined small">info</span>
+                                                                Please replace the [[ ]] placeholder with the relevant
+                                                                values.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="list-vertical-divider-primary my-3">&nbsp;</div>
+
+                                                    <!-- Attachments -->
+                                                    <div class="py-2">
+                                                        <div class="ps-3">
+                                                            <div class="hstack gap-2 align-items-center flex-wrap">
+                                                                <div *ngIf="query.attachments.length > 0 || !query.show_attachment_input"
+                                                                    class="hstack gap-2 align-items-center flex-wrap py-1">
+                                                                    <div *ngFor="let attachment of query.attachments; let attachment_index = index;"
+                                                                        class="badge bg-color-primary-lightest text-dark border-bottom border-color-primary rounded-0 shadow-sm hstack gap-2 align-items-center pe-0 py-0">
+                                                                        <div
+                                                                            class="vstack align-items-start attachment-link-badge">
+                                                                            <div class="fw-semibold fs-6">{{
+                                                                                attachment.title }}</div>
+                                                                            <div class="fw-medium fs-normal">{{
+                                                                                attachment.link }}</div>
+                                                                        </div>
+                                                                        <span
+                                                                            class="material-symbols-outlined cursor-pointer fs-5 color-danger h-100 hstack align-items-center border-start"
+                                                                            (click)="removeAttachment(index, attachment_index)">delete</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <ng-container>
+                                                                <ng-container>
+                                                                    <div *ngIf="query.attachments.length < maxAttachments && !query.show_attachment_input"
+                                                                        class="lh-1 vstack gap-2">
+                                                                        <pq-button buttonStyle="simple"
+                                                                            buttonClass="bg-white shadow-sm"
+                                                                            buttonContentClass="hstack gap-1 align-items-center"
+                                                                            (clickEvent)="query.show_attachment_input = true;">
+                                                                            <span
+                                                                                class="material-symbols-outlined">attach_file</span>
+                                                                            Add
+                                                                            Attachment Link
+                                                                        </pq-button>
+                                                                        <div
+                                                                            class="hstack gap-1 align-items-center small disabled fst-italic">
+                                                                            <span
+                                                                                class="material-symbols-outlined small">info</span>
+                                                                            <span>You may add attachments if needed,
+                                                                                with a maximum limit of 5
+                                                                                attachments.</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div
+                                                                        *ngIf="query.attachments.length >= maxAttachments">
+                                                                        <span
+                                                                            class="opacity-50 color-primary hstack gap-2 align-items-center">
+                                                                            <span
+                                                                                class="material-symbols-outlined">attach_file_off</span>
+                                                                            You have reached the maximum allowable
+                                                                            attachment limit.
+                                                                        </span>
+                                                                    </div>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="query.show_attachment_input">
+                                                                    <div class="bg-white">
+                                                                        <app-inline-attachment
+                                                                            (addAttachment)="addAttachment(index, $event)"
+                                                                            (cancelAttachment)="query.show_attachment_input = false;"></app-inline-attachment>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of Attachments -->
+                                                </div>
+                                                <!-- End of Query Options Stepper Tab -->
+
+                                                <!-- Response Options Stepper Tab -->
+                                                <div class="stepperTab p-3"
+                                                    [ngClass]="(stepperActivity.selected == stepperActivityList.responseOptions)? 'showTab' : ''">
+                                                    <!-- Response Type -->
+                                                    <div class="py-2">
+                                                        <div class="vstack gap-1">
+                                                            <label>Recommended response type</label>
+                                                            <div class="ps-3 vstack">
+                                                                <div class="hstack gap-2 align-items-center px-2">
+                                                                    <ng-container
+                                                                        *ngFor="let tab of newQueryResponseType.tabs">
+                                                                        <div class="badge rounded-0 px-2 cursor-pointer border-2"
+                                                                            [ngClass]="(tab.data.code === query.response_type)? 'border-bottom border-color-primary color-primary' : 'border-bottom border-light text-dark'"
+                                                                            (click)="selectResponseType(index, tab);">
+                                                                            {{ tab.label }}
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </div>
+
+                                                                <div class="border-top border-color-primary pt-3">
+                                                                    <div *ngIf="query.response_type != 'document'">
+                                                                        <pq-textbox [hideError]="true"
+                                                                            placeholder="Add description here to tell client why you need this (optional)"
+                                                                            [textBoxContent]="query.response_type_description"
+                                                                            (outputValue)="query.response_type_description = $event;"></pq-textbox>
+                                                                    </div>
+                                                                    <div *ngIf="query.response_type == 'document'">
+                                                                        <!-- <pq-dropdown label="How many documents required?" dropDownType="simple" [text]="query.response_attachments.length <= 0? 'Choose a number' : ''" [setOptionAsText]="true" [options]="[1,2,3,4,5]"
+                                                                            [hideError]="true" (outputValue)="addResponseAttachments(index, toNumber($event))"></pq-dropdown> -->
+                                                                        <div
+                                                                            class="vstack gap-2 lh-1 disabled bg-color-warning rounded border mb-3 px-2 py-1">
+                                                                            <div class="small">To update the document
+                                                                                list, please use the query description
+                                                                                to manage the documents accordingly.
+                                                                            </div>
+                                                                            <div class="small"><strong>Please number
+                                                                                    your items (e.g., 1), 2), etc.) when
+                                                                                    listing the required files.</strong>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div
+                                                                                *ngFor="let qa of query.response_attachments; let qaIndex = index;">
+                                                                                <pq-textbox class="flex-fill"
+                                                                                    [label]="'Required document ' + (qaIndex + 1)"
+                                                                                    [required]="true" [readonly]="true"
+                                                                                    [textBoxContent]="qa.title"
+                                                                                    [placeholder]="'Specify document ' + (qaIndex + 1)  + ' title (required)'"
+                                                                                    (outputValue)="qa.title = $event;"></pq-textbox>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <!-- End of Response Type -->
+                                                </div>
+                                                <!-- End of Response Options Stepper Tab -->
+                                            </ng-container>
+                                            <!-- End of Stepper Tabs -->
+
+
+                                        </div>
+                                        <!-- End of Popup Body -->
+
+                                        <!-- Query Options Footer -->
+                                        <!-- Buttons based on stepper activity -->
+                                        <div class="border-top bg-white ps-2 pe-1 py-1 hstack gap-2 justify-content-between align-items-center">
+                                            <pq-button buttonStyle="simple" buttonClass="rounded-pill color-primary"
+                                                buttonContentClass="hstack gap-2" (clickEvent)="resetSelectedQuery();">
+                                                <span class="material-symbols-outlined">close</span>
+                                                <span>Close</span>
+                                            </pq-button>
+                                            <pq-button
+                                                *ngIf="stepperActivity.selected == stepperActivityList.queryOptions"
+                                                buttonClass="rounded-pill bg-color-primary text-light"
+                                                buttonContentClass="hstack gap-3"
+                                                (clickEvent)="stepperActivity.selected = stepperActivityList.responseOptions">
+                                                <span>Next</span>
+                                                <span class="material-symbols-outlined">arrow_forward</span>
+                                            </pq-button>
+                                            <div *ngIf="stepperActivity.selected == stepperActivityList.responseOptions" class="hstack gap-3 align-items-center">
+                                                <pq-button
+                                                    buttonStyle="outline" buttonClass="rounded-pill"
+                                                    buttonContentClass="hstack gap-2"
+                                                    (clickEvent)="stepperActivity.selected = stepperActivityList.queryOptions;">
+                                                    <span class="material-symbols-outlined">arrow_back</span>
+                                                    <span>Go Back</span>
+                                                </pq-button>
+                                                <pq-button
+                                                    buttonClass="rounded-pill bg-color-primary text-light"
+                                                    buttonContentClass="hstack gap-2"
+                                                    (clickEvent)="resetSelectedQuery();">
+                                                    <span class="material-symbols-outlined">Save</span>
+                                                    <span>Save</span>
+                                                </pq-button>
+                                            </div>
+                                        </div>
+                                        <!-- End of Query Options Footer -->
+                                    </div>
+                                    <!-- End of Query Options Popup -->
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</ng-template>
+
+
+<!-- Edit Query Table Popup -->
+<div class="modal fade" id="mdlEditQuery" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    [ngClass]="{ 'show d-block': showNotReadyPopup }">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Problem</h1>
+                <button type="button" class="btn-close" aria-label="Close"
+                    (click)="showNotReadyPopup = false;"></button>
+            </div>
+            <div class="modal-body">
+                Please fill all required fields in order to send query to the client.
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Edit Query Table Popup -->
+<!-- End of New Query Table Template -->
+
+
+
+<!-- New Query Card Template -->
+<ng-template #tplNewQueryCardTemplate>
+    <div class="card-container vstack rounded border position-relative">
+
+        <ng-container *ngFor="let query of queries; let index = index; let first = first; let last = last;">
+            <div [ngClass]="{ 'bg-light': index % 2 === 0 }"
+                class="border-bottom flex-fill px-3 py-2 hstack gap-1 align-items-center flex-nowrap">
+                <div class="vstack gap-1 justify-content-start">
+                    <div class="fs-6 fw-semibold mb-2 opacity-75">Query {{ index + 1 }}</div>
+                    <div class="hstack gap-1 align-items-start">
+                        <div class="flex-fill">
+                            <pq-dropdown label="Category" [text]="query.filters.category_name" dropDownType="advanced"
+                                [keys]="categories.keys" [hideError]="true" [options]="categories.list"
+                                (outputObject)="query.category_id = $event.id; query.filters.category_name = $event.master_name;"></pq-dropdown>
+                        </div>
+                        <div class="flex-fill">
+                            <pq-dropdown label="Sub Category" [text]="query.filters.sub_category_name"
+                                dropDownType="advanced" [hideError]="true" [options]="subCategories.list"
+                                (outputObject)="query.sub_category_id = $event.id; query.filters.sub_category_name = $event"></pq-dropdown>
+                        </div>
+                        <div class="flex-fill">
+                            <pq-dropdown label="Query Criticality"
+                                [text]="query.criticality_id? criticalities.list[query.criticality_id].label : 'Choose a criticality'"
+                                dropDownType="advanced" [options]="criticalities.list" [keys]="criticalities.keys"
+                                [hideError]="true" (outputObject)="query.criticality_id = $event;"></pq-dropdown>
+                        </div>
+                        <div class="flex-fill">
+                            <pq-dropdown class="flex-fill" label="Raise Query To" text="Marks" dropdownType="simple"
+                                [hideError]="true" [options]="['Marks', 'Fabianem']"></pq-dropdown>
+                        </div>
+                    </div>
+
+                    <!-- Attachments -->
+                    <div class="py-2">
+                        <div class="hstack gap-2 align-items-center flex-wrap">
+                            <div *ngIf="query.attachments.length > 0 || !query.show_attachment_input"
+                                class="hstack gap-2 align-items-center flex-wrap py-1">
+                                <div *ngFor="let attachment of query.attachments; let index = index;"
+                                    class="badge bg-color-primary-lightest text-dark border-bottom border-color-primary rounded-0 shadow-sm hstack gap-2 align-items-center pe-0 py-0">
+                                    <div class="vstack align-items-start attachment-link-badge">
+                                        <div class="fw-semibold fs-6">{{ attachment.title }}</div>
+                                        <div class="fw-medium fs-normal">{{ attachment.link }}</div>
+                                    </div>
+                                    <span
+                                        class="material-symbols-outlined cursor-pointer fs-5 color-danger h-100 hstack align-items-center border-start">delete</span>
+                                </div>
+                            </div>
+
+                            <ng-container>
+                                <div *ngIf="query.attachments.length < maxAttachments && !query.show_attachment_input"
+                                    class="cursor-pointer hstack gap-2" (click)="query.show_attachment_input = true;">
+                                    <span class="material-symbols-outlined">attach_file</span> Add
+                                    Attachment Link
+                                </div>
+                                <div *ngIf="query.attachments.length >= maxAttachments">
+                                    <span class="opacity-50 color-primary hstack gap-2 align-items-center">
+                                        <span class="material-symbols-outlined">attach_file_off</span>
+                                        You have reached the maximum allowable attachment limit.
+                                    </span>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <ng-container *ngIf="query.show_attachment_input">
+                            <div class="bg-white">
+                                <app-inline-attachment
+                                    (cancelAttachment)="query.show_attachment_input = false;"></app-inline-attachment>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <!-- End of Attachments -->
+
+                    <!-- Response Type -->
+                    <div class="py-2">
+                        <div class="vstack gap-1">
+                            <label>Recommended response type</label>
+                            <pq-simple-tab tabStyle="minimal" [tabs]="newQueryResponseType.tabs"
+                                labelClass="rounded-pill"
+                                (tabSelectedEvent)="newQueryResponseType.selectedTab = $event;"></pq-simple-tab>
+                        </div>
+
+                        <div>
+                            <pq-textbox
+                                placeholder="Add description here to tell client why you need this (optional)"></pq-textbox>
+                        </div>
+                    </div>
+                    <!-- End of Response Type -->
+                </div>
+                <div class="flex-fill ps-2">
+                    <pq-dropdown label="Query Template" text="Choose a template"
+                        [options]="['Query Template 1', 'Query Template 2', 'Query Template 3', 'Query Template 4', 'Query Template 4']"></pq-dropdown>
+                    <!-- <pq-textbox label="Query" textBoxClass="rounded-3" [textBoxContent]="newQuery.title"
+                        placeholder="Be concise and precise..." [hideError]="true"
+                        (outputValue)="newQuery.title = $event;"></pq-textbox> -->
+
+                    <ckeditor [editor]="Editor" [data]="currentQuery.selectedNewQuery.query"
+                        (blur)="currentQuery.selectedNewQuery.query = $event.editor.getData();"
+                        [config]="newQueryEditorConfig">
+                    </ckeditor>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+<!-- End of New Query Card Template -->
+
+
+
+<!-- New Query Form Template -->
+<!-- <ng-template #tplNewQueryFormTemplate>
+    <div class="vstack gap-2">
+        <div class="hstack gap-2 justify-content-center align-items-center px-4 mb-2">
+            <div *ngIf="queries.length > 0"
+                class="d-inline-flex gap-2 align-items-center bg-light rounded-pill shadow-input-1 p-1">
+                <div *ngFor="let newQuery of queries; let index = index;" class="cursor-pointer"
+                    (click)="newQuery.selectedNewQuery = newQuery">
+                    <span
+                        class="badge new-query-tab rounded-pill text-dark hstack gap-3 align-items-center justify-content-between"
+                        [ngClass]="(newQuery.queryIndex == query.selectedNewQuery.queryIndex ? 'bg-white color-primary shadow-sm fw-semibold' : 'bg-transparent fw-normal')">
+                        <div class="fw-semibold fs-6 title"
+                            [ngClass]="{ 'color-primary': newQuery.queryIndex == query.selectedNewQuery.queryIndex, 'text-center': queries.length <= 0, 'text-start': queries.length > 1 }">
+                            {{ (newQuery.title)? newQuery.title : 'Query ' + (index + 1) }}</div>
+                        <span *ngIf="queries.length > 1" class="material-symbols-outlined small"
+                            (click)="removeNewQuery(index)">cancel</span>
+                    </span>
+                </div>
+                <div *ngIf="queries.length < maxQueryLimit"
+                    class="badge bg-transparent cursor-pointer opacity-75 hstack gap-1 align-items-center rounded-0 border-start text-dark"
+                    title="Add New Query" (click)="addMoreQueries()">
+                    <span
+                        class="material-symbols-outlined small fw-bold bg-color-darker text-light rounded-pill">add</span>
+                    <span class="fw-bold">Add New Query</span>
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngFor="let newQuery of queries; let index = index;">
+            <div [ngClass]="( newQuery.queryIndex == query.selectedNewQuery.queryIndex ? '' : 'd-none' )"
+                class="container vstack gap-2">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <pq-dropdown label="Category" [text]="newQuery.filters.category_name" dropDownType="advanced"
+                            [keys]="categories.keys" [hideError]="true" [options]="categories.list"
+                            (outputObject)="newQuery.filters.category_name = $event.master_name; setCategory($event);"></pq-dropdown>
+                    </div>
+                    <div class="col-sm-4">
+                        <pq-dropdown label="Sub Category" [text]="newQuery.filters.category_name"
+                            dropDownType="advanced" [hideError]="true" [options]="subCategories.list"
+                            (outputObject)="newQuery.filters.category_name = $event.master_name"></pq-dropdown>
+                    </div>
+                    <div class="col-sm-4">
+                        <pq-dropdown label="Query Criticality"
+                            [text]="query.selectedNewQuery.criticality_id? query.selectedNewQuery.criticality_id : 'Choose a criticality'"
+                            dropDownType="advanced" [options]="criticalities.list" [keys]="criticalities.keys"
+                            [hideError]="true"
+                            (outputObject)="query.selectedNewQuery.criticality_id = $event.label; criticalities.selectedCriticality = $event;"></pq-dropdown>
+
+                        <div
+                            class="mt-2 rounded-pill criticality-progress position-relative ps-2 pe-1 bg-color-light-grey border hstack gap-1 justify-content-between align-items-center">
+                            <div
+                                class="position-absolute top-0 start-0 end-0 bottom-0 bg-white rounded-pill opacity-75 z-1">
+                            </div>
+                            <div class="position-absolute top-0 start-0 end-0 bottom-0 z-2"
+                                [ngClass]="criticalities.selectedCriticality.level"></div>
+                            <div class="text-center smaller fw-semibold opacity-50 criticality-label z-3">Job
+                                Impact Level</div>
+                            <span class="material-symbols-outlined opacity-50 z-3">error</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-8">
+                        <div class="hstack gap-3 align-items-end">
+                            <pq-dropdown class="flex-fill" label="Raise Query To" text="Marks" dropdownType="simple"
+                                [hideError]="true" [options]="['Marks', 'Fabianem']"></pq-dropdown>
+                            <div class="hstack gap-1 lh-1 align-items-end mb-1">
+                                <img class="image h-32 rounded-pill" src="/assets/images/profile_placeholder.png"
+                                    alt="user profile picture">
+                                <div>
+                                    <div>Marks</div>
+                                    <div class="small fst-italic"><a href="mailto:marks@neo-super.com"
+                                            target="_blank">marks&#64;neo-super.com</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <pq-textbox label="Query Title" textBoxClass="rounded-3"
+                            [textBoxContent]="query.selectedNewQuery.title" placeholder="Be concise and precise..."
+                            [hideError]="true"
+                            (outputValue)="query.selectedNewQuery.title = $event; queries[query.selectedNewQuery.queryIndex!].title = $event;"></pq-textbox>
+                    </div>
+                    <div class="col-sm-12">
+                        <ckeditor [editor]="Editor" [data]="query.selectedNewQuery.description"
+                            [config]="newQueryEditorConfig">
+                        </ckeditor>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="flex-fill vstack py-2">
+                            <div class="hstack gap-2 align-items-center flex-wrap">
+                                <div *ngIf="query.selectedNewQuery.attachments.length > 0 || !query.selectedNewQuery.show_attachment_input"
+                                    class="hstack gap-2 align-items-center flex-wrap py-1">
+                                    <div *ngFor="let attachment of query.selectedNewQuery.attachments; let index = index;"
+                                        class="badge bg-color-primary-lightest text-dark border-bottom border-color-primary rounded-0 shadow-sm hstack gap-2 align-items-center pe-0 py-0">
+                                        <div class="vstack align-items-start attachment-link-badge">
+                                            <div class="fw-semibold fs-6">{{ attachment.title }}</div>
+                                            <div class="fw-medium fs-normal">{{ attachment.link }}</div>
+                                        </div>
+                                        <span
+                                            class="material-symbols-outlined cursor-pointer fs-5 color-danger h-100 hstack align-items-center border-start">delete</span>
+                                    </div>
+                                </div>
+
+                                <ng-container>
+                                    <div *ngIf="query.selectedNewQuery.attachments.length < maxAttachments && !query.selectedNewQuery.show_attachment_input"
+                                        class="cursor-pointer hstack gap-2"
+                                        (click)="query.selectedNewQuery.show_attachment_input = true;">
+                                        <span class="material-symbols-outlined">attach_file</span> Add
+                                        Attachment Link
+                                    </div>
+                                    <div *ngIf="query.selectedNewQuery.attachments.length >= maxAttachments">
+                                        <span class="opacity-50 color-primary hstack gap-2 align-items-center">
+                                            <span class="material-symbols-outlined">attach_file_off</span>
+                                            You have reached the maximum allowable attachment limit.
+                                        </span>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <ng-container *ngIf="query.selectedNewQuery.show_attachment_input">
+                                <div class="bg-white">
+                                    <app-inline-attachment
+                                        (cancelAttachment)="query.selectedNewQuery.show_attachment_input = false;"></app-inline-attachment>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="vstack gap-2">
+                            <label>Recommended response type</label>
+                            <pq-simple-tab tabStyle="island" [tabs]="newQueryResponseType.tabs"
+                                (tabSelectedEvent)="newQueryResponseType.selectedTab = $event;"></pq-simple-tab>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template> -->
+<!-- End of New Query Form Template -->
+
+
+
+<!-- Query Template Selector -->
+<app-query-template-selector queryTemplateSelectorId="query-template-selector" [categories]="categories"
+    [subCategories]="subCategories" (selectedTemplate)="addMoreQueries($event);"></app-query-template-selector>
+<!-- End of Query Template Selector -->
+
+
+
+<!-- Back to Queries Confirmation Popup -->
+<div class="modal fade" [ngClass]="{ 'show d-block': showDismissConfirmation }" id="mdlDismissConfirmation"
+    tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0 shadow-lg bg-color-white-lighter">
+            <div class="modal-header border-0 bg-transparent">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure</h1>
+                <span class="material-symbols-outlined">help</span>
+            </div>
+            <div class="modal-body">
+                <div class="fw-medium">Queries are not submitted.</div>
+                <div>Are you sure want to go back?</div>
+            </div>
+            <div
+                class="modal-footer hstack gap-2 align-items-center justify-content-between pt-0 border-0 bg-transparent">
+                <pq-button buttonStyle="simple" buttonContentClass="hstack align-items-center gap-2"
+                    (clickEvent)="dismiss()">
+                    <span class="material-symbols-outlined">keyboard_backspace</span>
+                    Yes, Go Back
+                </pq-button>
+                <pq-button buttonShape="rounded" (clickEvent)="showDismissConfirmation = false;">No, Cancel</pq-button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Back to Queries Confirmation Popup -->

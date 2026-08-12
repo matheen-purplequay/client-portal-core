@@ -1,0 +1,27 @@
+[
+    {
+        "first_name": "Super",
+        "last_name" : "Admin",
+        "email" : "matheen.abdul@purplequay.com.au"
+    },
+    {
+        "first_name": "Thomas",
+        "last_name" : "Adams",
+        "email" : "thomasadams@gmail.com"
+    },
+    {
+        "first_name": "Taylor",
+        "last_name" : "Smith",
+        "email" : "taylorsmith@gmail.com"
+    },
+    {
+        "first_name": "Roger",
+        "last_name" : "Rafael",
+        "email" : "rogerrafael@gmail.com"
+    },
+    {
+        "first_name": "Mathew",
+        "last_name" : "Kennedy",
+        "email" : "mathewkennedy@gmail.com"
+    }
+]

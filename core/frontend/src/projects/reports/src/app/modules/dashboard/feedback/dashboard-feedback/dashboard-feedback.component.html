@@ -1,0 +1,174 @@
+<section class="container">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <pq-section-card 
+                cardClass="shadow-sm" cardHeaderClass="py-0 action-toolbar" cardBodyClass="p-0" cardFooterClass="p-0" [showLoading]="isFeedbacksLoading" showLoadingText="Getting all feedback..."
+                [enableSettings]="false" [clipContents]="false">
+
+                <div actions class="flex-fill hstack gap-2 align-items-center justify-content-between">
+                    <div>
+                        <pq-simple-tab [tabs]="filterFeedbackStatus.list" tabStyle="minimal" [selectedTab]="filterFeedbackStatus.selectedStatus.index"
+                            (tabSelectedEvent)="filterFeedbackStatus.selectedStatus = $event; filterFeedback();"></pq-simple-tab>
+                    </div>
+
+                    <div class="hstack gap-2 align-items-center">
+                        <div class="hstack gap-1 justify-content-end align-items-center disabled">
+                            <label class="lh-1 small text-end">Filter jobs <br>by date</label>
+                            <pq-dropdown [text]="filterDays.selectedDays.label" dropDownType="advanced"
+                                [options]="filterDays.list" [keys]="filterDays.keys" [hideError]="true"
+                                [selectedOption]="filterDays.selectedDays.index.toString()"
+                                (outputObject)="filterDays.selectedDays = $event; getFeedbackStatus();"></pq-dropdown>
+                        </div>
+    
+                        <div class="border-start mx-2 h-100"></div>
+    
+                        <pq-button buttonStyle="simple" buttonClass="rounded-pill px-1 py-2"
+                            buttonContentClass="hstack align-items-center" [isLoading]="isFeedbacksLoading"
+                            [hideContent]="isFeedbacksLoading" (clickEvent)="getFeedbackStatus()">
+                            <span class="material-symbols-rounded">refresh</span>
+                        </pq-button>
+                    </div>
+
+                </div>
+            
+                <div body>
+
+                    <!-- <div class="toolbar bg-color-light border-top hstack gap-2 align-items-center justify-content-start px-3 py-2">
+                        <div class="hstack gap-2 align-items-center">
+
+                            <div class="border-start mx-2 h-100"></div>
+                        </div>
+                        <div class="hstack gap-1 justify-content-end align-items-center">
+                            <label class="lh-1 small">Filter jobs <br>by feedback type</label>
+                            <pq-dropdown [text]="feedbackTypes.selectedType.label" dropDownType="advanced"
+                                [options]="feedbackTypes.list" [keys]="feedbackTypes.keys" [hideError]="true"
+                                [selectedOption]="feedbackTypes.selectedType.index.toString()"
+                                (outputObject)="feedbackTypes.selectedType = $event;"></pq-dropdown>
+                        </div>
+                    </div> -->
+                    
+                    <!-- Table View -->
+                    <div *ngIf="feedback" class="table-view border-top border-bottom">
+                        <table *ngIf="feedback.length > 0" class="w-100" [ngClass]="{ 'disabled': resolvingFeedback }">
+                            <thead class="shadow-sm z-2">
+                                <th></th>
+                                <th class="small fw-600 px-2 text-center">S.No</th>
+                                <th class="small fw-600 px-2">Job</th>
+                                <th class="small fw-600 px-2">Process</th>
+                                <th class="small fw-600 px-2">Feedback</th>
+                                <th class="small fw-600 px-2">DT Comments</th>
+                                <th class="small fw-600 px-2">Status</th>
+                                <th class="small fw-600 px-2">Date</th>
+                                <th class="small fw-600 px-2 text-center">Actions</th>
+                            </thead>
+                            <tbody>
+                                <tr class="row-truncate" *ngFor="let fb of feedback; let index = index;">
+                                    <td class="cursor-pointer" onclick="this.parentElement.classList.toggle('row-truncate'); this.parentElement.classList.toggle('selected-row');">
+                                        <span class="material-symbols-rounded">unfold_more</span>
+                                    </td>
+                                    <td class="small text-center">{{ index + 1 }}</td>
+                                    <td class="small w-200p">
+                                        <div>{{ fb.JobDescription }}</div>
+                                        <div class="small">{{ fb.Status }}</div>
+                                    </td>
+                                    <td class="small">
+                                        <div>{{ fb.ProcessArea }}</div>
+                                    </td>
+                                    <td class="small w-200p">
+                                        <div class="truncated-text">
+                                            {{ fb.Feedback }}
+                                        </div>
+                                    </td>
+                                    <td class="small w-200p">
+                                        <div class="truncated-text">
+                                            {{ fb.DTComments }}        
+                                        </div>
+                                    </td>
+                                    <td class="small">
+                                        <span *ngIf="fb.FeedbackStatus == 1">Open</span>
+                                        <span *ngIf="fb.FeedbackStatus == 2">Replied</span>
+                                        <span *ngIf="fb.FeedbackStatus > 2">Closed</span>
+                                    </td>
+                                    <td class="small">{{ fb.Date }}</td>
+                                    <td class="text-center">
+                                        <pq-button [ngClass]="{ 'disabled': fb.FeedbackStatus > 2 }" buttonStyle="link" buttonContentClass="small"
+                                            [isLoading]="(fb.id == resolvingFeedbackId)? true : false"
+                                            (clickEvent)="markAsResolved(fb)">
+                                            Mark as closed
+                                        </pq-button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="feedback.length <= 0" class="hstack align-items-center justify-content-center p-5">
+                            <div class="small disabled text-center">
+                                No feedback available
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            
+                <div footer class="overflow-hidden rounded-bottom-4 text-end hstack justify-content-end">
+                    <pq-pagination [config]="config" (pageChanged)="config.currentPage = $event"></pq-pagination>
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Job Details Modal -->
+<div class="modal fade" id="jobDetailsPopup" tabindex="-1" aria-labelledby="jobDetailsPopup" aria-hidden="true"
+    data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg bg-color-lighter bg-blur-8 rounded overflow-hidden">
+            <div class="modal-header border-bottom-0 border-top hstack justify-content-between py-1 px-3 bg-color-lightest bg-blur-8" style="text-shadow: 0 0 15px white;">
+                <div class="lh-1">
+                    <div class="modal-title fs-6"><span class="fw-400 me-1">Job Name</span></div>
+                    <div class="small disabled">Job Id: {{ jobFeedback.Aid }}</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0 h-100 bg-white" id="jobDetailsPopupContent">
+                <div class="container h-100">
+                    <div class="row h-100">
+                        <div [ngClass]="{ 'disabled': isNewFeedback }" 
+                        class="col-sm-4 px-0 bg-white position-relative">
+                            <div class="p-1 text-center">
+                                <pq-button buttonStyle="simple" [ngClass]="{ 'pe-none opacity-30': isNewFeedback }"
+                                    buttonClass="rounded bg-color-primary text-light shadow-sm"  buttonWidth="full"
+                                    buttonContentClass="px-2" (clickEvent)="isNewFeedback = true;">New Feedback</pq-button>
+                            </div>
+                            <div class="position-relative" style="height: 400px; overflow-y: auto;">
+                                <div *ngIf="isLoadingFeedbackComments" class="z-3 p-5 hstack gap-2 align-items-center justify-content-center h-100 w-100">
+                                    <div class="spinner-border spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span>Fetching feedbacks...</span>
+                                </div>
+                                <ul *ngIf="!isLoadingFeedbackComments" class="list-group list-group-flush border-top">
+                                    <li *ngFor="let feedback of feedbackComments"
+                                        class="list-group-item" [ngClass]="{ 'bg-color-primary-lightest': selectedFeedbackComment == feedback }"
+                                        (click)="selectedFeedbackComment = feedback;">
+                                        <div class="fw-400">{{ feedback.Subject }}</div>
+                                        <div class="small disabled text-end">{{ feedback['CreatedOn'] | date: 'dd-M-yyyy' }}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 px-0 bg-color-light border-start" style="height: 500px; overflow-y: auto;">
+                            <app-feedback-comments #feedbackcomments [isNewFeedback]="isNewFeedback" (cancelNewFeedback)="isNewFeedback = false;" (refreshFeedbackStatus)="loadFeedbackComments(jobFeedback)"></app-feedback-comments>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

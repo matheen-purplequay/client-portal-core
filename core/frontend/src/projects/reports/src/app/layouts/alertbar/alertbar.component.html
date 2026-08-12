@@ -1,0 +1,8 @@
+<ng-container>
+	<div *ngIf="showAlert" class="bg-color-primary py-1 px-2 text-light text-center hstack gap-2">
+		<span class="flex-fill small fw-500">11 Queries are waiting for your closure</span>
+		<div data-bs-theme="dark">
+			<button type="button" class="btn-close" aria-label="Close" (click)="showAlert = false;"></button>
+		</div>
+	</div>
+</ng-container>

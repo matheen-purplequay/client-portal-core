@@ -1,0 +1,206 @@
+<section class="container-fluid report-manage-section">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <pq-section-card cardClass="shadow-sm section-card" containerClass="ps-0" cardBodyClass="p-0" cardFooterClass="p-0"
+                        sectionTitle="Report Preview" [enableSettings]="false" [showLoading]="isPDFLoading"
+                        showLoadingText="Loading preview">
+                        <div actions>
+                            <a class="color-primary text-decoration-none" [href]="pdfURL" target="_blank" onclick="alert('Please click allow when browser presents with security popup! Ignore if already allowed.'); return true;"><span class="material-symbols-rounded small">open_in_new</span></a>
+                        </div>
+                        <div body class="row" style="min-height: 600px;">
+                            <div class="col-sm-12">
+                                <iframe *ngIf="!isPDFLoading" class="d-block" [src]="pdfURL" width="100%" height="100%"
+                                    type="application/pdf"></iframe>
+                            </div>
+                        </div>
+                    </pq-section-card>
+                </div>
+                <div class="col-sm-6">
+                    <pq-section-card cardClass="shadow-sm section-card" containerClass="px-0" cardBodyClass="pb-0"
+                        sectionTitle="Connect report details" sectionSubtitle="Choose a client first from dropdown"
+                        [clipContents]="false" [enableSettings]="false" [showLoading]="isReportLoading"
+                        showLoadingText="Loading Report Details">
+
+                        <div actions class="hstack gap-2 align-items-center">
+                            <!-- <ng-container *ngIf="userPermissions.update">
+                                <pq-button (clickEvent)="updateReport()">Update</pq-button>
+                            </ng-container> -->
+                            <pq-button buttonStyle="outline" (clickEvent)="dismiss()">
+                                <i class="fa-solid fa-chevron-left me-1"></i>
+                                Go Back
+                            </pq-button>
+                        </div>
+
+                        <div body class="row">
+                            <!-- <div class="col-sm-12">
+                                <div class="vstack gap-2">
+
+                                    <div class="mb-2">
+                                        <label class="opacity-75">Report Name</label>
+                                        <div class="h5 mb-0 fw-400">{{ report.name }}</div>
+                                    </div>
+
+                                    <div class="hstack gap-4 flex-wrap py-3">
+                                        <div class="mb-2">
+                                            <label class="opacity-75">Month & Year</label>
+                                            <div class="h6 mb-0 fw-400">{{ report.month }}, {{ report.year }}</div>
+                                        </div>
+                                        <div *ngIf="report.status_type == 'rejected'" class="mb-2">
+                                            <label class="text-danger opacity-75">Reason for rejection</label>
+                                            <div class="h6 mb-0 text-danger fw-400">{{ report.reason }} &nbsp;</div>
+                                        </div>
+
+                                        <ng-container *ngIf="userPermissions.review">
+                                            <div *ngIf="report.status == 0" class="d-none position-relative" style="height: 300px; width: 100%; overflow: hidden;">
+                                                <label class="opacity-75">Custom section for report</label>
+                                                <ckeditor [editor]="Editor" [data]="report.custom_section" [config]="config"></ckeditor>
+                                                <div class="mt-1 small px-2 fw-400 py-1 hstack gap-1 align-items-center fs-italic rounded bg-color-warning shadow-input-1">
+                                                    <span class="material-symbols-outlined small opacity-70">info</span>
+                                                    <span class="opacity-70">Custom section will be shown in Delivery Dashboard (not in PDF report).</span>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+                                    </div>
+
+                                    <ng-container *ngIf="report.status == 0">
+                                        <div *ngIf="userPermissions.review" id="confetti-container" class="vstack gap-2 mt-3 px-2 pt-2 pb-1 rounded bg-light shadow-input-1">
+                                            <div class="hstack justify-content-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input rounded-pill border border-2 border-primary" type="checkbox" value="" id="chkConfirm" [(ngModel)]="isConfirmed">
+                                                    <label class="form-check-label text-dark" for="chkConfirm">
+                                                        Acknowledgement: I hereby confirm that the monthly connect report has been thoroughly reviewed and validated against the delivery dashboard metrics in the client portal
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="hstack gap-2" [ngClass]="{ 'disabled': !isConfirmed }">
+                                                <ng-container>
+                                                    <app-slide-button class="flex-fill" 
+                                                        [isLoading]="isApproving || isRejecting"
+                                                        sliderText="<span class='fw-500'>Slide to approve</span> <span class='material-symbols-rounded small'>arrow_right_alt</span> <span class='material-symbols-rounded small'>verified</span>" sliderTextClass="hstack gap-1 align-items-center"
+                                                        (completedEvent)="approveReport()">
+                                                        Approve
+                                                    </app-slide-button>
+                                                    <pq-button buttonStyle="dark" [isDisabled]="isApproving || isRejecting"
+                                                        data-bs-toggle="modal" data-bs-target="#rejectReasonPopup"
+                                                        [isLoading]="isRejecting">Reject</pq-button>                                                
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="!userPermissions.review" class="vstack justify-content-center align-items-center gap-1 mt-3 px-2 py-3 rounded bg-light shadow-input-1">
+                                            <span class="material-symbols-outlined opacity-50">pending</span>
+                                            <span class="small opacity-70">Review pending</span>
+                                        </div>
+                                    </ng-container>
+                                    <div *ngIf="report.status != 0" 
+                                        class="mt-3 px-2 pt-2 pb-1 hstack gap-2 align-items-center justify-content-center opacity-75 bg-light shadow-input-1 rounded">
+                                        <div class="h3 mb-0" [ngClass]="(report.status_type == 'approved')? 'text-success' : 'text-danger'">
+                                            <span *ngIf="report.status_type == 'approved'" class="material-symbols-rounded" style="font-size: 45px;">verified</span>
+                                            <span *ngIf="report.status_type == 'rejected'" class="material-symbols-rounded" style="font-size: 45px;">unpublished</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-success fw-bold smaller" [ngClass]="{ 'text-sucess': report.status_type == 'approved', 'text-danger': report.status_type == 'rejected' }">
+                                                <ng-container *ngIf="report.status_type == 'approved'">
+                                                    Approved by
+                                                </ng-container>
+                                                <ng-container *ngIf="report.status_type == 'rejected'">
+                                                    Rejected by
+                                                </ng-container>
+                                            </div>
+                                            <div class="lead fw-medium">
+                                                <ng-container *ngIf="report.status_type == 'approved'">
+                                                    {{ report.approved_by_first_name }} {{ report.approved_by_last_name }}
+                                                </ng-container>
+                                                <ng-container *ngIf="report.status_type == 'rejected'">
+                                                    {{ report.rejected_by_first_name }} {{ report.rejected_by_last_name }}
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div> -->
+
+                            <app-report-details 
+                                [report]="report" 
+                                [roleCategory]="(user.role == 'admin' || user.role == 'group_director' || user.role == 'business_analyst' || user.role == 'client_lead' || user.role == 'client_director' || user.role == 'ceo' || user.role == 'partner')? 'management' : 'employee'"
+                                [client_id]="client.value.id"></app-report-details>
+                        </div>
+
+                        <div footer>
+                            <div *ngIf="report.status == 0 || (userPermissions.delete || userPermissions.review)" class="hstack gap-1 align-items center justify-content-end">
+                                <pq-button *ngIf="userPermissions.update" buttonStyle="simple" buttonContentClass="hstack gap-1 align-items-center" (clickEvent)="resetReport()">
+                                    <span class="material-symbols-rounded small">
+                                        backspace
+                                    </span>
+                                    Reset
+                                </pq-button>
+                                <pq-button *ngIf="userPermissions.delete" buttonStyle="simple" buttonContentClass="hstack gap-1 align-items-center"
+                                    data-bs-toggle="modal" data-bs-target="#deleteReasonPopup">
+                                    <span class="material-symbols-rounded small">
+                                        delete_forever
+                                    </span>
+                                    Delete
+                                </pq-button>
+                            </div>
+                        </div>
+                    </pq-section-card>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Report Rejected Reason Popup -->
+<div class="modal fade" id="rejectReasonPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg h-100">
+            <div class="modal-header py-2 border-0 hstack gap-3 align-items-center justify-content-between" #dialogHandle>
+                <h1 class="modal-title fs-5">Reason for rejection</h1>
+                <div class="hstack gap-3 align-items-center">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <pq-textbox label="Please specify reason for rejecting the report"
+                    [maxLength]="150"
+                    [textBoxContent]="rejectReason" 
+                    helper="Give a reason with not more than 150 letters"
+                    (outputValue)="rejectReason = $event"></pq-textbox>
+            </div>
+            <div class="modal-footer hstack gap-1 justify-content-end p-0 border-0 bg-transparent">
+                <pq-button data-bs-dismiss="modal" (clickEvent)="rejectReport()">Reject Report</pq-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Report Rejected Reason Popup -->
+<div class="modal fade" id="deleteReasonPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg h-100">
+            <div class="modal-header bg-danger text-light py-2 border-0 hstack gap-3 align-items-center justify-content-between pe-2" #dialogHandle>
+                <h1 class="modal-title fs-5">Reason for deletion</h1>
+                <button type="button" class="btn text-light hstack align-items-center justify-content-center px-1" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <pq-textbox label="Please specify reason for rejecting the report"
+                    [maxLength]="150"
+                    [textBoxContent]="deleteReason" 
+                    helper="Give a reason with not more than 150 letters"
+                    (outputValue)="deleteReason = $event"></pq-textbox>
+            </div>
+            <div class="modal-footer hstack gap-1 justify-content-end p-0 border-0 bg-transparent">
+                <pq-button data-bs-dismiss="modal" (clickEvent)="deleteReport()">Delete Report</pq-button>
+            </div>
+        </div>
+    </div>
+</div>

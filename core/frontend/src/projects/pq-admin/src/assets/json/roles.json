@@ -1,0 +1,578 @@
+{
+    "admin": {
+        "clients": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        },
+        "users": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        },
+        "connect_report": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        },
+        "agreed": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        },
+        "team": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        },
+        "contact": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        },
+        "newsletters": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        },
+        "it": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        },
+        "knowledge_center": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        },
+        "support": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true,
+            "review": true
+        }
+    },
+    "associate": {
+        "clients": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "users": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": true
+        },
+        "connect_report": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "agreed": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "team": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "contact": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "newsletters": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "it": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "knowledge_center": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "support": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        }
+    },
+    "team_lead": {
+        "clients": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "users": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "connect_report": {
+            "create": true,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "agreed": {
+            "create": true,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "team": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "contact": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "newsletters": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "it": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "knowledge_center": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "support": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        }
+    },
+    "project_director": {
+        "clients": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "users": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "connect_report": {
+            "create": false,
+            "read": true,
+            "update": true,
+            "delete": false,
+            "review": true
+        },
+        "agreed": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": true
+        },
+        "team": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "contact": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "newsletters": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "it": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "knowledge_center": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "support": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        }
+    },
+    "group_director": {
+        "clients": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "users": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "connect_report": {
+            "create": false,
+            "read": true,
+            "update": true,
+            "delete": false,
+            "review": true
+        },
+        "agreed": {
+            "create": false,
+            "read": true,
+            "update": true,
+            "delete": false,
+            "review": true
+        },
+        "team": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false,
+            "review": false
+        },
+        "contact": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "newsletters": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "it": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "knowledge_center": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "support": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        }
+    },
+    "client_director": {
+        "clients": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "users": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "connect_report": {
+            "create": false,
+            "read": true,
+            "update": true,
+            "delete": false,
+            "review": true
+        },
+        "agreed": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "team": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "contact": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "newsletters": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "it": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "knowledge_center": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "support": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "review": false
+        }
+    },
+    "it_lead": {
+        "clients": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "users": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "connect_report": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "agreed": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "team": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "contact": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "newsletters": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "it": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false,
+            "review": true
+        },
+        "knowledge_center": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "support": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        }
+    },
+    "marketing_lead": {
+        "clients": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "users": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "connect_report": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "agreed": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "team": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "contact": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "newsletters": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false,
+            "review": true
+        },
+        "it": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        },
+        "knowledge_center": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false,
+            "review": true
+        },
+        "support": {
+            "create": false,
+            "read": false,
+            "update": false,
+            "delete": false,
+            "review": false
+        }
+    }
+}

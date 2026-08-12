@@ -1,0 +1,28 @@
+<section class="container pb-5 h-body">
+    <div class="row h-10body align-items-center pb-5">
+        <div class="col-sm-6 offset-sm-3 py-5">
+            <div *ngIf="config.seasonalConfig.christmas.christmasGreeting && config.seasonalConfig.christmas.snowEffect" class="d-block position-relative">
+                <div *ngFor="let i of snowFlakesCount" class="snowflake"></div>
+            </div>
+            <div class="container p-4 rounded mb-5">
+                <img class="image h-256 w-100 rounded mb-3 object-fit-cover" [src]="config.seasonalConfig.christmas.greetingsBanner" alt="">
+                <div class="fs-1 color-primary">Season&apos;s Greetings</div>
+                <div class="fs-3 fw-300">
+                    <p>
+                        As the year draws to a close, we want to take a moment to reflect on our journey and extend our heartfelt appreciation to all our valued partners, clients, and employees.
+                    </p>
+                    <p>
+                        Your continued trust and collaboration have been essential to our success, and we are truly grateful for your support throughout the year. As we move forward into a new season, we remain committed to fostering growth and innovation in everything we do.
+                    </p>
+                    <p>
+                        We wish you a season filled with warmth, joy, and prosperity. May the coming months bring new opportunities and continued success for all of us.
+                    </p>
+                </div>
+                <p class="text-muted fs-5 mt-5 pt-3 border-top">
+                    Best regards,<br>
+                    <strong>The Carisma Solution Team</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

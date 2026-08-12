@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-sm-12 text-center">
+            <div class="small">Please proceed to access your account by logging in.</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+
+            <!-- Login Form -->
+            <ng-container *ngIf="!isOTPSent">
+                <div class="vstack">
+                    <input type="hidden" name="_token" value="{{ csrfToken }}" />
+                    <pq-textbox type="email" label="Email" placeholder="Your email address" [textBoxContent]="userCredentials.email" (outputValue)="userCredentials.email = $event;" (keyup.enter)="login()"></pq-textbox>
+                    <pq-textbox type="password" label="Password" placeholder="Your password" [textBoxContent]="userCredentials.password" (outputValue)="userCredentials.password = $event;" (keyup.enter)="login()"></pq-textbox>
+                    
+                    <div [ngClass]="(isLoggingIn || isSendingOTP)? 'disabled' : ''">
+                        <pq-button buttonWidth="full" (clickEvent)="login()">
+                            <div *ngIf="isLoggingIn || isSendingOTP" class="spinner-border spinner-border-sm text-light me-1" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span *ngIf="!isLoggingIn && !isSendingOTP">Login</span>
+                            <span *ngIf="isLoggingIn && !isSendingOTP">Logging in</span>
+                            <span *ngIf="!isLoggingIn && isSendingOTP">Sending OTP</span>
+                        </pq-button>
+
+                        <ng-container *ngIf="!isLoggingIn && !isSendingOTP">
+                            <div class="mt-3 text-center">
+                                <pq-button buttonStyle="link" (clickEvent)="goToPage('/login/reset-password')">
+                                    Reset password
+                                </pq-button>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Verify OTP Form -->
+            <ng-container *ngIf="isOTPSent">
+                <div class="col-sm-12 text-center">
+                    <div class="h4">Login with OTP</div>
+                    <div *ngIf="currentSeconds > 0" class="small">Please verify otp to login into your account</div>
+                    <div *ngIf="currentSeconds <= 0" class="small fw-500 text-danger hstack gap-1 justify-content-center align-items-center">
+                        <span class="material-symbols-rounded small">info</span> OTP expired. Please click Back to Login to generate new OTP.
+                    </div>
+
+                    <pq-textbox type="password" label="One Time Passcode" placeholder="Your otp from email" [textBoxContent]="otp" (outputValue)="otp = $event" (keyup.enter)="verifyOTP()" helper="OTP is sent to {{ userCredentials.email }}" helperClass="text-start"></pq-textbox>
+                    <div class="pb-4 fw-bold hstack gap-2 align-items-center disabled" *ngIf="currentSeconds > 0">
+                        <span class="material-symbols-rounded">timer</span>
+                        <span>OTP will expire in {{ currentSeconds }} seconds.</span>
+                    </div>
+                    <ng-container *ngIf="!isOTPVerified">
+                        <div>
+                            <pq-button class="flex-fill" buttonWidth="full" (clickEvent)="verifyOTP()" [isDisabled]="isValidOTP || isOTPVerifying || currentSeconds <= 0" [isLoading]="isOTPVerifying">Verify OTP</pq-button>
+                            <div class="mt-2">
+                                <button class="btn" (click)="backToLogin()">Back to login</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+</div>
+

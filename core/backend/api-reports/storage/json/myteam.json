@@ -1,0 +1,44 @@
+[
+    {
+        "company_id": "6",
+        "name": "Prasoon",
+        "role": "Group Director",
+        "vertical": "Business Team",
+        "email": "prasoon.veerath@purplequay.com.au"
+    },
+    {
+        "company_id": "6",
+        "name": "Gayathri Chandrasekar",
+        "role": "Group Director",
+        "vertical": "Book Keeping",
+        "email": "gayathri.chandrasekar@carisma-solutions.com.au"
+    },
+    {
+        "company_id": "6",
+        "name": "Sundaram S",
+        "role": "Project Director",
+        "vertical": "SMSF",
+        "email": "sundaram.shanmugam@carisma-solutions.com.au"
+    },    
+    {
+        "company_id": "6",
+        "name": "Yathish Kumar",
+        "role": "Manager",
+        "vertical": "SMSF",
+        "email": "yathishkumar.sudhakaran@carisma-solutions.com.au"
+    },
+    {
+        "company_id": "6",
+        "name": "Gopi Maruthamuthu",
+        "role": "Manager",
+        "vertical": "Information Technology",
+        "email": "gopi@carisma-solutions.com.au"
+    },
+    {
+        "company_id": "6",
+        "name": "Badri Narayan",
+        "role": "HR Director",
+        "vertical": "Management",
+        "email": "badri.narayan@carisma-solutions.com.au"
+    }
+]

@@ -1,0 +1,78 @@
+<section class="container py-4">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">Monthly Newsletter</div>
+
+                <div class="py-2">
+                    <div class="ps-1 pe-3 py-1 bg-white rounded-pill small hstack gap-2 align-items-center shadow-input-2">
+                        <span class="material-symbols-rounded opacity-40">info</span>
+                        Updated by 3rd Week of every month
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+
+            <pq-section-card sectionTitle="Newsletters"
+                sectionSubtitle="Choose year from dropdown to view more newsletters." verticalMargin="small"
+                cardClass="shadow-sm" cardBodyClass="p-0 overflow-hidden" cardFooterClass="p-0" [showLoading]="isNewsLettersLoading"
+                showLoadingText="Loading newsletters" [enableSettings]="false">
+
+                <div actions>
+                    <pq-dropdown [text]="period.selectedPeriod.year.toString()" [hideError]="true"
+                        [setOptionAsText]="true" [fullWidth]="true" [options]="period.years" dropDownType="simple"
+                        (outputValue)="period.selectedPeriod.year = convertToNumber($event); loadRssFeed();">
+                    </pq-dropdown>
+                </div>
+
+                <div body class="row h-100 border-top">
+                    <div class="col-sm-4 col-lg-3 pe-sm-0">
+                        <div class="list-group list-group-flush">
+                            <div *ngIf="feedItems.length <= 0" class="p-4 bg-white disabled text-center">
+                                <div *ngIf="isNewsLettersLoading"
+                                    class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                                    <div class="spinner-border spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span>Loading monthly newsletters...</span>
+                                </div>
+                                <div *ngIf="!isNewsLettersLoading" class="fw-medium">Details will be updated shortly
+                                </div>
+                            </div>
+                            <button *ngFor="let feed of feedItems; let index = index;" type="button"
+                                class="list-group-item list-group-item-action"
+                                [ngClass]="(index == currentIndex)? 'active' : ''" (click)="openURL(feed.link, index)">
+                                <div class="fw-600">{{ period.monthNames[feed.month] }} {{ feed.year }}</div>
+                                <div class="small opacity-70">{{ feed.title }}</div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-lg-9 ps-sm-0 border-start h-100" style="margin-bottom: -7px; min-height: 550px;">
+                        <div *ngIf="isNewsLetterLoading" class="p-4 bg-white disabled text-center">
+                            <div class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span>Loading newsletter...</span>
+                            </div>
+                            <div *ngIf="!isNewsLetterLoading" class="fw-medium">Details will be updated shortly</div>
+                        </div>
+                        
+                        <iframe [ngClass]="{ 'd-none': isNewsLetterLoading }" [src]="currentLink" width="100%"
+                            height="100%" frameborder="0" (load)="isNewsLetterLoading = false"></iframe>
+                    </div>
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>

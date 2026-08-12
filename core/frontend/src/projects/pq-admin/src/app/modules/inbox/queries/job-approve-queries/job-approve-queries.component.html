@@ -1,0 +1,89 @@
+<div>
+
+    <ng-container *ngIf ="!selectedJobId">
+        <table class="w-100 tbl-primary">
+            <thead class="bg-color-primary text-light">
+                    <th class="px-2 text-center">S. No</th>
+                    <th>Job</th>
+                    <th>Client</th>
+                    <th>Vertical</th>
+                    <th>FY</th>
+                    <th>JY</th>
+                    <!-- <th>Total Drafts</th> -->
+            </thead>
+            <tbody>
+
+                    <ng-container *ngFor="let jq of queries | paginate: config; let index = index;">
+                        <tr>
+                            <td class="px-2 text-center">{{ config.currentPage * config.itemsPerPage - config.itemsPerPage + index + 1 }}</td>
+                            <td class="w-200p" (click)="setSelectedJobId(jq.job_id)">
+                                <div *ngIf="jq.total_queries > 0" class="cursor-pointer color-primary w-200p truncate pe-3" [title]="jq.job_name">
+                                    {{ jq.job_name }}
+                                </div>
+                                <div *ngIf="jq.total_queries <= 0" class="w-200p truncate pe-3" [title]="jq.job_name">
+                                    {{ jq.job_name }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="vstack gap-1 lh-1">
+                                    <div>{{ jq.client }}</div>
+                                    <div class="small disabled">{{ jq.sub_client }}</div>
+                                </div>
+                            </td>
+                            <td>{{ jq.vertical_name }}</td>
+                            <td>{{ jq.fy }}</td>
+                            <td>
+                                <div class="vstack gap-1 lh-1">
+                                    <div>{{ jq.jy | date: 'y' }}</div>
+                                    <div class="small disabled">{{ jq.jy | date: 'd-M-y' }}</div>
+                                </div>
+                            </td>
+                            <!-- <td>
+                                <div class="badge fs-6 fw-400 bg-color-warning-lightest text-dark rounded-pill d-inline-flex align-items-center justify-content-center">
+                                    <span class="material-symbols-outlined opacity-50">timer</span> {{ jq.total_queries }}
+                                </div>
+                            </td> -->
+                        </tr>
+                    </ng-container>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center mt-3">
+            <pq-pagination [config]="config" (pageChanged)="config.currentPage = $event"></pq-pagination>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedJobId !== undefined">
+
+        <div class="hstack justify-content-between">
+
+            <div class="my-2">
+                <button class="btn btn-outline-primary" (click)="setSelectedJobId(undefined)">
+                    ← Back to Job List
+                </button>
+            </div>
+
+            <div class="my-2">
+                <pq-button buttonContentClass="hstack gap-2 align-items-center" (clickEvent)="bulkApproveQueries()" >
+                    <span class="material-symbols-outlined">verified</span>
+                    <span>Bulk Approve</span>
+                </pq-button>
+            </div>
+
+        </div>
+
+        
+
+        <ng-container *ngIf="queries.length === 0">
+            <div class="text-center text-muted py-3">
+                <span class="material-symbols-outlined">info</span> No queries found.
+            </div>
+        </ng-container>
+
+
+        <ng-container *ngIf="queries.length > 0">
+            <app-approve-queries [queries]="draftQueries" (refresh)="getDraftQueries();"></app-approve-queries>
+        </ng-container>
+
+    </ng-container>
+
+</div>

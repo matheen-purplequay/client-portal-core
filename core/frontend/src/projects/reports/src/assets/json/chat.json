@@ -1,0 +1,22 @@
+[
+    {
+        "userName": "Ram Manoj",
+        "queryId": 60,
+        "query": "Thank you, Sarah. Let me check your account.",
+        "createdon": "2023-08-08T09:41:31.1",
+        "userCode": 1,
+        "hasSubQueries": true,
+        "raisedToUserId": 62,
+        "raisedToName": "John"
+    },
+    {
+        "userName": "Raj Kumar",
+        "queryId": 62,
+        "query": "Thank you for the clarification, Sarah. Let's focus on troubleshooting the \"Advanced JavaScript\" course. Here are a few steps to start with:",
+        "createdon": "2023-08-08T14:09:57.35",
+        "userCode": 57,
+        "hasSubQueries": false,
+        "raisedToUserId": 1,
+        "raisedToName": "Ram"
+    }
+]

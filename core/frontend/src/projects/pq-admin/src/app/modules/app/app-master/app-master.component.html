@@ -1,0 +1,19 @@
+<div class="row h-100">
+	<div class="col-sm-3 col-lg-2 h-100 pe-0 sidebar-wrapper" id="sidebarWrapper" #sidebarWrapper>
+		<div class="sticky-top">
+			<app-sidebar></app-sidebar>
+		</div>
+	</div>
+	<div class="col-sm-9 col-lg-10 ps-0 body-main-content">
+		<app-navbar></app-navbar>
+
+		<div>
+			<pq-simple-tab [tabs]="appPages.list" [selectedTab]="appPages.selectedPage.index"
+				(tabSelectedEvent)="appPages.selectedPage = $event; openAppPage(appPages.selectedPage.data.page)"></pq-simple-tab>
+
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+</div>
+
+<app-floating-support></app-floating-support>

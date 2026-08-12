@@ -1,0 +1,655 @@
+<section *ngIf="isContractsLoading" class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="bg-white shadow-sm rounded">
+                <pq-simple-horizontal-loading [loadingText]="loadingText"></pq-simple-horizontal-loading>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section *ngIf="!isContractsLoading" class="container">
+    <div class="row mb-2" [ngClass]="{ 'disabled': isJobsLoading }">
+        <div [ngClass]="(user.role == 'tester' || user.is_tester)? 'col-sm-8' : 'col-sm-8'">
+            <div *ngIf="!isJobStatusCountLoading" class="hstack gap-3 justify-content-center align-items-center">
+                <div class="hstack gap-1 justify-content-start flex-wrap">
+                    <ng-container *ngIf="user.company_id == 6">
+                        <div *ngFor="let status of filterJobStatus.list"
+                            [ngClass]="(filterJobStatus.selectedJobStatus == status)? 'bg-color-primary text-light fw-600' : 'bg-white text-dark fw-400 shadow-sm'"
+                            class="cursor-pointer small px-2 py-1 text-center text-truncate" [title]="status.Name"
+                            (click)="filterJobStatus.selectedJobStatus = status; getJobs();">
+                            {{ status.ShortName }} <span class="fw-700">({{ status.Count }})</span>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="user.company_id != 6">
+                        <div *ngFor="let status of newFilterJobStatus.list"
+                            [ngClass]="(newFilterJobStatus.selectedJobStatus == status)? 'bg-color-primary text-light fw-600' : 'bg-white text-dark fw-400 shadow-sm'"
+                            class="cursor-pointer small px-2 py-1 text-center text-truncate"
+                            (click)="newFilterJobStatus.selectedJobStatus = status; getJobs();">
+                            {{ status.label }} <span class="fw-700"><ng-container
+                                    *ngIf="newFilterJobStatus.selectedJobStatus == status">({{ jobs.length
+                                    }})</ng-container></span>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div *ngIf="isJobStatusCountLoading" class="hstack gap-3 justify-content-start align-items-center">
+                <div class="disabled text-center hstack gap-2 justify-content-center align-items-center">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    Getting job status metrics...
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div [ngClass]="{ 'disabled': jobs.length <= 0}">
+                <div class="input-group bg-white shadow-input-2 rounded-pill shadow-input-1 hstack align-items-center align-self-center"
+                    [ngClass]="{ 'border border-color-primary': jobSearchTerm }">
+                    <input type="text" class="form-control border-0 bg-transparent" [placeholder]="(jobs.length > 0)? 'Search jobs...' : 'No jobs to search...'"
+                        [(ngModel)]="jobSearchTerm">
+                    <button [ngClass]="{ 'pe-none opacity-30': !jobSearchTerm }"
+                        class="btn z-0 border-0 hstack align-items-center" (click)="resetSearchByJobname()">
+                        <span class="material-symbols-rounded">backspace</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+
+            <pq-section-card
+                sectionTitle="{{ (onlyPriorityJobs)? 'Priority' : '' }} Job Status as of {{ currentDate }}-{{ currentMonth + 1 }}-{{ currentYear }}"
+                sectionSubtitle="Click on job name to view the details" cardClass="shadow-sm" cardBodyClass="p-0"
+                cardFooterClass="p-0" colClass="px-0" cardHeaderClass="d-none"
+                [showLoading]="isJobsLoading || isCommentCodesLoading || isPriorityMasterLoading || isFetchingWeeklyJobs"
+                [showLoadingText]="loadingText" [enableSettings]="false" [clipContents]="false">
+
+                <div body>
+
+                    <!-- Job Status Toolbar -->
+                    <div
+                        class="toolbar rounded-top-4 bg-white hstack gap-2 align-items-center justify-content-between px-3 py-1">
+                        <div class="hstack gap-2 align-items-center">
+                            <ng-container *ngIf="typeOfJobs != 'weekly'">
+                                <!-- View Filter -->
+                                <div class="hstack gap-2">
+                                    <div class="bg-light d-inline-flex border rounded overflow-hidden">
+                                        <div *ngFor="let view of filterView.list"
+                                            class="py-1 px-2 cursor-pointer hstack align-items-center"
+                                            [ngClass]="{ 'bg-secondary text-light shadow-input-1': filterView.selectedView.index == view.index}"
+                                            (click)="changeView(view, jobComments2)">
+                                            <span class="hstack align-items-center" [innerHTML]="view.label"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="border-start mx-2 h-100"></div>
+                            </ng-container>
+                            <ng-container *ngIf="typeOfJobs != 'weekly'">
+                                <!-- Job Priority Toggle -->
+                                <div class="hstack gap-2 align-items-center">
+                                    <label class="form-label mb-0 small">Priority</label>
+                                    <pq-toggle-switch [checked]="onlyPriorityJobs" toggleStyle="primary"
+                                        (isChecked)="onlyPriorityJobs = $event; setOnlyPriority(); toggleColumns();"></pq-toggle-switch>
+                                </div>
+                            </ng-container>
+                        </div>
+
+                        <div class="hstack gap-2 align-items-center">
+                            <!-- Weekly Filter -->
+                            <ng-container *ngIf="onlyPriorityJobs && !toggleNewView">
+                                <!-- <div class="hstack gap-2 align-items-center">
+                                    <label class="lh-1 text-end small">Filter by<br>
+                                        <span class="text-nowrap">Week</span>
+                                    </label>
+                                    <pq-dropdown [text]="filterPriorityWeeks.selectedFilter.value"
+                                        dropDownType="advanced" [options]="filterPriorityWeeks.list" [hideError]="true"
+                                        [keys]="filterPriorityWeeks.keys"
+                                        [selectedOption]="filterPriorityWeeks.selectedFilter.index.toString()"
+                                        (outputObject)="handleFilterPriorityWeeks($event);"></pq-dropdown>
+                                </div> -->
+
+                                <!-- <div class="border-start mx-2 h-100"></div> -->
+                            </ng-container>
+
+                            <ng-container *ngIf="typeOfJobs != 'weekly'">
+
+
+                                <!-- Job Priority Filter -->
+                                <div *ngIf="onlyPriorityJobs" class="hstack gap-2 align-items-center">
+                                    <!-- <label class="lh-1 text-end small">Priority<br><span class="text-nowrap">Filter</span></label> -->
+                                    <pq-dropdown [text]="priorityMaster.selectedPriority.Priority"
+                                        dropDownType="advanced" [options]="priorityMaster.list"
+                                        [keys]="priorityMaster.keys" [hideError]="true"
+                                        [selectedOption]="priorityMaster.selectedPriority.Code.toString()"
+                                        (outputObject)="priorityMaster.selectedPriority = $event; isJobsLoaded = false; getJobs();"></pq-dropdown>
+                                </div>
+
+                                <!-- Instructions Last Updated Filter -->
+                                <ng-container *ngIf="!onlyPriorityJobs">
+                                    <!-- <div class="border-start mx-2 h-100"></div> -->
+
+                                    <div class="hstack gap-2 align-items-center d-none">
+                                        <label class="lh-1 text-end small">Filter<br><span class="text-nowrap">by
+                                                FY</span></label>
+
+                                        <div class="hstack gap-2 align-items-center">
+                                            <pq-dropdown [text]="filterFY.selectedFY" dropDownType="simple"
+                                                [options]="filterFY.list" [hideError]="true"
+                                                [selectedOption]="filterFY.selectedFY.toString()"
+                                                (outputObject)="filterFY.selectedFY = $event;"></pq-dropdown>
+                                        </div>
+                                    </div>
+
+                                    <div class="hstack gap-2 align-items-center d-none">
+                                        <label class="lh-1 text-end small">Filter<br><span class="text-nowrap">by
+                                                JY</span></label>
+
+                                        <div class="hstack gap-2 align-items-center">
+                                            <!-- <pq-dropdown [text]="filterJY.selectedDays.label" dropDownType="advanced"
+                                                [options]="filterJY.list" [keys]="filterJY.keys" [hideError]="true"
+                                                [selectedOption]="filterJY.selectedDays.index.toString()"
+                                                (outputObject)="setJYFilter($event);"></pq-dropdown> -->
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="border-start mx-2 h-100"></div> -->
+
+                                    <div class="hstack gap-2 align-items-center">
+                                        <label class="lh-1 text-end small">Filter by<br><span
+                                                class="text-nowrap">Instructions</span></label>
+                                        <div class="hstack gap-2 align-items-center">
+                                            <pq-dropdown [text]="filterDays.selectedDays.label" dropDownType="advanced"
+                                                [options]="filterDays.list" [keys]="filterDays.keys" [hideError]="true"
+                                                [selectedOption]="filterDays.selectedDays.index.toString()"
+                                                (outputObject)="filterDays.selectedDays = $event; isJobsLoaded = false; getJobs();"></pq-dropdown>
+
+                                            <!-- Instructions Code & Status Filter -->
+                                            <ng-container
+                                                *ngIf="filterPriorityWeeks.selectedFilter != priorityWeeks.weekly">
+                                                <div class="hstack gap-2 align-items-center">
+                                                    <pq-dropdown [ngClass]="(isCustomInstruction)? 'disabled' : ''"
+                                                        dropDownButtonClass="text-truncate" [hideError]="true"
+                                                        [text]="(dropDownComments.selectedComment.code)? dropDownComments.selectedComment.code : 'Any Code'"
+                                                        [setOptionAsText]="true" [keys]="dropDownComments.keys"
+                                                        [options]="dropDownComments.list" dropDownType="advanced"
+                                                        (outputObject)="dropDownComments.selectedComment = $event; isJobsLoaded = false; getJobs();"></pq-dropdown>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <!-- Date Filter -->
+                                <ng-container *ngIf="onlyPriorityJobs && toggleNewView">
+                                    <div class="border-start mx-2 h-100"></div>
+
+                                    <div class="hstack gap-2 align-items-center">
+                                        <!-- <label class="lh-1 text-end small">Filter by<br>
+                                            <span class="text-nowrap">date</span>
+                                        </label> -->
+                                        <pq-dropdown [text]="filterWeekDays.selectedDay" dropDownType="simple"
+                                            [options]="filterWeekDays.list" [hideError]="true"
+                                            [selectedOption]="filterWeekDays.selectedDay"
+                                            (outputValue)="filterWeekDays.selectedDay = $event; isJobsLoaded = false; getJobs();"></pq-dropdown>
+                                    </div>
+                                </ng-container>
+
+                            </ng-container>
+
+                            <div class="border-start mx-2 h-100"></div>
+
+                            <pq-button buttonStyle="simple" buttonClass="rounded-pill px-1 py-2"
+                                buttonContentClass="hstack align-items-center" [isLoading]="isJobsLoading"
+                                [hideContent]="isJobsLoading" (clickEvent)="refreshJobs()">
+                                <span class="material-symbols-rounded">refresh</span>
+                            </pq-button>
+
+                            <pq-button class="transform-small" buttonStyle="simple"
+                                buttonClass="bg-color-primary-lighter rounded-pill px-1 py-2"
+                                buttonContentClass="hstack gap-1 align-items-center" (clickEvent)="exportJobStatus()"
+                                [isLoading]="isExportingJobStatus" [isDisabled]="isExportingJobStatus">
+                                <span class="material-symbols-rounded">download</span>
+                            </pq-button>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Jobs Section -->
+                    <ng-container>
+
+                        <!-- Jobs Chat - New View -->
+                        <div class="border-top border-bottom overflow-hidden"
+                            [ngClass]="(toggleNewView)? 'd-block' : 'd-none'">
+                            <div class="row">
+                                <div class="col-sm-4 border-end pe-0">
+                                    <div class="rounded-bottom-4" style="max-height: 610px; overflow-y: auto;">
+                                        <ul class="list-group list-group-flush">
+                                            <ng-container *ngIf="typeOfJobs == 'priority' && !priorityJobsAvailable">
+                                                <li *ngIf="!isJobsLoading"
+                                                    class="list-group-item py-4 opacity-75 disabled vstack gap-1 align-items-center justify-content-center">
+                                                    <span class="material-symbols-rounded">work_history</span>
+                                                    <span>Jobs yet to be uploaded</span>
+                                                </li>
+                                            </ng-container>
+                                            <li *ngFor="let j of jobs| objectFilter: jobSearchTerm; let index = index;"
+                                                class="list-group-item"
+                                                [ngClass]="(job.JobId == j.JobId)? 'bg-color-primary text-light' : ''"
+                                                (click)="job = j; jobComments2.resetComment(); jobComments2.getComments(job)">
+                                                <div class="vstack">
+                                                    <div class="fw-500">{{ j.JobName }}</div>
+                                                    <div *ngIf="j.JobId" class="small opacity-75 fw-400">Job ID {{
+                                                        j.JobId }}</div>
+                                                    <div *ngIf="j.CommentsCreatedOn"
+                                                        class="text-end small opacity-75 fw-400">
+                                                        {{ j.CommentsCreatedOn }}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 bg-light ps-0">
+                                    <app-comments #jobComments2 [jobID]="job.Aid" [job]="job"
+                                        [toggleNewView]="toggleNewView"></app-comments>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Jobs Table - Old View -->
+                        <div class="scrollable-container-large border-top border-bottom"
+                            [ngClass]="(!toggleNewView)? 'd-block' : 'd-none'">
+
+                            <!-- Current Week Jobs Table -->
+                            <ng-container *ngIf="filterPriorityWeeks.selectedFilter == priorityWeeks.current">
+                                <table class="w-100">
+                                    <thead class="shadow-sm z-2">
+                                        <th *ngFor="let col of columns; let first = first;" class="px-2"
+                                            [ngClass]="{ 'position-sticky start-0 bg-color-primary': first }">
+                                            <div *ngIf="col.sortable"
+                                                class="cursor-pointer hstack gap-2 justify-content-between align-items-center"
+                                                (click)="sortBy(col.code)">
+                                                <span [innerHTML]="col.title"></span>
+                                                <ng-container *ngIf="sortedColumn != col.code">
+                                                    <span class="material-symbols-rounded">unfold_more</span>
+                                                </ng-container>
+                                                <span *ngIf="sortedColumn === col.code"
+                                                    class="material-symbols-rounded">
+                                                    {{ (isAsc)? 'arrow_drop_up' : 'arrow_drop_down' }}
+                                                </span>
+                                            </div>
+                                            <div *ngIf="!col.sortable" class="text-center">
+                                                {{ col.title }}
+                                            </div>
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngIf="jobs && jobs.length > 0">
+                                            <tr *ngFor="let j of jobs | objectFilter: jobSearchTerm | paginate: pgiJobStatus; let index = index;"
+                                                [ngClass]="(j.Aid == job.Aid)? 'current-job' : ''">
+                                                <td class="px-2 small text-center bg-blur-8"
+                                                    [ngClass]="{ 'bg-color-lightest': (index % 2 != 0) }"
+                                                    style="position: sticky; left: 0;">
+                                                    {{ ((pgiJobStatus.currentPage - 1) * this.pgiJobStatus.itemsPerPage)
+                                                    + index + 1 }}
+                                                </td>
+                                                <td class="px-2 small" *ngIf="!isNoJobID">{{ j.JobId }} - {{
+                                                    j.FinancialYear }}</td>
+                                                <ng-container *ngIf="onlyPriorityJobs">
+                                                    <td class="px-2 text-center small">
+                                                        <ng-container *ngIf="j.Priority">
+                                                            {{ j.Priority.replace('T', 'P') }}
+                                                        </ng-container>
+                                                    </td>
+                                                </ng-container>
+                                                <td class="px-2">
+                                                    <div class="small" [title]="j.JobName" data-bs-toggle="modal"
+                                                        data-bs-target="#jobDetailsPopup"
+                                                        (click)="job = j; showJobDetailsPopup(j, jobComments);">
+                                                        <span
+                                                            class="text-decoration-underline cursor-pointer text-nowrap text-truncate">
+                                                            {{ j.JobName }}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <ng-container *ngIf="user.company_id == 6">
+                                                    <td class="px-2 small w-50p ">
+                                                        <div class="text-nowrap vstack gap-1">
+                                                            <div *ngIf="j.SubClientName"
+                                                                class="lh-1 hstack gap-1 align-items-center">
+                                                                <span
+                                                                    class="material-symbols-rounded small opacity-50">domain</span>
+                                                                <span class="text-nowrap fw-400">{{
+                                                                    j.SubClientName}}</span>
+                                                            </div>
+                                                            <div class="lh-1 hstack gap-1 align-items-center">
+                                                                <span
+                                                                    class="material-symbols-rounded small opacity-50">person</span>
+                                                                <span class="text-nowrap fw-400">{{
+                                                                    j.ClientContact}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+                                                <td class="px-2 small text-center">{{ j.FinancialYear }}</td>
+                                                <td class="px-2 text-nowrap small">{{ j.Datereceived }}</td>
+                                                <ng-container *ngIf="onlyPriorityJobs">
+                                                    <td class="px-2 small w-50p">
+                                                        <div>
+                                                            <div class="disabled">{{ j.LWDate }}</div>
+                                                            <div class="smaller text-nowrap opacity-70">{{ j.LWStatus }}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+                                                <td class="px-2 text-no-wrap small"
+                                                    [ngClass]="{'w-50p': user.company_id == 6}">
+                                                    <div>
+                                                        <div class="disabled">{{ j.LastTouch }}</div>
+                                                        <ng-container *ngIf="user.company_id == 6">
+                                                            <div class="smaller opacity-70 text-nowrap">{{ j.Status }}
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="user.company_id != 6">
+                                                            <div class="smaller opacity-70 text-nowrap">{{
+                                                                getNewStatusName(j.Status) }}</div>
+                                                        </ng-container>
+                                                    </div>
+                                                </td>
+                                                <ng-container *ngIf="onlyPriorityJobs">
+                                                    <td *ngIf="user.is_tester" class="px-2 small">{{ j.Reviewer }}</td>
+                                                </ng-container>
+
+                                                <td class="px-2 small">{{ j.Elapseddate ?? 0 }}<span
+                                                        class="opacity-50">d</span> </td>
+
+                                                <!-- Table Actions -->
+                                                <td class="px-2 w-90p cursor-pointer">
+                                                    <!-- Instructions Column -->
+                                                    <div class="truncate" data-bs-toggle="modal"
+                                                        data-bs-target="#jobDetailsPopup"
+                                                        (click)="showJobInstructionsPopup(j, jobComments)">
+
+                                                        <div *ngIf="j.commentcode"
+                                                            class="hstack gap-1 align-items-start">
+                                                            <ng-container>
+                                                                <span *ngIf="j.CommentViewStatus == 0"
+                                                                    class="material-symbols-rounded opacity-25">outgoing_mail</span>
+                                                                <span *ngIf="j.CommentViewStatus == 1"
+                                                                    class="material-symbols-rounded opacity-50">drafts</span>
+                                                                <span *ngIf="j.CommentViewStatus == 2"
+                                                                    class="material-symbols-rounded opacity-75 color-primary">mark_email_unread</span>
+                                                            </ng-container>
+                                                            <div class="text-nowrap opacity-80 lh-1 truncate"
+                                                                [title]="j.last_commented_on | date: 'dd-MM-yyy hh:mm'">
+                                                                <span class="small w-90p text-truncate">
+                                                                    {{ j.last_comment }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div *ngIf="!j.commentcode"
+                                                            class="smaller hstack justify-content-center align-items-center gap-2 color-primary">
+                                                            <span class="material-symbols-rounded small">chat</span>
+                                                            <span>New</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-2">
+                                                    <div class="hstack justify-content-center align-items-center cursor-pointer"
+                                                        data-bs-toggle="modal" data-bs-target="#jobDetailsPopup"
+                                                        (click)="showJobFeedback(j);">
+                                                        <span
+                                                            class="material-symbols-rounded color-primary">rate_review</span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center cursor-pointer">
+                                                    <!-- Rating Column -->
+                                                    <!-- Only for Moved to Audit and WP Changes Initial Jobs -->
+                                                     <!-- HARD CODED j.Aid == 249473 -- REMOVE AFTER DEMO -->
+                                                    <ng-container
+                                                        *ngIf="j.Status.toLowerCase().includes('9.') || j.Status.toLowerCase().includes('6.') || j.Aid == 249473">
+                                                        <div class="hstack gap-1 justify-content-center color-primary cursor-pointer"
+                                                            data-bs-toggle="modal" data-bs-target="#jobDetailsPopup"
+                                                            (click)="showJobRating(j)">
+                                                            <span>{{ j.job_rating }}</span>
+                                                            <div
+                                                                [innerHTML]="(j.job_rating >= 1)? ratingStarFilled : ratingStarUnFilled">
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+
+                                                    <!-- For other job status disable rating icon -->
+                                                     <!-- HARD CODED j.Aid == 249473 -- REMOVE AFTER DEMO -->
+                                                    <ng-container
+                                                        *ngIf="!j.Status.toLowerCase().includes('9.') && !j.Status.toLowerCase().includes('6.') && j.Aid !== 249473">
+                                                        <div class="pe-none opacity-50" [innerHTML]="ratingStarUnFilled"
+                                                            title="Rating applicable for Moved to audit and Workpapers changes initial jobs">
+                                                        </div>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+
+                                <ng-container>
+                                    <div *ngIf="(typeOfJobs == 'priority') && (jobs && jobs.length <= 0) && !isJobsLoading"
+                                        class="no-priority py-5 opacity-75 disabled vstack gap-1 align-items-center justify-content-center">
+                                        <span class="material-symbols-outlined opacity-75">work_history</span>
+                                        <span>Jobs yet to be uploaded</span>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+
+                            <!-- Previous Weeks Jobs Table -->
+                            <ng-container *ngIf="filterPriorityWeeks.selectedFilter == priorityWeeks.weekly">
+                                <table class="w-100">
+                                    <thead class="shadow-sm z-2">
+                                        <th class="small">S. No</th>
+                                        <!-- <th class="small">Id</th> -->
+                                        <th class="small">Name</th>
+                                        <ng-container *ngIf="weeklyJobs.length > 0">
+                                            <th *ngFor="let week of jobWeeks; let index = index;"
+                                                [ngClass]="{ 'bg-color-lightest': (index % 2) === 0 }" class="small">
+                                                <div [innerHTML]="getJobStatusofWeekHeader(week)"></div>
+                                            </th>
+                                        </ng-container>
+                                        <ng-container *ngIf="weeklyJobs.length <= 0">
+                                            <th>Week 1</th>
+                                            <th>Week 2</th>
+                                            <th>Week 3</th>
+                                            <th>Week 4</th>
+                                        </ng-container>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngIf="weeklyJobs.length > 0">
+                                            <tr
+                                                *ngFor="let job of weeklyJobs | objectFilter: jobSearchTerm; let index = index;">
+                                                <td class="small">{{ index + 1 }}</td>
+                                                <!-- <td class="small">{{ job.JobNo }}</td> -->
+                                                <td class="px-2 w-90p">
+                                                    <div class="truncate small">
+                                                        <span class="text-nowrap">
+                                                            {{ job.jobname }}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td *ngFor="let week of jobWeeks; let i = index;" class="small"
+                                                    [ngClass]="{ 'bg-color-lightest': (i % 2) === 0 }">
+                                                    {{ getJobStatusofWeek(week, index, i) }}
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+
+                                <ng-container>
+                                    <div *ngIf="typeOfJobs == 'weekly' && weeklyJobs.length <= 0 && !isFetchingWeeklyJobs"
+                                        class="no-weekly py-5 opacity-75 disabled vstack gap-1 align-items-center justify-content-center">
+                                        <span class="material-symbols-outlined opacity-75">work_history</span>
+                                        <span>Jobs yet to be uploaded</span>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+
+                </div>
+
+                <div footer class="overflow-hidden rounded-bottom-4 text-end hstack justify-content-end">
+                    <ng-container *ngIf="filterPriorityWeeks.selectedFilter != priorityWeeks.weekly">
+                        <ng-container *ngIf="!toggleNewView">
+                            <pq-pagination [config]="pgiJobStatus"
+                                (pageChanged)="pgiJobStatus.currentPage = $event"></pq-pagination>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="filterPriorityWeeks.selectedFilter == priorityWeeks.weekly">
+                    </ng-container>
+                </div>
+
+            </pq-section-card>
+
+
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- Job Details Modal -->
+<div class="modal bg-color-darkest bg-blur-8" id="jobDetailsPopup" tabindex="-1" aria-labelledby="jobDetailsPopup"
+    aria-hidden="true" data-bs-backdrop="false" style="z-index: 9999999;">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered align-items-stretch px-3 pt-3">
+        <div class="modal-content border-0 shadow rounded-top-4 rounded-bottom-0 bg-color-lighter bg-blur-8">
+            <div
+                class="modal-header border-0 py-0 rounded-bottom-0 rounded-top-4 align-items-start  bg-color-lighter bg-blur-8">
+                <div class="flex-fill hstack gap-2 justify-content-between align-items-center">
+                    <div class="h5 mb-0 gap-3 hstack align-items-center">
+                        <span>{{ job.JobName }}</span>
+                        <span class="hstack gap-2 align-self-center badge bg-white text-dark fw-400 small">
+                            <span class="hstack gap-1 align-items-center">
+                                <span class="material-symbols-rounded opacity-50 small">apartment</span> {{
+                                job.SubClientName }}
+                            </span>
+                            <span class="hstack gap-1 align-items-center">
+                                <span class="material-symbols-rounded opacity-50 small">person</span> {{
+                                job.ClientContact }}
+                            </span>
+                        </span>
+                        <span class="hstack gap-2 align-self-center badge bg-white text-dark fw-400 small"><span
+                                class="material-symbols-rounded opacity-50 small">event_upcoming</span> {{
+                            job.Datereceived }} &rarr; Job Received</span>
+                        <span class="hstack gap-2 align-self-center badge bg-white text-dark fw-400 small">
+                            <span class="material-symbols-outlined pe-1 small">
+                                <ng-container *ngIf="job.Status.includes('1')">circle</ng-container>
+                                <ng-container
+                                    *ngIf="(!job.Status.includes('1') && !job.Status.includes('9'))">pending</ng-container>
+                                <ng-container *ngIf="job.Status.includes('9')">task_alt</ng-container>
+                            </span>
+                            {{
+                            (job.Status.split('.').length > 0)? job.Status.split('.')[1] : job.Status }}</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close my-1" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="inboxViews.selectedView = inboxViewList.default;"></button>
+            </div>
+            <div class="modal-body bg-white py-0 overflow-hidden" id="jobDetailsPopupContent">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <section>
+                            <div class="row align-items-end">
+                                <div class="col-sm-12">
+                                    <div class="text-center px-3 sticky-top bg-white">
+                                        <pq-simple-tab [tabs]="inboxViews.list" tabStyle="minimal"
+                                            [selectedTab]="inboxViews.selectedView.index"
+                                            (tabSelectedEvent)="handleJobPopupTabs($event)"></pq-simple-tab>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="vh-100 bg-light rounded shadow-input-1 border-start border-end position-relative">
+                                <!-- Job Details Tab -->
+                                <div *ngIf="inboxViews.selectedView === inboxViewList.details"
+                                    [ngClass]="{ 'd-none': !(inboxViews.selectedView === inboxViewList.details) }"
+                                    style="height: calc(100vh - 88px); overflow: auto;">
+                                    <app-job-details #jobDetails [job]="job"></app-job-details>
+                                </div>
+
+                                <!-- Job Instructions Tab -->
+                                <div class="vh-100"
+                                    [ngClass]="{ 'd-none': !(inboxViews.selectedView === inboxViewList.instuctions) }">
+                                    <app-comments #jobComments [jobID]="job.Aid" [job]="job"
+                                        (sentComment)="sortJobs()"></app-comments>
+                                </div>
+
+                                <!-- Feedback Status Tab -->
+                                <div *ngIf="inboxViews.selectedView === inboxViewList.feedback"
+                                    style="height: calc(100vh - 88px); overflow: auto;">
+                                    <app-feedback-home #jobFeedback [job]="job"></app-feedback-home>
+                                </div>
+
+                                <!-- Rating Tab -->
+                                <div *ngIf="inboxViews.selectedView === inboxViewList.rating"
+                                    [ngClass]="{ 'd-none': !(inboxViews.selectedView === inboxViewList.rating) }"
+                                    style="height: calc(100vh - 88px); overflow: auto;">
+                                    <app-job-rating #jobRating [job]="job" (refreshJobs)="getJobs();"></app-job-rating>
+                                </div>
+
+                                <!-- Queries Tab -->
+                                <!-- <div *ngIf="inboxViews.selectedView === inboxViewList.queries"
+                                    [ngClass]="{ 'd-none': !(inboxViews.selectedView === inboxViewList.queries) }"
+                                    style="height: calc(100vh - 88px); overflow: auto;">
+                                    <app-job-status-queries #jobStatusQueries></app-job-status-queries>
+                                </div> -->
+                            </div>
+
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Custom Range Date Picker -->
+<!-- Modal -->
+<div class="modal fade" [ngClass]="{ 'show': filterJY.selectedCustomDate.isCustom }"
+    [ngStyle]="{ 'display': (filterJY.selectedCustomDate.isCustom)? 'block' : 'none' }" id="mdlCustomDatePicker"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="this.filterJY.selectedCustomDate.isCustom = true;"></button>
+            </div>
+            <div class="modal-body">
+                <div class="position-relative">
+                    <label>Date From</label>
+                    <input type="date" id="inpJMStartDate" class="form-control" #inpJYStartDate
+                        [value]="filterJY.selectedCustomDate.startDate | date:'yyyy-MM-dd'" tabindex="1"
+                        (input)="filterJY.selectedCustomDate.startDate=parseDate($event, 'start', inpJYStartDate.value)">
+                </div>
+                <div class="position-relative">
+                    <label>Date To</label>
+                    <input type="date" id="inpJMEndDate" class="form-control" #inpJYEndDate
+                        [value]="filterJY.selectedCustomDate.endDate | date:'yyyy-MM-dd'" tabindex="2"
+                        (input)="filterJY.selectedCustomDate.endDate=parseDate($event, 'end', inpJYEndDate.value)">
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <!-- <pq-button (clickEvent)="setCustomJYDate();">Filter Jobs</pq-button> -->
+            </div>
+        </div>
+    </div>
+</div>

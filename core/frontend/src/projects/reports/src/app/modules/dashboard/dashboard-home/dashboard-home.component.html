@@ -1,0 +1,1245 @@
+<!-- Meta Details -->
+<section class="container">
+    <div class="row align-items-stretch">
+        <div class="col-sm-12 h-100">
+            <div class="card h-100 border-0 shadow-input-1 rounded-4 overflow-hidden">
+                <div class="card-body h-100 p-0">
+                    <div class="hstack gap-2 py-2 px-3 d-none">
+                        <div class="flex-fill">
+                            <div class="h4 mb-0">Welcome, <span class="fw-medium">{{ user.first_name }} {{
+                                    user.last_name }}</span></div>
+                        </div>
+                        <div class="flex-fill">
+                            <div class="hstack gap-2 align-items-center justify-content-end">
+                                <div>
+                                    <!-- <div class="color-primary fw-500 pe-1 small">India:</div> -->
+                                    <!-- <div class="color-primary fw-500 pe-1 small">Melbourne:</div> -->
+                                    <div class="lead color-primary fw-500 pe-1"> {{ currentDate }}-{{ currentMonth + 1
+                                        }}-{{ currentYear }}</div>
+                                </div>
+                                <div>
+                                    <!-- <div class="small">{{ metaDetails.localTime | date: 'h:mm a' }}</div> -->
+                                    <!-- <div class="small">{{ metaDetails.otherTime | date: 'h:mm a' }}</div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 
+                    Hidden because not needed for now
+                    <div class="flex-fill">
+                        <div class="fw-600">Last refreshed</div>
+                        <div><span class="small">
+                            {{ (moment != 0)? metaDetails.lastUpdated : 'last few seconds ago' }}
+                        </span></div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <!--
+        Hidden because not needed for now
+        <div class="col-sm-3 h-100">
+            <div class="card border-0 shadow-input-1 rounded-4 h-100">
+                <div class="card-body h-100 disabled pb-2">
+                    <div class="small opacity-50 fw-500 text-center">Coming soon...</div>
+                    <div class="hstack gap-2 justify-content-around align-items-end">
+                        <pq-button class="disabled small" buttonStyle="link"><i class='fa-solid fa-rotate'></i> Refresh all</pq-button>
+                        <pq-button class="disabled small" buttonStyle="link"><i class='fa-solid fa-file-arrow-down'></i> Export all</pq-button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</section>
+
+<ng-container *ngIf="hideAll">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="bg-white shadow-input-1 rounded px-4 py-5 text-center">
+                    <img class="image h-128 opacity-30" src="/assets/svg/chart.svg" alt="chart placeholder">
+                    <div class="opacity-50 display-8 fw-300">Data will be available soon</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!hideAll">
+
+    <!-- Tabs & Filters -->
+    <section class="container-fluid px-0">
+
+        <!-- Connecting to server loading animation container -->
+        <ng-container *ngIf="isLasrReportMonthLoading">
+            <div class="row py-4">
+                <div class="col-sm-12 text-center">
+                    <div class="fw-medium vstack gap-1 align-items-center justify-content-center position-relative">
+                        <!-- <div class="spinner-grow spinner-grow-sm color-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div> -->
+                        <app-network-loader *ngIf="!isContractsLoading"
+                            label="Connecting to server"></app-network-loader>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!isLasrReportMonthLoading">
+            <ng-container *ngIf="isContractsLoading">
+                <div class="row py-4">
+                    <div class="col-sm-12 text-center">
+                        <div class="fw-medium vstack gap-1 align-items-center justify-content-center position-relative">
+                            <!-- <div class="spinner-grow spinner-grow-sm color-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div> -->
+                            <app-network-loader label="Loading framework"></app-network-loader>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="!isContractsLoading">
+                <div class="row align-items-center">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-8 hstack justify-content-center">
+                        <div 
+                            class="hstack gap-2 justify-content-center align-items-center"
+                            [ngClass]="(filterDashboardType.tabs && filterDashboardType.tabs.length <= 1)? 'h-0 opacity-0 overflow-hidden pe-none' : ''"
+                        >
+                            <div *ngIf="filterDashboardType.selectedTab != dashboardTypes.monthlyConnect"
+                                class="fw-500 hstack justify-content-center align-items-center gap-2 pe-1">
+                                <span class="material-symbols-rounded color-primary">business_center</span> Job 
+                                <span
+                                    class="material-symbols-rounded">arrow_right</span>
+                            </div>
+                            <pq-simple-tab [tabs]="filterDashboardType.tabs" labelClass="px-4" tabName="dashboard-type"
+                                [selectedTab]="filterDashboardType.selectedTab.index" tabStyle="island"
+                                labelClass="rounded-pill"
+                                (tabSelectedEvent)="handleFilterDashboardTypeTab($event)"></pq-simple-tab>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <ng-container *ngIf="isRulesApplied">
+                            <ng-container *ngIf="filterDashboardType.selectedTab == dashboardTypes.jobMovement">
+                                <pq-button buttonStyle="simple"
+                                    buttonClass="bg-white text-warning rounded-pill border-0 pb-1 shadow-sm"
+                                    buttonContentClass="hstack gap-1" data-bs-toggle="offcanvas"
+                                    data-bs-target="#ofcJMLandI">
+                                    <span class="material-symbols-outlined small">help</span>
+                                    <span class="small fw-500">Help</span>
+                                </pq-button>
+                            </ng-container>
+                            <ng-container *ngIf="filterDashboardType.selectedTab == dashboardTypes.jobStatus">
+                                <pq-button buttonStyle="simple"
+                                    buttonClass="bg-white text-warning rounded-pill border-0 pb-1 shadow-sm"
+                                    buttonContentClass="hstack gap-1" data-bs-toggle="offcanvas"
+                                    data-bs-target="#ofcJSLandI">
+                                    <span class="material-symbols-outlined small">help</span>
+                                    <span class="small fw-500">Help</span>
+                                </pq-button>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div [ngClass]="(filterDashboardType.selectedTab.index == 0)? 'dashboard-toolbar mt-2 pb-3' : ''">
+                    <div class="container">
+                        <div class="row align-items-end">
+
+                            <!-- Left side filters -->
+                            <div class="col-sm-7 hstack gap-2 align-items-end justify-content-start mt-2">
+                                <!-- Engagement Type -->
+                                <div *ngIf="filterDashboardType.selectedTab.index == 1">
+                                    <label class="d-block"><span *ngIf="isContractsLoading">Loading </span> Engagement
+                                        type</label>
+                                    <div *ngIf="isContractsLoading">
+                                        <h5 class="card-title placeholder-glow">
+                                            <span class="placeholder form-control py-3 col-6"></span>
+                                        </h5>
+                                    </div>
+                                    <pq-simple-tab *ngIf="isContractsLoaded || !isContractsLoading"
+                                        [ngClass]="(contracts.Hourly == 0 && contracts.Staff == 0 && contracts.Agreed == 0)? 'pe-none opacity-70 cursor-normal' : ''"
+                                        [tabs]="filterTabs.tabs" containerClass="shadow-sm bg-white" labelClass="px-4"
+                                        tabName="contract-type" [selectedTab]="filterTabs.selectedTab.index"
+                                        (tabSelectedEvent)="handleFilterTab($event); refreshAllCharts()">
+                                    </pq-simple-tab>
+                                </div>
+
+                                <!-- Date Filters For Realtime Dashboard and Agreed Tab -->
+                                <div *ngIf="filterDashboardType.selectedTab.index == 0 || filterDashboardType.selectedTab.index == 2"
+                                    class="hstack gap-1 align-items-end" tabindex="-1">
+                                    <div *ngIf="isContractsLoading">
+                                        <!-- <div class="hstack gap-2 align-items-center justify-content-end">
+                                            <div class="spinner-border spinner-border-sm color-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <span>Loading available dates...</span>
+                                        </div> -->
+                                        <h5 class="card-title placeholder-glow">
+                                            <div class="small disabled">Loading available dates...</div>
+                                            <span class="placeholder form-control py-3 col-6"></span>
+                                        </h5>
+                                    </div>
+                                    <div *ngIf="!isContractsLoading"
+                                        class="hstack gap-1 align-items-end position-relative" tabindex="-1"
+                                        [ngClass]="{ 'disabled': filterJobMovementTabs.selectedTab.index == jobMovementTabs.status.index }">
+                                        <div class="position-relative">
+                                            <label>Touch Points From</label>
+                                            <input type="date" id="inpJMStartDate" class="form-control" min="2023-11-20"
+                                                #inpJMStartDate [value]="filters.startDate | date:'yyyy-MM-dd'"
+                                                tabindex="1" (focus)="handleFocus('to')" (blur)="handleBlur()"
+                                                (input)="filters.startDate=parseDate($event, 'start', inpJMStartDate.value)">
+                                        </div>
+                                        <div class="position-relative">
+                                            <label>Touch Points To</label>
+                                            <input type="date" id="inpJMEndDate" class="form-control" min="2023-11-20"
+                                                #inpJMEndDate [value]="filters.endDate | date:'yyyy-MM-dd'" tabindex="2"
+                                                (focus)="handleFocus('to')" (blur)="handleBlur()"
+                                                (input)="filters.endDate=parseDate($event, 'end', inpJMEndDate.value)">
+                                        </div>
+                                        <div *ngIf="touchPointsLastUpdated" class="ms-2 disabled">
+                                            <label>Touch Points Updated On</label>
+                                            <div class="form-control bg-light border rounded">
+                                                {{ touchPointsLastUpdated }} IST
+                                            </div>
+                                        </div>
+                                        <div class="ms-2"
+                                            *ngIf="(user.role == 'tester' || user.is_tester) && clientUsers.list.length > 0">
+                                            <!-- <pq-dropdown label="Choose a client user"
+                                                [text]="clientUsers.selectedUser.name" [hideError]="true"
+                                                [options]="clientUsers.list" dropDownType="advanced"
+                                                [keys]="clientUsers.keys"
+                                                (outputObject)="clientUsers.selectedUser = $event; getJobMovementDashboardData();"></pq-dropdown> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div actions *ngIf="filterDashboardType.selectedTab.index == 0" class="d-none">
+                                    <!-- Filter : Sub Client -->
+                                    <pq-dropdown class="d-none" *ngIf="filterTabs.selectedTab.index != 3"
+                                        [text]="(selectedSubClient.SubClientName)? selectedSubClient.SubClientName : 'Choose a sub client'"
+                                        [setOptionAsText]="true" [options]="subClients" dropDownType="advanced"
+                                        [keys]="{ key: 'Id', value: 'SubClientName' }"
+                                        (outputObject)="getTouchPointDetailsBySubClientFromService($event)"
+                                        [hideError]="true"></pq-dropdown>
+                                </div>
+
+                                <!-- Last updated for Staff and Hourly -->
+                                <div *ngIf="filterDashboardType.selectedTab.index == 1" class="ms-2 d-none">
+                                    <!-- Last Updated On -->
+                                    <label>Last Updated on</label>
+                                    <div class="disabled form-control bg-light border rounded shadow-input-1">
+                                        10:00 AM IST
+                                    </div>
+                                </div>
+
+                                <div
+                                    *ngIf="(filterDashboardType.selectedTab.index == filterDashboardType.legends.JOB_MOVEMENT || filterDashboardType.selectedTab.index == filterDashboardType.legends.MONTHLY_CONNECT)">
+                                    <label>&nbsp;</label>
+                                    <pq-button buttonClass="bg-white text-dark shadow-sm" buttonStyle="simple"
+                                        buttonContentClass="hstack gap-1 align-items-center"
+                                        [hideContent]="isTouchPointsLoading" [isDisabled]="showDateError"
+                                        [isLoading]="isTouchPointsLoading" (clickEvent)="refreshAllCharts()">
+                                        <span class="material-symbols-rounded">refresh</span>
+                                    </pq-button>
+                                </div>
+
+                            </div>
+
+                            <!-- Right side filters -->
+                            <div class="col-sm-5 text-end hstack gap-2 align-items-end justify-content-end">
+
+                                <ng-container
+                                    *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.JOB_MOVEMENT">
+                                    <div class="vstack gap-1 justify-content-end align-items-end">
+                                        <div class="text-center hstack gap-2 align-items-end justify-content-end">
+                                            <div class="color-primary fw-bold smaller">Legends</div>
+                                            <div class="hstack gap-1 justify-content-end align-items-end flex-wrap">
+                                                <span class="badge bg-white text-dark shadow-sm">DWP - Draft Work
+                                                    Paper</span>
+                                                <span class="badge bg-white text-dark shadow-sm">RDWP - Revised Draft
+                                                    Work Paper</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-inline-flex gap-2 justify-content-center align-items-center">
+                                            <span class="material-symbols-rounded small me-1">arrow_downward</span>
+                                            <span class="small fw-medium">Click on Touch Points to view more
+                                                details</span>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div *ngIf="filterDashboardType.selectedTab.index == 0 && filterTabs.selectedTab.index == 3"
+                    class="row">
+                    <div class="col-sm-12 hstack gap-1 align-items-center py-2">
+                        <span class="material-symbols-rounded small disabled">info</span>
+                        <div class="small disabled">Data available from 20-11-2023</div>
+                    </div>
+                </div> -->
+            </ng-container>
+        </ng-container>
+    </section>
+
+    <div class="py-2"></div>
+
+
+    <ng-container *ngIf="isRulesApplied && !isFetchingRules">
+        <!-- Job Movement Tab Content -->
+        <div *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.JOB_MOVEMENT">
+            <!-- Movemebt Tab Content for Job Movement -->
+            <div class="movement-tabs"
+                [ngClass]="{ 'active': filterJobMovementTabs.selectedTab.index == jobMovementTabs.movement.index }">
+                <ng-container *ngIf="isTouchPointsLoading">
+                    <div class="p-4 disabled text-center hstack gap-2 justify-content-center align-items-center">
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        Loading Touch Points...
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="!isTouchPointsLoading && isTouchPointsLoaded">
+                    <section class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ng-container *ngIf="!isTouchPointsLoading">
+                                    <ng-container *ngIf="touchPointCounts.length > 0">
+                                        <div class="hstack gap-3 justify-content-center align-items-center">
+                                            <ng-container
+                                                *ngFor="let tpc of touchPointCounts; let index = index; let first = first; let last = last;">
+                                                <div class="card flex-fill smooth cursor-pointer rounded-4"
+                                                    [ngClass]="(currentTouchPointCounts.statusText == tpc.Status)? 'bg-light shadow-input-2 border border-2 border-color-primary' : 'bg-white shadow-sm border-color-transparent'"
+                                                    (click)="getTouchPointDetailsFromService(index + 1, tpc.Status)">
+                                                    <div class="card-body py-1">
+                                                        <div class="hstack align-items-start justify-content-between">
+                                                            <div>
+                                                                <div class="color-primary fw-bold small">
+                                                                    <span>{{ tpc.Status.split('_').join(' ') }}</span>
+                                                                </div>
+                                                                <div>
+                                                                    <span class="display-8 fw-500">{{ tpc.Count
+                                                                        }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <span class="material-symbols-outlined fs-1 opacity-30">
+                                                                {{ touchPointIcons[tpc.Status.toLowerCase()] }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="first || index == touchPointCounts.length - 2"
+                                                    class="border-start">&nbsp;</div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                    <div class="card border-0 shadow-input-1 rounded-2 h-100 d-none">
+                                        <div class="card-body h-100 vstack py-1 px-1">
+                                            <div class="hstack gap-2 justify-content-around h-100">
+                                                <div *ngFor="let tpc of touchPointCounts; let index = index;"
+                                                    class="cursor-pointer rounded p-2 flex-fill text-center"
+                                                    [ngClass]="{ 'bg-color-light shadow-input-1': currentTouchPointCounts.statusText == tpc.Status }"
+                                                    (click)="getTouchPointDetailsFromService(index + 1, tpc.Status)">
+                                                    <div class="color-primary fw-bold small">
+                                                        <span>{{ tpc.Status.split('_').join(' ') }}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="display-8 fw-500">{{ tpc.Count }}</span>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="touchPointCounts.length > 0"
+                                                    class="vstack justify-content-center h-100 small fw-medium border-start ps-4 disabled">
+                                                    <div class="color-primary fw-bold smaller">Legends</div>
+                                                    <span>DWP - Draft Work Paper</span>
+                                                    <span>RDWP - Revised Draft Work Paper</span>
+                                                </div>
+                                                <div *ngIf="touchPointCounts.length <= 0"
+                                                    class="text-center opacity-50 p-4 flex-fill">
+                                                    <div class="fw-medium">No data available</div>
+                                                    <div class="small">Touch Points status will be pouplated based on
+                                                        the chosen date <i
+                                                            class="fa-solid fa-calendar-days opacity-75"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <ng-container *ngIf="!isTouchPointsDetailsLoaded && isLoadingTouchPointDetails">
+                            <div class="text-center">
+                                <pq-simple-horizontal-loading
+                                    loadingText="Loading {{ (currentTouchPointCounts.statusText)? (currentTouchPointCounts.statusText.split('_').join(' ') + ' Details') : '' }}"
+                                    containerClass="rounded-pill overflow-hidden"></pq-simple-horizontal-loading>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="(isTouchPointsDetailsLoaded && originalTouchPointDetails.length > 0)">
+                            <pq-section-card
+                                [sectionTitle]="(currentTouchPointCounts.statusText)? (currentTouchPointCounts.statusText.split('_').join(' ') + ' for period ' + (filters.startDate | date: 'dd-MM-yyyy') + ' to ' + (filters.endDate | date: 'dd-MM-yyyy')): 'Status'"
+                                [enableSettings]="false" cardClass="shadow-sm" cardBodyClass="pb-0"
+                                cardFooterClass="p-0" [showLoading]="isLoadingTouchPointDetails"
+                                showLoadingText="Loading {{ (currentTouchPointCounts.statusText)? (currentTouchPointCounts.statusText.split('_').join(' ') + ' Details') : '' }}">
+
+                                <div actions class="hstack gap-2 align-items-start">
+
+                                    <div
+                                        class="input-group bg-color-lighter shadow-input-2 rounded-pill shadow-input-1 hstack align-items-center align-self-center">
+                                        <input type="text" class="form-control border-0 bg-transparent"
+                                            placeholder="Search" [(ngModel)]="jobSearchTerm">
+                                        <button [ngClass]="{ 'pe-none opacity-30': !jobSearchTerm }"
+                                            class="btn z-0 border-0 hstack align-items-center"
+                                            (click)="resetSearchByJobname()">
+                                            <span class="material-symbols-rounded">backspace</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="border-start mx-2 h-100"></div>
+
+                                    <!-- <pq-textbox placeholder="Search" [hideError]="true"
+                                        [textBoxContent]="jobSearchTerm"
+                                        (outputValue)="jobSearchTerm = $event;"></pq-textbox>
+                                    <pq-button buttonStyle="light" (clickEvent)="resetSearchByJobname()">Reset Search</pq-button> -->
+                                    <pq-button class="transform-small" buttonStyle="simple"
+                                        buttonClass="bg-color-primary-lighter rounded-pill px-1 py-2"
+                                        buttonContentClass="hstack gap-1 align-items-center"
+                                        [isLoading]="isExportingJobStatusDetails"
+                                        [isDisabled]="isExportingJobStatusDetails"
+                                        (clickEvent)="exportJobStatusDetails(currentTouchPointCounts.statusText)">
+                                        <span class="material-symbols-rounded">download</span>
+                                    </pq-button>
+                                </div>
+
+                                <div body style="min-height: 100px; overflow-y: auto;"
+                                    [ngStyle]="{ 'max-height': (touchPointDetails.length > 10)? '250px' : '' }">
+                                    <div *ngIf="originalTouchPointDetails.length <= 0 && !isLoadingTouchPointDetails"
+                                        class="hstack justify-content-center align-items-center p-4 small opacity-50 fw-500">
+                                        No data available...</div>
+                                    <table style="width: 100%;">
+                                        <thead>
+                                            <th>S.No</th>
+                                            <th>Job ID</th>
+                                            <th>Job Name</th>
+                                            <th>Sub Client</th>
+                                            <th>Status</th>
+                                            <th>Date Received</th>
+                                            <th>Last Touch</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                *ngFor="let tpd of touchPointDetails | objectFilter: jobSearchTerm; let index = index;">
+                                                <td style="width: 50px">{{ index + 1 }}.</td>
+                                                <td>{{ tpd.jobid }}</td>
+                                                <td>
+                                                    {{ tpd.JobName }}
+                                                    <!-- <span class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#jobDetailsPopup" (click)="jobDetails.job = tpd">
+                                                    </span> -->
+                                                </td>
+                                                <td>{{ tpd.SubClient }}</td>
+                                                <td>{{ (tpd.Status.split('.').length > 1)? tpd.Status.split('.')[1] :
+                                                    tpd.Status }}</td>
+                                                <td>{{ tpd.DateReceived }}</td>
+                                                <td>{{ tpd.LastTouch }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div *ngIf="touchPointDetails.length > 10"
+                                        class="table-gradient-light py-2 position-absolute start-0 end-0 bottom-0">
+                                        &nbsp;</div>
+                                </div>
+                            </pq-section-card>
+                        </ng-container>
+
+                        <ng-container *ngIf="onlyTouchPointCounts && onlyTouchPointCounts.length > 0">
+                            <pq-section-card
+                                sectionTitle="Summary of Touch Points as of {{ filters.startDate | date: 'dd-MM-YYYY' }} to {{ filters.endDate | date: 'dd-MM-YYYY' }}"
+                                sectionSubtitle="Target Touch Points per day: {{ onlyTouchPointCounts[0].TargetPerDay }}"
+                                [enableSettings]="false" cardClass="mt-2 shadow-sm">
+                                <div body>
+                                    <table class="tbl-layout-fixed" style="width: 100%;">
+                                        <thead>
+                                            <th>Details</th>
+                                            <th class="text-center">Target Touch Points <span
+                                                    *ngIf="onlyTouchPointCounts[0].TargetPerDay">({{
+                                                    onlyTouchPointCounts[0].TargetPerDay }} per day)</span></th>
+                                            <th class="text-center">Actual Touch Points</th>
+                                            <th class="text-center">Balance</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let otpc of onlyTouchPointCounts">
+                                                <td colspan="1">No. of Jobs</td>
+                                                <td colspan="1" class="text-center">{{ otpc.Target }} <span
+                                                        class="disabled">({{ onlyTouchPointCounts[0].TargetPerDay }} x
+                                                        {{ otpc.DayCount }}d)</span></td>
+                                                <td colspan="1" class="text-center">{{ otpc.ActualCompletion }}</td>
+                                                <td colspan="1" class="text-center"
+                                                    [ngClass]="{ 'text-success': otpc.Balance < 0, 'text-danger': otpc.Balance > 0 }">
+                                                    {{ otpc.Balance * -1 }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </pq-section-card>
+                        </ng-container>
+
+                        <ng-container *ngIf="onlyTouchPointCountsClosed && onlyTouchPointCountsClosed.length > 0">
+                            <pq-section-card
+                                sectionTitle="Summary of Completed DWP as of {{ filters.startDate | date: 'dd-MM-YYYY' }} to {{ filters.endDate | date: 'dd-MM-YYYY' }}"
+                                sectionSubtitle="Target Touch Points per day: {{ onlyTouchPointCountsClosed[0].Closed }}"
+                                [enableSettings]="false" cardClass="mt-2 shadow-sm">
+                                <div body>
+                                    <table class="tbl-layout-fixed" style="width: 100%;">
+                                        <thead>
+                                            <th>Details</th>
+                                            <th class="text-center">Target Completed Jobs <span
+                                                    *ngIf="onlyTouchPointCounts[0].TargetPerDay">({{
+                                                    onlyTouchPointCountsClosed[0].Closed }} per day)</span></th>
+                                            <th class="text-center">Actual Completed Jobs</th>
+                                            <th class="text-center">Balance</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let otpc of onlyTouchPointCountsClosed">
+                                                <td colspan="1">No. of Jobs</td>
+                                                <td colspan="1" class="text-center">{{ otpc.Target }} <span
+                                                        class="disabled">({{ onlyTouchPointCountsClosed[0].Closed }} x
+                                                        {{ otpc.DayCount }}d)</span></td>
+                                                <td colspan="1" class="text-center">{{ otpc.ActualCompletion }}</td>
+                                                <td colspan="1" class="text-center"
+                                                    [ngClass]="{ 'text-success': otpc.Balance < 0, 'text-danger': otpc.Balance > 0 }">
+                                                    {{ otpc.Balance * -1 }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </pq-section-card>
+                        </ng-container>
+                    </section>
+                </ng-container>
+
+                <!-- Job Movement Legends and Instructions Sidepanel -->
+                <div class="offcanvas offcanvas-end zi-9999 shadow-lg" data-bs-scroll="true" tabindex="-1"
+                    id="ofcJMLandI" aria-labelledby="offcanvasLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasLabel">Job Movement</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+
+                        <div class="mb-4">
+                            <h5 class="color-primary border-bottom border-color-primary">Legends</h5>
+                            <div class="vstack">
+                                <div class="fw-bold">
+                                    Touch Point Status
+                                </div>
+                                <ul>
+                                    <li>
+                                        In Progress: Assigned during initial review of financial documents,
+                                        compliance check and gathering relevant information.
+                                    </li>
+                                    <li>
+                                        Query: Assigned when discrepancies, inconsistencies are identified or
+                                        require additional information.
+                                    </li>
+                                    <li>
+                                        Draft Workpaper (DWP): Assigned when findings and recommendations are
+                                        combined into preliminary documentation.
+                                    </li>
+                                    <li>
+                                        Revised Draft Workpaper (RDWP): assigned when revisions are made to the
+                                        initial draft workpapers during the review process.
+                                    </li>
+                                    <li>
+                                        Audit: Indicates the completion of the pre-audit stages, including the
+                                        review of workpapers and resolution of queries.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="color-primary border-bottom border-color-primary">Instructions</h5>
+                            <div class="vstack">
+                                <div>
+                                    <div class="fw-bold">Summary of Touch Points for a selected date range</div>
+                                    <p>
+                                        The target Touch Points per day are set at 18. Based on the selected
+                                        date range for touch points, the target will be calculated as 18
+                                        multiplied by 'n' days. It's important to note that the target Touch
+                                        Points may be subject to increase in the future.
+                                    </p>
+                                    <p>
+                                        Balance: Green indicates an excess in completed touch points; Red
+                                        indicates a short fall in completed touch points.
+                                    </p>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">
+                                        Summary of completed jobs for a selected date range
+                                    </div>
+                                    <p>
+                                        The target completed jobs per day are set at 4. Based on the selected
+                                        date range for completed jobs, the target will be calculated as 4
+                                        multiplied by 'n' days. It's important to note that the target completed
+                                        jobs may be subject to increase in the future.
+                                    </p>
+                                    <p>
+                                        Balance: Green indicates an excess in completed jobs; Red indicates a
+                                        short fall in completed jobs.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Job Details Popup -->
+            <div class="modal fade" id="jobDetailsPopup" tabindex="-1" aria-labelledby="jobDetailsPopup"
+                aria-hidden="true" data-bs-backdrop="static" style="z-index: 99999;">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0">
+                        <div class="modal-header border-0 py-2">
+                            <h1 class="modal-title fs-6"><span class="fw-300 me-1">Job ID</span>{{ jobDetails.job.JobId
+                                }}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body py-0" id="jobDetailsPopupContent">
+                            <app-job-details #jobDetails></app-job-details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Job Status Main Tab Content-->
+        <div *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.JOB_STATUS">
+            <app-job-status [isContractsLoading]="isContractsLoading"></app-job-status>
+
+            <!-- Job Status Legends and Instructions Sidepanel -->
+            <div class="offcanvas offcanvas-end zi-9999 shadow-lg" data-bs-scroll="true" tabindex="-1" id="ofcJSLandI"
+                aria-labelledby="offcanvasLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasLabel">Job Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="mb-4">
+                        <h5 class="color-primary border-bottom border-color-primary">Legends</h5>
+                        <ul>
+                            <li>Job Status: Job status updated for each job as of current date. To
+                                switch between Job Status
+                                Old View and Job Status New View, click on "Switch to Old View" and
+                                "Switch to New View"
+                            </li>
+                            <li>Alert: This indicates an alert for new job instructions posted by the
+                                delivery team.</li>
+                            <li>
+                                Job Instructions: Post standard and custom instructions for the job and
+                                view the responses
+                                updated by the delivery team.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="color-primary border-bottom border-color-primary">Instructions</h5>
+                        <ul>
+                            <li>To switch between old and new job statuses, click on “Switch to New
+                                View” and “Switch to Old
+                                View”.</li>
+                            <li>To filter jobs by status, select the appropriate status from the
+                                dropdown menu.</li>
+                            <li>To download job status reports, click on “Download”.</li>
+                            <li>To filter specific job information, use the search box provided.</li>
+                            <li>Click on the “Job Name” to view the job status and information.</li>
+                            <li>Click on "Job Instruction" to view and post standard and custom
+                                comments.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- Monthly Connect Tab Content -->
+        <div *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.MONTHLY_CONNECT">
+            <ng-container *ngIf="filterTabs.selectedTab.index != 3 && isContractsLoaded">
+
+                <!-- Job Status - PQ Section Card -->
+                <ng-container *ngIf="masterCompany.id != 2 && getVisibilityRule('visibility_job_status')">
+                    <pq-section-card *ngIf="filterTabs.selectedTab.index != 3" sectionID="jsSection"
+                        [sectionTitle]="'Job Status - ' + findVerticalNameByIndex(jobStatusFilter.vertical)"
+                        sectionSubtitle="Utilize the vertical dropdown menu to access vertical specific charts"
+                        cardClass="shadow-sm" [enableSettings]="false" [showLoading]="jobStatusLoading"
+                        showLoadingText="Loading Job Status" [clipContents]="false">
+                        <div actions class="hstack gap-2 align-items-end">
+                            <!--
+                            Hidden because to be implemented later
+                            <div class="form-check form-switch disabled">
+                                <input class="form-check-input" type="checkbox" role="switch" id="chkCombineAllVerticals" 
+                                    (change)="showAsStackedChart = !showAsStackedChart; getJobStatusFromService();">
+                                <label class="form-check-label" for="chkCombineAllVerticals">
+                                    Combine All Verticals
+                                </label>
+                            </div> -->
+
+                            <div class="hstack gap-2 align-items-end justify-content-end">
+                                <!-- Filter : Month Filter -->
+                                <pq-dropdown label="Year" [text]="selectedYear.toString()" [hideError]="true"
+                                    [setOptionAsText]="true" [fullWidth]="true" [options]="availableYears"
+                                    dropDownType="simple" (outputValue)="handleYearChange(parseInt($event))">
+                                </pq-dropdown>
+                                <pq-dropdown label="Month"
+                                    [text]="(filters.monthText)? (filters.month == currentMonth)? allMonths[currentMonth - 1].name : filters.monthText : 'Choose a Month'"
+                                    [hideError]="true" [setOptionAsText]="true" [fullWidth]="true"
+                                    [options]="monthsToShow" dropDownType="advanced"
+                                    [keys]="{ key: 'index', value: 'name' }" (outputObject)="handleMonthChange($event)">
+                                </pq-dropdown>
+                            </div>
+
+                            <pq-dropdown label="Vertical"
+                                [text]="findVerticalNameByIndex(jobStatusFilter.vertical) ?? 'Choose a vertical'"
+                                [hideError]="true" [setOptionAsText]="true" [fullWidth]="true" [options]="verticals"
+                                dropDownType="advanced" (outputObject)="setVerticalsAndRefreshAll($event)"
+                                [selectedOption]="findVerticalNameByIndex(jobStatusFilter.vertical) ?? ''"
+                                [keys]="{ key: 'index', value: 'name' }">
+                            </pq-dropdown>
+
+                            <pq-button class="disabled d-none" buttonStyle="light"
+                                (clickEvent)="captureChartAsImage('js001')">
+                                <i class='fa-solid fa-file-arrow-down pe-1'></i> Export
+                            </pq-button>
+                        </div>
+
+                        <div body>
+                            <div *ngIf="isJobStatusDataEmpty" class="p-5 my-2 text-center disabled">
+                                No data received...
+                            </div>
+                            <div *ngIf="!isJobStatusDataEmpty" class="row">
+                                <div class="col-sm-12">
+                                    <pq-charts chartId="jobStatusChart001" [config]="jsConfig" [revalidate]="revalidate"
+                                        [refresh]="wfRefresh"></pq-charts>
+
+                                    <div class="hstack gap-2 flex-wrap justify-content-center">
+                                        <div *ngFor="let legend of jsLegends"
+                                            class="hstack gap-2 ps-1 smaller rounded-1 text-dark overflow-hidden"
+                                            [attr.style]="'background: ' + legend.color + '; border: 1px solid ' + legend.color + ';'">
+                                            <div class="px-1 py-1 text-dark rounded-1 lh-1"
+                                                style="background: rgba(255,255,255,0.8);">{{ legend.name }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-sm-3">
+                                    <div id="jsLegends" class="border rounded overflow-hidden">
+                                        <label class="disabled w-100 py-1 px-3 bg-secondary text-light border-bottom shadow-sm smaller">Job Status Legends</label>
+                                        <ul class="list-group list-group-flush bg-transparent" style="height: 300px; overflow-y: auto;">
+                                            <li *ngFor="let legend of jsLegends" class="list-group-item small text-dark bg-transparent hstack gap-2">
+                                                <span class="badge rounded-pill px-2" [attr.style]="'background: ' + legend.color + ';'">&nbsp;</span>
+                                                <div>{{ legend.name }}</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+
+                        <div sidebar class="h-100">
+                            <div class="vstack gap-2 h-100">
+                                <div class="h6">Chart Settings</div>
+                                <div class="vstack h-100">
+                                    <div class="flex-fill hstack gap-2 align-items-start">
+                                        <pq-dropdown text="Chart Type" [setOptionAsText]="true" dropDownType="advanced"
+                                            [options]="[{ code: 'bar', value: 'Bar' }, { code: 'line', value: 'Line' }]"
+                                            [keys]="{ key: 'code', value: 'value' }"
+                                            (outputObject)="wfChartType = $event.code">
+                                        </pq-dropdown>
+                                    </div>
+                                    <pq-button (click)="getWFStatusFromService()">Save Settings</pq-button>
+                                </div>
+                            </div>
+                        </div>
+                    </pq-section-card>
+                </ng-container>
+
+                <!-- Monthly Productivity - PQ Section Card -->
+                <ng-container *ngIf="getVisibilityRule('visibility_monthly_productivity')">
+                    <pq-section-card *ngIf="filterTabs.selectedTab.index != 3" sectionID="mpSection"
+                        [sectionTitle]="'Monthly Productvity in Hours - ' + findVerticalNameByIndex(mpFilters.vertical)"
+                        sectionSubtitle="Utilize the vertical dropdown menu to access vertical specific charts"
+                        cardClass="shadow-sm" [showLoading]="monthlyProductivityLoading"
+                        showLoadingText="Loading Monthly Productivity data" [enableSettings]="false">
+
+                        <div actions class="hstack gap-2 align-items-end">
+                            <div class="hstack gap-2 align-items-end justify-content-end">
+                                <!-- Filter : Month Filter -->
+                                <pq-dropdown label="Year" [text]="selectedYear.toString()" [hideError]="true"
+                                    [setOptionAsText]="true" [fullWidth]="true" [options]="availableYears"
+                                    dropDownType="simple" (outputValue)="handleYearChange(parseInt($event))">
+                                </pq-dropdown>
+                                <pq-dropdown label="Month"
+                                    [text]="(filters.monthText)? (filters.month == currentMonth)? allMonths[currentMonth - 1].name : filters.monthText : 'Choose a Month'"
+                                    [hideError]="true" [setOptionAsText]="true" [fullWidth]="true"
+                                    [options]="monthsToShow" dropDownType="advanced"
+                                    [keys]="{ key: 'index', value: 'name' }" (outputObject)="handleMonthChange($event)">
+                                </pq-dropdown>
+                            </div>
+
+                            <pq-dropdown label="Vertical"
+                                [text]="findVerticalNameByIndex(mpFilters.vertical) ?? 'Choose a vertical'"
+                                [hideError]="true" [setOptionAsText]="true" [fullWidth]="true" [options]="verticals"
+                                dropDownType="advanced" (outputObject)="setVerticalsAndRefreshAll($event)"
+                                [selectedOption]="findVerticalNameByIndex(mpFilters.vertical) ?? ''"
+                                [keys]="{ key: 'index', value: 'name' }">
+                            </pq-dropdown>
+
+                            <pq-button class="disabled d-none" buttonStyle="light"
+                                (clickEvent)="captureChartAsImage('toj001')"><i
+                                    class='fa-solid fa-file-arrow-down pe-1'></i> Export</pq-button>
+                        </div>
+
+                        <div body>
+                            <div *ngIf="isMonthlyProductivityDataEmpty" class="p-5 my-2 text-center disabled">
+                                No data received...
+                            </div>
+                            <div *ngIf="!isMonthlyProductivityDataEmpty" class="row">
+                                <div class="col-sm-6">
+                                    <pq-charts chartId="toj001" [config]="mpConfig" chartTitle="Effort Vs. Hours"
+                                        [revalidate]="revalidate" [refresh]="mpRefresh"></pq-charts>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="bg-light rounded p-2 shadow-input-2 border-bottom">
+                                        <pq-charts chartId="ccj001" [config]="ccConfig"
+                                            chartTitle="Comparative Productivity - 3 months" [revalidate]="revalidate"
+                                            [refresh]="ccRefresh"></pq-charts>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div footer class="hstack gap-2 align-items-center">
+                            <ng-container *ngIf="user.is_tester">
+                                <div *ngIf="isCommittedHoursNull"
+                                    class="small hstack gap-1 align-items-center badge fw-500 bg-color-warning text-dark border border-warning rounded-pill">
+                                    <span class="material-symbols-rounded small opacity-70">warning</span>
+                                    Committed Hours couldn't be fetched
+                                </div>
+                            </ng-container>
+                        </div>
+                    </pq-section-card>
+                </ng-container>
+
+                <!-- Budgeted vs. Actual - PQ Section Card -->
+                <ng-container *ngIf="getVisibilityRule('visibility_budget_vs_actuals')">
+                    <pq-section-card *ngIf="filterTabs.selectedTab.index != 3" sectionID="bvaSection"
+                        [sectionTitle]="'Budgeted Hours vs. Actual Hours - ' + findVerticalNameByIndex(mpFilters.vertical)"
+                        sectionSubtitle="Utilize the vertical dropdown menu to access vertical specific charts"
+                        cardClass="shadow-sm" [clipContents]="false" [enableSettings]="false"
+                        [showLoading]="budgetVsActualLoading"
+                        showLoadingText="Loading Budget vs. Actual data (calculating hours)">
+
+                        <div actions class="hstack gap-2 align-items-end">
+                            <div class="hstack gap-2 align-items-end justify-content-end">
+                                <!-- Filter : Month Filter -->
+                                <pq-dropdown label="Year" [text]="selectedYear.toString()" [hideError]="true"
+                                    [setOptionAsText]="true" [fullWidth]="true" [options]="availableYears"
+                                    dropDownType="simple" (outputValue)="handleYearChange(parseInt($event))">
+                                </pq-dropdown>
+                                <pq-dropdown label="Month"
+                                    [text]="(filters.monthText)? (filters.month == currentMonth)? allMonths[currentMonth - 1].name : filters.monthText : 'Choose a Month'"
+                                    [hideError]="true" [setOptionAsText]="true" [fullWidth]="true"
+                                    [options]="monthsToShow" dropDownType="advanced"
+                                    [keys]="{ key: 'index', value: 'name' }" (outputObject)="handleMonthChange($event)">
+                                </pq-dropdown>
+                            </div>
+
+                            <pq-dropdown label="Vertical"
+                                [text]="findVerticalNameByIndex(bvaFilters.vertical) ?? 'Choose a vertical'"
+                                [hideError]="true" [setOptionAsText]="true" [fullWidth]="true" [options]="verticals"
+                                dropDownType="advanced" (outputObject)="setVerticalsAndRefreshAll($event)"
+                                [selectedOption]="findVerticalNameByIndex(bvaFilters.vertical) ?? ''"
+                                [keys]="{ key: 'index', value: 'name' }">
+                            </pq-dropdown>
+
+                            <pq-button class="disabled d-none" buttonStyle="light"
+                                (clickEvent)="captureChartAsImage('jft001')"><i
+                                    class='fa-solid fa-file-arrow-down pe-1'></i> Export</pq-button>
+                        </div>
+
+                        <div body>
+                            <div *ngIf="isBudgetVsActualDataEmpty" class="p-5 my-2 text-center disabled">
+                                No data received...
+                            </div>
+                            <div *ngIf="!isBudgetVsActualDataEmpty" class="row">
+                                <div class="col-sm-12">
+                                    <div style="max-height: 320px; overflow-y: auto;">
+                                        <table style="width: 100%;">
+                                            <thead>
+                                                <th>S. No</th>
+                                                <th>Job ID</th>
+                                                <th>Job Name</th>
+                                                <ng-container
+                                                    *ngIf="!hideTableColumn('show_budget_hours', 'budget_vs_actuals')">
+                                                    <th class="text-end px-2">Budgeted Time</th>
+                                                </ng-container>
+                                                <ng-container
+                                                    *ngIf="!hideTableColumn('show_actual_hours', 'budget_vs_actuals')">
+                                                    <th class="text-end px-2">Actual Time</th>
+                                                </ng-container>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let bva of budgetVsActualData; let index = index;">
+                                                    <td>{{ index + 1 }}</td>
+                                                    <td>{{ bva.Jobid }}</td>
+                                                    <td>{{ bva.jobname }}</td>
+                                                    <ng-container
+                                                        *ngIf="!hideTableColumn('show_budget_hours', 'budget_vs_actuals')">
+                                                        <td class="text-end px-2">
+                                                            <span *ngIf="bva && bva.budgetTime">
+                                                                {{ bva.budgetTime.split(':')[0] }}:{{
+                                                                bva.budgetTime.split(':')[1] }}
+                                                            </span>
+                                                        </td>
+                                                    </ng-container>
+                                                    <ng-container
+                                                        *ngIf="!hideTableColumn('show_actuals_hours', 'budget_vs_actuals')">
+                                                        <td class="text-end px-2">
+                                                            <span *ngIf="bva && bva.actualTime">
+                                                                {{ bva.actualTime.split(':')[0] }}:{{
+                                                                bva.actualTime.split(':')[1] }}
+                                                            </span>
+                                                        </td>
+                                                    </ng-container>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div sidebar class="h-100">
+                            <div class="vstack gap-2 h-100">
+                                <div class="h6">Chart Settings</div>
+                                <div class="vstack h-100">
+                                    <div class="flex-fill hstack gap-2 align-items-start">
+                                        <pq-dropdown text="Chart Type" [setOptionAsText]="true" dropDownType="advanced"
+                                            [options]="[{ code: 'bar', value: 'Bar' }, { code: 'line', value: 'Line' }]"
+                                            [keys]="{ key: 'code', value: 'value' }"
+                                            (outputObject)="wfChartType = $event.code">
+                                        </pq-dropdown>
+                                    </div>
+                                    <pq-button (click)="getWFStatusFromService()">Save Settings</pq-button>
+                                </div>
+                            </div>
+                        </div>
+                    </pq-section-card>
+                </ng-container>
+            </ng-container>
+
+
+            <!-- Agreed Tables -->
+            <ng-container *ngIf="filterTabs.selectedTab.index == 3">
+                <!-- Jobs received during month - PQ Section Card -->
+                <pq-section-card *ngIf="filterTabs.selectedTab.index == 3" sectionID="jrdmSection"
+                    sectionTitle="Jobs received during the month" cardClass="shadow-sm" [clipContents]="false"
+                    [enableSettings]="false" [showLoading]="isAgreedJobsLoading"
+                    showLoadingText="Loading agreed details">
+                    <div actions>
+                        <div class="hstack gap-2 align-items-end justify-content-end">
+                            <!-- Filter : Year & Month Filter -->
+                            <pq-dropdown label="Year" [text]="selectedYear.toString()" [hideError]="true"
+                                [setOptionAsText]="true" [fullWidth]="true" [options]="availableYears"
+                                dropDownType="simple" (outputValue)="getAvailableMonthsForAgreed(parseInt($event));">
+                            </pq-dropdown>
+                            <pq-dropdown label="Month"
+                                [text]="(filters.monthText)? (filters.month == currentMonth)? allMonths[currentMonth - 1].name : filters.monthText : 'Choose a Month'"
+                                [hideError]="true" [setOptionAsText]="true" [fullWidth]="true" [options]="monthsToShow"
+                                dropDownType="advanced" [keys]="{ key: 'index', value: 'name' }"
+                                (outputObject)="handleMonthChange($event)">
+                            </pq-dropdown>
+                        </div>
+                    </div>
+
+                    <div body>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style="max-height: 320px; overflow-y: auto;">
+                                    <table style="width: 100%;">
+                                        <thead>
+                                            <th>Month</th>
+                                            <th>No. Jobs</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of agreedMonthData">
+                                                <td>{{ data.month }}</td>
+                                                <td>{{ data.number_of_jobs }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </pq-section-card>
+
+                <!-- List of pending jobs for the period ending - PQ Section Card -->
+                <pq-section-card *ngIf="filterTabs.selectedTab.index == 3" sectionID="pjpeSection"
+                    sectionTitle="List of pending jobs for {{ allMonths[filters.month - 1].name }} {{ selectedYear }}"
+                    cardClass="shadow-sm" cardFooterClass="p-0" [clipContents]="false" [enableSettings]="false"
+                    [showLoading]="isAgreedJobsLoading" showLoadingText="Loading agreed details">
+                    <div body>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div *ngIf="agreedJobs.length > 0" style="max-height: 320px; overflow-y: auto;">
+                                    <table style="width: 100%;">
+                                        <thead>
+                                            <th>S.No</th>
+                                            <th>Job Name</th>
+                                            <th>Date Received</th>
+                                            <th>Job Status</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of agreedJobs; let index = index;">
+                                                <td>{{ index + 1 }}</td>
+                                                <td>{{ data.job_name }}</td>
+                                                <td>{{ data.date_received }}</td>
+                                                <td>{{ data.job_status }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div *ngIf="agreedJobs.length <= 0 && parseInt(agreedMonthData[agreedMonthData.length - 1].number_of_jobs) == 0"
+                                    class="bg-light rounded shadow-input-1 p-5 hstack gap-2 justify-content-center align-items-center disabled">
+                                    <span class="material-symbols-rounded">folder_open</span>
+                                    <div>No jobs in hand</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </pq-section-card>
+            </ng-container>
+            <!-- End of Agreed Tables -->
+        </div>
+
+
+
+        <!-- Realtime Tab Content -->
+        <div *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.REALTIME">
+            <!-- Realtime Metrics -->
+            <section class="container">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="card border-0 shadow-input-1 rounded-4 h-100">
+                            <div class="card-body h-100">
+                                <div class="hstack gap-2 justify-content-around h-100">
+                                    <div>
+                                        <div class="color-primary fw-bold small">Jobs Received</div>
+                                        <div>
+                                            <span class="display-8 fw-500">{{ (metrics && metrics.ReceivedCount != 0)?
+                                                metrics.ReceivedCount : '- ' }}</span>
+                                            <span class="smaller"></span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="color-primary fw-bold small">Jobs Completed</div>
+                                        <div>
+                                            <span class="display-8 fw-500">{{ (metrics && metrics.CompletedCount != 0)?
+                                                metrics.CompletedCount : '- ' }}</span>
+                                            <span class="smaller"></span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="color-primary fw-bold small">Throughput Ratio</div>
+                                        <div>
+                                            <span class="display-8 fw-500">{{ (metrics && metrics.ThroughPut != "")?
+                                                parseInt(metrics.ThroughPut) : '- ' }}</span>
+                                            <span class="smaller">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="card border-0 shadow-input-1 rounded-4 h-100">
+                            <div class="card-body h-100">
+                                <div class="hstack gap-2 justify-content-around h-100">
+                                    <div>
+                                        <div class="color-primary fw-bold small">Yet to Start</div>
+                                        <div>
+                                            <span class="display-8 fw-500">{{ (overall && overall.NotYetStarted != "")?
+                                                overall.NotYetStarted : '- ' }}</span>
+                                            <span class="smaller"></span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="color-primary fw-bold small">Work in Progress</div>
+                                        <div>
+                                            <span class="display-8 fw-500">{{ (overall && overall.InProgress != "")?
+                                                overall.InProgress : '- ' }}</span>
+                                            <span class="smaller"></span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="color-primary fw-bold small">Awaiting Queries</div>
+                                        <div class="color-danger">
+                                            <span class="display-8 fw-500">{{ (overall && overall.Queries != "")?
+                                                overall.Queries : '- ' }}</span>
+                                            <span class="smaller"></span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="color-primary fw-bold small">Awaiting Client Closure</div>
+                                        <div class="color-orange">
+                                            <span class="display-8 fw-500">{{ (overall && overall.ClientClosure != "")?
+                                                overall.ClientClosure : '- ' }}</span>
+                                            <span class="smaller"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <pq-section-card sectionID="jftsection" sectionTitle="Budgeted vs. Actual Hours"
+                sectionSubtitle="Use vertical dropdown to view chart for specific vertical" cardClass="shadow-sm">
+                <div actions class="hstack gap-2">
+                    <pq-button buttonStyle="light" (clickEvent)="captureChartAsImage('jft001')"><i
+                            class='fa-solid fa-file-arrow-down pe-1'></i> Export</pq-button>
+
+                    <pq-dropdown text="Choose a Vertical" [hideError]="true" [setOptionAsText]="true" [fullWidth]="true"
+                        [options]="verticals" dropDownType="advanced" [keys]="{ key: 'index', value: 'name' }">
+                    </pq-dropdown>
+
+                    <pq-button buttonContainerClass="disabled" buttonStyle="primary"><i
+                            class='fa-solid fa-table pe-1'></i> View
+                        Details</pq-button>
+                </div>
+
+                <div body>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <pq-charts chartId="jft001" chartTitle="Jobs Flow Throughput | Months vs Number of Jobs"
+                                [config]="jftConfig" [revalidate]="revalidate" [refresh]="jftRefresh"></pq-charts>
+                        </div>
+                    </div>
+                </div>
+
+                <div sidebar class="h-100">
+                    <div class="vstack gap-2 h-100">
+                        <div class="h6">Chart Settings</div>
+                        <div class="vstack h-100">
+                            <div class="flex-fill hstack gap-2 align-items-start">
+                                <pq-dropdown text="Chart Type" [setOptionAsText]="true" dropDownType="advanced"
+                                    [options]="[{ code: 'bar', value: 'Bar' }, { code: 'line', value: 'Line' }]"
+                                    [keys]="{ key: 'code', value: 'value' }" (outputObject)="wfChartType = $event.code">
+                                </pq-dropdown>
+                            </div>
+                            <pq-button (click)="getWFStatusFromService()">Save Settings</pq-button>
+                        </div>
+                    </div>
+                </div>
+            </pq-section-card>
+        </div>
+
+        <!-- Feedback Tab -->
+        <ng-container *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.FEEDBACK_STATUS">
+            <app-dashboard-feedback></app-dashboard-feedback>
+        </ng-container>
+
+        <!-- Queries Tab -->
+        <ng-container *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.QUERIES">
+            <app-queries-home></app-queries-home>
+        </ng-container>
+
+        <ng-container *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.BS_MOVEMENT">
+            <app-dashboard-bs-movement></app-dashboard-bs-movement>
+        </ng-container>
+
+        <ng-container *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.INSIGHTS">
+            <app-dashboard-insights></app-dashboard-insights>
+        </ng-container>
+
+    </ng-container>
+
+    <ng-container *ngIf="!isRulesApplied && isFetchingRules">
+        <div class="hstack align-items-center justify-content-center p-5 disabled">
+            <div class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <span>Applying dashboard settings...</span>
+            </div>
+        </div>
+    </ng-container>
+
+</ng-container>
+
+
+<!-- Modal -->
+<div class="modal fade" id="mdlJobs" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="z-index: 99999;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="height: 90%;">
+        <div class="modal-content">
+            <div class="modal-header border-0 py-2">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Jobs Delivered</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body overflow-auto">
+                <table class="tbljobstatus" cellPadding="5" style="width: 100%; white-space: nowrap;">
+                    <thead>
+                        <th>S.No</th>
+                        <th>Job Name</th>
+                        <th>TL Name</th>
+                        <th>Time Taken</th>
+                        <th>Budget Time</th>
+                        <th>Work Status</th>
+                        <th>Comment</th>
+                        <th>Received Date</th>
+                        <th>Estimated Date</th>
+                        <th>Aging Since Last Touch</th>
+                        <th>Chat</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let js of jobStatus; let index = index;">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ js.JobName }}</td>
+                            <td>{{ js.TLName }}</td>
+                            <td>{{ js.TimeTaken }}</td>
+                            <td>{{ js.BudgetTime }}</td>
+                            <td>{{ js.WorkStatus }}</td>
+                            <td class="disabled" style="width: 100px;">
+                                <input class="form-control" type="text" placeholder="Comment here"
+                                    style="width: 150px;">
+                            </td>
+                            <td>{{ js.Receiveddate }}</td>
+                            <td>{{ js.EstDate }}</td>
+                            <td>{{ js.LastTouch }}</td>
+                            <td class="disabled">
+                                <pq-button><span class="visually-hidden">Chats</span> Chat</pq-button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

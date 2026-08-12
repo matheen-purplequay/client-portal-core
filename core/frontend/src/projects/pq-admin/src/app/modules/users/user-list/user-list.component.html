@@ -1,0 +1,214 @@
+<section class="container-fluid pt-4">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="display-6 mb-0">{{ filterViews.selectedView.label }}</div>
+        </div>
+        <div class="col-sm-6 hstack align-items-center justify-content-end">
+            <pq-simple-tab [tabs]="filterViews.list" [selectedTab]="filterViews.selectedView.index" tabStyle="island"
+                (tabSelectedEvent)="filterViews.selectedView = $event"></pq-simple-tab>
+        </div>
+    </div>
+</section>
+
+<!-- Users View -->
+<ng-container *ngIf="filterViews.selectedView.index == views.users.index">
+    <section class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 px-0">
+
+                <pq-section-card sectionTitle="Users List" sectionSubtitle="Filter users list by clients"
+                    [fluidContainer]="true" [clipContents]="false" [enableSettings]="false"
+                    [showLoading]="isFetchingUsers" showLoadingText="Loading users" cardClass="shadow-sm"
+                    cardBodyClass="py-0">
+
+                    <div actions>
+                        <pq-dropdown [text]="userFilter.selectedFilter.label" [options]="userFilter.list" dropDownType="advanced" [setOptionAsText]="true"
+                            [hideError]="true" [keys]="userFilter.keys" [selectedOption]="userFilter.selectedFilter.index.toString()"
+                            (outputObject)="userFilter.selectedFilter = $event;"></pq-dropdown>
+                    </div>
+
+                    <div body>
+
+                        <!-- Internal Users -->
+                        <ng-container *ngIf="userFilter.selectedFilter == userFilterList.carisma">
+                            <!-- Add New User -->
+                            <ng-container>
+                                <div class="toolbar mb-3 bg-light rounded shadow-input-1 p-1 hstack gap-2 align-items-center">
+                                    <div class="hstack align-items-center gap-1">
+                                        <pq-toggle-switch [checked]="isWMSyncMode" (isChecked)="isWMSyncMode = $event"></pq-toggle-switch>
+                                        <label (click)="isWMSyncMode = !isWMSyncMode">Sync Mode</label>
+                                    </div>
+                                </div>
+        
+                                <div class="vstack mb-3 d-none">
+                                    <div class="hstack gap-3 align-items-start">
+                                        <pq-dropdown label="Roles" [setOptionAsText]="true"
+                                            [ngClass]="{ 'disabled': isFetchingUsers }"
+                                            [text]="(roles.selectedRoles.title)? roles.selectedRoles.title : 'Choose a role'"
+                                            dropDownType="advanced" [options]="roles.list" [keys]="roles.keys"
+                                            (outputObject)="setRole($event)"></pq-dropdown>
+    
+                                        <div class="flex-fill">
+                                            <pq-textbox type="email" label="Email" [textBoxContent]="user.email"
+                                                (outputValue)="user.email = $event;"
+                                                (outputOnFocusChange)="fetchUserFromWMDB();"></pq-textbox>
+                                        </div>
+    
+                                        <pq-textbox type="text" label="Name" class="flex-fill" [readonly]="true"
+                                            [textBoxContent]="user.first_name + ' ' + user.last_name"
+                                            (outputValue)="user.first_name"></pq-textbox>
+    
+                                        <div class="vstack">
+                                            <label>&nbsp;</label>
+                                            <pq-button (clickEvent)="generateAccess()" [isLoading]="isGeneratingAccess"
+                                                [isDisabled]="isGeneratingAccess || doesUserExists || !isUserLoaded || isFetchingUserFromWM || isClient">
+                                                Generate User Access
+                                            </pq-button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div *ngIf="(isUserLoaded || isFetchingUserFromWM || isCheckingUserExists)"
+                                            class="d-inline-flex gap-2 align-items-center rounded shadow-input-1 mb-2 px-3 py-2"
+                                            [ngClass]="(doesUserExists)? 'bg-color-primary-lighter' : 'bg-color-lighter'">
+                                            <div *ngIf="isFetchingUserFromWM || isCheckingUserExists">
+                                                <div
+                                                    class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                                                    <div class="spinner-border spinner-border-sm" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                    <span class="small disabled">Fetching user details. Please wait
+                                                        ...</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="isUserLoaded && doesUserExists"
+                                                class="small disabled hstack gap-1 align-items-center">
+                                                <span class="material-symbols-rounded small">gpp_maybe</span>
+                                                User already exists
+                                            </div>
+                                            <div *ngIf="isUserLoaded && user.wm_user_employee_id != 0"
+                                                class="hstack gap-2 disabled">
+                                                <label class="small">Employee ID</label>
+                                                <div class="small fw-bold">
+                                                    {{ user.wm_user_employee_id }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+    
+                            <div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <!-- Users List Table -->
+                                        <ng-container>
+                                            <div *ngIf="users && users.length > 0" class="rounded border"
+                                                style="min-height: 100px; max-height: 550px; overflow-y: auto;">
+                                                <ul class="list-group list-group-flush">
+                                                    <div class="input-group border-bottom sticky-top">
+                                                        <input type="text" class="form-control border-0"
+                                                            placeholder="Search" [(ngModel)]="userSearchTerm">
+                                                    </div>
+                                                    <li *ngFor="let user of users | objectFilter: userSearchTerm; let index = index;"
+                                                        class="list-group-item"
+                                                        [ngClass]="{ 'active': selectedUser.value.id == user.id }"
+                                                        (click)="selectedUser.next(user);">
+                                                        <div class="text-truncate">{{ user.first_name }} {{ user.last_name
+                                                            }}</div>
+                                                        <div class="small text-truncate disabled">{{ user.email }}</div>
+                                                        <div class="small text-truncate disabled">{{
+                                                            (user.role).split('_').join(' ') | titlecase }}</div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <ng-container *ngIf="isWMSyncMode">
+                                            <div>
+                                                <div class="border rounded position-relative">
+                                                    <ng-container *ngIf="isFetchingWMInternalUsers">
+                                                        <pq-simple-horizontal-loading loadingText="Fetching users from Works Manager"></pq-simple-horizontal-loading>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="!isFetchingWMInternalUsers">
+                                                        <div *ngIf="isGeneratingAccess" class="position-absolute top-0 bottom-0 start-0 end-0 bg-color-lighter bg-blur-8 hstack align-items-center justify-content-center">
+                                                            <app-simple-loading-text>Copying user from Works Manager...</app-simple-loading-text>
+                                                        </div>
+                                                        <ul [ngClass]="{ 'disabled': isGeneratingAccess }"
+                                                            class="list-group" style="max-height: 550px; overflow-y: auto;">
+                                                            <div class="input-group border-0 sticky-top">
+                                                                <input type="text" class="form-control border-0" placeholder="Search user..." [(ngModel)]="wmUserSearchTerm">
+                                                            </div>
+                                                            <li *ngFor="let wmUser of wmInternalUsers | objectFilter: wmUserSearchTerm; let index = index;"
+                                                                class="list-group-item border-start-0 hstack gap-1 align-items-center justify-content-between">
+                                                                <div class="vstack">
+                                                                    <div>{{ wmUser.Firstname }} {{ wmUser.Lastname }}</div>
+                                                                    <div>{{ wmUser.NewOfficialEmailID }}</div>
+                                                                </div>
+                                                                <div class="hstack gap-1 align-items-center">
+                                                                    <pq-button buttonStyle="simple" buttonContentClass="hstack gap-1 items-center color-primary" (clickEvent)="addWMInternalUser(wmUser)">
+                                                                        <span class="material-symbols-rounded">person_add</span> Sync User
+                                                                    </pq-button>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="!isWMSyncMode">
+                                            <div *ngIf="selectedUser" class="sticky-top border-bottom bg-white z-2"
+                                                style="top: 62px;">
+                                                <div class="lead fw-500">{{ selectedUser.value.first_name }} {{
+                                                    selectedUser.value.last_name }}</div>
+                                            </div>
+        
+                                            <!-- Client Map View -->
+                                            <ng-container *ngIf="selectedUser && clients">
+                                                <app-client-mapping [selectedUser]="selectedUser"
+                                                    [clients]="clients"></app-client-mapping>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+    
+    
+                            <!-- Error Information -->
+                            <ng-container>
+                                <div *ngIf="users && users.length <= 0"
+                                    class="text-center disabled bg-light rounded shadow-input-2 p-3">
+                                    <div><span class="material-symbols-rounded">error</span></div>
+                                    <span>No users created yet for this client</span>
+                                </div>
+                                <div *ngIf="!users && !isUsersFetched"
+                                    class="text-center disabled bg-light rounded shadow-input-2">
+                                    <span>Please choose a client</span>
+                                </div>
+                                <div *ngIf="!users && isUsersFetched"
+                                    class="text-center disabled bg-light rounded shadow-input-2">
+                                    <span>No data available</span>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+
+                        <!-- Client Users -->
+                        <ng-container *ngIf="userFilter.selectedFilter == userFilterList.clients">
+                            <app-client-users></app-client-users>
+                        </ng-container>
+
+                    </div>
+
+                </pq-section-card>
+
+            </div>
+        </div>
+    </section>
+</ng-container>
+
+
+<!-- Roles View -->
+<ng-container *ngIf="filterViews.selectedView.index == views.roles.index">
+    <app-role-permissions></app-role-permissions>
+</ng-container>

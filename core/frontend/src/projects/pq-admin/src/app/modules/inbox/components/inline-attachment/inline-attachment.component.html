@@ -1,0 +1,21 @@
+<div class="vstack gap-2 aling-items-end">
+    <div class="hstack align-items-center rounded border">
+        <button class="btn rounded-0 bg-color-primary-lightest color-danger hstack align-items-center" (click)="cancelAttachmentProcess()"><span class="material-symbols-outlined">cancel</span></button>
+        <div class="border-start ps-1 hstack gap-1 align-items-center flex-fill">
+            <span class="material-symbols-outlined opacity-75">title</span>
+            <input type="text" class="form-control border-0 rounded-0 bg-transparent" [placeholder]="(attachmentFor == 'sending')? 'Title (optional)' : 'Specify document title (required)'" [(ngModel)]="attachment.title">
+        </div>
+        <div *ngIf="attachmentFor == 'sending'" class="border-start ps-1 flex-fill hstack gap-1 align-items-center flex-fill">
+            <span class="material-symbols-outlined opacity-75">attach_file</span>
+            <input type="text" class="form-control border-0 rounded-0 bg-transparent" placeholder="Paste attachment link here" [(ngModel)]="attachment.link">
+        </div>
+        <div class="border-start hstack gap-2 align-items-center justify-content-end">
+            <button class="btn border-0 rounded-0 bg-color-success-light color-success hstack align-items-center" 
+                [ngClass]="!attachment.link? 'opacity-75' : null"
+                [attr.disabled]="!attachment.link && attachmentFor == 'sending'? 'disabled' : null"
+                (click)="addAttachmentLink()">
+                <span class="material-symbols-outlined">check_circle</span>
+            </button>
+        </div>
+    </div>
+</div>

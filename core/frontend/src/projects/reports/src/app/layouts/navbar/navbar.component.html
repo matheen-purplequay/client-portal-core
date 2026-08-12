@@ -1,0 +1,179 @@
+<nav class="navbar navbar-expand-lg bg-color-primary-lightest-alt py-0 sticky-top">
+	<div class="container-fluid">
+		<div class="navbar-brand">
+			<ng-container *ngIf="!isTester">
+				<div class="hstack gap-2 w-full flex-fill">
+					<img class="image h-32" [src]="company_logo" (error)="handleImageError($event)" alt="company logo">
+					<div>{{ company_name }}</div>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="isTester && !hideDropdowns">
+				<div class="hstack gap-3 align-items-center">
+					<div *ngIf="isFetchingClients" class="rounded-pill px-2 pulse speed">
+						<div class="opacity-75 fw-semibold">Getting your clients...</div>
+					</div>
+					<div class="hstack gap-2 align-items-center">
+						<div *ngIf="clients && clients.companies && clients.companies.length > 0 && !isFetchingClients"
+							class="hstack gap-2 align-items-center justify-content-start position-relative rounded-pill border spb-1 spt-1 spr-2 ps-2 bg-light shadow-input-1 show-on-hover show-replace">
+							<span class="material-symbols-outlined opacity-75 show-replace spl-6 spr-5">domain</span>
+			
+							<pq-button class="show-target" buttonStyle="simple" buttonClass="py-1" buttonContentClass="p-0 hstack align-items-center"
+								(clickEvent)="getClientsList()">
+								<span class="material-symbols-outlined mt-1">refresh</span>
+							</pq-button>
+
+							<pq-dropdown [text]="company_name" [setOptionAsText]="true" dropDownType="advanced"
+								[hideError]="true" [options]="clients.companies" dropDownClass="position-relative"
+								[keys]="{ key: 'id', value: 'name' }" [showSearch]="false" dropDownButtonClass="rounded-pill position-relative border-bottom-2"
+								(outputObject)="setClient($event.id, $event.works_manager_client_id, $event.name)"></pq-dropdown>
+						</div>
+					</div>
+					<div class="hstack gap-2 align-items-center">
+						<div *ngIf="clientUsers && clientUsers.list.length > 0"
+							class="hstack gap-2 align-items-center justify-content-start position-relative rounded-pill border spb-1 spt-1 spr-2 ps-2 bg-light shadow-input-1 show-on-hover show-replace">
+							<span class="material-symbols-outlined opacity-75 show-replace spl-6 spr-5">account_circle</span>
+
+							<pq-button class="show-target" buttonStyle="simple" buttonClass="py-1" buttonContentClass="p-0 hstack align-items-center"
+								(clickEvent)="getClientUserList()">
+								<span class="material-symbols-outlined mt-1">refresh</span>
+							</pq-button>
+
+							<ng-container>
+								<pq-dropdown [text]="clientUsers.selectedUser.name" [hideError]="true"
+									dropDownClass="position-relative" dropDownButtonClass="rounded-pill position-relative border-bottom-2"
+									[options]="clientUsers.list" dropDownType="advanced" [keys]="clientUsers.keys"
+									(outputObject)="setClientUser($event);"></pq-dropdown>
+							</ng-container>
+						</div>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+			</ul>
+			<div class="hstack gap-2 align-items-center">
+				<div class="hstack gap-2 align-items-center me-2 cursor-pointer" data-bs-toggle="offcanvas"
+					data-bs-target="#ofcCalendar">
+					<div class="opacity-70 lh-1 text-end">
+						<div class="small">{{ currentDate | date: 'EEEE' }}</div>
+						<div class="h6 mb-0">{{ currentDate | date: 'MMMM d, y' }}</div>
+					</div>
+					<span class="d-block h5 mb-0 disabled position-relative bg-transparent rounded p-2">
+						<span class="material-symbols-outlined opacity-70 fs-2">event_available</span>
+					</span>
+				</div>
+				<div class="list-horizontal-divider-primary"></div>
+				<div class="hstack gap-4 align-items-center cursor-pointer position-relative" data-bs-toggle="offcanvas" data-bs-target="#ofcNotifications">
+					<div class="position-relative">
+						<span class="d-block h5 mb-0 position-relative rounded p-2 disabled hstack align-items-center" 
+							[ngClass]="(notifications.length > 0)? 'bg-color-primary-light shadow-inner-1' : 'bg-transparent'">
+							<span class="material-symbols-outlined fs-2" [ngClass]="(notifications.length > 0)? 'color-primary' : 'opacity-70'">
+								{{ (allow_notification)? 'notifications' : 'notifications_off' }}
+							</span>
+						</span>
+						<span *ngIf="notifications.length > 0" class="position-absolute top-0 start-100 translate-middle p-1 bg-color-primary border border-light border-3 shadow-sm rounded-circle">
+							<span class="visually-hidden">New alerts</span>
+						</span>
+					</div>
+				</div>
+				<div class="list-horizontal-divider-primary"></div>
+				<div class="dropdown ps-2 py-2 user-dropdown-menu">
+					<button class="btn d-flex align-items-center py-0" type="button" data-bs-toggle="dropdown"
+						aria-expanded="false">
+						<!-- <img class="image h-8 mx-2" src="/assets/vectors/dropdown.svg" alt=""> -->
+						<div *ngIf="user.firstName || user.lastName"
+							class="vstack me-2 align-items-start justify-content-center">
+							<span *ngIf="user.firstName" class="fw-medium">{{ user.firstName }}</span>
+							<span *ngIf="user.firstName" class="smaller">{{ user.lastName }}</span>
+							<span *ngIf="!user.firstName" class="fw-medium">{{ user.firstName }}</span>
+						</div>
+						<!-- <img class="image h-40 rounded-pill user-profile-picture"
+							[ngClass]="{'shadow-sm' : currentURL.includes('/account')}"
+							[src]="emptyProfilePicture" alt="user photo"> -->
+						<ng-container *ngIf="isTester">
+							<img title="Logged in as observer" class="image bg-color-lighter bg-blur-8 rounded-pill h-28 pulse flt-brightness-10 bottom-0 end-0" src="/assets/brand/CSBrandmark.png" alt="carisma solution brand" style="margin-bottom: -5px; margin-right: -5px;">
+						</ng-container>
+					</button>
+					<ul class="dropdown-menu py-0 shadow">
+						<li *ngIf="isTester" class="small fw-semibold opacity-50 rounded-top bg-light border-bottom px-1 text-center">Logged in as Observer</li>
+						<li><a class="dropdown-item fw-medium" (click)="openPage('account')">My Profile</a></li>
+						<li><a class="dropdown-item fw-medium" (click)="toggleDropdownVisibility()">{{ hideDropdowns ? 'Show' : 'Hide' }} Client Chooser</a></li>
+						<li><a class="dropdown-item fw-medium" (click)="openPage('logout')">Logout</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+
+<!-- <div *ngIf="isTester" class="px-3 text-end border-start" [class.hidden]="hideNavbar">
+	<div
+		class="bg-white border-bottom border-start border-end rounded-bottom py-1 px-3 d-inline-block smaller fw-medium hstack gap-3">
+		<i class="fa-solid fa-user-tie disabled me-1"></i>
+		Logged in as <span class="fw-bold disabled">Observer</span>
+	</div>
+</div> -->
+
+<div class="offcanvas offcanvas-end zi-9999 rounded-3 shadow overflow-hidden me-4 bg-color-light" 
+	tabindex="-1" id="ofcNotifications" aria-labelledby="offcanvasExampleLabel"
+	style="margin-top: -10px; max-height: 100%;" 
+	data-bs-scroll="true">
+	<div class="offcanvas-header bg-transparent pt-2 pb-0">
+		<h5 class="offcanvas-title hstack align-items-center">
+			<pq-toggle-switch [checked]="allow_notification" (isChecked)="allow_notification = $event;"></pq-toggle-switch>
+			<div class="vstack lh-1">
+				<span class="opacity-50">Notifications</span>
+				<span class="smaller" [ngClass]="(allow_notification)? 'text-dark opacity-50' : 'color-primary fw-700 opacity-90'">
+					{{ (allow_notification)? 'Alerts are now active' : 'Alerts will be silent' }}
+				</span>
+			</div>
+		</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body bg-transparent p-0">
+		<div class="vstack gap-2 overflow-x-hidden p-2">
+
+			<ng-container *ngIf="notifications.length <= 0">
+				<div class="p-5 text-center opacity-75">
+					No notifications available.
+				</div>
+			</ng-container>
+			<ng-container *ngIf="notifications.length > 0">
+				<div *ngFor="let notification of notifications; let index = index;" 
+					class="card border-0 shadow-sm rounded-3"
+					[ngClass]="{ 'notification-delete': notification.isDeleted }">
+					<div class="card-body py-2 px-3">
+						<div class="fw-medium mb-1">{{ notification.title }}</div>
+						<div [innerHTML]="notification.body"></div>
+					</div>
+					<div class="card-footer bg-transparent p-0 border-top overflow-hidden rounded-bottom">
+						<div class="row">
+							<div *ngIf="notification.action_url" class="col-sm-6 border-end h-100 px-0">
+								<pq-button buttonStyle="simple" buttonWidth="full" class="flex-fill" buttonClass="bg-color-light-2 color-primary"
+									(clickEvent)="openPage(notification.action_url)">
+									{{ notification.action_title ?? 'Open' }}
+								</pq-button>
+							</div>
+							<div class="h-100 px-0" [ngClass]="(notification.action_url)? 'col-sm-6' : 'col-sm-12'">
+								<pq-button buttonStyle="simple" buttonWidth="full" class="flex-fill" buttonClass="bg-color-light-2"
+									buttonContentClass="hstack gap-1 align-items-center justify-content-center text-danger"
+									(clickEvent)="deleteNotification(notification);">
+									<span class="material-symbols-outlined">delete_sweep</span>
+									Clear
+								</pq-button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-container>
+
+		</div>
+	</div>
+</div>

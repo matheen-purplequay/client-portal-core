@@ -1,0 +1,1373 @@
+openapi: 3.0.3
+info:
+  title: Laravel
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8000'
+paths:
+  /api/documentation:
+    get:
+      summary: 'Display Swagger API page.'
+      operationId: displaySwaggerAPIPage
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>L5 Swagger UI</title>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"http://localhost:8000/docs/asset/swagger-ui.css?v=fd5df98cfc0e58ed507042cd86a1f1df\">\n    <link rel=\"icon\" type=\"image/png\" href=\"http://localhost:8000/docs/asset/favicon-32x32.png?v=40d4f2c38d1cd854ad463f16373cbcb6\" sizes=\"32x32\"/>\n    <link rel=\"icon\" type=\"image/png\" href=\"http://localhost:8000/docs/asset/favicon-16x16.png?v=f0ae831196d55d8f4115b6c5e8ec5384\" sizes=\"16x16\"/>\n    <style>\n    html\n    {\n        box-sizing: border-box;\n        overflow: -moz-scrollbars-vertical;\n        overflow-y: scroll;\n    }\n    *,\n    *:before,\n    *:after\n    {\n        box-sizing: inherit;\n    }\n\n    body {\n      margin:0;\n      background: #fafafa;\n    }\n    </style>\n</head>\n\n<body>\n<div id=\"swagger-ui\"></div>\n\n<script src=\"http://localhost:8000/docs/asset/swagger-ui-bundle.js?v=083a347de143b33f385526106a5bc3fb\"></script>\n<script src=\"http://localhost:8000/docs/asset/swagger-ui-standalone-preset.js?v=d1e26debc724702d11433aaf72cf6703\"></script>\n<script>\n    window.onload = function() {\n        // Build a system\n        const ui = SwaggerUIBundle({\n            dom_id: '#swagger-ui',\n            url: \"http://localhost:8000/docs?api-docs.json\",\n            operationsSorter: null,\n            configUrl: null,\n            validatorUrl: null,\n            oauth2RedirectUrl: \"http://localhost:8000/api/oauth2-callback\",\n\n            requestInterceptor: function(request) {\n                request.headers['X-CSRF-TOKEN'] = '';\n                return request;\n            },\n\n            presets: [\n                SwaggerUIBundle.presets.apis,\n                SwaggerUIStandalonePreset\n            ],\n\n            plugins: [\n                SwaggerUIBundle.plugins.DownloadUrl\n            ],\n\n            layout: \"StandaloneLayout\",\n            docExpansion : \"none\",\n            deepLinking: true,\n            filter: true,\n            persistAuthorization: \"false\",\n\n        })\n\n        window.ui = ui\n\n            }\n</script>\n</body>\n</html>\n"
+      tags:
+        - Endpoints
+      security: []
+  /api/oauth2-callback:
+    get:
+      summary: 'Display Oauth2 callback pages.'
+      operationId: displayOauth2CallbackPages
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "<!doctype html>\n<html lang=\"en-US\">\n<head>\n    <title>Swagger UI: OAuth2 Redirect</title>\n</head>\n<body>\n<script>\n    'use strict';\n    function run () {\n        var oauth2 = window.opener.swaggerUIRedirectOauth2;\n        var sentState = oauth2.state;\n        var redirectUrl = oauth2.redirectUrl;\n        var isValid, qp, arr;\n\n        if (/code|token|error/.test(window.location.hash)) {\n            qp = window.location.hash.substring(1).replace('?', '&');\n        } else {\n            qp = location.search.substring(1);\n        }\n\n        arr = qp.split(\"&\");\n        arr.forEach(function (v,i,_arr) { _arr[i] = '\"' + v.replace('=', '\":\"') + '\"';});\n        qp = qp ? JSON.parse('{' + arr.join() + '}',\n                function (key, value) {\n                    return key === \"\" ? value : decodeURIComponent(value);\n                }\n        ) : {};\n\n        isValid = qp.state === sentState;\n\n        if ((\n          oauth2.auth.schema.get(\"flow\") === \"accessCode\" ||\n          oauth2.auth.schema.get(\"flow\") === \"authorizationCode\" ||\n          oauth2.auth.schema.get(\"flow\") === \"authorization_code\"\n        ) && !oauth2.auth.code) {\n            if (!isValid) {\n                oauth2.errCb({\n                    authId: oauth2.auth.name,\n                    source: \"auth\",\n                    level: \"warning\",\n                    message: \"Authorization may be unsafe, passed state was changed in server. The passed state wasn't returned from auth server.\"\n                });\n            }\n\n            if (qp.code) {\n                delete oauth2.state;\n                oauth2.auth.code = qp.code;\n                oauth2.callback({auth: oauth2.auth, redirectUrl: redirectUrl});\n            } else {\n                let oauthErrorMsg;\n                if (qp.error) {\n                    oauthErrorMsg = \"[\"+qp.error+\"]: \" +\n                        (qp.error_description ? qp.error_description+ \". \" : \"no accessCode received from the server. \") +\n                        (qp.error_uri ? \"More info: \"+qp.error_uri : \"\");\n                }\n\n                oauth2.errCb({\n                    authId: oauth2.auth.name,\n                    source: \"auth\",\n                    level: \"error\",\n                    message: oauthErrorMsg || \"[Authorization failed]: no accessCode received from the server.\"\n                });\n            }\n        } else {\n            oauth2.callback({auth: oauth2.auth, token: qp, isValid: isValid, redirectUrl: redirectUrl});\n        }\n        window.close();\n    }\n\n    if (document.readyState !== 'loading') {\n        run();\n    } else {\n        document.addEventListener('DOMContentLoaded', function () {\n            run();\n        });\n    }\n</script>\n</body>\n</html>\n"
+      tags:
+        - Endpoints
+      security: []
+  /api/check-login:
+    post:
+      summary: ''
+      operationId: postApiCheckLogin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/logout:
+    get:
+      summary: ''
+      operationId: getApiLogout
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/verify-captcha-token:
+    post:
+      summary: ''
+      operationId: postApiVerifyCaptchaToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/get-token:
+    post:
+      summary: ''
+      operationId: postApiGetToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/verify-otp:
+    post:
+      summary: ''
+      operationId: postApiVerifyOtp
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/test-token2:
+    post:
+      summary: ''
+      operationId: postApiTestToken2
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/login-admin:
+    post:
+      summary: ''
+      operationId: postApiLoginAdmin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/send-otp:
+    post:
+      summary: ''
+      operationId: postApiSendOtp
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/send-message:
+    post:
+      summary: ''
+      operationId: postApiSendMessage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/send-contact-form:
+    post:
+      summary: ''
+      operationId: postApiSendContactForm
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/send-form-email:
+    post:
+      summary: ''
+      operationId: postApiSendFormEmail
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/send-dynamic-email:
+    post:
+      summary: ''
+      operationId: postApiSendDynamicEmail
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/send-message-test:
+    post:
+      summary: ''
+      operationId: postApiSendMessageTest
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/one-time-login:
+    post:
+      summary: ''
+      operationId: postApiOneTimeLogin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/get/clients:
+    get:
+      summary: ''
+      operationId: getApiGetClients
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/get/clients-by-master:
+    post:
+      summary: ''
+      operationId: postApiGetClientsByMaster
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/get/client:
+    post:
+      summary: ''
+      operationId: postApiGetClient
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/get-master-company:
+    post:
+      summary: ''
+      operationId: postApiGetMasterCompany
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/sendOTP:
+    post:
+      summary: ''
+      operationId: postApiSendOTP
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/send-reset-otp:
+    post:
+      summary: ''
+      operationId: postApiSendResetOtp
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/verify-reset-otp:
+    post:
+      summary: ''
+      operationId: postApiVerifyResetOtp
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/change-password:
+    post:
+      summary: ''
+      operationId: postApiChangePassword
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-all-users:
+    get:
+      summary: ''
+      operationId: getApiAdminGetAllUsers
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-users:
+    get:
+      summary: ''
+      operationId: getApiAdminGetUsers
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiAdminGetUsers
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/sync-wm-user-id:
+    get:
+      summary: ''
+      operationId: getApiAdminSyncWmUserId
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/check-user-if-exists:
+    post:
+      summary: ''
+      operationId: postApiAdminCheckUserIfExists
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/check-client-if-exists:
+    post:
+      summary: ''
+      operationId: postApiAdminCheckClientIfExists
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-all-clients:
+    get:
+      summary: ''
+      operationId: getApiAdminGetAllClients
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/generate-access:
+    post:
+      summary: ''
+      operationId: postApiAdminGenerateAccess
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-self-users:
+    post:
+      summary: ''
+      operationId: postApiAdminGetSelfUsers
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-team-users:
+    post:
+      summary: ''
+      operationId: postApiAdminGetTeamUsers
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-internal-wm-users:
+    get:
+      summary: ''
+      operationId: getApiAdminGetInternalWmUsers
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/test-notification:
+    get:
+      summary: ''
+      operationId: getApiAdminTestNotification
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-permissions:
+    post:
+      summary: ''
+      operationId: postApiAdminGetPermissions
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-all-roles:
+    get:
+      summary: ''
+      operationId: getApiAdminGetAllRoles
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-roles-by-type:
+    post:
+      summary: ''
+      operationId: postApiAdminGetRolesByType
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/get-permissions-by-role:
+    post:
+      summary: ''
+      operationId: postApiAdminGetPermissionsByRole
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/modules/all:
+    get:
+      summary: ''
+      operationId: getApiAdminModulesAll
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/modules/add:
+    post:
+      summary: ''
+      operationId: postApiAdminModulesAdd
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/companies/get/all-from-portal:
+    get:
+      summary: ''
+      operationId: getApiAdminCompaniesGetAllFromPortal
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/companies/get/company-from-portal:
+    post:
+      summary: ''
+      operationId: postApiAdminCompaniesGetCompanyFromPortal
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-users/get-client-management-users-by-client:
+    post:
+      summary: ''
+      operationId: postApiAdminClientUsersGetClientManagementUsersByClient
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/get-app-status:
+    get:
+      summary: ''
+      operationId: getApiAdminAppsGetAppStatus
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/set-under-maintenance:
+    get:
+      summary: ''
+      operationId: getApiAdminAppsSetUnderMaintenance
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/set-live:
+    get:
+      summary: ''
+      operationId: getApiAdminAppsSetLive
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/new:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminNew
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/update:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminUpdate
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/update-notifiable:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminUpdateNotifiable
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/fetch-company-from-wm:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminFetchCompanyFromWm
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/fetch-company-from-dashboard-by-pid:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminFetchCompanyFromDashboardByPid
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/fetch-company-from-dashboard-by-id:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminFetchCompanyFromDashboardById
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/get-client-users:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminGetClientUsers
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/get-all-client-users:
+    get:
+      summary: ''
+      operationId: getApiAdminClientAdminGetAllClientUsers
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/get-all-client-users-by-filter:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminGetAllClientUsersByFilter
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/update-client-user:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminUpdateClientUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/sync-works-manager-client-id:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminSyncWorksManagerClientId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/sync-company-basic-details:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminSyncCompanyBasicDetails
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/remove-client-user:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminRemoveClientUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/whitelist-ip/get-whitelist-ips-requests:
+    get:
+      summary: ''
+      operationId: getApiAdminClientAdminWhitelistIpGetWhitelistIpsRequests
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/whitelist-ip/get-whitelisted-ips-by-id:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminWhitelistIpGetWhitelistedIpsById
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/whitelist-ip/get-whitelisted-ips-requests-by-id:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminWhitelistIpGetWhitelistedIpsRequestsById
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/whitelist-ip/replace-whitelist-ip:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminWhitelistIpReplaceWhitelistIp
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/network-limit/get-network-limit-requests:
+    get:
+      summary: ''
+      operationId: getApiAdminClientAdminNetworkLimitGetNetworkLimitRequests
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/network-limit/increase-limit:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminNetworkLimitIncreaseLimit
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/queries/query-review/get-query-reviewers:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminQueriesQueryReviewGetQueryReviewers
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/queries/query-review/add-query-reviewer:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminQueriesQueryReviewAddQueryReviewer
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/client-admin/queries/query-review/remove-query-reviewer:
+    post:
+      summary: ''
+      operationId: postApiAdminClientAdminQueriesQueryReviewRemoveQueryReviewer
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/activities/login-activities/get-login-activities:
+    post:
+      summary: ''
+      operationId: postApiAdminActivitiesLoginActivitiesGetLoginActivities
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/activities/login-activities/update-login-location:
+    post:
+      summary: ''
+      operationId: postApiAdminActivitiesLoginActivitiesUpdateLoginLocation
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/portals/get-all-portals:
+    get:
+      summary: ''
+      operationId: getApiAdminAppsPortalsGetAllPortals
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/portals/get-all-sub-portals:
+    get:
+      summary: ''
+      operationId: getApiAdminAppsPortalsGetAllSubPortals
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/updates/get-app-updates:
+    post:
+      summary: ''
+      operationId: postApiAdminAppsUpdatesGetAppUpdates
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/updates/get-app-update-by-id:
+    post:
+      summary: ''
+      operationId: postApiAdminAppsUpdatesGetAppUpdateById
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/updates/launch-new-app-version:
+    post:
+      summary: ''
+      operationId: postApiAdminAppsUpdatesLaunchNewAppVersion
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/updates/activate-update:
+    post:
+      summary: ''
+      operationId: postApiAdminAppsUpdatesActivateUpdate
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/admin/apps/updates/delete-update:
+    post:
+      summary: ''
+      operationId: postApiAdminAppsUpdatesDeleteUpdate
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/app/get-region:
+    post:
+      summary: ''
+      operationId: postApiClientAppGetRegion
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/set-staging-env:
+    get:
+      summary: ''
+      operationId: getApiClientSetStagingEnv
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/client/get-permissions:
+    post:
+      summary: ''
+      operationId: postApiClientGetPermissions
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/profile-pictures/preview:
+    get:
+      summary: ''
+      operationId: getApiClientProfilePicturesPreview
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/client/profile-picture/save:
+    post:
+      summary: ''
+      operationId: postApiClientProfilePictureSave
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/get-login-activity:
+    post:
+      summary: ''
+      operationId: postApiClientGetLoginActivity
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    get:
+      summary: ''
+      operationId: getApiClientGetLoginActivity
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/client/get-company-rules:
+    post:
+      summary: ''
+      operationId: postApiClientGetCompanyRules
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/app/get-app-status:
+    get:
+      summary: ''
+      operationId: getApiClientAppGetAppStatus
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/client/get-users-by-client:
+    post:
+      summary: ''
+      operationId: postApiClientGetUsersByClient
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/whitelist-ip/get-whitelisted-ips-by-user-id:
+    post:
+      summary: ''
+      operationId: postApiClientWhitelistIpGetWhitelistedIpsByUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/whitelist-ip/request-new-ip-approval:
+    post:
+      summary: ''
+      operationId: postApiClientWhitelistIpRequestNewIpApproval
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/app-updates/get-app-updates:
+    post:
+      summary: ''
+      operationId: postApiClientAppUpdatesGetAppUpdates
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/app-updates/get-app-update-by-id:
+    post:
+      summary: ''
+      operationId: postApiClientAppUpdatesGetAppUpdateById
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/app-updates/get-latest-update:
+    post:
+      summary: ''
+      operationId: postApiClientAppUpdatesGetLatestUpdate
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/app-updates/set-version-update-shown:
+    post:
+      summary: ''
+      operationId: postApiClientAppUpdatesSetVersionUpdateShown
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/notifications/save-token:
+    post:
+      summary: ''
+      operationId: postApiClientNotificationsSaveToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/notifications/get-notifications:
+    post:
+      summary: ''
+      operationId: postApiClientNotificationsGetNotifications
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/notifications/stream:
+    get:
+      summary: ''
+      operationId: getApiClientNotificationsStream
+      description: ''
+      parameters: []
+      responses:
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Unauthorized access.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized access.'
+      tags:
+        - Endpoints
+      security: []
+  /api/client/notifications/delete-notification:
+    post:
+      summary: ''
+      operationId: postApiClientNotificationsDeleteNotification
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/notifications/send-notification:
+    post:
+      summary: ''
+      operationId: postApiClientNotificationsSendNotification
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/client/notifications/set-notification-settings:
+    post:
+      summary: ''
+      operationId: postApiClientNotificationsSetNotificationSettings
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/wm-api/get-cp-users:
+    post:
+      summary: ''
+      operationId: postApiWmApiGetCpUsers
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/wm-api/get-wm-api-data:
+    post:
+      summary: ''
+      operationId: postApiWmApiGetWmApiData
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/wm-api/get-wm-api-data-with-params:
+    post:
+      summary: ''
+      operationId: postApiWmApiGetWmApiDataWithParams
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/profile/get-profile-picture-by-user-id:
+    post:
+      summary: ''
+      operationId: postApiProfileGetProfilePictureByUserId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/profile/save-profile-photo:
+    post:
+      summary: ''
+      operationId: postApiProfileSaveProfilePhoto
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+tags:
+  -
+    name: Endpoints
+    description: ''

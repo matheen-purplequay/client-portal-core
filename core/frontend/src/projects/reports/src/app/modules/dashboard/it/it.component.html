@@ -1,0 +1,74 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">IT Guidelines</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<pq-section-card sectionTitle="FY {{ fy }}" 
+    cardClass="shadow-sm"
+    [clipContents]="false" [enableSettings]="false" cardHeaderClass="pe-2">
+    <div body>
+        <div class="row">
+            <div class="col-sm-12" >
+                <div *ngIf="itPDF.length <= 0" class="p-4 bg-white disabled rounded text-center">
+                    <div *ngIf="isITLoading" class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span>Loading IT Policies details...</span>
+                    </div>
+                    <div *ngIf="!isITLoading" class="fw-medium">Details will be updated shortly</div>
+                </div>
+                <table *ngIf="itPDF.length > 0" class="w-100">
+                    <thead>
+                        <th>S.No</th>
+                        <th>Policy Name</th>
+                        <th>Updated on</th>
+                        <th class="text-end">Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let it of itPDF; let index = index;">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ it.title }}</td>
+                            <td>{{ it.date_of_issue }}</td>
+                            <td class="text-end">
+                                <pq-button (clickEvent)="previewReport(it)"
+                                    data-bs-toggle="modal" data-bs-target="#pdfPopup">View Report</pq-button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</pq-section-card>
+
+
+
+<!-- Modal -->
+<div class="modal fade smooth-transition" id="pdfPopup" tabindex="-1" data-bs-backdrop="false">
+    <div class="modal-dialog modal-xl h-body">
+        <div class="modal-content border-0 h-100 bg-transparent rounded-3" style="box-shadow: 0 34px 106px -20px rgba(0,0,0,.5);">
+            <div class="modal-header py-2 hstack gap-3 align-items-center justify-content-between bg-color-light bg-blur-8 border-top" #dialogHandle>
+                <h1 class="modal-title fs-5">Previewing {{ selectedITPolicy.title }}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0 rounded-bottom-2 overflow-hidden bg-white">
+                <div *ngIf="isPDFLoading" class="p-4 disabled text-center hstack gap-2 justify-content-center align-items-center">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    Loading Policy...
+                </div>
+                <!-- <embed class="d-block" [src]="pdfURL" width="100%" height="100%" type="application/pdf"> -->
+                <iframe *ngIf="!isPDFLoading" class="d-block" [src]="pdfURL" width="100%" height="100%" type="application/pdf"></iframe>
+            </div>
+        </div>
+    </div>
+</div>

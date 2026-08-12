@@ -1,0 +1,22 @@
+[
+    {
+        "userName": "Client",
+        "queryId": 61,
+        "query": "It's happening in the \"Advanced JavaScript\" course. I haven't noticed any issues with other courses.",
+        "createdon": "2023-08-08T09:43:02.09",
+        "userCode": 62,
+        "hasSubQueries": false,
+        "raisedToUserId": 0,
+        "raisedToName": "Client"
+    },
+    {
+        "userName": "Carisma Associate",
+        "queryId": 61,
+        "query": "It's happening in the \"Advanced JavaScript\" course. I haven't noticed any issues with other courses.",
+        "createdon": "2023-08-08T09:43:02.09",
+        "userCode": 62,
+        "hasSubQueries": false,
+        "raisedToUserId": 0,
+        "raisedToName": "Carisma Associate"
+    }
+]

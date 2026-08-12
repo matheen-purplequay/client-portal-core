@@ -1,0 +1,7 @@
+source/node_modules
+source/dist
+.vite
+
+docs
+.temp
+CLAUDE.md

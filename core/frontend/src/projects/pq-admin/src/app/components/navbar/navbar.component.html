@@ -1,0 +1,149 @@
+<div class="container-fluid sticky-top mb-4" id="title-bar">
+	<div class="row">
+		<div class="col-sm-12">
+			<nav class="navbar navbar-expand-lg bg-white-blurred py-0 border-bottom border-warning rounded-bottom shadow-sm">
+				<div class="container-fluid">
+					<a class="navbar-brand">
+						<div class="hstack gap-1 align-items-center">
+							<button class="btn btn-primary d-sm-none" data-bs-toggle="offcanvas" data-bs-target="#ofcSidebar">
+								☰
+							</button>
+							<div class="hstack gap-1 justify-content-center align-items-center lh-1">
+								<div class="lh-1">
+									<img class="image h-40" src="/assets/brands/logo.png" />
+									<!-- <div class="fw-500">Delivery Portal</div>
+									<div class="smaller fw-500 disabled fst-italic">For Client Portal</div> -->
+								</div>
+							</div>
+						</div>
+					</a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<!-- <li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+									aria-expanded="false">
+									Demo Data
+								</a>
+								<ul class="dropdown-menu">
+									<li><a class="dropdown-item" href="#">Add Demo Data</a></li>
+									<li>
+										<hr class="dropdown-divider">
+									</li>
+									<li><a class="dropdown-item" href="#">Delete Demo Data</a></li>
+								</ul>
+							</li> -->
+							<!-- <li class="nav-item">
+								<a class="nav-link disabled" aria-disabled="true">Disabled</a>
+							</li> -->
+			
+						</ul>
+						<div class="hstack gap-2">
+							<div class="hstack gap-4 align-items-center me-2 disabled">
+								<!-- <span class="h5 mb-0 cursor-pointer position-relative d-block">
+									<i class="fa-solid fa-comments opacity-50"></i>
+									<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light border-2 rounded-circle">
+										<span class="visually-hidden">Chats</span>
+									</span>
+								</span>
+								<span class="d-block h5 mb-0 cursor-pointer position-relative" data-bs-toggle="offcanvas" data-bs-target="#notificationPanel">
+									<i class="fa-solid fa-bell opacity-50"></i>
+									<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light border-2 rounded-circle">
+										<span class="visually-hidden">New alerts</span>
+									</span>
+								</span> -->
+							</div>
+							<div class="hstack gap-4 align-items-center me-2 cursor-pointer position-relative" data-bs-toggle="offcanvas" data-bs-target="#ofcNotifications">
+								<div class="position-relative">
+									<span class="d-block h5 mb-0 position-relative rounded p-2 disabled" [ngClass]="(notifications.length > 0)? 'bg-color-primary-light shadow-inner-1' : 'bg-color-light'">
+										<i class="fa-solid fa-bell" [ngClass]="(notifications.length > 0)? 'color-primary' : 'opacity-50'"></i>
+									</span>
+									<span *ngIf="notifications.length > 0" class="position-absolute top-0 start-100 translate-middle p-1 bg-color-primary border border-light border-3 shadow-sm rounded-circle">
+										<span class="visually-hidden">New alerts</span>
+									</span>
+								</div>
+							</div>
+							<div class="dropdown border-start ps-2 py-2 user-dropdown-menu">
+								<button class="btn d-flex align-items-center py-0" type="button"
+									data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="vstack me-2 align-items-start">
+										<span class="fw-medium">{{ user.firstName | titlecase }}</span>
+										<span class="smaller">{{ user.lastName | titlecase }}</span>
+									</div>
+									<img class="image h-40 rounded-pill user-profile-picture"
+										[src]="(profile_picture)? profile_picture : emptyProfilePicture"
+										alt="user photo">
+								</button>
+								<ul class="dropdown-menu py-0 shadow">
+									<li><a class="dropdown-item" href="/account">My Profile</a></li>
+									<li><a class="dropdown-item disabled">Feedback</a></li>
+									<li><a class="dropdown-item" href="/logout">Logout</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</nav>
+			<div *ngIf="role" class="px-4 text-end pe-none d-inline-block position-absolute end-0 nav-role" [ngClass]="{ 'hide-nav-role': hideNavbar }">
+				<div class="bg-color-warning text-dark rounded-bottom-3 py-1 px-3 d-inline-block smaller fw-medium hstack gap-3 shadow-sm">
+					<i class="fa-solid fa-user-tie disabled me-1"></i>
+					Logged in as <b>{{ role.split('_').join(' ') | titlecase }}</b>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Notifications Side Panel -->
+<div class="offcanvas offcanvas-end zi-9999 rounded-3 shadow-lg me-4 bg-color-light" 
+	tabindex="-1" id="ofcNotifications" aria-labelledby="offcanvasExampleLabel"
+	style="margin-top: -10px; max-height: 100%;" 
+	data-bs-scroll="true">
+	<div class="offcanvas-header bg-transparent pt-2 pb-0">
+		<h5 class="offcanvas-title opacity-50 hstack gap-2 align-items-center"><i class="fa fa-bell opacity-75"></i> Notifications</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body bg-transparent p-0">
+		<div class="vstack gap-2 overflow-x-hidden p-2">
+
+			<ng-container *ngIf="notifications.length <= 0">
+				<div class="p-5 text-center opacity-75">
+					No notifications available.
+				</div>
+			</ng-container>
+			<ng-container *ngIf="notifications.length > 0">
+				<div *ngFor="let notification of notifications; let index = index;" 
+					class="card border-0 shadow-sm rounded-3"
+					[ngClass]="{ 'notification-delete': notification.isDeleted }">
+					<div class="card-body py-2 px-3">
+						<div class="fw-medium mb-1">{{ notification.title }}</div>
+						<div [innerHTML]="notification.body"></div>
+					</div>
+					<div class="card-footer bg-transparent p-0 border-top overflow-hidden rounded-bottom">
+						<div class="row">
+							<div *ngIf="notification.action_url" class="col-sm-6 border-end h-100 px-0">
+								<pq-button buttonStyle="simple" buttonWidth="full" class="flex-fill" buttonClass="bg-color-light-2 color-primary"
+									(clickEvent)="openPage(notification.action_url)">
+									{{ notification.action_title ?? 'Open' }}
+								</pq-button>
+							</div>
+							<div class="h-100 px-0" [ngClass]="(notification.action_url)? 'col-sm-6' : 'col-sm-12'">
+								<pq-button buttonStyle="simple" buttonWidth="full" class="flex-fill" buttonClass="bg-color-light-2"
+									buttonContentClass="hstack gap-1 align-items-center justify-content-center text-danger"
+									(clickEvent)="deleteNotification(notification);">
+									<span class="material-symbols-outlined">delete_sweep</span>
+									Clear
+								</pq-button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-container>
+
+		</div>
+	</div>
+</div>

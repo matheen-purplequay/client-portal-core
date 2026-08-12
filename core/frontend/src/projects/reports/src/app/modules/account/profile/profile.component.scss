@@ -1,0 +1,20 @@
+.profile-image-picker {
+    height: 0px;
+    transform: scaleX(0.95);
+    pointer-events: none;
+    position: relative;
+    // transform: translateY(-100%);
+    // opacity: 0;
+    overflow: hidden;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+
+    &.show-picker {
+        height: 56px;
+        transform: scaleX(1);
+        // opacity: 1;
+        pointer-events: unset;
+        // transform: translateY(0%);
+    }
+}

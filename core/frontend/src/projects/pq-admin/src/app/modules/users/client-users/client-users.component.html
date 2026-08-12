@@ -1,0 +1,182 @@
+<div class="hstack gap-2 justify-content-start align-items-center mb-3 p-1 bg-color-light rounded shadow-input-1">
+    <pq-simple-tab [tabs]="activity.list" [selectedTab]="activity.selected.index" (tabSelectedEvent)="handleActivity($event)"></pq-simple-tab>
+
+    <div *ngIf="activity.selected.index == activityList.network.index" class="border-start h-100 px-2 hstack gap-2 align-items-center justify-content-start">
+        <pq-simple-tab tabStyle="island"
+            [tabs]="filterIPRequests.list" [selectedTab]="filterIPRequests.selected.index" (tabSelectedEvent)="filterIPRequests.selected = $event;"></pq-simple-tab>
+
+        <pq-button buttonStyle="simple" buttonClass="bg-white shadow-sm" buttonContentClass="hstack" (clickEvent)="getWhitelistedIPsRequests()">
+            <span class="material-symbols-outlined">refresh</span>
+        </pq-button>
+    </div>
+</div>
+
+<!-- Client Users List -->
+<ng-container *ngIf="activity.selected == activityList.list">
+    <section class="border">
+    
+        <div class="toolbar bg-color-light border-bottom py-1 px-2 hstack gap-3 align-items-center">
+            <ng-container *ngIf="users && users.length > 0">
+                <div class="bg-white shadow-sm rounded px-2">
+                    <div class="small disabled">Users synced</div>
+                    <div>{{ usersSynced }}</div>
+                </div>
+                <div class="bg-white shadow-sm rounded px-2">
+                    <div class="small disabled">Users not synced</div>
+                    <div>{{ usersNotSynced }}</div>
+                </div>
+            </ng-container>
+            <div *ngIf="roles && roles.list.length > 0">
+                <pq-dropdown [setOptionAsText]="true" [hideError]="true"
+                    [text]="(roles.selectedRoles.title)? roles.selectedRoles.title : 'Choose a role'"
+                    dropDownType="advanced" [options]="roles.list" [keys]="roles.keys"
+                    (outputObject)="roles.selectedRoles = $event; getAllClientUsers();"></pq-dropdown>
+            </div>
+        </div>
+    
+        <table [ngClass]="{ 'disabled': isSyncing }"
+            class="w-100">
+            <thead>
+                <th>S.No</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Works Manager ID</th>
+                <th>Last Login</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users; let index = index;">
+                    <td class="text-center">{{ index + 1 }}</td>
+                    <td>{{ user.user_id }}</td>
+                    <td class="user-select-all">{{ user.first_name }} {{ user.last_name }}</td>
+                    <td class="user-select-all">{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                        <ng-container *ngIf="user.wm_client_id != 0 || user.wm_client_id != null">
+                            {{ user.wm_client_id }}
+                        </ng-container>
+                        <ng-container *ngIf="user.wm_client_id == 0 || user.wm_client_id == null">
+                            <pq-button buttonStyle="link" buttonContentClass="fw-500"
+                                (clickEvent)="syncWorksManagerID(user)">Sync ID</pq-button>
+                        </ng-container>
+                    </td>
+                    <td>{{ user.local_timestamp ?? user.login_timestamp }}</td>
+                    <td>{{ user.status }}</td>
+                    <td>
+                        <pq-button buttonStyle="link" buttonContentClass="fw-500">Edit</pq-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    
+    </section>
+</ng-container>
+
+<!-- Network Access -->
+<ng-container *ngIf="activity.selected == activityList.network">
+    
+    <!-- New Requests -->
+    <section *ngIf="filterIPRequests.selected.index == filterIPRequestsTypeLists.new.index" class="border">
+        <table class="w-100">
+            <thead>
+                <th>Client</th>
+                <th>Old IP Address</th>
+                <th>New IP Address</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let request of whitelist_requests.new_requests">
+                    <td>
+                        {{ request.client_first_name }} {{ request.client_last_name }}
+                    </td>
+                    <td>{{ request.old_ipv4_address }}</td>
+                    <td>{{ request.new_ipv4_address }}</td>
+                    <td>
+                        <pq-button buttonStyle="link" [isLoading]="request.isApproving" [isDisabled]="request.isApproved"
+                            (clickEvent)="replaceIP(request)">
+                            {{ (request.isApproved)? 'Approved' : 'Approve' }}
+                        </pq-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Approved Requests -->
+    <section *ngIf="filterIPRequests.selected.index == filterIPRequestsTypeLists.approved.index" class="border">
+        <table class="w-100">
+            <thead>
+                <th>Client</th>
+                <th>Old IP Address</th>
+                <th>New IP Address</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let request of whitelist_requests.approved_requests">
+                    <td>
+                        {{ request.client_first_name }} {{ request.client_last_name }}
+                    </td>
+                    <td>{{ request.old_ipv4_address }}</td>
+                    <td>{{ request.new_ipv4_address }}</td>
+
+                    <td>
+                        <pq-button buttonStyle="link">Reset</pq-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Cancelled Requests -->
+    <section *ngIf="filterIPRequests.selected.index == filterIPRequestsTypeLists.cancelled.index" class="border">
+        <table class="w-100">
+            <thead>
+                <th>Client</th>
+                <th>Old IP Address</th>
+                <th>New IP Address</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let request of whitelist_requests.cancelled_requests">
+                    <td>
+                        {{ request.client_first_name }} {{ request.client_last_name }}
+                    </td>
+                    <td>{{ request.old_ipv4_address }}</td>
+                    <td>{{ request.new_ipv4_address }}</td>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Limit Increase Requests -->
+    <section *ngIf="filterIPRequests.selected.index == filterIPRequestsTypeLists.limit.index" class="border">
+        <table class="w-100">
+            <thead>
+                <th>Client</th>
+                <th>Preferred Limit</th>
+                <th>Set Limit</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let request of ipLimitRequests">
+                    <td>
+                        {{ request.user_name }}
+                    </td>
+                    <td>{{ request.preferred_limit }}</td>
+                    <td>
+                        <pq-dropdown [options]="networkLimit" dropDownType="simple" [hideError]="true"
+                            (outputValue)="request.limit = toNumber($event)"></pq-dropdown>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+</ng-container>

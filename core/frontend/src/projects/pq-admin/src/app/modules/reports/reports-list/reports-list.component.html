@@ -1,0 +1,139 @@
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <ng-container>
+                <ng-container *ngIf="activity.current == activity.list['connectList'].index">
+                    <pq-section-card *ngIf="selectedClient.value.works_manager_client_id != 0" 
+                        cardClass="shadow-sm section-card" cardBodyClass="px-0 pb-0" containerClass="px-0" cardFooterClass="p-0"
+                        [fluidContainer]="true" sectionTitle="Reports list" sectionSubtitle="Manage connect reports for the client"
+                        [enableSettings]="false" [showLoading]="isReportsLoading" showLoadingText="Loading reports"
+                        [clipContents]="false">
+        
+                        <div actions>
+                            <div class="hstack gap-3 align-items-end">
+                                <pq-button buttonStyle="link" (clickEvent)="getReportByClient()">
+                                    <i class="fa-solid fa-rotate-right"></i> Refresh
+                                </pq-button>
+
+                                <pq-dropdown *ngIf="selectedClient.value.works_manager_client_id != 0" label="Month" [text]="period.monthNames[period.selectedPeriod.month]" [setOptionAsText]="true" 
+                                    dropDownType="simple" [hideError]="true"
+                                    [options]="period.monthNames"
+                                    (outputValue)="setSelectedMonth($event); getReportByClient();">
+                                </pq-dropdown>
+
+                                <pq-dropdown label="Year" [text]="selectedYear.toString()" [hideError]="true"
+                                    [setOptionAsText]="true" [fullWidth]="true" [options]="availableYears" dropDownType="simple"
+                                    (outputValue)="handleYearChange(parseInt($event))">
+                                </pq-dropdown>
+
+                                <ng-container *ngIf="userPermissions.connect_report.create">
+                                    <pq-button *ngIf="selectedClient.value.works_manager_client_id != 0" (clickEvent)="setActivity(activity.list.connectUpload.index)"><i class="fa-solid fa-plus me-1"></i> Add Connect Report</pq-button>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div body>
+                            <table class="w-100 rounded-bottom-4 overflow-hidden" *ngIf="reports.length > 0">
+                                <thead class="bg-light border-top">
+                                    <th class="text-center">S.No</th>
+                                    <th>Report Name</th>
+                                    <th>Period</th>
+                                    <th>Uploaded Date</th>
+                                    <th>Uploaded By</th>
+                                    <th>Status</th>
+                                    <th>Action By</th>
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let report of reports; let index = index;">
+                                        <tr>
+                                            <td class="text-center">{{ index + 1 }}</td>
+                                            <td>{{ report.name }}</td>
+                                            <td>{{ report.month }}, {{ report.year }}</td>
+                                            <td>{{ report.uploaded_date }}</td>
+                                            <td>
+                                                <div class="vstack">
+                                                    <span>{{ report.uploaded_by_first_name }}</span>
+                                                    <span class="small fw-medium">{{ report.uploaded_by_last_name }}</span>
+                                                </div>
+                                            </td>
+                                            <td>{{ report.status_name }}</td>
+                                            <td>
+                                                <div *ngIf="report.status_type == 'approved'" class="vstack">
+                                                    <!-- <span>{{ report.approved_by_first_name }}</span>
+                                                    <span class="small fw-medium">{{ report.approved_by_last_name }}</span> -->
+                                                    <span>{{ report.approved_by }}</span>
+                                                </div>
+                                                <div *ngIf="report.status_type == 'rejected'" class="vstack">
+                                                    <span>{{ report.rejected_by_first_name }}</span>
+                                                    <span class="small fw-medium">{{ report.rejected_by_last_name }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="hstack gap-2 align-items-center">
+                                                    <pq-button buttonStyle="outline" buttonWidth="full" (clickEvent)="openReportById(report, report.month)">View Report</pq-button>                                                    
+                                                    <ng-container *ngIf="report.status == 0">
+                                                        <pq-button buttonStyle="link_danger" buttonContentClass="hstack" 
+                                                            data-bs-toggle="modal" data-bs-target="#deleteReasonPopup"
+                                                            (clickEvent)="selectedReport = report;">
+                                                            <span class="material-symbols-rounded">backspace</span>
+                                                        </pq-button>
+                                                    </ng-container>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                            <ng-container *ngIf="reports.length <= 0">
+                                <div class="bg-light rounded-bottom p-4 text-center small disabled shadow-input-1">
+                                    <span>No reports received. Try changing filters or add new report.</span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </pq-section-card>
+                </ng-container>
+
+                <ng-container *ngIf="activity.current == activity.list.connectUpload.index">
+                    <app-reports-upload [client]="selectedClient" [clientId]="selectedClient.value.works_manager_client_id" (dismissEvent)="activity.current = activity.list.connectList.index; getReportByClient();"></app-reports-upload>
+                </ng-container>
+
+                <ng-container *ngIf="activity.current == activity.list.connectView.index">
+                    <app-report-manage [report]="selectedReport" [client]="selectedClient" (dismissEvent)="activity.current = activity.list.connectList.index; getReportByClient();"></app-report-manage>
+                </ng-container>
+            </ng-container>
+
+
+        </div>
+    </div>
+</section>
+
+
+<ng-container *ngIf="userPermissions.connect_report.review">
+    <!-- Report Rejected Reason Popup -->
+    <div class="modal fade" id="deleteReasonPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+        <div class="modal-dialog">
+            <div class="modal-content border-0 shadow-lg h-100">
+                <div class="modal-header bg-danger text-light py-2 border-0 hstack gap-3 align-items-center justify-content-between pe-2" #dialogHandle>
+                    <h1 class="modal-title fs-5">Reason for deletion</h1>
+                    <button type="button" class="btn text-light hstack align-items-center justify-content-center px-1" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="material-symbols-rounded">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2 disabled">
+                        Please give a valid reason to delete the report {{ selectedReport.title }} for {{ selectedReport.company_name }} client
+                    </div>
+                    <pq-textbox label="Please specify reason for rejecting the report"
+                        [maxLength]="150"
+                        [textBoxContent]="deleteReason" 
+                        helper="Give a reason with not more than 150 letters"
+                        (outputValue)="deleteReason = $event"></pq-textbox>
+                </div>
+                <div class="modal-footer hstack gap-1 justify-content-end p-0 border-0 bg-transparent">
+                    <pq-button data-bs-dismiss="modal" (clickEvent)="deleteReport(selectedReport)">Delete Report</pq-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

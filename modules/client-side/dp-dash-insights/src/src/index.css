@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --color-maroon: #8B1A2E;
+}
+
+
+button {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}

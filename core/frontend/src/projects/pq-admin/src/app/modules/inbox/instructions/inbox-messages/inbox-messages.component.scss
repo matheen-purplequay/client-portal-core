@@ -1,0 +1,11 @@
+.comment-input-wrapper {
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+
+    border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+
+    &:focus-within {
+        border: 1px solid var(--primary-color);
+    }
+}

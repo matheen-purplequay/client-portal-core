@@ -1,0 +1,108 @@
+<div class="offcanvas-lg offcanvas-end sidebar-links-container h-100 bg-color-primary-lightest-alt shadow-sm"
+    tabindex="-1" id="ofcSidebar" aria-labelledby="offcanvasResponsiveLabel"
+    [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }">
+    <div class="offcanvas-body h-100">
+        <div class="vstack h-100 overflow-y-auto">
+            <div class="flex-fill">
+                <nav class="navbar sticky-top top-0 bg-color-primary-lightest-alt border-bottom z-3">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" [ngClass]="{ 'me-0': isSidebarCollapsed }" href="">
+                            <img *ngIf="!isSidebarCollapsed" alt="" src="/assets/assets/images/cs-logo.png"
+                                style="height: auto; width: 100%;" />
+                            <img *ngIf="isSidebarCollapsed" alt="" src="/assets/brands/CSBrandmark.png"
+                                style="height: auto; width: 100%;" />
+                        </a>
+                    </div>
+                </nav>
+                <div class="py-2 z-0">
+                    <div *ngIf="isUserPermissionLoading && !isPermissionsLoaded"
+                        class="list-group list-group-flush mt-4 sidebar-links-wrapper">
+                        <div class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span>Loading Links...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="isPermissionsLoaded" class="mt-2 sidebar-links-wrapper">
+                        <div
+                            class="small opacity-50 ps-3 mb-1 fw-500 hstack justify-content-between align-items-center">
+                            <span *ngIf="!isSidebarCollapsed">Quick Links</span>
+                            <div class="hstack cursor-pointer" (click)="setIsSidebarCollapsed(!isSidebarCollapsed)">
+                                <span *ngIf="!isSidebarCollapsed" class="material-symbols-outlined"
+                                    title="Collapse Side Panel">arrow_circle_left</span>
+                                <span *ngIf="isSidebarCollapsed" class="material-symbols-outlined"
+                                    title="Expand Side Panel">arrow_circle_right</span>
+                            </div>
+                        </div>
+                        <div class="list-group list-group-flush pe-2">
+
+                            <ng-container *ngFor="let pl of primary_links; let i = index">
+                                <!-- Divider -->
+                                <ng-container *ngIf="pl.type === 'divider' && hasLinkAfterDivider(i)">
+                                    <div class="list-vertical-divider-primary my-2" [ngClass]="pl.class"></div>
+                                </ng-container>
+
+                                <!-- Link -->
+                                <ng-container *ngIf="pl.type === 'link'">
+                                    <button type="button"
+                                        class="list-group-item small list-group-item-action sidebar-link rounded-end-pill position-relative overflow-hidden"
+                                        [ngClass]="currentURL.includes(pl.link) ? 'active animated-bg' : ''"
+                                        [attr.data-link]="pl.link" (click)="openPage(pl.link, '')">
+                                        <span class="material-symbols-rounded pe-2 mt--2"
+                                            [ngClass]="{ 'color-primary': currentURL.includes(pl.link), 'ps-1': isSidebarCollapsed}"
+                                            [ngStyle]="{ 'font-size': isSidebarCollapsed ? '1.2em' : null }"
+                                            [attr.title]="(isSidebarCollapsed)? pl.title : null">
+                                            {{ pl.material_icon }}
+                                        </span>
+                                        <div *ngIf="!isSidebarCollapsed">{{ pl.title }}</div>
+                                    </button>
+                                </ng-container>
+                            </ng-container>
+
+
+                            <!-- <button *ngFor="let pl of primary_links"
+                                type="button" class="list-group-item list-group-item-action sidebar-link rounded-end"
+                                [ngClass]="{'active' : currentURL.includes(pl.link)}"
+                                [attr.data-link]="pl.link"
+                                (click)="openPage(pl.link, pl.title)">
+                                <span class="material-symbols-rounded pe-2">{{ pl.material_icon }}</span>
+                                {{ pl.title }}
+                            </button> -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div *ngIf="secondary_links" class="list-group list-group-flush mt-4 sidebar-links-wrapper ps-2">
+
+                    <button *ngFor="let sl of secondary_links" type="button"
+                        class="list-group-item list-group-item-action small sidebar-link rounded-start-pill position-relative overflow-hidden "
+                        [ngClass]="(currentURL.includes(sl.link))? 'bg-secondary color-light shadow-input-2 animated-bg' : ''"
+                        (click)="openPage(sl.link, sl.title)">
+                        <span class="material-symbols-rounded pe-2"
+                            [ngStyle]="{ 'font-size': isSidebarCollapsed ? '1.2em' : null }"
+                            [attr.title]="(isSidebarCollapsed)? sl.title : null">{{ sl.material_icon }}</span>
+                        <span *ngIf="!isSidebarCollapsed">
+                            {{ sl.title }}
+                        </span>
+                    </button>
+
+                    <div class="list-vertical-divider-primary my-2"></div>
+                    <button type="button"
+                        class="list-group-item list-group-item-action small sidebar-link rounded-start-pill mb-2"
+                        (click)="openPage('/logout', 'login')">
+                        <span class="material-symbols-rounded pe-2 mt--2"
+                            [ngStyle]="{ 'font-size': isSidebarCollapsed ? '1.2em' : null }">logout</span>
+                        <span *ngIf="!isSidebarCollapsed">
+                            Logout
+                        </span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

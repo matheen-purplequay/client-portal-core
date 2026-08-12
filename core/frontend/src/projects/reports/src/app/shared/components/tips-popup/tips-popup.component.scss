@@ -1,0 +1,14 @@
+.tips-popup-card {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    transform: scale(0);
+    z-index: 9999;
+    transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+
+    &.show {
+        transform: scale(1);
+    }
+}

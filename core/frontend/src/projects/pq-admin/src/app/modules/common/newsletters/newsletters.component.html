@@ -1,0 +1,196 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12 text-start">
+            <div class="display-6 mb-0">Newsletters</div>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+
+            <pq-section-card sectionTitle="Newsletters" sectionSubtitle="Choose year from dropdown to view more newsletters."
+                verticalMargin="small" cardClass="shadow-sm" cardBodyClass="pb-0 rounded overflow-hidden"
+                [showLoading]="isFetchingNewsletters" showLoadingText="Loading newsletters" [enableSettings]="false">
+
+                <div actions class="hstack gap-3 align-items-start">
+                    <pq-dropdown [text]="period.selectedPeriod.year.toString()" helper="Year"
+                        [setOptionAsText]="true" [fullWidth]="true" [options]="period.years" dropDownType="simple"
+                        (outputValue)="period.selectedPeriod.year = convertToNumber($event); getNewsletters();">
+                    </pq-dropdown>
+
+                    <pq-dropdown dropDownType="advanced" [setOptionAsText]="true" helper="For Company"
+                        [text]="master_companies.selectedCompany.label"
+                        [keys]="master_companies.keys"
+                        [selectedOption]="master_companies.selectedCompany.index.toString()"
+                        [options]="master_companies.list"
+                        (outputObject)="master_companies.selectedCompany = $event; newslettersPayload.master_company_id = master_companies.selectedCompany.index; getNewsletters();"></pq-dropdown>
+
+                    <ng-container *ngIf="newsletterPermissions.create">
+                        <pq-button data-bs-toggle="modal" data-bs-target="#addNewsletterPopup">Add Newsletter</pq-button>
+                    </ng-container>
+                </div>
+
+                <div body>
+
+                    <div class="container rounded border overflow-hidden">
+                        <div class="row">
+                            <div class="col-sm-3 px-0">
+                                <ul class="list-group list-group-flush">
+                                    <li *ngFor="let newsletter of newslettersData; let index = index;" 
+                                        class="list-group-item cursor-pointer" 
+                                        [ngClass]="{ 'bg-color-primary text-light': currentIndex === index }"
+                                        (click)="previewNewsletter(newsletter.link, index)">
+                                        <div class="hstack justify-content-between">
+                                            <div class="vstack flex-fill">
+                                                <div class="fw-bold">{{ period.monthNames[newsletter.month] }} {{ newsletter.year }}</div>
+                                                <div class="small fw-medium">
+                                                    {{ newsletter.title }}
+                                                </div>
+                                            </div>
+                                            <pq-button buttonStyle="link" [buttonContentClass]="(currentIndex === index)? 'text-light' : 'color-primary'" 
+                                                data-bs-toggle="modal" data-bs-target="#editNewsletterPopup"
+                                                (clickEvent)="newslettersPayload = newsletter">
+                                                <span class="material-symbols-rounded">edit</span>
+                                            </pq-button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-9 border-start h-100 px-0" style="margin-bottom: -7px; min-height: 550px;">
+
+                                <iframe [ngClass]="{ 'd-none': isNewsletterLoading }" [src]="currentLink" width="100%" height="550px" frameborder="0"
+                                (load)="isNewsletterLoading = false"></iframe>
+
+                                <div *ngIf="isNewsletterLoading" class="p-4 bg-white disabled rounded text-center">
+                                    <div class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                                        <div class="spinner-border spinner-border-sm" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <span>Loading newsletter...</span>
+                                    </div>
+                                    <div *ngIf="!isNewsletterLoading" class="fw-medium">Details will be updated shortly</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="addNewsletterPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header py-2 hstack gap-3 align-items-center justify-content-between" #dialogHandle>
+                <h1 class="modal-title fs-5">Add New Newsletter</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <pq-textbox label="Newsletter Title"
+                            [textBoxContent]="newslettersPayload.title"
+                            (outputValue)="newslettersPayload.title = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <pq-textbox label="Newsletter Link"
+                            [textBoxContent]="newslettersPayload.link"
+                            (outputValue)="newslettersPayload.link = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <pq-dropdown label="For Company" dropDownType="advanced" [setOptionAsText]="true"
+                            [text]="master_companies.selectedCompany.label"
+                            [keys]="master_companies.keys"
+                            [selectedOption]="master_companies.selectedCompany.index.toString()"
+                            [options]="master_companies.list"
+                            (outputObject)="master_companies.selectedCompany = $event; newslettersPayload.master_company_id = master_companies.selectedCompany.index; getNewsletters();"></pq-dropdown>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <pq-dropdown label="Month" dropDownType="simple" [setOptionAsText]="true"
+                            [text]="period.monthNames[period.selectedPeriod.month]"
+                            [selectedOption]="newslettersPayload.month.toString()"
+                            [options]="period.monthNames"
+                            (outputKey)="newslettersPayload.month = convertToNumber($event); period.selectedPeriod.month = convertToNumber($event);"></pq-dropdown>
+                    </div>
+                    <div class="col-sm-4">
+                        <pq-dropdown label="Year" dropDownType="simple" [setOptionAsText]="true"
+                            [text]="newslettersPayload.year"
+                            [options]="period.years"
+                            (outputValue)="newslettersPayload.year = convertToNumber($event); period.selectedPeriod.year = convertToNumber($event);"></pq-dropdown>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-end">
+                        <pq-button (clickEvent)="saveNewsletter()" data-bs-dismiss="modal">Save Newsletter</pq-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editNewsletterPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header py-2 hstack gap-3 align-items-center justify-content-between" #dialogHandle>
+                <h1 class="modal-title fs-5">Edit Newsletter</h1>
+                <pq-button buttonStyle="link" data-bs-dismiss="modal" (clickEvent)="resetNewsletterPayload()">&times;</pq-button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <pq-textbox label="Newsletter Title"
+                            [textBoxContent]="newslettersPayload.title"
+                            (outputValue)="newslettersPayload.title = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <pq-textbox label="Link"
+                            [textBoxContent]="newslettersPayload.link"
+                            (outputValue)="newslettersPayload.link = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <pq-dropdown label="Month" dropDownType="simple" [setOptionAsText]="true"
+                            [text]="period.monthNames[period.selectedPeriod.month]"
+                            [selectedOption]="newslettersPayload.month.toString()"
+                            [options]="period.monthNames"
+                            (outputKey)="newslettersPayload.month = convertToNumber($event); period.selectedPeriod.month = convertToNumber($event);"></pq-dropdown>
+                    </div>
+                    <div class="col-sm-4">
+                        <pq-dropdown label="Year" dropDownType="simple" [setOptionAsText]="true"
+                            [text]="newslettersPayload.year"
+                            [options]="period.years"
+                            (outputValue)="newslettersPayload.year = convertToNumber($event); period.selectedPeriod.year = convertToNumber($event);"></pq-dropdown>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 hstack gap-1 align-items-center justify-content-between">
+                        <pq-button buttonStyle="simple" data-bs-dismiss="modal" (clickEvent)="deleteNewsletter()">
+                            <span class="material-symbols-rounded text-danger">delete_forever</span>
+                        </pq-button>
+                        <pq-button (clickEvent)="updateNewsletter()" data-bs-dismiss="modal">Update Newsletter</pq-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

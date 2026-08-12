@@ -1,0 +1,158 @@
+.dropdown-container {
+    
+    &.dropdown-full-width {
+        width: 100%;
+
+        .dropdown {
+            width: 100%;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+
+    &.link-dropdown {
+        label {
+            margin-bottom: 5px;
+        }
+        .dropdown {
+            .dropdown-button {
+                border-top: 0 solid !important;
+                border-left: 0 solid !important;
+                border-right: 0 solid !important;
+
+                &:focus, &:active {
+                    border-top: 0 solid !important;
+                    border-left: 0 solid !important;
+                    border-right: 0 solid !important;
+                }
+
+                span:not(.dropdown-icon) {
+                    color: rgba(var(--primary-color-rgb), 0.8);
+                }
+
+                span.dropdown-icon {
+                    opacity: 10%;
+                    font-size: 0.7rem;
+                }
+
+                &:hover {
+                    span:not(.dropdown-icon) {
+                        text-decoration: underline;
+                    }
+                    span.dropdown-icon {
+                        opacity: 80% !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .dropdown {
+        
+        .dropdown-toggle {
+            // padding-right: 25px;
+
+            &::after {
+                // position: absolute;
+                top: 50%;
+                right: 10px;
+            }
+        }
+
+        .dropdown-menu {
+            background: white;
+            max-height: 250px;
+            overflow: hidden;
+            width: auto !important;
+            box-shadow: rgba(0, 0, 0, 0.05) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px, rgba(0, 0, 0, 0.2) 0px 8px 10px -5px;
+            &.pt-50 {
+                padding-top: 50px;
+            }
+            &.pt-40 {
+                padding-top: 40px;
+            }
+            
+            .searchbox-container {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+            }
+
+            .dropdown-menu-options {
+                max-height: 200px;
+                overflow-y: auto;
+                overflow-x: hidden; 
+                
+                &.dropdown-menu-sm {
+                    max-width: 300px;
+                }
+
+                &.dropdown-menu-lg {
+                    max-width: 400px;
+                }
+
+                &.dropdown-menu {
+                    max-width: auto;
+                }
+            }
+
+            li {
+                .dropdown-item {
+
+                    &.selected {
+                        background: rgba(var(--primary-color-rgb), 0.2);
+                        color: var(--dark-color);
+                    }
+                    &:hover {
+                        background: var(--primary-color);
+                        color: var(--light-color);
+                    }
+                    &:active {
+                        background: var(--primary-color);
+                        color: var(--light-color);
+                    }
+                }
+            }
+        }
+    }
+    .dropdown-error {
+        opacity: 0;
+        transform: translateY(-20%);
+        color: white;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+    
+        &.show-error {
+            opacity: 1;
+            color: var(--danger-color);
+            transform: translateY(0%);
+    
+            span {
+                display: none;
+            }
+        }
+    }
+    
+    .dropdown-helper {
+        padding-bottom: 8px;
+        font-style: italic;
+        color: var(--light-text-color);
+        transform: translateY(-1.4em);
+    
+        &.hide-helper {
+            opacity: 0;
+            transform: translateY(-1.2em);
+        }
+    }
+    
+    &.has-errors {
+        .dropdown-helper {
+            transform: translateY(0);
+            height: 0;
+        }
+    }
+}

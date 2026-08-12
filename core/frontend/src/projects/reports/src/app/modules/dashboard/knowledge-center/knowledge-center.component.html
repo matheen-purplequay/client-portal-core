@@ -1,0 +1,122 @@
+<section class="container mb-3">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">Knowledge Center</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2 text-center">
+            <!-- Hidden for now, must be enabled later in updates
+            <pq-simple-tab [tabs]="filterTabs.tabs" containerClass="shadow-sm bg-white" labelClass="px-4" tabName="dashboard-type"
+                [selectedTab]="filterTabs.selectedTab.index"
+                (tabSelectedEvent)="handleFilterTabs($event)"></pq-simple-tab> -->
+        </div>
+    </div>
+    <div *ngIf="filterTabs.selectedTab.index == 0" class="row mt-4">
+        <div class="col-sm-8 offset-sm-2">
+            <div class="hstack gap-3 align-items-start justify-content-between" [ngClass]="{ 'disabled': isLoadingTools }">
+                <div class="h3 mb-3 color-primary">Useful Tools</div>
+                <div class="hstack gap-3 align-items-start">
+                    <pq-dropdown label="Filter by Category" dropDownType="simple" [setOptionAsText]="true"
+                        [text]="(toolCategories.selectedCategory)? toolCategories.selectedCategory : 'Choose a category'"
+                        [options]="toolCategories.categories"
+                        (outputValue)="toolCategories.selectedCategory = $event; getToolsByCategory();"></pq-dropdown>
+
+                    <!-- <pq-dropdown label="Filter by Sub Category" dropDownType="simple" [setOptionAsText]="true"
+                        [text]="(toolCategories.selectedSubCategory != '')? toolCategories.selectedSubCategory : 'Choose a sub category'"
+                        [options]="toolCategories.subCategories"
+                        (outputValue)="toolCategories.selectedSubCategory = $event; getTools();"></pq-dropdown> -->
+                </div>
+            </div>
+            <div *ngIf="isLoadingTools" class="hstack gap-2 align-items-center justify-content-center bg-white rounded shadow-sm disabled hstack p-4">
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                Loading tools...
+            </div>
+            <div *ngIf="!isLoadingTools" class="vstack gap-3">
+                <div *ngFor="let tool of tools" class="card border-0 shadow-sm cursor-pointer" (click)="goToLink(tool)">
+                    <div class="card-body">
+                        <div class="hstack gap-2 align-items-center">
+                            <img class="object-fit-cover" [src]="tool.image" alt="" style="height: 48px; width: auto;">
+                            <div class="vstack gap-1">
+                                <div class="text-primary h5 m-0">{{ tool.title }}</div>
+                                <div class="text-dark small">{{ tool.description }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="filterTabs.selectedTab.index == 1" class="row mt-4">
+        <div class="col-sm-8 offset-sm-2">
+            <div class="hstack gap-3 align-items-start justify-content-between" [ngClass]="{ 'disabled': isLoadingArticles }">
+                <div class="h3 mb-3 color-primary">Articles</div>
+                <div class="hstack gap-3 align-items-start">
+                    <pq-dropdown label="Filter by Category" dropDownType="simple" [setOptionAsText]="true"
+                        text="Choose a category"
+                        [options]="articleCategories.list"
+                        (outputValue)="articleCategories.selectedCategory = $event; getKnowledgeCenter();"></pq-dropdown>
+                    <pq-dropdown label="Filter by Month" dropDownType="simple" [setOptionAsText]="true"
+                        [text]="period.monthNames[period.selctedPeriod.month]"
+                        [options]="period.monthNames"
+                        (outputKey)="period.selctedPeriod.month = convertToNumber($event); getKnowledgeCenter();"></pq-dropdown>
+                    <pq-dropdown label="Year" dropDownType="simple" [setOptionAsText]="true"
+                        [text]="period.selctedPeriod.year"
+                        [options]="period.years"
+                        (outputValue)="period.selctedPeriod.year = convertToNumber($event); getKnowledgeCenter();"></pq-dropdown>
+                </div>
+            </div>
+            <div *ngIf="isLoadingArticles" class="hstack gap-2 align-items-center justify-content-center bg-white rounded shadow-sm disabled hstack p-4">
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                Loading articles...
+            </div>
+            <div  *ngIf="!isLoadingArticles" class="vstack gap-2">
+                <div *ngFor="let article of articles" class="card border-0 shadow-sm mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- <div class="col-sm-2">
+                                <img class="w-100 object-fit-cover" [src]="article.image" alt="">
+                            </div> -->
+                            <div class="col-sm-12">
+                                <div class="h5">
+                                    <a class="text-decoration-none stretched-link" [href]="article.link" target="_blank">
+                                        {{ article.title }}
+                                    </a>
+                                </div>
+                                <div>{{ article.description }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade show" id="toolPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog modal-xl" style="height: 90%">
+        <div class="modal-content border-0 shadow-lg h-100">
+            <div class="modal-header py-2">
+                <h1 class="modal-title fs-5">Tool</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="showToolPopup = false;"></button>
+            </div>
+            <div class="modal-body p-0 rounded-2 overflow-hidden">
+                <iframe [src]="selectedToolLink" frameborder="0" height="100%"></iframe>
+            </div>
+        </div>
+    </div>
+</div>

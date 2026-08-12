@@ -1,0 +1,254 @@
+<!-- Query Templates Sidebar -->
+<div class="offcanvas offcanvas-end m-2 rounded-4 overflow-hidden shadow-lg bg-light"
+    [ngClass]="(activity.selected != activityList.select)? 'offcanvas-large' : ''" tabindex="-1" [id]="queryTemplateSelectorId" 
+    aria-labelledby="offcanvasRightLabel" data-bs-scroll="true">
+    <div class="offcanvas-header align-items-start pb-1">
+        <h5 class="offcanvas-title mb-0" id="offcanvasRightLabel">
+            <span *ngIf="activity.selected == activityList.select">Choose a template</span>
+            <span *ngIf="activity.selected == activityList.edit">Edit template</span>
+            <span *ngIf="activity.selected == activityList.new">Create new template</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" (click)="activity.selected = activityList.select"></button>
+    </div>
+    <div [ngClass]="(alertMessage.showAlert)? 'show' : ''" class="slide-down px-3">
+        <div class="alert small py-1 rounded alert-{{ alertMessage.type }} alert-dismissible fade show" role="alert">
+            {{ alertMessage.message }}
+        </div>
+    </div>
+    <div class="px-3 mb-2 vstack gap-2">
+        <ng-container *ngIf="activity.selected == activityList.select">
+            <div class="input-group bg-white shadow-input-2 rounded-pill shadow-input-1 hstack align-items-center align-self-center"
+                [ngClass]="{ 'border border-color-primary': queryTemplateSearchTerm }">
+                <input type="text" class="form-control border-0 bg-transparent" placeholder="Search Query Templates"
+                    [(ngModel)]="queryTemplateSearchTerm">
+                <button [ngClass]="{ 'pe-none opacity-30': !queryTemplateSearchTerm }"
+                    class="btn z-0 border-0 hstack align-items-center" (click)="resetSearchQueryTemplatesTerm()">
+                    <span class="material-symbols-rounded">backspace</span>
+                </button>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="activity.selected == activityList.new">
+            <div class="disabled">All fields are required.</div>
+        </ng-container>
+    </div>
+
+    <ng-container *ngIf="!isGettingQueryTemplates">
+        <!-- Query Templates Body -->
+        <div class="offcanvas-body p-0 h-100 bg-white border-top border-bottom overflow-y-auto h-100">
+    
+            <ng-container *ngIf="activity.selected == activityList.select">
+                <div>
+                    <ul class="list-group list-group-flush collapse show bg-transparent" id="ppq">
+                        <ng-container *ngFor="let queryTemplate of queryTemplates | objectFilter: queryTemplateSearchTerm; let index = index; let first = first;">
+                            <li class="list-group-item p-1 bg-transparent">
+                                <div class="link light-link rounded p-3" [ngClass]="{ 'opacity-80 pe-none': isEditMode }">
+                                    <div data-bs-dismiss="offcanvas" (click)="setTemplateSelected(queryTemplate)">
+                                        <div>{{ queryTemplate.query_template_code }} - {{ queryTemplate.title }}</div>
+                                        <div class="badge small fw-normal disabled rounded-pill bg-light text-dark mb-1">{{ queryTemplate.job_stage_name }}</div>
+                                        <div class="hstack gap-2 align-items-center">
+                                            <div class="badge small fw-normal disabled rounded-pill bg-light text-dark">{{ queryTemplate.category_name }}</div>
+                                            <span class="material-symbols-outlined text-dark small">chevron_right</span>
+                                            <div class="badge small fw-normal disabled rounded-pill bg-light text-dark">{{ queryTemplate.sub_category_name }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <ng-container *ngIf="isEditMode">
+                                    <div class="hstack justify-content-end align-items-center">
+                                        <pq-button buttonStyle="link" (clickEvent)="activity.selected = activityList.edit; editingQueryTemplate = queryTemplate;">Edit</pq-button>
+                                    </div>
+                                </ng-container>
+                            </li>
+                        </ng-container>
+                    </ul>
+        
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="activity.selected == activityList.edit">
+                <div class="vstack gap-2 px-3">
+                    <pq-textbox label="Query Title" helper="Query title must be brief and precise" [textBoxContent]="editingQueryTemplate.title" (outputValue)="editingQueryTemplate.title = $event"></pq-textbox>
+
+                    <div class="position-relative small-editor">
+                        <label>Query Description</label>
+                        <ckeditor [editor]="Editor" [data]="editingQueryTemplate.query"
+                            (blur)="editingQueryTemplate.query = $event.editor.getData();"
+                            [config]="newQueryEditorConfig">
+                        </ckeditor>
+                        <div class="small disabled pt-1 pb-3 fst-italic vstack lh-1 gap-2">
+                            <div>Use double brackets [[ ]] to add placeholders in the description with a name for clarity (e.g., [[amount]]).</div>
+                            <div><strong>Please format list of documents using numbering (e.g., 1., 2., etc.) when listing the required files.</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <pq-dropdown *ngIf="clients && clients.list && clients.list.length > 0"
+                        [text]="selectedClientName(editingQueryTemplate.wm_client_id)" label="Clients" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="clients.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="clients.list"
+                        (outputObject)="clients.selectedClient = $event; editingQueryTemplate.wm_client_id = $event.works_manager_client_id;"></pq-dropdown>
+
+                    <pq-dropdown *ngIf="masterFilters.processing_stage.list.length > 0"
+                        [text]="editingQueryTemplate.job_stage_name" label="Job Processing Stage" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.processing_stage.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.processing_stage.list"
+                        (outputObject)="editingQueryTemplate.job_stage_id = $event.id; editingQueryTemplate.job_stage_name = $event.master_name;"></pq-dropdown>
+
+                    <pq-dropdown *ngIf="masterFilters.category.list.length > 0"
+                        [text]="editingQueryTemplate.category_name" label="Category" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.category.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.category.list"
+                        (outputObject)="editingQueryTemplate.category_id = $event.id; editingQueryTemplate.category_name = $event.master_name; getFilters($event.id);"></pq-dropdown>
+
+                    <pq-dropdown *ngIf="masterFilters.sub_category.list.length > 0"
+                        [text]="editingQueryTemplate.sub_category_name" label="Sub Category" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.sub_category.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.sub_category.list"
+                        (outputObject)="editingQueryTemplate.sub_category_id = $event.id; editingQueryTemplate.sub_category_name = $event.master_name;"></pq-dropdown>
+        
+                    <pq-dropdown *ngIf="masterFilters.criticality.list.length > 0"
+                        [text]="editingQueryTemplate.criticality_name" label="Criticality" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.criticality.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.criticality.list"
+                        (outputObject)="editingQueryTemplate.criticality_id = $event.id; editingQueryTemplate.criticality_name = $event.master_name;"></pq-dropdown>
+
+                    <pq-dropdown *ngIf="masterFilters.response_type.list.length > 0"
+                        [text]="editingQueryTemplate.response_type | titlecase" label="Response Type" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.response_type.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.response_type.list"
+                        (outputObject)="editingQueryTemplate.response_type_id = $event.id; editingQueryTemplate.response_type = $event.master_code;"></pq-dropdown>
+                </div>
+            </ng-container>
+    
+            <ng-container *ngIf="activity.selected == activityList.new">
+                <div class="vstack gap-2 px-3">
+                    <pq-textbox label="Query Title" helper="Query title must be brief and precise" [textBoxContent]="newQueryTemplate.title" (outputValue)="newQueryTemplate.title = $event"></pq-textbox>
+                    <!-- <pq-textbox label="Query Description" helper="Use double brackets [[ ]] to add placeholders in the description with a name for clarity (e.g., [[amount]])." 
+                        [textBoxContent]="newQueryTemplate.query" (outputValue)="newQueryTemplate.query = $event"></pq-textbox> -->
+
+                    <div class="position-relative small-editor">
+                        <label>Query Description</label>
+                        <ckeditor [editor]="Editor" [data]="newQueryTemplate.query"
+                            (blur)="newQueryTemplate.query = $event.editor.getData();"
+                            [config]="newQueryEditorConfig">
+                        </ckeditor>
+                        <div class="small disabled pt-1 pb-3 fst-italic">
+                            Use double brackets [[ ]] to add placeholders in the description with a name for clarity (e.g., [[amount]]).
+                        </div>
+                    </div>
+
+                    <pq-dropdown *ngIf="clients && clients.list && clients.list.length > 0"
+                        [text]="clients.selectedClient.name" label="Clients" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="clients.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="clients.list"
+                        (outputObject)="clients.selectedClient = $event; newQueryTemplate.wm_client_id = $event.works_manager_client_id;"></pq-dropdown>
+
+                    <pq-dropdown *ngIf="masterFilters.processing_stage.list.length > 0"
+                        [text]="newQueryTemplate.job_stage_name" label="Job Processing Stage" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.processing_stage.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.processing_stage.list"
+                        (outputObject)="newQueryTemplate.job_stage_id = $event.id; newQueryTemplate.job_stage_name = $event.master_name;"></pq-dropdown>
+
+                    <pq-dropdown *ngIf="masterFilters.category.list.length > 0"
+                        [text]="newQueryTemplate.category_name" label="Category" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.category.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.category.list"
+                        (outputObject)="newQueryTemplate.category_id = $event.id; newQueryTemplate.category_name = $event.master_name; getFilters($event.id);"></pq-dropdown>
+
+                    <pq-dropdown *ngIf="masterFilters.sub_category.list.length > 0"
+                        [text]="newQueryTemplate.sub_category_name" label="Sub Category" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.sub_category.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.sub_category.list"
+                        (outputObject)="newQueryTemplate.sub_category_id = $event.id; newQueryTemplate.sub_category_name = $event.master_name;"></pq-dropdown>
+        
+                    <pq-dropdown *ngIf="masterFilters.criticality.list.length > 0"
+                        [text]="newQueryTemplate.criticality_name" label="Criticality" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.criticality.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.criticality.list"
+                        (outputObject)="newQueryTemplate.criticality_id = $event.id; newQueryTemplate.criticality_name = $event.master_name;"></pq-dropdown>
+                    
+                    <pq-dropdown *ngIf="masterFilters.response_type.list.length > 0"
+                        [text]="editingQueryTemplate.response_type | titlecase" label="Response Type" dropDownClass="bg-white"
+                        dropDownType="advanced" [keys]="masterFilters.response_type.keys" [hideError]="true"
+                        labelClass="small mb-1 d-block"
+                        [options]="masterFilters.response_type.list"
+                        (outputObject)="newQueryTemplate.response_type_id = $event.id; newQueryTemplate.response_type = $event.master_code; getResponseType($event);"></pq-dropdown>
+                </div>
+            </ng-container>
+    
+        </div>
+        <!-- End of Query Templates Body -->
+
+        <!-- Footer -->
+        <div *ngIf="canAddCustomTemplate" class="offcanvas-footer">
+            <div class="hstack px-3 gap-2 justify-content-end align-items-center">
+                <ng-container *ngIf="activity.selected == activityList.select">
+                    <div class="hstack gap-2 justify-content-between flex-fill">
+                        <pq-button buttonStyle="simple" buttonClass="rounded-0" buttonContentClass="hstack gap-2 align-items-center"
+                            (clickEvent)="isEditMode = !isEditMode;">
+                            <span class="material-symbols-outlined">{{ (isEditMode)? 'close' : 'edit' }}</span>
+                            <span>{{ (isEditMode)? 'Cancel' : 'Edit' }}</span>
+                        </pq-button>
+                        <pq-button *ngIf="!isEditMode" buttonStyle="simple" buttonClass="rounded-0" buttonContentClass="hstack gap-2 align-items-center"
+                            (clickEvent)="activity.selected = activityList.new">
+                            <span class="material-symbols-outlined">post_add</span>
+                            <span>Create New Template</span>
+                        </pq-button>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="activity.selected == activityList.edit">
+                    <div class="hstack gap-2 justify-content-between flex-fill">
+                        <pq-button buttonStyle="simple" buttonClass="rounded-0" buttonContentClass="hstack gap-2 align-items-center"
+                            [isDisabled]="isSavingQueryTemplate" (clickEvent)="activity.selected = activityList.select; isEditMode = false;">
+                            <span class="material-symbols-outlined">close</span>
+                            <span>Cancel</span>
+                        </pq-button>
+                        <pq-button buttonStyle="simple" buttonClass="rounded-0" buttonContentClass="hstack gap-2 align-items-center"
+                            [isDisabled]="isSavingQueryTemplate" [isLoading]="isSavingQueryTemplate" (clickEvent)="updateQueryTemplate()">
+                            <span class="material-symbols-outlined">save</span>
+                            <span>Update Template</span>
+                        </pq-button>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="activity.selected == activityList.new">
+                    <div class="hstack gap-2 justify-content-between flex-fill">
+                        <pq-button buttonStyle="simple" buttonClass="rounded-0" buttonContentClass="hstack gap-2 align-items-center"
+                            [isDisabled]="isSavingQueryTemplate" (clickEvent)="activity.selected = activityList.select">
+                            <span class="material-symbols-outlined">close</span>
+                            <span>Cancel</span>
+                        </pq-button>
+                        <pq-button buttonStyle="simple" buttonClass="rounded-0" buttonContentClass="hstack gap-2 align-items-center"
+                            [isDisabled]="isSavingQueryTemplate" [isLoading]="isSavingQueryTemplate" (clickEvent)="saveQueryTemplate()">
+                            <span class="material-symbols-outlined">save</span>
+                            <span>Save Template</span>
+                        </pq-button>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <!-- End of Footer -->
+    </ng-container>
+
+    <ng-container *ngIf="isGettingQueryTemplates">
+        <!-- Query Templates Loader Progress -->
+        <div class="p-3 h-100">
+            <div class="hstack justify-content-center align-items-center flex-fill h-100">
+                <app-simple-loading-text loadingStyle="simple">Getting all templates...</app-simple-loading-text>
+            </div>
+        </div>
+        <!-- End of Query Templates Loader Progress -->
+    </ng-container>
+
+</div>
+<!-- End of Query Templates Sidebar -->

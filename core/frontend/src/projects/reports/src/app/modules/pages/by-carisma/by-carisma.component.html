@@ -1,0 +1,43 @@
+<!-- <section class="container mb-3 py-4">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">
+                    <span *ngIf="master_company.short_name.toLowerCase() == 'cs'">About Carisma</span>
+                    <span *ngIf="master_company.short_name.toLowerCase() == 'pq'">About PurpleQuay</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section> -->
+
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-end position-relative">
+                <ng-container *ngIf="link">
+                    <div class="hstack gap-2 align-items-center justify-content-center mb-3">
+                        <a class="text-decoration-none vstack align-items-center justify-content-center" [href]="link.url" target="_blank">
+                            <img class="image" [ngClass]="(this.master_company_short_name == 'pq')? 'h-56' : 'h-40'" [src]="link.logo" alt="">
+                            <div class="small hstack gap-1 align-items-center justify-content-center">
+                                <span class="material-symbols-outlined small">open_in_new</span>
+                                Click to open website in new tab
+                            </div>
+                            <!-- <div class="lead fw-400">{{ link.title }}</div>
+                            <div class="opacity-75">{{ link.description }}</div> -->
+                        </a>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="col-sm-12">
+                <div *ngIf="pdfURL" class="p-2 border rounded overflow-hidden shadow-sm" style="min-height: 700px;">
+                    <iframe #pdf width="100%" class="border border-dark" 
+                        style="min-height: 700px;"
+                        [src]="pdfURL" frameborder="0" crossorigin></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,927 @@
+[
+    {
+      "jobName": "Hogs Heaven Superannuation Fund - 2023",
+      "dateReceived": "9/01/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Endless Summer Superfund - 2022",
+      "dateReceived": "9/01/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Endless Summer Superfund - 2023",
+      "dateReceived": "9/01/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "S M Superannuation Fund - 2023",
+      "dateReceived": "9/01/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Alexander McKay Superannuation Fund - 2023",
+      "dateReceived": "9/01/2023",
+      "jobStatus": "Workpapers Completed"
+    },
+    {
+      "jobName": "The Capital Group Consulting Super Fund - 2022",
+      "dateReceived": "9/01/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "MK Tsekmes SF- 2023",
+      "dateReceived": "9/03/2023",
+      "jobStatus": "Moved to Audit"
+    },
+    {
+      "jobName": "Yeo Medical Services Superannuation Fund - 2023",
+      "dateReceived": "9/04/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Alltogether Superannuation Fund - 2023",
+      "dateReceived": "9/04/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Young Superannuation Fund - 2023",
+      "dateReceived": "9/04/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Mybel Superannuation Fund - 2023",
+      "dateReceived": "9/04/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "Ross Harding & Associates Super Fund - 2023",
+      "dateReceived": "9/04/2023",
+      "jobStatus": "In Progress Final"
+    },
+    {
+      "jobName": "Inwood Superannuation Fund - 2023",
+      "dateReceived": "9/05/2023",
+      "jobStatus": "In Progress Final"
+    },
+    {
+      "jobName": "Quick Superannuation Fund - 2023",
+      "dateReceived": "9/05/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "Hansen Management Trust Super Fund - 2023",
+      "dateReceived": "9/05/2023",
+      "jobStatus": "Workpapers Completed"
+    },
+    {
+      "jobName": "B & J Parker Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Big Ted Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Blakey Family Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Moved to Audit"
+    },
+    {
+      "jobName": "Buising Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "BV & EM May Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Canham Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Chalmers Super Fund 1805",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Champions Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Coed Arian Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Coles Family Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Crawford Campbell Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "D&K Crane Family Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "D.K.& G.M.Mitchell Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Exell Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Fiedler Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Fishley & Knight Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "G & A Orfano Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "G & E Weeks Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "G & PJ Doupe Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Goetzl Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Gogos Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "GSM Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Hayes Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "HM Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "JBK Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Joe & Anna Cachia Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Johnston Family Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "JP Rose Accumulation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "JP Rose Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "M & V Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Mccauley Family Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "McDowall Family Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "MDP Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "MJ & SM Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Myridi Investments",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "P & L Davy Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Peter & Judith Chew Family Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Pruhonice Super",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Renda Transport Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "S & P Mason Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "S & S Brooks Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Sally F Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Saunders Family Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Scicluna Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "SM & CA Anderson Super",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Spielton Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "SSD Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Steve & Kerry Armstrong Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "The A & J Comito Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "The Markopoulos Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Trenery Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Walkenhorst Family Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Vale and Imhoff Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Barnash Superannuation Fund - 2023",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "BAW Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "CC and GJ Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "G Withers Superannuation Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "RA & HM Wilson Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Whittaker Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Worrall Super Fund",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Beagle Hill Superannuation Fund - 2023",
+      "dateReceived": "9/06/2023",
+      "jobStatus": "In Progress Final"
+    },
+    {
+      "jobName": "Pierluigi Baschiera Super Fund - 2023",
+      "dateReceived": "9/07/2023",
+      "jobStatus": "In Progress Final"
+    },
+    {
+      "jobName": "Robertson Pension Fund - 2023",
+      "dateReceived": "9/07/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Third Superannuation Fund",
+      "dateReceived": "9/08/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "AJ & MY Hayes Super Fund",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "DLTMJ Super Fund",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "In Progress Final"
+    },
+    {
+      "jobName": "EssJaySuper",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "Moved to Audit"
+    },
+    {
+      "jobName": "Feliz Super Fund",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Lakshmi Superfund",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "In Progress Final"
+    },
+    {
+      "jobName": "Margarita Super Fund",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "McMillan Superannuation Fund",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "The Flaherty Superannuation Fund",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "G Holmes Superannuation Fund - 2023",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "McMo Super Fund - 2023",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "J Y Faber Super Fund - 2023",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Rowe Hatch SMSF",
+      "dateReceived": "9/11/2023",
+      "jobStatus": "Workpapers Completed"
+    },
+    {
+      "jobName": "Griffiths & Frewin SMSF - 2023",
+      "dateReceived": "9/12/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "The Lodder Family Superannuation Fund - 2023",
+      "dateReceived": "9/12/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "Cantrick Superannuation Fund - 2023",
+      "dateReceived": "9/13/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Carden Leche Superannuation Fund - 2023",
+      "dateReceived": "9/13/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "N & S J Oxley Superannuation Fund - 2023",
+      "dateReceived": "9/13/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Singh Family Superannuation Fund - 2023",
+      "dateReceived": "9/14/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "B & S Brown Superannuation Fund -2023",
+      "dateReceived": "9/14/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Unterlechner Superannuation Fund -2023",
+      "dateReceived": "9/14/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Stewart Superannuation Fund - 2023",
+      "dateReceived": "9/14/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "G Bazzan Superannuation Fund - 2023",
+      "dateReceived": "9/14/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "JJSR Superannuation Fund - 2023",
+      "dateReceived": "9/15/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Fianddor Superannuation Fund - 2023",
+      "dateReceived": "9/15/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "M Gainger Superannuation Fund - 2023",
+      "dateReceived": "9/15/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Colman Super Fund - 2023",
+      "dateReceived": "9/15/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "Yandi Superannuation Fund - 2023",
+      "dateReceived": "9/15/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Matthew 138 Super Fund - 2023",
+      "dateReceived": "9/17/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "MC Super Fund - 2023",
+      "dateReceived": "9/17/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "Blaich Superannuation Fund - 2023",
+      "dateReceived": "9/18/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "Mclean SF 2022",
+      "dateReceived": "9/18/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "M2 Super - 2023",
+      "dateReceived": "9/18/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "I E McInnes Superannuation Fund - 2023",
+      "dateReceived": "9/18/2023",
+      "jobStatus": "In Progress Final"
+    },
+    {
+      "jobName": "Jacob Ellison Super Fund - 2023",
+      "dateReceived": "9/19/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "Calepin 111 SF",
+      "dateReceived": "9/19/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "J & M Mansour SF -23",
+      "dateReceived": "9/19/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "United Always Superannuation Fund - 2023",
+      "dateReceived": "9/18/2023",
+      "jobStatus": "In Progress Initial"
+    },
+    {
+      "jobName": "Imtiran Investment Fund - 2023",
+      "dateReceived": "9/19/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Murphy Superannuation Fund - 2023",
+      "dateReceived": "9/20/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Graeme Bleus Real Estate Superannuation Fund - 2023",
+      "dateReceived": "9/20/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Manu Superannuation Fund - 2023",
+      "dateReceived": "9/20/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Karrasch Superannuation Fund-2023",
+      "dateReceived": "9/20/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Core Complex Superannuation Fund - 2023",
+      "dateReceived": "9/21/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Schaffhauser Family Superannaution Fund - 2023",
+      "dateReceived": "9/21/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "LMS Superannuation Fund - 2023",
+      "dateReceived": "9/21/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Suzanne James Superannuation Fund - 2023",
+      "dateReceived": "9/21/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "D and L Superannuation Fund - 2023",
+      "dateReceived": "9/21/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Carroll Family Superannuation Fund - 2023",
+      "dateReceived": "9/21/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Devine Family Superannuation Fund - 2023",
+      "dateReceived": "9/21/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Beyond the Horizon Superannuation Fund - 2023",
+      "dateReceived": "9/21/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "McSweeney Weston Superannuation Fund - 2023",
+      "dateReceived": "9/21/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Greville Super Fund - 2023",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Bice Family SF - 2023",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Ponton Family SF - 2023",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "White Family Super Fund",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "DCIC Super Fund",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Graham Family Super Fund",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Scholes Superannuation Fund",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "The Planet Superannuation Fund",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Traeger Super Fund",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "CCLD Super Fund",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Sage Van Hese Super Fund",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Griffiths Family SF-2023",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Mar Super Fund",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Kadar Super Fund -2023",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Aberdare Farm Super Fund - 2023",
+      "dateReceived": "9/22/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Ewin Family Superannuation Fund - 2023",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "Australian Healthcare Consultants Super Fund",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Coleman Superannuation Fund",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "G and M Wood Superannuation Fund",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "La Moneda Super Fund",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "SWV Family Super Fund",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Tucker Family Super Fund",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Brant Superannuation Fund - 2023",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "A1 Building Property Maintenance Super Fund -2021",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "A1 Building Property Maintenance Super Fund -2022",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Wealth Cycle Super Fund - 2023",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Merrett Super Fund - 2023",
+      "dateReceived": "9/25/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "K Thompson Style Super Fund",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Seventeen Again Superannuation Fund",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Wakao Holdings Pty Ltd Super Fund - 2023",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Shane & Beverley Chapman Super Fund - 2023",
+      "dateReceived": "19/09/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Alanrob Superannuation Fund",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "D & D Murdoch Super Fund",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Dollin Family Superannuation Fund",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Hillfam Super Fund",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Knott Superannuation Fund",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "McGruer Super Fund",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "No. 2 Marsh Management Superannuation Fund",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Hooper Superannuation Fund -23",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Hamilton Family Superannuation Fund - 2023",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "FCA Superannuation Fund - 2023",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "GL & PJ Hunter Superannuation Fund - 2023",
+      "dateReceived": "9/26/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Patterson Staff Superannuation Fund - 2023",
+      "dateReceived": "9/27/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Ewin and Thomas Family Superannuation Fund - 2023",
+      "dateReceived": "9/27/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "UMOW Family Superannuation Fund -2023",
+      "dateReceived": "9/27/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Jeanne Pratt Superannuation Fund - 2024",
+      "dateReceived": "9/28/2023",
+      "jobStatus": "Awaiting Queries"
+    },
+    {
+      "jobName": "The Stewart Superannuation Fund - 2023",
+      "dateReceived": "9/28/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Scarborough Superannuation Fund - 2023",
+      "dateReceived": "9/28/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Ballantyne Superannuation Fund - 2023",
+      "dateReceived": "9/28/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Meacham & Nockles Superannuation Fund - 2023",
+      "dateReceived": "9/28/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "I. Wilton Superannuation Fund - 2023",
+      "dateReceived": "9/28/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Esange Administrative Superannuation Fund - 2023",
+      "dateReceived": "9/28/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Fleming Family Superannuation Fund - 2023",
+      "dateReceived": "9/29/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Klean Write Staff Superannuation Fund - 2023",
+      "dateReceived": "9/29/2023",
+      "jobStatus": "Not Yet Taken"
+    },
+    {
+      "jobName": "Sofer Family Super Fund - 2023",
+      "dateReceived": "9/29/2023",
+      "jobStatus": "Not Yet Taken"
+    }
+   ]

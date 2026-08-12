@@ -1,0 +1,29 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Jobs with Queries</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar placeholder="Search Jobs"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="vstack gap-3">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Jobs with Queries</ion-label>
+      </ion-list-header>
+      <ng-container
+        *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]; let index = index"
+      >
+        <ion-item>
+          <div class="vstack gap-1 py-2">
+            <div class="fs-6">{{ jobsWithQueries.last_query }}</div>
+            <div class="small">1844 - {{ jobsWithQueries.job_name }}</div>
+          </div>
+          <ion-badge slot="end">22 Open</ion-badge>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  </div>
+</ion-content>

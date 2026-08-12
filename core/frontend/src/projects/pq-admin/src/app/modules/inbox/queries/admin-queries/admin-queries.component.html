@@ -1,0 +1,145 @@
+<div>
+    <!-- <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="display-6">No Queries Found</div>
+    </div> -->
+
+    <ng-container>
+        <table class="w-100 tbl-primary">
+            <thead class="bg-color-primary text-light small">
+                <th class="px-2 text-light text-center">S.No</th>
+                <!-- <th *ngIf="user.role == approverRole" class="text-light">Actions</th> -->
+                <th class="text-light">Query ID</th>
+                <th class="text-light">Query</th>
+                <th class="text-light">Raised By</th>
+                <th class="text-light">Raised To</th>
+                <th class="text-light">Category</th>
+                <th class="text-light">Sub Category</th>
+                <th class="text-light">Raised on</th>
+                <th *ngIf="user.role !== approverRole" class="text-light">Last Updated</th>
+                <th class="text-light">Status</th>
+                <th *ngIf="user.role !== approverRole" class="text-light">Closure Date</th>
+                <!-- <th class="text-light">Links</th> -->
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let q of queries | paginate: config | objectFilter: queriesSearchTerm; let index = index;">
+                    <tr 
+                        class="cursor-pointer" (click)="setSelectedQuery(q)" data-bs-toggle="modal" data-bs-target="#mdlSelectedQuery"
+                    >
+                        <td class="px-2 text-center align-top">{{ index + 1 }}</td>
+                        <!-- <td *ngIf="user.role == approverRole">
+                            <div class="hstack align-items-center">
+                                <pq-button buttonStyle="link"
+                                    buttonContentClass="hstack align-items-center text-success smaller">
+                                    <span class="material-symbols-outlined small">check</span>
+                                    <span>Approve</span>
+                                </pq-button>
+                                <div class="border-start h-100 d-block"></div>
+                                <pq-button buttonStyle="link_danger"
+                                    buttonContentClass="hstack align-items-center smaller">
+                                    <span class="material-symbols-outlined small">close</span>
+                                    <span>Reject</span>
+                                </pq-button>
+                            </div>
+                        </td> -->
+                        <td class="align-top">
+                            <div class="fw-semibold color-primary">
+                                {{ q.query_code }}
+                            </div>
+                        </td>
+                        <td class="align-top">
+                            <div style="max-height: 3rem; overflow: hidden;">
+                                <div [innerHTML]="q.title"></div>
+                            </div>
+                            <div *ngIf="q.query != '' || q.query != '<p></p>'" class="text-muted small hstack gap-2 align-items-start">
+                                <div class="fw-bold opacity-75">Query: </div>
+                                <div [innerHTML]="q.query" style="max-height: 1.3rem; overflow: hidden;"></div>
+                            </div>
+                            <div *ngIf="q.last_sub_query" class="hstack gap-2 align-items-center small text-muted">
+                                <div class="fw-bold opacity-75">Last Reply: </div>
+                                <div [innerHTML]="q.last_sub_query" style="max-height: 1.3rem; overflow: hidden;"></div>
+                            </div>
+                            <div *ngIf="q.sub_query_approval_required > 0" class="badge bg-warning text-dark mt-1">Sub Query Approval Required</div>
+                        </td>
+                        <td>{{ q.raised_by_name }}</td>
+                        <td>{{ q.raised_to_name }}</td>
+                        <td>{{ q.category_name }}</td>
+                        <td>{{ q.sub_category_name }}</td>
+                        <td class="small disabled">{{ q.posted_date | date: 'dd-MM-yyyy hh:mm aa' }}</td>
+                        <td *ngIf="user.role !== approverRole"></td>
+                        <td>
+                            <div class="badge hstack gap-1 align-items-center cursor-pointer" 
+                                [ngClass]="{
+                                    'text-success': q.query_status_id == 4,
+                                    'color-primary': q.query_status_id == 3
+                                }"
+                            >
+                                <span *ngIf="q.query_status_id == 3" class="material-symbols-outlined">chat</span>
+                                <span *ngIf="q.query_status_id == 4" class="material-symbols-outlined">mark_email_read</span>
+                                <span class="fw-bold" *ngIf="q.sub_query_count  > 0">({{ q.sub_query_count }})</span>
+                            </div>
+                        </td>
+                        <td>
+                            {{ q.resolved_on ? (q.resolved_on | date: 'dd-MM-yyyy hh:mm aa') : '' }}
+                        </td>
+                        <!-- <td>
+                            <div class="vstack gap-1">
+                                <ng-container *ngFor="let attachment of q.attachments; let index = index;">
+                                    <a class="badge bg-transparent color-primary" [href]="attachment.link" target="_blank">{{ attachment.title }}</a>
+                                </ng-container>
+                            </div>
+                        </td> -->
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </ng-container>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="d-flex justify-content-end mb-2 mt-3 px-2">
+                <pq-pagination [config]="config" (pageChanged)="onPageChange($event)"></pq-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Query Table Popup -->
+<div class="modal fade" id="mdlSelectedQuery" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-0 bg-transparent pb-0">
+                <div class="hstack gap-2 align-items-center flex-fill">
+                    <span class="material-symbols-outlined">attach_file</span>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ query.selectedQuery.title }}</h1>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="deselectQuery()"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Query Card Container -->
+                <div class="pt-3 px-3 pb-1 rounded-3 border-bottom bg-color-light shadow-input-1 h-100 overflow-y-auto">
+
+                    <!-- Query Details -->
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <!-- Query Meta Data -->
+                            <app-card-query-meta layout="vertical" [job]="job" [query]="query.selectedQuery"></app-card-query-meta>
+                            <!-- End of Query Meta Data -->
+                        </div>
+                        <div class="col-sm-8">
+                            <!-- Query Replies -->
+                            <app-card-query-replies [query]="query.selectedQuery" (queryResolved)="emitQueryResolved()"></app-card-query-replies>
+                            <!-- End of Query Replies -->
+                        </div>
+                    </div>
+                    <!-- End of Query Details -->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Edit Query Table Popup -->

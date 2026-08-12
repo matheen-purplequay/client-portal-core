@@ -1,0 +1,34 @@
+<ng-container>
+    <div class="position-relative" [ngClass]="{ 'disabled': isJobInstructionsLoading }">
+        <div actions class="flex-fill border-bottom border-color-primary">
+            <pq-simple-tab [tabs]="filterViewStatusTypes.list" [selectedTab]="filterViewStatusTypes.selectedViewStatus.index" [tabStyle]="'minimal'"
+                (tabSelectedEvent)="filterViewStatusTypes.selectedViewStatus = $event; getJobInstructions()"></pq-simple-tab>
+        </div>
+
+        
+        <div style="max-height: 538px; overflow-y: auto;">
+            <ng-container *ngIf="isJobInstructionsLoading">
+                <div class="py-5">
+                    <app-simple-loading-text [loadingStyle]="'simple'">Getting all job instructions...</app-simple-loading-text>
+                </div>
+            </ng-container>
+            <ul *ngIf="!isJobInstructionsLoading" class="list-group list-group-flush comment-list-container">
+    
+                <li *ngFor="let instruction of jobInstructions"
+                    class="list-group-item cursor-pointer comment-list-item px-1" 
+                    [ngClass]="(jobInstruction.jobid == instruction.jobid)? 'bg-color-primary-lighter text-dark' : 'bg-white text-dark'"
+                    (click)="setSelectedJobInstruction(instruction)">
+                    <div class="ms-1 me-auto pb-1">
+                        <div class="hstack gap-1 justify-content-between">
+                            <div class="small disabled">{{ instruction.CreatedOn | date: 'd-M-y hh:mm' }}</div>
+                            <div class="fw-bold smaller disabled">Job ID {{ instruction.jobid }}</div>
+                        </div>
+                        <div class="fw-bold lh-1 text-truncate">{{ instruction.JobName }}</div>
+                        <div class="fw-bold small lh-1 text-truncate">{{ instruction.ClientName }}</div>
+                        <div class="disabled comment-content" w-100>{{ instruction.Comments }}</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</ng-container>

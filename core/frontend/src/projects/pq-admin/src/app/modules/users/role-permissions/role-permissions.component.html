@@ -1,0 +1,65 @@
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+
+            <pq-section-card sectionTitle="Roles List" sectionSubtitle="Manage user role permissions here"
+                cardClass="shadow-sm" cardBodyClass="p-0"
+                [enableSettings]="false" [showLoading]="roles.isFetchingRoles" showLoadingText="Getting list of available roles">
+
+                <div actions class="hstack gap-2 align-items-end">
+                    <div>
+                        <pq-simple-tab [tabs]="filterTabs.list" [selectedTab]="filterTabs.selectedTab.index"
+                            (tabSelectedEvent)="handleFilterTabs($event)"></pq-simple-tab>
+                    </div>
+                </div>
+
+                <div body class="container">
+                    <div class="row border-top border-bottom">
+                        <div class="col-sm-4 px-0 border-end">
+                            <div style="max-height: 500px; overflow-y: auto;">
+                                <ul *ngIf="roles.list.length > 0" class="list-group list-group-flush">
+                                    <li *ngFor="let role of roles.list; let index = index;" class="list-group-item cursor-pointer" (click)="selectRole(role)">
+                                        <div class="vstack gap-2">
+                                            <div>
+                                                <div class="lead">{{ role.title }}</div>
+                                                <div class="small">{{ role.code }}</div>
+                                            </div>
+                                            <div>{{ role.description }}</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <ng-container *ngIf="permissions">
+                                <div class="py-3" style="min-height: 250px; max-height: 500px; overflow-y: auto;">
+                                    <div *ngFor="let permission of permissions; let index = index;" class="card mb-3">
+                                        <div class="card-header">
+                                            {{ permission.module.split('_').join(' ') | titlecase }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div footer class="row">
+                    <div class="col-sm-4">
+                        <div class="vstack">
+                            <div *ngIf="roles.list.length > 0" class="hstack gap-1 disabled small">
+                                <span>Total Roles</span>
+                                <span class="fw-bold">{{ roles.list.length }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>

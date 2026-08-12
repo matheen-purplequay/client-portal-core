@@ -1,0 +1,21 @@
+.review-image {
+    transform: translateX(100%);
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: -35px;
+    
+    &.show-image {
+        position: relative !important;
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+.collapse {
+    height: 0px;
+
+    &.show {
+        height: auto;
+    }
+}

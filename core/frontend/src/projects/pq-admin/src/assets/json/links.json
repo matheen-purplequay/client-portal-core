@@ -1,0 +1,10 @@
+{
+    "client_portal": {
+        "title": "Client Portal",
+        "link": "https://clientportal.carisma-solutions.com.au/"
+    },
+    "admin_portal": {
+        "title": "Admin Portal",
+        "link": "https://admin-clientportal.purplequay.com.au/"
+    }
+}

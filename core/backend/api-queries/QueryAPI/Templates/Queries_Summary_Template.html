@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Query Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h4 {
+            color: #d32f2f;
+        }
+
+        .footer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<p><strong>Dear {{ Client_Name }},</strong></p>
+<p>We&rsquo;d like to inform you that new queries have been raised for your active jobs. Please find the summary below:</p>
+<p><strong>Job(s) Affected:</strong></p>
+
+{{ Queries_Summary }}
+
+<p>
+    These queries are now available for your review in the system. Kindly log in to [Portal/Platform Name] to view details and respond.
+</p>
+
+<p><strong>Thank you,</strong><br/> [Your Company / Support Team]</p>
+
+<div class="footer">
+    <p>Best regards,</p>
+    <p><b>Team Carisma</b></p>
+</div>
+
+</body>
+</html>

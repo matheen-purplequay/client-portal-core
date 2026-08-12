@@ -1,0 +1,182 @@
+// Textbox
+.textbox-container {
+    position: relative;
+
+    * {
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .textbox-label {
+        display: flex;
+        align-items: center;
+        .required-indicator {
+            display: none;
+            font-weight: 300;
+            padding: 0 5px 0 0;
+            opacity: 0.7;
+            
+            &.required {
+                display: inline-block;
+                position: absolute;
+                right: 0;
+            }
+        }
+    }
+
+    .textbox-wrapper {
+        border: 1px solid var(--border-light-color);
+        border-radius: 3px;
+        
+        .textbox {
+            border-radius: 3px;
+            border: 0px solid var(--border-light-color);
+            width: 100%;
+            height: 100%;
+    
+            &:focus,
+            &:active {
+                outline: none;
+            }
+        }
+    }
+
+
+    &.default {
+        .textbox-wrapper {            
+            border: 1px solid var(--border-light-color);
+
+            .textbox {
+                padding: 7px 5px;
+                border-radius: 3px;
+                border: 0px solid var(--border-light-color);
+
+                &:focus,
+                &:active {
+                    box-shadow: var(--shadow-inset-2) !important;
+                }
+            }
+
+            &:focus-within {
+                border: 1px solid var(--primary-color) !important;
+            }    
+        }
+
+        .floating-label {
+            transform: translateY(0);
+            pointer-events: none;
+        }
+
+        &:focus-within {
+            .floating-label {
+                transform: translateY(0);
+                pointer-events: none;
+            }
+        }
+
+        &.field-required {
+            .textbox {
+                border: 1px solid var(--danger-color) !important;
+            }
+        }
+
+        .textbox-helper {
+            color: var(--light-text-color);
+        }
+    }
+
+    &.minimal {
+        .textbox-wrapper {
+            border: 0px solid var(--border-light-color);
+            border-radius: 0px;
+            
+            .textbox {
+                border-radius: 0px;
+                border-top: 0px solid !important;
+                border-left: 0px solid !important;
+                border-right: 0px solid !important;
+                border-bottom: 1px solid var(--border-light-color) !important;
+
+                &:focus {
+                    border-bottom: 1px solid var(--primary-color) !important;
+                }
+            }
+
+            &:focus-within {
+                border-top: 0px solid var(--border-light-color);
+                border-left: 0px solid var(--border-light-color);
+                border-right: 0px solid var(--border-light-color);
+            }
+        }
+
+        .floating-label {
+            transform: translateY(1.2em);
+            pointer-events: none;
+
+            &.fixed-label {
+                transform: translateY(0) !important;
+            }
+        }
+
+        &:focus-within {
+            .floating-label {
+                transform: translateY(0);
+                pointer-events: none;
+            }
+        }
+
+        &.field-required {
+            .textbox {
+                border-bottom: 1px solid var(--danger-color) !important;
+            }
+        }
+    }
+
+    .textbox-error {
+        opacity: 0;
+        transform: translateY(-20%);
+        color: white;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+
+        &.show-error {
+            opacity: 1;
+            color: var(--danger-color);
+            transform: translateY(0%);
+
+            span {
+                display: none;
+            }
+        }
+    }
+
+    .textbox-helper {
+        padding-bottom: 8px;
+        font-style: italic;
+        color: var(--color-dark);
+        transform: translateY(-1.2em);
+
+        &.hide-helper {
+            opacity: 0;
+            transform: translateY(-1.2em);
+        }
+    }
+
+    &.has-errors {
+        .textbox-helper {
+            transform: translateY(0);
+            height: 0;
+        }
+    }
+}
+
+input[type="date"]::placeholder {
+    /* Hide the placeholder text */
+    color: transparent;
+}
+
+input[readonly] {
+    background: #F5F5F5 !important;
+}

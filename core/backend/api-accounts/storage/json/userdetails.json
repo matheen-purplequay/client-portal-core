@@ -1,0 +1,32 @@
+[
+    {
+        "status": "active",
+        "user_id": 1,
+        "company_id": 1,
+        "role": "super"
+    },
+    {
+        "status": "active",
+        "user_id": 2,
+        "company_id": 2,
+        "role": "client_partner"
+    },
+    {
+        "status": "active",
+        "user_id": 3,
+        "company_id": 3,
+        "role": "client_partner"
+    },
+    {
+        "status": "active",
+        "user_id": 4,
+        "company_id": 6,
+        "role": "client_partner"
+    },
+    {
+        "status": "active",
+        "user_id": 5,
+        "company_id": 7,
+        "role": "client_partner"
+    }
+]

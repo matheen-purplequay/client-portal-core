@@ -1,0 +1,8 @@
+CLAUDE.md
+src/.angular
+src/node_modules
+src/dist
+src/projects/**/environments
+.env
+.idea
+.vscode

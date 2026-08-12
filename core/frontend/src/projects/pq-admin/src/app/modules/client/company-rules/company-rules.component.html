@@ -1,0 +1,89 @@
+<ng-container *ngIf="isDashboardLoaded">
+    <app-simple-loading-text containerClass="mt-3 border" loadingStyle="light">
+        Loading dashboards. Please wait...
+    </app-simple-loading-text>
+</ng-container>
+
+<ng-container *ngIf="isFetchingRules">
+    <app-simple-loading-text containerClass="mt-3 border" loadingStyle="light">
+        Loading settings. Please wait...
+    </app-simple-loading-text>
+</ng-container>
+
+<ng-container *ngIf="(!isFetchingRules && !isDashboardLoaded) && doesRulesExists">
+    <section class="container mt-2" style="min-height: 450px;">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <pq-simple-tab [tabs]="dashboardType.list" [selectedTab]="dashboardType.selectedDashboardType.index"
+                    (tabSelectedEvent)="dashboardType.selectedDashboardType = $event"></pq-simple-tab>
+            </div>
+        </div>
+        <div class="row mt-2 mb-3 align-items-end">
+            <div class="col-sm-6">
+                <pq-dropdown [ngClass]="{ 'disabled': isEdited }" label="Choose Vertical Type" dropDownType="advanced" [setOptionAsText]="true"
+                    [text]="services.selectedService.title" [hideError]="true" [options]="services.list"
+                    [keys]="services.keys" (outputObject)="services.selectedService = $event; getRulesByClient();">
+                </pq-dropdown>
+            </div>
+            <div class="col-sm-6 hstack gap-2 align-items-end justify-content-end">
+                <pq-button [ngClass]="{ 'disabled': isSavingRules }" [isLoading]="isCreatingRules"
+                    buttonContentClass="hstack align-items-center"
+                    (clickEvent)="emitIsEdited(false); resetRulesForClient();" buttonStyle="simple">
+                    <span class="material-symbols-rounded">restart_alt</span>
+                    Reset
+                </pq-button>
+            </div>
+        </div>
+        <ng-container *ngIf="doesRulesExists && dashboardType.selectedDashboardType.index == 1">
+            <div *ngFor="let section of rules" class="pt-2 bg-light rounded mb-3 shadow-input-1">
+                <div>
+                    <div class="px-3">{{ section[0].title }}</div>
+                    <ul class="list-group list-group-flush">
+                        <ng-container *ngFor="let item of section">
+                            <li *ngFor="let rule of item.rules; let last = last;"
+                                [ngStyle]="{'border-bottom': last ? null : '1px solid rgba(var(--border-color-rgb), .15)' }"
+                                class="list-group-item hstack justify-content-between align-items-center">
+                                <label>{{rule.rule_master_title}}</label>
+                                <pq-toggle-switch switchClass="cursor-pointer" [checked]="checkRuleValue(rule.rule_code)"
+                                    (isChecked)="rule.value = ($event)? '1' : '0'; isEdited = true; setRule(rule.rule_code, rule.value, rule.reset_value)"></pq-toggle-switch>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Controls -->
+        <ng-container *ngIf="isEdited">
+            <div class="row sticky-bottom mt-3 py-2 px-2 bg-blur-10 shadow-sm rounded"
+                style="background: rgba(var(--warning-color-2-rgb), .5)">
+                <div class="hstack gap-2 align-items-center justify-content-between">
+                    <div class="vstack">
+                        <div class="lead fw-500 disabled">Changes made</div>
+                        <div class="small disabled">Click Update to save or click Canel to reset</div>
+                    </div>
+                    <div class="hstack gap-2 align-items-center justify-content-between">
+                        <pq-button [ngClass]="{ 'disabled': isSavingRules }" buttonContentClass="hstack align-items-center"
+                        (clickEvent)="emitIsEdited(false); sections = originalSections; getRulesByClient();" buttonStyle="simple">
+                            <span class="material-symbols-rounded">close</span>
+                            Cancel
+                        </pq-button>
+                        <pq-button [isLoading]="isSavingRules" (clickEvent)="saveRule()">
+                            Save Settings
+                        </pq-button>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+
+        <ng-container *ngIf="!doesRulesExists && !isFetchingRules && isCreatingRules">
+            <div class="hstack gap-2 justify-content-center align-items-center p-2">
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="display-9">Creating settings...</span>
+            </div>
+        </ng-container>
+    </section>
+</ng-container>

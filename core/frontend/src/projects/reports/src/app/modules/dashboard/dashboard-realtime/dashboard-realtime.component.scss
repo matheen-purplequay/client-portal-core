@@ -1,0 +1,42 @@
+.bg-awaiting {
+    background-color: #FFA600;
+    border: 1px solid #FFA600;
+
+    &.unchecked {
+        background-color: transparent !important;
+    }
+}
+
+.bg-closed {
+    background-color: #FF562F;
+    border: 1px solid #FF562F;
+
+    &.unchecked {
+        background-color: transparent !important;
+    }
+}
+
+.bg-hold {
+    background-color: #37CB89;
+    border: 1px solid #37CB89;
+
+    &.unchecked {
+        background-color: transparent !important;
+    }
+}
+
+.bg-inprogress {
+    background-color: #2FC1FF;
+    border: 1px solid #2FC1FF;
+
+    &.unchecked {
+        background-color: transparent !important;
+    }
+}
+
+.tbljobstatus {
+    td {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+}

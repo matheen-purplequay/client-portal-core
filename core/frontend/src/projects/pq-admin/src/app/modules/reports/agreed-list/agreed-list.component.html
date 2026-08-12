@@ -1,0 +1,116 @@
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+
+            <pq-section-card cardClass="shadow-sm" cardBodyClass="pb-0"
+                sectionTitle="Upload Agreed Details" [fluidContainer]="true"
+                sectionSubtitle="Agreed report for the client" 
+                [showLoading]="isAgreedLoading" showLoadingText="Loading agreed details"
+                [clipContents]="false" [enableSettings]="false">
+
+                <div actions class="hstack gap-2 align-items-center">
+                    <pq-button buttonStyle="link" (clickEvent)="downloadTemplate()">
+                        Download template
+                    </pq-button>
+                    <pq-button [isDisabled]="isAgreedSaving || isAgreedLoading" [isLoading]="isAgreedSaving" 
+                        (clickEvent)="saveAgreed(); inpFormFile.value = '';">
+                        <span *ngIf="!isAgreedSaving">Save</span><span *ngIf="isAgreedSaving">Saving</span> Agreed Details
+                    </pq-button>
+                </div>
+
+                <div body>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="vstack gap-2">
+                                <div class="hstack gap-2 align-items-start">
+                                    <pq-dropdown label="Month" dropDownType="simple"
+                                        [text]="(agreedPayload && agreedPayload.month)? agreedPayload.month : period.monthNames[period.selectedPeriod.month] "
+                                        [options]="period.monthNames" 
+                                        [selectedOption]="period.monthNames[period.selectedPeriod.month]"
+                                        (outputKey)="setMonth($event)"></pq-dropdown>
+
+                                    <pq-dropdown label="Year" dropDownType="simple"
+                                        [text]="period.selectedPeriod.year "
+                                        [options]="period.years" 
+                                        [selectedOption]="period.selectedPeriod.year.toString()"
+                                        (outputValue)="agreedPayload.year = toNumber($event); period.selectedPeriod.year = toNumber($event);"></pq-dropdown>
+
+                                    <!-- <pq-textbox type="number" label="Year"
+                                        [readonly]="true"
+                                        [textBoxContent]="period.selectedPeriod.year"
+                                        (outputValue)="agreedPayload.year = toNumber($event);"></pq-textbox> -->
+                                    <div class="hstack align-items-center">
+                                        <pq-toggle-switch (isChecked)="isNoJobsinHand = $event; inpFormFile.value = ''; agreedJobDetailsFile = undefined; agreedPayload.number_of_jobs = 0;"></pq-toggle-switch>
+                                        <label>No Jobs in Hand</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" [ngClass]="{ 'disabled': isNoJobsinHand }">
+                                <div class="col-sm-3">
+                                    <pq-textbox type="text" label="Number of Jobs"
+                                        [textBoxContent]="agreedPayload.number_of_jobs"
+                                        (outputValue)="agreedPayload.number_of_jobs = toNumber($event);"></pq-textbox>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="vstack">
+                                        <div class="vstack" [ngClass]="{ 'd-none': agreedJobDetailsFile }">
+                                            <label for="agreedFile" class="form-label mb-0 flex-fill">
+                                                <!-- <span *ngIf="agreedJobDetailsFile" class="text-success">{{ agreedJobDetailsFile.name }}</span> -->
+                                                <span>Upload Agreed Job Details Template</span>
+                                            </label>
+                                            <input class="form-control" type="file" id="agreedFile" #inpFormFile
+                                                accept=".xls, .xlsx" (change)="onFileSelected($event);">
+                                        </div>
+                                        <div class="vstack" *ngIf="agreedJobDetailsFile">
+                                            <label class="form-label mb-0">Uploaded File</label>
+                                            <div class="form-control mt-1 small fw-500 hstack gap-1 align-items-center text-success hstack gap-1 justify-content-between align-items-center">
+                                                <div class="hstack gap-1 align-items-center">
+                                                    <span class="material-symbols-rounded small">upload_file</span>
+                                                    <span>{{ agreedJobDetailsFile.name }}</span>
+                                                </div>
+                                                <pq-button buttonStyle="link_danger" buttonClass="p-0" buttonContentClass="hstack align-items-center justify-content-center" 
+                                                    (clickEvent)="agreedJobDetailsFile = undefined; inpFormFile.value = '';">
+                                                    <span class="material-symbols-rounded small">cancel</span>
+                                                </pq-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </pq-section-card>
+
+            <pq-section-card cardClass="shadow-sm" *ngIf="agreedData && agreedData.length > 0"
+                sectionTitle="Agreed Job Details" [fluidContainer]="true"
+                [showLoading]="isAgreedLoading" showLoadingText="Loading agreed details"
+                [enableSettings]="false">
+                
+                <div body>
+                    <table *ngIf="agreedData.length > 0" class="w-100">
+                        <thead>
+                            <th>S.No</th>
+                            <th>Job Name</th>
+                            <th>Date Received</th>
+                            <th>Job Status</th>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let agreed of agreedData; let index = index;">
+                                <tr>
+                                    <td>{{ index + 1 }}</td>
+                                    <td>{{ agreed.job_name }}</td>
+                                    <td>{{ agreed.date_received }}</td>
+                                    <td>{{ agreed.job_status }}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>

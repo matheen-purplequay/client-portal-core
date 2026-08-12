@@ -1,0 +1,206 @@
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="display-8 mb-0">
+                App Updates
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container-fluid p-0">
+    <ng-container *ngIf="isFetchingUpdates || isFetchtingFilters">
+        <div class="hstack gap-2 justify-content-center p-5">
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <span *ngIf="isFetchingUpdates">Loading all updates...</span>
+            <span *ngIf="isFetchtingFilters">Loading required filters...</span>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!isFetchingUpdates && !isFetchtingFilters">
+        <pq-section-card [fluidContainer]="true" cardClass="shadow-sm" cardBodyClass="pt-0" cardFooterClass="p-0" [sectionTitle]="filterApp.selectedApp.name"
+            [sectionSubtitle]="'Add or manage updates for ' + filterApp.selectedApp.name"
+            [showLoading]="isFetchingUpdates" showLoadingText="Loading updates" [enableSettings]="false"
+            [clipContents]="false">
+
+            <div actions>
+                <!-- Not needed
+                <pq-dropdown *ngIf="filterApp.list.length > 0" [options]="filterApp.list" dropDownType="advanced"
+                    [keys]="filterApp.keys" [hideError]="true" [setOptionAsText]="true"
+                    [text]="filterApp.selectedApp.name" [selectedOption]="filterApp.selectedApp.name.toString()"
+                    (outputObject)="filterApp.selectedApp = $event"></pq-dropdown> 
+                -->
+
+            </div>
+
+            <div body>
+                <div class="container-fluid rounded border">
+                    <div class="row">
+                        <div class="col-sm-4 px-0" style="height: 525px;overflow-y: auto;">
+                            <div class="px-2 py-2 bg-white rounded-top">
+                                <pq-button buttonStyle="simple"
+                                    buttonClass="bg-white shadow-sm border border-color-primary"
+                                    buttonContentClass="px-4" (clickEvent)="isEditMode = !isEditMode;">New
+                                    Release</pq-button>
+                            </div>
+                            <ul [ngClass]="{ 'disabled': isEditMode }" class="list-group list-group-flush">
+                                <li *ngFor="let update of appUpdates"
+                                    [ngClass]="(selectedUpdateContent.id == update.id)? 'bg-color-primary-lightest text-dark' : ''"
+                                    class="list-group-item cursor-pointer" (click)="setSelectedUpdate(update);">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-medium">{{ update.title }}</div>
+                                        <div class="small">Version {{ update.major_version }}.{{ update.minor_version }}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-8 border-start bg-light p-2"
+                            style="height:525px; overflow-y: auto; overflow-x: hidden;">
+                            <ng-container *ngIf="isFetchingUpdate">
+                                <div class="hstack gap-2 justify-content-center p-5">
+                                    <div class="spinner-border spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span>Loading selected update...</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="isEditMode && !isFetchingUpdate">
+                                <div class="p-2">
+                                    <div class="vstack gap-2">
+                                        <ng-container *ngIf="editPage == 0">
+                                            <div class="vstack gap-2 justify-content-center align-items-center">
+                                                <!-- Portal Selection -->
+                                                <div class="vstack gap-3">
+                                                    <div class="opacity-75 fw-bold small">Dashboard Portal Selection</div>
+                                                    <div class="hstack gap-4 align-items-center">
+                                                        <ng-container *ngFor="let app of filterSubApp.list">
+                                                            <div class="bg-white rounded border border-2 px-2 py-3 cursor-pointer" 
+                                                                [ngClass]="(app.id == filterSubApp.selectedApp.id)? 'border-color-primary shadow-input-1' : 'border-light shadow-sm'" 
+                                                                (click)="filterSubApp.selectedApp = app">
+                                                                <div class="vstack gap-3 justify-content-center align-items-center">
+                                                                    <img *ngIf="app.id == 1" class="image h-48 w-auto d-block" src="/assets/illustrations/bar-chart.png" alt="">
+                                                                    <img *ngIf="app.id == 2" class="image h-48 w-auto d-block" src="/assets/illustrations/job-paper.png" alt="">
+                                                                    <img *ngIf="app.id == 3" class="image h-48 w-auto d-block" src="/assets/illustrations/data-analysis.png" alt="">
+                                                                    <span class="fs-6">{{ app.name }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div class="hstack gap-2 align-items-center opacity-75 fw-semibold alert alert-warning">
+                                                        <ng-container *ngIf="filterSubApp.selectedApp.id == 1">
+                                                            <span class="material-symbols-outlined">info</span>
+                                                            <div>Reports portal contains "Monthly Connect" dashboard.</div>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="filterSubApp.selectedApp.id == 2">
+                                                            <span class="material-symbols-outlined">info</span>
+                                                            <div>SMSF portal contains "Job Movement", "Job Status", "Feedback Status" dashboards.</div>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="filterSubApp.selectedApp.id == 3">
+                                                            <span class="material-symbols-outlined">info</span>
+                                                            <div>This is a hybrid portal, which contains all dashboards.</div>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+    
+                                                
+                                                <!-- Version Controls -->
+                                                <div class="vstack gap-3">
+                                                    <div class="opacity-75 fw-bold small">Choose a type of version</div>
+                                                    <div class="hstack gap-4 align-items-end">
+                                                        <div class="bg-white rounded border border-2 px-2 py-3 cursor-pointer" 
+                                                            [ngClass]="(releaseVersion.selectedRelease.index == releaseVersionList.major.index)? 'border-color-primary shadow-input-1' : 'border-light shadow-sm'" 
+                                                            (click)="releaseVersion.selectedRelease = releaseVersionList.major">
+                                                            <div class="vstack justify-content-center align-items-center">
+                                                                <span class="fw-500 fs-1">+1.0</span>
+                                                                <span class="fs-6">Major Version</span>
+                                                            </div>
+                                                        </div>
+            
+                                                        <div class="bg-white rounded border border-2 px-2 py-3 cursor-pointer"
+                                                            [ngClass]="(releaseVersion.selectedRelease.index == releaseVersionList.minor.index)? 'border-color-primary shadow-input-1' : 'border-light shadow-sm'"
+                                                            (click)="releaseVersion.selectedRelease = releaseVersionList.minor">
+                                                            <div class="vstack justify-content-center align-items-center">
+                                                                <span class="fw-500 fs-4">+0.1</span>
+                                                                <span class="fs-6">Minor Version</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="hstack gap-3 align-items-center justify-content-end">
+                                                    <pq-button buttonStyle="outline" buttonContentClass="px-4"
+                                                        (clickEvent)="isEditMode = false; editPage = 0;">Cancel</pq-button>
+                                                    <pq-button buttonStyle="primary" buttonContentClass="px-4"
+                                                        (clickEvent)="editPage = 1">Next</pq-button>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="editPage == 1">
+                                            <div class="vstack gap-3 justify-contents-center">
+                                                <pq-button buttonStyle="simple" buttonClass="px-0" buttonContentClass="px-0 hstack"
+                                                    (clickEvent)="editPage = 0">
+                                                    <span class="material-symbols-outlined">arrow_back_ios</span>
+                                                        Go Back
+                                                </pq-button>
+
+                                                <pq-textbox type="text" label="Release Title" [textBoxContent]="title" [spellCheck]="true"
+                                                    (outputValue)="title = $event;"></pq-textbox>
+                                                <div class="col-sm-12">
+                                                    <label>Release notes</label>
+                                                    <ckeditor [editor]="Editor" [(ngModel)]="notes" [config]="config">
+                                                    </ckeditor>
+                                                </div>
+                                                <div class="hstack gap-3 align-items-center justify-content-end">
+                                                    <pq-button buttonStyle="outline" buttonContentClass="px-4"
+                                                        (clickEvent)="isEditMode = false; editPage = 0;">Cancel</pq-button>
+                                                    <pq-button buttonStyle="primary" buttonContentClass="px-4"
+                                                        (clickEvent)="saveAppUpdates()">Add Release</pq-button>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="!isEditMode && !isFetchingUpdate">
+                                <div
+                                    class="pb-2 border-bottom bg-light sticky-top top-0 z-0 hstack gap-2 align-items-center justify-content-end">
+                                    <ng-container *ngIf="selectedUpdateContent.is_active == 1">
+                                        <div class="hstack gap-2 align-items-center text-success fw-bold px-3 py-2 bg-color-success-light rounded">
+                                            <span class="material-symbols-outlined">verified</span>
+                                            <span>Release Approved</span>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="selectedUpdateContent.is_active != 1">
+                                        <pq-button buttonStyle="simple" buttonClass="bg-success text-light shadow-sm"
+                                            buttonContentClass="hstack gap-1 pe-2"
+                                            [isDisabled]="selectedUpdateContent.is_active == 1"
+                                            (clickEvent)="activateUpdate()">
+                                            <span class="material-symbols-outlined text-light">check</span>
+                                            <span>Approve Release</span>
+                                        </pq-button>
+                                        <pq-button buttonStyle="simple" buttonContentClass="hstack"
+                                            buttonClass="bg-danger shadow-sm"
+                                            (clickEvent)="deleteUpdate()">
+                                            <span class="material-symbols-outlined text-light">delete_forever</span>
+                                        </pq-button>
+                                    </ng-container>
+                                </div>
+                                <div *ngIf="selectedUpdateContent" class="mt-2 bg-white h-100 rounded shadow-input-1">
+                                    <div class="px-3 py-1 border-bottom">
+                                        <div class="lead fw-medium">{{ selectedUpdateContent.title }}</div>
+                                        <div class="small">Version {{ selectedUpdateContent.major_version }}.{{
+                                            selectedUpdateContent.minor_version }}</div>
+                                    </div>
+                                    <div class="px-3 py-2" [innerHTML]="selectedUpdateContent.notes"></div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </pq-section-card>
+    </ng-container>
+</section>

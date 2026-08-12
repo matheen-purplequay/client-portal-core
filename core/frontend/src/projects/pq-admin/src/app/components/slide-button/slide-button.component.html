@@ -1,0 +1,12 @@
+<div id="slide-button-container" class="slider-wrapper p-2 rounded-pill shadow-input-2 p-1 bg-white" [ngClass]="wrapperClass">
+    <div class="slider-text smaller" [ngClass]="{ 'opacity-25': isDragging }">
+        <div [ngClass]="sliderTextClass" [innerHTML]="sliderText"></div>
+    </div>
+    <div #slideButtonContainer id="slideButtonContainer" class="slider-container flex-fill" [ngClass]="containerClass" (mousedown)="startDrag($event)" (mouseup)="stopDrag()">
+        <pq-button #btnSlide class="slider-button" buttonClass="rounded-pill" buttonContentClass="hstack gap-2 align-items-center" 
+            [isLoading]="isLoading" [isDisabled]="isDisabled" [style.marginLeft.px]="buttonPosition" 
+            (mousemove)="onDrag($event)" (mouseup)="stopDrag()">
+            <ng-content></ng-content>
+        </pq-button>
+    </div>
+</div>

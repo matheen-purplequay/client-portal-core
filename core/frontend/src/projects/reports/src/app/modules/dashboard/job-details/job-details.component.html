@@ -1,0 +1,141 @@
+<div class="container pt-4 border-bottom bg-color-light border-start border-end rounded-bottom shadow-input-1">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2 pb-4">
+
+            <!-- Job Details -->
+            <div class="hstack gap-3 align-items-start justify-content-center">
+                <div class="vstack">
+                    <div class="hstack gap-1 align-items-start">
+                        <span class="material-symbols-rounded opacity-50">person</span>
+                        <div>
+                            <label class="small opacity-80">Client Contact</label>
+                            <div class="h6 mb-0 fw-400">{{ job.ClientContact }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="job.SubClientName" class="vstack">
+                    <div class="hstack gap-1 align-items-start">
+                        <span class="material-symbols-rounded opacity-50">apartment</span>
+                        <div>
+                            <label class="small opacity-80">Sub Client</label>
+                            <div class="h6 mb-0 fw-400">{{ job.SubClientName }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vstack">
+                    <div class="hstack gap-1 align-items-start">
+                        <span class="material-symbols-rounded opacity-50">event_upcoming</span>
+                        <div>
+                            <label class="small opacity-80">Date Received</label>
+                            <div class="h6 mb-0 fw-400">{{ job.Datereceived }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="vstack">
+                    <div class="hstack gap-1 align-items-start">
+                        <span class="material-symbols-rounded opacity-50">event_available</span>
+                        <div>
+                            <label class="small opacity-80">Last Touch</label>
+                            <div class="h6 mb-0 fw-400">{{ job.LastTouch }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-1">
+    <div class="row">
+        <div class="col-sm-12 pt-4 px-0">
+
+            <!-- Timeline -->
+            <section class="bsb-timeline-1 mb-5 mt-4">
+                <ng-container *ngIf="isGettingDetails">
+                    <pq-simple-time-loading loadingText="Getting job history..."></pq-simple-time-loading>
+                    <!-- <pq-simple-horizontal-loading loadingText="Getting job history..."></pq-simple-horizontal-loading> -->
+                </ng-container>
+                <ng-container *ngIf="!isGettingDetails">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="fw-400 hstack gap-3 align-items-center">
+                                    <span class="material-symbols-rounded color-primary ml--10">history</span>
+                                    Job Timeline
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="timeline.length > 0" class="bg-color-lighter border-top border-bottom shadow-input-1 hstack flex-row-reverse justify-content-center align-items-center gap-3 overflow-x-auto px-4 py-3">
+                        <ng-container *ngFor="let tl of timeline; let index = index; let last = last;">
+                            <div class="p-2 rounded shadow-sm lh-1 d-inline-flex flex-column gap-1" [ngClass]="(tl.Name.includes('9.'))? 'bg-success text-light fw-700 text-light' : 'bg-white text-dark'">
+                                <div class="small fw-medium">{{ tl.Name.split('.')[1] }}</div>
+                                <div class="small opacity-75">{{ tl.LastModdate | date: 'dd-MM-yyyy' }}</div>
+                            </div>
+                            <span *ngIf="!last" class="material-symbols-outlined opacity-50 small">arrow_forward_ios</span>
+                        </ng-container>
+                    </div>
+                    <div *ngIf="timeline.length == 0" class="hstack justify-content-center align-items-center py-5">
+                        <div class="opacity-50 small">No timeline data available for this job.</div>
+                    </div>
+                    <!-- <ul *ngIf="timeline.length > 0" class="timeline">
+                        <li *ngFor="let tl of timeline; let index = index; let last = last;" class="timeline-item">
+                            <div class="timeline-body">
+                                <div class="timeline-content">
+                                    <div class="card border-0 shadow-sm rounded" [ngClass]="(tl.Name.includes('9.'))? 'bg-success text-light fw-700' : 'bg-white'">
+                                        <div className="" class="card-body p-0 hstack gap-2 align-items-stretch">
+                                            <div class="hstack gap-2 align-items-center opacity-75 border-end p-2 fw-semibold">
+                                                <span class="material-symbols-rounded opacity-50 d-none d-sm-block" [ngClass]="{ 'color-light': tl.Name.includes('9.') }">calendar_month</span>
+                                                <div>{{ tl.LastModdate | date: 'dd-MM-yyyy' }}</div>
+                                            </div>
+                                            <div class="hstack gap-2 align-items-center p-2 fw-semibold">
+                                                <span class="material-symbols-rounded opacity-25 d-none d-sm-block" [ngClass]="{ 'color-light': tl.Name.includes('9.') }">folder_open</span>
+                                                <div>{{ tl.Name.split('.')[1] }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="timeline-item pb-5">
+                            <div class="timeline-body">
+                                <div class="timeline-content">
+                                    <div class="card border-0 shadow-sm rounded bg-color-warning">
+                                        <div class="card-body p-0 hstack gap-2 align-items-stretch">
+                                            <div class="hstack gap-2 align-items-center opacity-75 border-end p-2 fw-semibold">
+                                                <span class="material-symbols-rounded opacity-75 d-none d-sm-block">calendar_month</span>
+                                                <div>{{ job.Datereceived }}</div>
+                                            </div>
+                                            <div class="hstack gap-2 align-items-center p-2 fw-semibold">
+                                                <span class="material-symbols-rounded opacity-50 d-none d-sm-block">folder_open</span>
+                                                <div>Job Received</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul> -->
+                </ng-container>
+
+                <!-- <div class="container-fluid">
+                    <div class="row justify-content-center align-items-end">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-12">
+            
+                        </div>
+                        <div class="col-sm-2">
+                            <img *ngIf="!isGettingDetails" class="image w-100" src="/assets/svg/agreement.svg" alt="">
+                        </div>
+                    </div>
+                </div> -->
+            </section>
+
+        </div>
+
+    </div>
+</div>
+

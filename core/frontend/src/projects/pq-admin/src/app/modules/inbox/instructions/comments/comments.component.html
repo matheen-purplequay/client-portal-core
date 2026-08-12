@@ -1,0 +1,77 @@
+<div class="comments-main-container h-100 bg-light shadow-input-1 rounded-top" [ngClass]="(toggleNewView)? 'd-none' : ''">
+    <div class="position-sticky top-0 comment-header px-3">
+        <div class="h6 px-3 py-2 border-bottom">
+            <div>Job Name</div>
+            <div class="small disabled">User name</div>
+        </div>
+    </div>
+    <div class="comments-wrapper vstack pt-2 h-100 px-3">
+        <div class="comments-container flex-fill pt-1 h-100">
+            <div class="comments vstack gap-3" id="comments">
+                <div *ngIf="isCommentsLoading" class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span>Loading comments...</span>
+                </div>
+                <ng-container *ngIf="!isCommentsLoading">
+                    <ng-container *ngTemplateOutlet="commentsTemplate"></ng-container>
+                </ng-container>
+            </div>
+        </div>
+        <ng-container *ngTemplateOutlet="commentsInput"></ng-container>
+    </div>
+</div>
+
+
+<div class="comments-container bg-light" [ngClass]="(!toggleNewView)? 'd-none' : ''">
+    <div class="comments vstack gap-2 py-3" id="comments" style="height: 350px; overflow-y: auto;">
+        <div *ngIf="isCommentsLoading" class="fw-medium hstack gap-1 align-items-center justify-content-center">
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <span>Loading comments...</span>
+        </div>
+        <ng-container *ngIf="!isCommentsLoading && comments.length <= 0">
+            <div class="small disabled text-center p-4">
+                No comments added yet
+            </div>
+        </ng-container>
+        <ng-container *ngIf="!isCommentsLoading">
+            <ng-container *ngTemplateOutlet="commentsTemplate"></ng-container>
+        </ng-container>
+    </div>
+    <div class="comments-input-container vstack flex-wrap border-top py-3 bg-light">
+        <ng-container *ngTemplateOutlet="commentsInput"></ng-container>
+    </div>
+</div>
+
+<ng-template #commentsTemplate>
+    <div *ngFor="let comment of comments" class="pb-1" [ngClass]="{ 'comment_owner': user_id == comment.user_id }">
+        <div class="w-75" [ngClass]="{ 'ms-auto': user_id == comment.user_id }">
+            <div class="sender-comment p-2 rounded-1" [ngClass]="(user_id != comment.user_id)? 'bg-color-primary-lighter text-dark comment_user' : 'bg-white text-dark border-bottom comment_owner'">
+                <div class="user-name small fw-500">{{ comment.first_name }} {{ comment.last_name }}</div>
+                <div class="comment">{{ comment.comment }}</div>
+            </div>
+            <div class="mt-1" [ngClass]="{ 'text-end': comment.user_id == user_id, 'text-start': comment.user_id != user_id }">
+                <div class="smaller disabled">Posted on {{ comment.created_at | date: 'dd-MM-YYYY hh:mm' }}</div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #commentsInput>
+    <div class="comments-input-container vstack gap-2 flex-wrap py-3 px-2 bg-light border-top">
+        <pq-dropdown label="Standard Instructions" [text]="dropDownComments.selectedComment.label" [setOptionAsText]="true" [keys]="dropDownComments.keys" [hideError]="true"
+            [options]="dropDownComments.list" dropDownType="advanced" (outputObject)="handleInstruction($event)"></pq-dropdown>
+
+        <div class="text-end hstack gap-2 align-items-center justify-content-end">
+            <pq-textbox *ngIf="dropDownComments.selectedComment.index == commentsStatus[4].index" class="flex-fill" [hideError]="true"
+                placeholder="Custom Instuctions" [textBoxContent]="customInstruction" (outputValue)="customInstruction = $event"></pq-textbox>
+
+            <pq-button (clickEvent)="sendComment()" [isLoading]="isSendingComment" [isDisabled]="isSendingComment" buttonContentClass="hstack gap-1 align-items-center">
+                <span>Send Comment</span>
+            </pq-button>
+        </div>
+    </div>
+</ng-template>

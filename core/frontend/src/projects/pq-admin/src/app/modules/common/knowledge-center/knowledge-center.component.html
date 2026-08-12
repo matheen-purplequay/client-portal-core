@@ -1,0 +1,194 @@
+<section class="container pt-3 pb-4">
+    <div class="row">
+        <div class="col-sm-12 text-start">
+            <div class="hstack gap-3 justify-content-between align-items-end">
+                <div class="display-6 mb-0">Knowledge Center</div>
+
+                <pq-simple-tab
+                    [tabs]="filters.list" containerClass="shadow-sm bg-white" labelClass="px-4" tabName="contract-type"
+                    [selectedTab]="filters.selectedFilter.index"
+                    (tabSelectedEvent)="handleFilter($event);">
+                </pq-simple-tab>			
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+
+            <pq-section-card [sectionTitle]="filters.selectedFilter.label + ' List'"
+                cardClass="shadow-sm" cardBodyClass="pb-0 rounded overflow-hidden"
+                [enableSettings]="false" [clipContents]="false">
+
+                <div actions class="hstack gap-3 align-items-end">
+                    <ng-container *ngIf="filters.selectedFilter.index == 0">
+                        <pq-button data-bs-toggle="modal" data-bs-target="#addUsefulToolsPopup">Add Useful Tool</pq-button>
+                    </ng-container>
+
+                    <ng-container *ngIf="filters.selectedFilter.index == 1">
+                        <div class="hstack gap-3 align-items-end">
+                        <pq-dropdown label="Choose Month" dropDownType="simple" [setOptionAsText]="true" 
+                            [hideError]="true"
+                            [text]="period.monthNames[period.selctedPeriod.month]"
+                            [options]="period.monthNames"
+                            (outputKey)="period.selctedPeriod.month= convertToNumber($event); getArticles();"></pq-dropdown>
+                        <pq-dropdown label="& Year" dropDownType="simple" [setOptionAsText]="true"
+                            [hideError]="true"
+                            [text]="period.selctedPeriod.year"
+                            [options]="period.years"
+                            (outputValue)="period.selctedPeriod.year= convertToNumber($event); getArticles();"></pq-dropdown>
+                            <pq-button data-bs-toggle="modal" data-bs-target="#addArticlesPopup">Add Article</pq-button>
+                        </div>
+                    </ng-container>
+
+                </div>
+
+                <div body>
+                    <!-- Tools Container -->
+                    <ng-container *ngIf="filters.selectedFilter.index == 0">
+                        <div class="row">
+                            <div *ngFor="let kc of kcToolsData; let index = index;" class="col-sm-4 pb-4 flex-grow">
+                                <div class="card h-100">
+                                    <div class="card-body flex-grow">
+                                        <div class="vstack align-items-stretch">
+                                            <div class="h5">{{ kc.title }}</div>
+                                            <div class="lead">{{ kc.description }}</div>
+                                            <div class="mt-2">
+                                                <div class="small badge bg-light text-dark">{{ kc.category }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer border-0 bg-color-lighter py-0">
+                                        <pq-button buttonStyle="link">Edit Tool</pq-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Articles Container -->
+                    <ng-container *ngIf="filters.selectedFilter.index == 1">
+                        <div class="row">
+                            <div *ngFor="let kc of kcArticlesData; let index = index;" class="col-sm-4 pb-4 flex-grow">
+                                <div class="card h-100">
+                                    <div class="card-body flex-grow">
+                                        <div class="vstack align-items-stretch">
+                                            <div class="h5">{{ kc.title }}</div>
+                                            <div class="lead">{{ kc.description }}</div>
+                                            <div class="mt-2">
+                                                <div class="small badge bg-light text-dark">{{ kc.category }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer border-0 bg-color-lighter py-0">
+                                        <pq-button buttonStyle="link">Edit Article</pq-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Useful Tools Modal -->
+<div class="modal fade" id="addUsefulToolsPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header py-2 hstack gap-3 align-items-center justify-content-between" #dialogHandle>
+                <h1 class="modal-title fs-5">Add New Useful Tool</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <pq-textbox label="Useful Tool Title"
+                            [textBoxContent]="kcToolsPayload.title"
+                            (outputValue)="kcToolsPayload.title = $event"></pq-textbox>        
+                    </div>
+                    <div class="col-sm-10">
+                        <pq-textbox label="Useful Tool Description"
+                            [showAsTextArea]="true"
+                            [textBoxContent]="kcToolsPayload.description"
+                            (outputValue)="kcToolsPayload.description = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <pq-textbox label="Link"
+                            [textBoxContent]="kcToolsPayload.link"
+                            (outputValue)="kcToolsPayload.link = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <pq-textbox label="Category"
+                            [textBoxContent]="kcToolsPayload.category"
+                            (outputValue)="kcToolsPayload.category = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-end">
+                        <pq-button (clickEvent)="saveUsefulTools()" data-bs-dismiss="modal">Save Useful Tool</pq-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Articles Modal -->
+<div class="modal fade" id="addArticlesPopup" tabindex="-1" data-bs-backdrop="static" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header py-2 hstack gap-3 align-items-center justify-content-between" #dialogHandle>
+                <h1 class="modal-title fs-5">Add New Article</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <pq-textbox label="Useful Tool Title"
+                            [textBoxContent]="kcArticlesPayload.title"
+                            (outputValue)="kcArticlesPayload.title = $event"></pq-textbox>        
+                    </div>
+                    <div class="col-sm-10">
+                        <pq-textbox label="Useful Tool Description"
+                            [showAsTextArea]="true"
+                            [textBoxContent]="kcArticlesPayload.description"
+                            (outputValue)="kcArticlesPayload.description = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <pq-textbox label="Link"
+                            [textBoxContent]="kcArticlesPayload.link"
+                            (outputValue)="kcArticlesPayload.link = $event"></pq-textbox>        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <pq-dropdown label="Category" [setOptionAsText]="true" 
+                            [text]="verticals.selectedVertical.title"
+                            helper="Choose a category"
+                            dropDownType="advanced" [options]="verticals.list" [keys]="verticals.keys"
+                            (outputObject)="verticals.selectedVertical = $event;"></pq-dropdown>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-end">
+                        <pq-button (clickEvent)="saveArticle()" data-bs-dismiss="modal">Save Article</pq-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

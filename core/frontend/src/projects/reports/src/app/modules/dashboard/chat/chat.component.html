@@ -1,0 +1,96 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">Chats</div>
+                <!-- <div class="small">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem rerum iste fugiat, facilis laboriosam aspernatur dolores.</div> -->
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="pe-3 mb-4">
+                <div class="card border-0 bg-transparent shadow-none overflow-hidden">
+                    <div class="card-body p-0 bg-white">
+                        <div class="">
+                            <div class="bg-white shadow queries-container row">
+                                <div class="query-list-wrapper col-sm-3 h-100 py-3 px-0">
+                                    <ul class="query-list list-group list-group-flush bg-transparent">
+                                        <li *ngFor="let query of queries; let last = last;" class="list-group-item hover-primary-lighter" [ngClass]="{ 'border-bottom': last }">
+                                            <div class="hstack gap-2 align-items-start" (click)="getSubQueries()">
+                                                <img class="image h-44" src="/assets/images/user.png" alt="">
+                                                <div class="vstack gap-1">
+                                                    <div>{{ query.raisedToName }}</div>
+                                                    <div class="small opacity-70">{{ query.query }}</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="query-content-container bg-white col-sm-8 bg-light px-0 vstack justify-content-start align-items-start border-start">
+                                    <div class="bg-light">
+                                        
+                                    </div>
+                                    <div class="vstack">
+                                        <div
+                                            *ngIf="!checkIfSubQueryEmpty()" 
+                                            class="query-filter-wrapper bg-light border-bottom p-2 hstack gap-2 justify-content-between">
+                                            <div class="px-2">
+                                                <div class="h5 mb-0">{{ selectedQuery.raisedToName }}</div>
+                                                <div class="small">Introduction to Financial Planning</div>
+                                            </div>
+                                            <div>
+                                                <div class="dropdown">
+                                                    <button class="btn border-0" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu border-0 shadow-lg bg-gradient-light">
+                                                        <li><button class="dropdown-item color-success py-2 active-light" type="button"><i class="fa-solid fa-circle-check"></i> Resolve</button></li>
+                                                        <li><button class="dropdown-item color-danger py-2 active-light" type="button"><i class="fa-solid fa-trash-can"></i> Delete Query</button></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="query-content-wrapper flex-fill">
+                                            <div
+                                                *ngFor="let query of subQueries" 
+                                                class="query-content reply hstack align-items-start p-3">
+                                                <img class="image h-32" src="/assets/images/user.png" alt="">
+                                                <div
+                                                    class="query border-primary rounded py-1 px-3 mx-2 bg-primary text-light shadow-sm">
+                                                    {{ query.query }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="!checkIfSubQueryEmpty()" class="query-reply-wrapper p-2">
+                                            <div class="bg-white rounded px-1 pb-0 shadow-input-1 vstack border">
+                                                <textarea id="notes"
+                                                    class="bg-transparent w-100 form-control border-0 rounded flex-fill"
+                                                    placeholder="Query message..."></textarea>
+                                                <div class="hstack justify-content-between align-items-center">
+                                                    <div class="small opacity-70 hstack gap-1 align-items-center px-2">
+                                                        <span>Max letters 200</span>
+                                                    </div>
+                                                    <div>&nbsp;</div>
+                                                    <app-button text="Send Query" buttonStyle="link"
+                                                        buttonClass="text-underline-dashed fw-600 small"></app-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>

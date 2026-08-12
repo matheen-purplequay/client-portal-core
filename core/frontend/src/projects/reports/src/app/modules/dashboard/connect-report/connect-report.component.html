@@ -1,0 +1,47 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="hstack justify-content-center">
+                <div class="h4 mb-0">Connect Report</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<pq-section-card sectionTitle="15th August FY {{ fy }}">
+    <div actions class="hstack gap-2">
+        <select class="form-select">
+            <option *ngFor="let month of reportMonths" [value]="month.toLowerCase()">{{ month }}</option>
+        </select>
+        <select class="form-select">
+            <option *ngFor="let year of reportYears" [value]="year">{{ year }}</option>
+        </select>
+    </div>
+
+    <div body>
+        <table style="width: 100%;">
+            <thead>
+                <th>Month</th>
+                <th>Date Updated</th>
+                <th>Page</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>January Connect Report</td>
+                    <td>01-Jan-2023</td>
+                    <td>5</td>
+                    <td>
+                        <div class="hstack gap-2">
+                            <pq-button>Download Report</pq-button>
+                            <pq-button buttonStyle="outline_primary">View Report</pq-button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</pq-section-card>
+

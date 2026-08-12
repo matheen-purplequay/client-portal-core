@@ -1,0 +1,68 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">Holidays</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<pq-section-card sectionTitle="List of India Holidays" [clipContents]="false" [enableSettings]="false" cardHeaderClass="pe-2"
+    cardClass="shadow-sm"
+    [showLoading]="isHolidaysLoading" showLoadingText="Loading India holidays list">
+    <div body>
+        <table *ngIf="indianHolidays" style="width: 100%;">
+            <thead>
+                <th>S.No</th>
+                <th>Month</th>
+                <th>Holiday Date</th>
+                <th>Holiday Day</th>
+                <th>Holiday Reason</th>
+                <th>Holiday Type</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let holiday of indianHolidays; let index = index; let last = last;">
+                    <td>{{ index + 1 }}</td>
+                    <td>
+                        {{ holiday.month }}
+                    </td>
+                    <td>{{ holiday.date }}</td>
+                    <td>{{ holiday.day }}</td>
+                    <td>{{ holiday.reason }}</td>
+                    <td>{{ holiday.type }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</pq-section-card>
+
+<pq-section-card sectionTitle="List of Australia Holidays" [clipContents]="false" [enableSettings]="false" cardHeaderClass="pe-2"
+    cardClass="shadow-sm"
+    [showLoading]="isHolidaysLoading" showLoadingText="Loading Australia holidays list">
+    <div body>
+        <table *ngIf="australianHolidays" style="width: 100%;">
+            <thead>
+                <th>S.No</th>
+                <th>Month</th>
+                <th>Holiday Date</th>
+                <th>Holiday Day</th>
+                <th>Holiday Reason</th>
+                <th>Holiday Type</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let holiday of australianHolidays; let index = index;">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ holiday.month }}</td>
+                    <td>{{ holiday.date }}</td>
+                    <td>{{ holiday.day }}</td>
+                    <td>{{ holiday.reason }}</td>
+                    <td>{{ holiday.type }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</pq-section-card>
+

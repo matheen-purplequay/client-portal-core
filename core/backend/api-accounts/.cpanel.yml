@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home3/welinnwd/client_portal/production/pqaccountsapi.welingkaronline.org/
+    - /bin/cp -R ./* $DEPLOYPATH

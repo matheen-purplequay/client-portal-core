@@ -1,0 +1,50 @@
+[
+    {
+      "code": "dashboard",
+      "icon": "dashboard",
+      "title": "<b>Delivery Dashboard</b>",
+      "text": "<p>The dashboard is a dynamic interface that provides information on the monthly job status, productivity hours and budgeted vs actual hours pertaining to the vertical and engagement (staff/hourly/agreed)</p><ul><li><strong>Job Status:</strong>The 'Monthly Job Status Chart&rsquo; gives a visual representation of job statuses distributed throughout the month.</li><li><strong>Monthly Productivity:</strong> &lsquo;Monthly productivity in hours&rsquo; refers to the total number of productive work hours completed by the team during a specific month.</li><li><strong>Budgeted Hours vs Actual Hours:</strong> \"Budgeted vs. Actual Hours\" is a comparison between planned hours (budgeted hours) allocated for a job and the actual hours worked.</li></ul>"
+    },
+    {
+      "code": "dashboard_neo",
+      "icon": "dashboard",
+      "title": "<b>Neo Dashboard</b>",
+      "text": "<p>The Delivery Dashboard customized for Neo Super shows key metrics on job movement - touch points statuses (such as In Progress, Query, Draft Workpaper, Revised Draft Workpaper, and Audit) and live job status.</p>"
+    },
+    {
+      "code": "reports",
+      "icon": "folder_open",
+      "title": "<b>Reports</b>",
+      "text": "<p>The Reports, which are customized, are released during the first week of each month. These reports encompass key information related to client deliveries, including job status, productivity, a comparison of budget versus actual hours, and turnaround time. Furthermore, they also include important updates such as organization news, industry events, and technological solutions.</p>"
+    },
+    {
+      "code": "newsletter",
+      "icon": "subject",
+      "title": "<b>Newsletter</b>",
+      "text": "Newsletters include information on organization news, achievements, upcoming events, important announcements, and other relevant content. The purpose of such newsletters is to enhance communication, foster a sense of community and belonging among clients, and keep all stakeholders informed and engaged with the Carisma&apos;s activities and developments."
+    },
+    {
+      "code": "knowledge_center",
+      "icon": "text_snippet",
+      "title": "<b>Knowledge Center</b>",
+      "text": "The Knowledge Centre provides a list of useful links and tools that are relevant to client&apos;s specific needs."
+    },
+    {
+      "code": "it",
+      "icon": "devices",
+      "title": "<b>IT Guidelines</b>",
+      "text": "IT Guidelines explains the purpose and importance of the IT policy emphasizing the commitment to provide a secure and efficient technology environment for clients."
+    },
+    {
+      "code": "teams",
+      "icon": "groups",
+      "title": "<b>Team</b>",
+      "text": "Team provides information on the client director/manager, group director, project director and team lead that clients engage with. For any questions, the clients can contact the key individuals mentioned."
+    },
+    {
+      "code": "calendar",
+      "icon": "calendar_month",
+      "title": "<b>Calendar</b>",
+      "text": "The Indian and Australian holidays section covers major festivals, public holidays, and important observances throughout the year, allowing our clients to plan their activities and transactions in alignment with local schedules."
+    }
+  ]

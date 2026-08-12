@@ -1,0 +1,34 @@
+.comments-main-container {
+    
+    .comment-header {
+        z-index: 999;
+    }
+
+    .comments-wrapper {
+        .comments-container {            
+            .user-name {
+                margin-bottom: 4px;
+            }
+        }
+    
+        .comments-input-container {
+            position: sticky;
+            bottom: 0;
+        }
+    }
+}
+
+
+.comments {
+    min-height: 300px;
+    overflow-y: auto;
+    max-height: 100%;
+
+    .comment_user {        
+        border-bottom: 1px solid var(--primary-color);
+    }
+    
+    .comment_owner {
+        border-bottom: 1px solid var(--light-color);
+    }
+}

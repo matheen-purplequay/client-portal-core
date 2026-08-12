@@ -1,0 +1,9 @@
+<div class="tips-popup-card" [ngClass]="{ 'show': showTipsPopup }">
+    <div class="card border-0 shadow-lg overflow-hidden rounded-1" [ngClass]="containerClass">
+        <img *ngIf="content.image" class="card-img rounded-0" [src]="'/assets/svg/tips-popup/' + content.image" alt="">
+        <div class="card-body">
+            <div class="h6">{{ content.title }}</div>
+            <div class="small">{{ content.body }}</div>
+        </div>
+    </div>
+</div>

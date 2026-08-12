@@ -1,0 +1,119 @@
+<ng-container *ngIf="query.title != ''">
+    <div class="gap-2 mb-3" [ngClass]="{ 'hstack justify-content-between': layout == 'horizontal', 'vstack': layout == 'vertical' }">
+
+        <div [ngClass]="{ 'hstack gap-5': layout == 'horizontal', 'vstack gap-3': layout == 'vertical' }">
+    
+            <div  [ngClass]="{ 'bg-white shadow-sm border-2 p-2 w-100 flex-1': layout == 'vertical' }">
+                <div class="small fw-semibold opacity-75">Job</div>
+                <div class="hstack gap-1 align-items-center">
+                    <span>{{ job.job_name }}</span>
+                </div>
+            </div>
+
+            <div  [ngClass]="{ 'bg-white shadow-sm border-2 p-2 w-100 flex-1': layout == 'vertical' }">
+                <div class="small fw-semibold opacity-75">Category</div>
+                <div class="hstack gap-1 align-items-center">
+                    <span>{{ query.category_name }}</span>
+                    <span class="material-symbols-outlined small">arrow_right</span>
+                    <span>{{ query.sub_category_name }}</span>
+                </div>
+            </div>
+
+            <div *ngIf="query.raised_to_name" [ngClass]="{ 'bg-white shadow-sm border-2 p-2 w-100 flex-1': layout == 'vertical' }">
+                <div class="small fw-semibold opacity-75">Assigned To</div>
+                <div class="hstack gap-2 align-items-center">
+                    <span class="material-symbols-outlined">person</span>
+                    <span>{{ query.raised_to_name }}</span>
+                </div>
+            </div>
+
+            <div *ngIf="query.raised_by_name" [ngClass]="{ 'bg-white shadow-sm border-2 p-2 w-100 flex-1': layout == 'vertical' }">
+                <div class="small fw-semibold opacity-75">Raised By</div>
+                <div class="hstack gap-2 align-items-center">
+                    <span class="material-symbols-outlined">person</span>
+                    <span>{{ query.raised_by_name }}</span>
+                </div>
+            </div>
+
+            <div [ngClass]="{ 'list-horizontal-divider-primary': layout == 'horizontal', 'list-vertical-divider-primary': layout == 'vertical' }">&nbsp;</div>
+
+            <div [ngClass]="{ 'bg-white shadow-input-2 border-bottom d-flex rounded-3 overflow-hidden': layout == 'vertical', 'hstack gap-5 flex-1 w-100 justify-content-between': layout == 'horizontal' }">
+                <div class="flex-1" [ngClass]="{ 
+                    'p-2 rounded-start-3': layout == 'vertical',
+                    'flex-1 w-100 hstack gap-1 align-items-start': layout == 'horizontal'
+                }"  style="flex: 1;">
+                    <span *ngIf="query.criticality_name === 'Low'" class="material-symbols-outlined">low_priority</span>
+                    <span *ngIf="query.criticality_name === 'Normal'" class="material-symbols-outlined">low_priority</span>
+                    <span *ngIf="query.criticality_name === 'Medium'" class="material-symbols-outlined">drag_handle</span>
+                    <span *ngIf="query.criticality_name === 'High'" class="material-symbols-outlined text-danger">priority_high</span>
+                    <div class="vstack lh-1 gap-1 align-items-start fw-semibold"
+                        [ngClass]="{
+                            'text-dark opacity-75': query.criticality_name === 'Low',
+                            'text-muted': query.criticality_name === 'Normal',
+                            'color-orange': query.criticality_name === 'Medium',
+                            'text-danger': query.criticality_name === 'High'
+                        }"
+                    >
+                        <div class="small fw-semibold opacity-75">Criticality</div>
+                        <span [ngClass]="layout == 'horizontal' ? 'small' : ''">{{ query.criticality_name }}</span>
+                    </div>
+                </div>
+    
+                <div *ngIf="!isDraftQuery" class="flex-1"
+                    [ngClass]="{ 
+                        'p-2': layout == 'vertical',
+                        '': query.elapsed_days < 5 && layout == 'vertical',
+                        'bg-color-warning': query.elapsed_days >=5 && query.elapsed_days < 10 && layout == 'vertical',
+                        'bg-color-primary-lightest color-primary': query.elapsed_days >= 10 && layout == 'vertical',
+                        'text-dark': query.elapsed_days < 5 && layout == 'horizontal',
+                        'color-orange': query.elapsed_days >=5 && query.elapsed_days < 10 && layout == 'horizontal',
+                        'color-primary': query.elapsed_days >= 10 && layout == 'horizontal',
+                        'flex-1 w-100 hstack gap-1 align-items-start': layout == 'horizontal'
+                    }"
+                     style="flex: 1;"
+                >
+                    <span class="material-symbols-outlined">calendar_today</span>
+                    <div class="vstack lh-1 gap-1 align-items-start fw-semibold">
+                        <div class="small fw-semibold opacity-75">Elapsed</div>
+                        <span [ngClass]="layout == 'horizontal' ? 'small' : ''">{{ query.elapsed_days }} days</span>
+                    </div>
+                </div>
+    
+                <div [ngClass]="{ 
+                    'p-2 rounded-end-3': layout == 'vertical',
+                    'color-orange': query.query_status_id == 3,
+                    'text-success': query.query_status_id == 4,
+                    'flex-1 w-100 hstack gap-1 align-items-start': layout == 'horizontal'
+                }" style="flex: 1;">
+                    <span class="material-symbols-outlined">check</span>
+                    <div [attr.data-status-id]="query.query_status_id" class="vstack lh-1 gap-1 align-items-start fw-semibold">
+                        <div class="small fw-semibold opacity-75">Status</div>
+                        <span [ngClass]="layout == 'horizontal' ? 'small' : ''">{{ query.query_status_name }}</span>
+                    </div>
+                </div>
+            </div>
+    
+            <div [ngClass]="{ 'list-horizontal-divider-primary': layout == 'horizontal', 'list-vertical-divider-primary': layout == 'vertical' }">&nbsp;</div>
+    
+        </div>
+        <div>
+            <div class="small fw-semibold opacity-75">Posted On</div>
+            <div class="hstack gap-2 align-items-center">
+                <span>{{ query.posted_date | date: 'dd-MM-yyy hh:mm a' }}</span>
+            </div>
+        </div>
+    
+    </div>
+</ng-container>
+<ng-container *ngIf="query.title == ''">
+    <div class="disabled">
+        No query details available..!
+    </div>
+</ng-container>
+
+
+<ng-template #tplMetaDetail>
+    <div class="bg-white border-bottom border-2 p-2 w-100 flex-1">
+        
+    </div>
+</ng-template>

@@ -1,0 +1,313 @@
+<!-- Meta Details -->
+<section class="container">
+    <div class="row align-items-stretch">
+        <div class="col-sm-9">
+            <div class="card border-0 shadow-input-1 rounded-4">
+                <div class="card-body hstack gap-2">
+                    <div class="flex-fill">
+                        <div class="h4 mb-0">Welcome User</div>
+                        <div class="small opacity-70 fw-600">13 September, FY {{ fy }}</div>
+                    </div>
+                    <div class="flex-fill">
+                        <div><span class="color-primary fw-500 pe-1">India:</span> <span class="small">{{
+                                metaDetails.localTime | date: 'h:mm a' }}</span></div>
+                        <div><span class="color-primary fw-500 pe-1">Melbourne:</span> <span class="small">{{
+                                metaDetails.otherTime | date: 'h:mm a' }}</span></div>
+                    </div>
+                    <div class="flex-fill">
+                        <div class="fw-600">Last Updated</div>
+                        <div><span class="small">{{ metaDetails.lastUpdated }}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card border-0 shadow-input-1 rounded-4 h-100">
+                <div class="card-body h-100">
+                    <div class="hstack gap-2 justify-content-around align-items-end h-100">
+                        <pq-button buttonStyle="link"><i class='fa-solid fa-rotate'></i> Refresh all</pq-button>
+                        <pq-button class="disabled" buttonStyle="link"><i class='fa-solid fa-file-arrow-down'></i> Export all</pq-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="py-2"></div>
+
+<!-- Tabs & Filters -->
+<section class="container">
+    <div class="row align-items-end">
+        <div class="col-sm-4">
+            <div><label>Filter by</label></div>
+            <pq-simple-tab [tabs]="filterTabs.tabs" containerClass="shadow-sm bg-white" labelClass="px-4"
+                (tabSelectedEvent)="handleFilterTab($event)"></pq-simple-tab>
+        </div>
+        <div class="col-sm-8 text-end hstack gap-2 align-items-end justify-content-end">
+
+            <!-- Filter : Month Filter -->
+            <div class="hstack gap-2 justify-content-end">
+                <pq-dropdown label="Month of {{ currentYear }}" text="Choose a Month" [hideError]="true"
+                    [setOptionAsText]="true" [fullWidth]="true" [options]="monthsToShow" dropDownType="advanced"
+                    [keys]="{ key: 'index', value: 'name' }" (outputObject)="handleMonthChange($event)">
+                </pq-dropdown>
+            </div>
+
+            <div class="">
+                <label>&nbsp;</label>
+                <pq-button (clickEvent)="refreshAllCharts()" [isDisabled]="showDateError">Refresh All Charts</pq-button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="py-2"></div>
+
+<!-- Jobs Status -->
+
+<!-- Commented out for not using the feature 
+<section class="container">
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="card border-0 shadow-input-1 rounded-4 h-100">
+                <div class="card-body h-100">
+                    <div class="hstack gap-2 justify-content-around h-100">
+                        <div>
+                            <div class="color-primary fw-bold small">Jobs Received</div>
+                            <div>
+                                <span class="display-8 fw-500">{{ (metrics && metrics.ReceivedCount != 0)? metrics.ReceivedCount : '- ' }}</span>
+                                <span class="smaller"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="color-primary fw-bold small">Jobs Completed</div>
+                            <div>
+                                <span class="display-8 fw-500">{{ (metrics && metrics.CompletedCount != 0)? metrics.CompletedCount : '- ' }}</span>
+                                <span class="smaller"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="color-primary fw-bold small">Throughput Ratio</div>
+                            <div>
+                                <span class="display-8 fw-500">{{ (metrics && metrics.ThroughPut != "")? parseInt(metrics.ThroughPut) : '- ' }}</span>
+                                <span class="smaller">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <div class="card border-0 shadow-input-1 rounded-4 h-100">
+                <div class="card-body h-100">
+                    <div class="hstack gap-2 justify-content-around h-100">
+                        <div>
+                            <div class="color-primary fw-bold small">Yet to Start</div>
+                            <div>
+                                <span class="display-8 fw-500">{{ (overall && overall.NotYetStarted != "")? overall.NotYetStarted : '- ' }}</span>
+                                <span class="smaller"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="color-primary fw-bold small">Work in Progress</div>
+                            <div>
+                                <span class="display-8 fw-500">{{ (overall && overall.InProgress != "")? overall.InProgress : '- ' }}</span>
+                                <span class="smaller"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="color-primary fw-bold small">Awaiting Queries</div>
+                            <div class="color-danger">
+                                <span class="display-8 fw-500">{{ (overall && overall.Queries  != "")? overall.Queries : '- ' }}</span>
+                                <span class="smaller"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="color-primary fw-bold small">Awaiting Client Closure</div>
+                            <div class="color-orange">
+                                <span class="display-8 fw-500">{{ (overall && overall.ClientClosure != "")? overall.ClientClosure : '- ' }}</span>
+                                <span class="smaller"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+-->
+
+<!-- Job Status - PQ Section Card -->
+<pq-section-card sectionID="wfsection" sectionTitle="Job Status" sectionSubtitle="Use vertical filter to focus on specific verticals" cardClass="shadow-sm">
+    <div actions class="hstack gap-2">
+        <pq-button buttonStyle="light" (clickEvent)="captureChartAsImage('js001')">
+            <i class='fa-solid fa-file-arrow-down pe-1'></i> Export
+        </pq-button>
+
+        <pq-button (clickEvent)="getUser()">View Data</pq-button>
+
+        <pq-dropdown text="Choose a Vertical" [hideError]="true"
+            [setOptionAsText]="true" [fullWidth]="true" [options]="verticals" dropDownType="advanced"
+            [keys]="{ key: 'index', value: 'name' }">
+        </pq-dropdown>
+    </div>
+
+    <div body>
+        <div class="row">
+            <div class="col-sm-6">
+                <pq-charts chartId="js001" chartTitle="Workflow Status | No. Jobs vs Job Status" [config]="wfConfig" [revalidate]="revalidate"
+                    [refresh]="wfRefresh"></pq-charts>
+            </div>
+        </div>
+    </div>
+
+    <div sidebar class="h-100">
+        <div class="vstack gap-2 h-100">
+            <div class="h6">Chart Settings</div>
+            <div class="vstack h-100">
+                <div class="flex-fill hstack gap-2 align-items-start">
+                    <pq-dropdown text="Chart Type" [setOptionAsText]="true"
+                        dropDownType="advanced"
+                        [options]="[{ code: 'bar', value: 'Bar' }, { code: 'line', value: 'Line' }]"
+                        [keys]="{ key: 'code', value: 'value' }"
+                        (outputObject)="wfChartType = $event.code">
+                    </pq-dropdown>
+                </div>
+                <pq-button (click)="getWFStatusFromService()">Save Settings</pq-button>
+            </div>
+        </div>
+    </div>
+</pq-section-card>
+
+<!-- Turnaround of Jobs - PQ Section Card -->
+<pq-section-card sectionID="toasection" sectionTitle="Monthly Productvity" sectionSubtitle="Use vertical dropdown to change view charts for specific vertial" cardClass="shadow-sm">
+    <div actions class="hstack gap-2">
+        <pq-button buttonStyle="light" (clickEvent)="captureChartAsImage('toj001')"><i
+                class='fa-solid fa-file-arrow-down pe-1'></i> Export</pq-button>
+
+        <pq-dropdown text="Choose a Vertical" [hideError]="true"
+            [setOptionAsText]="true" [fullWidth]="true" [options]="verticals" dropDownType="advanced"
+            [keys]="{ key: 'index', value: 'name' }">
+        </pq-dropdown>
+    </div>
+
+    <div body>
+        <div class="row">
+            <div class="col-sm-6">
+                <pq-charts chartId="toj001" chartTitle="Turnaround of Jobs | Months vs Number of Jobs" [config]="toaConfig"
+                    [revalidate]="revalidate" [refresh]="toaRefresh"></pq-charts>
+            </div>
+        </div>
+    </div>
+
+    <div sidebar class="h-100">
+        <div class="vstack gap-2 h-100">
+            <div class="h6">Chart Settings</div>
+            <div class="vstack h-100">
+                <div class="flex-fill hstack gap-2 align-items-start">
+                    <pq-dropdown text="Chart Type" [setOptionAsText]="true"
+                        dropDownType="advanced"
+                        [options]="[{ code: 'bar', value: 'Bar' }, { code: 'line', value: 'Line' }]"
+                        [keys]="{ key: 'code', value: 'value' }"
+                        (outputObject)="wfChartType = $event.code">
+                    </pq-dropdown>
+                </div>
+                <pq-button (click)="getWFStatusFromService()">Save Settings</pq-button>
+            </div>
+        </div>
+    </div>
+</pq-section-card>
+
+
+<!-- Budgeted vs. Actual - PQ Section Card -->
+<pq-section-card sectionID="jftsection" sectionTitle="Budgeted vs. Actual Hours" sectionSubtitle="Use vertical dropdown to view chart for specific vertical" cardClass="shadow-sm">
+    <div actions class="hstack gap-2">
+        <pq-button buttonStyle="light" (clickEvent)="captureChartAsImage('jft001')"><i
+                class='fa-solid fa-file-arrow-down pe-1'></i> Export</pq-button>
+
+        <pq-dropdown text="Choose a Vertical" [hideError]="true"
+            [setOptionAsText]="true" [fullWidth]="true" [options]="verticals" dropDownType="advanced"
+            [keys]="{ key: 'index', value: 'name' }">
+        </pq-dropdown>
+
+        <pq-button buttonContainerClass="disabled" buttonStyle="primary"><i class='fa-solid fa-table pe-1'></i> View
+            Details</pq-button>
+    </div>
+
+    <div body>
+        <div class="row">
+            <div class="col-sm-6">
+                <pq-charts chartId="jft001" chartTitle="Jobs Flow Throughput | Months vs Number of Jobs" [config]="jftConfig"
+                    [revalidate]="revalidate" [refresh]="jftRefresh"></pq-charts>
+            </div>
+        </div>
+    </div>
+
+    <div sidebar class="h-100">
+        <div class="vstack gap-2 h-100">
+            <div class="h6">Chart Settings</div>
+            <div class="vstack h-100">
+                <div class="flex-fill hstack gap-2 align-items-start">
+                    <pq-dropdown text="Chart Type" [setOptionAsText]="true"
+                        dropDownType="advanced"
+                        [options]="[{ code: 'bar', value: 'Bar' }, { code: 'line', value: 'Line' }]"
+                        [keys]="{ key: 'code', value: 'value' }"
+                        (outputObject)="wfChartType = $event.code">
+                    </pq-dropdown>
+                </div>
+                <pq-button (click)="getWFStatusFromService()">Save Settings</pq-button>
+            </div>
+        </div>
+    </div>
+</pq-section-card>
+
+
+<!-- Modal -->
+<div class="modal fade" id="mdlJobs" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"  style="z-index: 99999;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="height: 90%;">
+        <div class="modal-content">
+            <div class="modal-header border-0 py-2">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Jobs Delivered</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body overflow-auto">
+                <table class="tbljobstatus" cellPadding="5" style="width: 100%; white-space: nowrap;">
+                    <thead>
+                        <th>S.No</th>
+                        <th>Job Name</th>
+                        <th>TL Name</th>
+                        <th>Time Taken</th>
+                        <th>Budget Time</th>
+                        <th>Work Status</th>
+                        <th>Comment</th>
+                        <th>Received Date</th>
+                        <th>Estimated Date</th>
+                        <th>Aging Since Last Touch</th>
+                        <th>Chat</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let js of jobStatus; let index = index;">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ js.JobName }}</td>
+                            <td>{{ js.TLName }}</td>
+                            <td>{{ js.TimeTaken }}</td>
+                            <td>{{ js.BudgetTime }}</td>
+                            <td>{{ js.WorkStatus }}</td>
+                            <td class="disabled" style="width: 100px;">
+                                <input class="form-control" type="text" placeholder="Comment here" style="width: 150px;">
+                            </td>
+                            <td>{{ js.Receiveddate }}</td>
+                            <td>{{ js.EstDate }}</td>
+                            <td>{{ js.LastTouch }}</td>
+                            <td class="disabled">
+                                <pq-button><span class="visually-hidden">Chats</span> Chat</pq-button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

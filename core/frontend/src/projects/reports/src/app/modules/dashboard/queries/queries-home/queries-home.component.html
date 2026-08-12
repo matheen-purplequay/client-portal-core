@@ -1,0 +1,348 @@
+<section *ngIf="isGettingJobs" class="my-5">
+    <div class="d-flex flex-column align-items-center justify-content-center text-center" style="min-height: 300px;">
+        <div class="spinner-border color-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h3 class="fw-normal opacity-50 mt-3">Loading Jobs...</h3>
+        <p class="opacity-50">{{ isGettingMessage }}</p>
+    </div>
+</section>
+
+
+<section *ngIf="!isGettingJobs && (!jobQueries || jobQueries.length <= 0)">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex flex-column align-items-center justify-content-center text-center" style="min-height: 300px;">
+                    <span class="material-symbols-outlined display-1 opacity-25">work</span>
+                    <h3 class="fw-normal opacity-50">No Jobs Available</h3>
+                    <p class="opacity-50">There are currently no jobs available. Please check back later.</p>
+                    <pq-button buttonStyle="simple" buttonContainerClass="bg-white shadow-sm rounded-pill" buttonContentClass="small hstack gap-1 px-4" (clickEvent)="getJobs()">
+                        <span class="material-symbols-outlined">refresh</span>
+                        Refresh
+                    </pq-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section *ngIf="!isGettingJobs && jobQueries && jobQueries.length > 0">
+    <!-- Statistics -->
+    <app-query-statistics></app-query-statistics>
+    <!-- End of Statistics -->
+
+    <!-- Breadcrumbs -->
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <nav class="px-2" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <ng-container *ngFor="let activity of activities.list; let activityIndex = index;">
+                            <li *ngIf="activities.selectedActivity.index >= activityIndex" 
+                                class="breadcrumb-item" (click)="switchActivity(activity)">
+                                <a class="link text-decoration-none badge bg-white text-dark shadow-sm rounded-pill border"
+                                    [ngClass]="(activity.code === activities.selectedActivity.code) ? 'fw-bold border-color-primary' : 'fw-medium'">
+                                    {{ activity.label }}
+                                </a>
+                            </li>
+                        </ng-container>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-sm-6">
+                <div class="hstack gap-2 align-items-center justify-content-end">
+                    <div class="w-25 hstack align-items-center rounded-pill bg-white shadow-input-2 pe-2 ps-1" [ngClass]="!job.isJobSelected && jobSearchTerm? 'border border-primary' : job.isJobSelected && queryTemplateSearchTerm? 'border border-primary' : 'border border-transparent'">
+                        <span class="material-symbols-outlined mt-1 opacity-50">search</span>
+                        <input *ngIf="!job.isJobSelected" type="text" class="form-control border-0 bg-transparent" placeholder="Search Jobs..." [(ngModel)]="jobSearchTerm">
+                        <input *ngIf="job.isJobSelected" type="text" class="form-control border-0 bg-transparent" placeholder="Search Queries..." [(ngModel)]="queryTemplateSearchTerm">
+                        <span *ngIf="(!job.isJobSelected && jobSearchTerm) || (job.isJobSelected && queryTemplateSearchTerm)" class="material-symbols-outlined cursor-pointer opacity-50 hstack" style="margin-top: 2px;" (click)="job.isJobSelected? queryTemplateSearchTerm = '' : jobSearchTerm = ''">backspace</span>
+                    </div>
+                    <!-- <pq-button *ngIf="activities.selectedActivity.code == activitiesList.jobs.code" 
+                        buttonStyle="simple" buttonContainerClass="bg-white shadow-sm rounded-pill" buttonContentClass="small hstack gap-1" 
+                        [isLoading]="isDownloadingExcel"
+                        (clickEvent)="downloadJobsAsExcel()"
+                    >
+                        <span class="material-symbols-outlined">download</span>
+                        Download Jobs
+                    </pq-button> -->
+                    <pq-dropdown *ngIf="activities.selectedActivity.code == activitiesList.queries.code" 
+                        [ngClass]="{ 'opacity-50 pointer-events-none': isDownloadingExcel }"
+                        [selectedOption]="downloadableOptions[0].index"
+                        text="Download Queries"
+                        [options]="downloadableOptions"
+                        dropDownType="advanced"
+                        [keys]="{ key: 'index', value: 'label' }"
+                        dropDownButtonClass="rounded-pill small color-primary fw-500 border-0"
+                        [hideError]="true"
+                        (outputObject)="this.isDownloadingExcel = true; $event.index === 'pdf' ? generatePDF('queries-container') : $event.index === 'excel' ? downloadQueriesAsExcel() : null"
+                    ></pq-dropdown>
+                    <!-- <pq-button *ngIf="activities.selectedActivity.code == activitiesList.queries.code" 
+                        buttonStyle="simple" buttonContainerClass="bg-white shadow-sm rounded-pill" buttonContentClass="small hstack gap-1" 
+                        [isLoading]="isDownloadingExcel"
+                        (clickEvent)="generatePDF('queries-container')"
+                    >
+                        <span class="material-symbols-outlined">download</span>
+                        Download Queries
+                    </pq-button> -->
+                    <pq-button buttonStyle="simple" buttonContainerClass="bg-white shadow-sm rounded-pill" buttonContentClass="small hstack gap-1" (clickEvent)="getJobs()">
+                        <span class="material-symbols-outlined">refresh</span>
+                    </pq-button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Breadcrumbs -->
+    
+    <!-- Main Template -->
+    <pq-section-card cardClass="shadow-sm" cardHeaderClass="d-none" cardBodyClass="p-0" [fluidContainer]="true"
+        [showLoading]="isGettingFilters || isGettingJobs || isGettingQueries" [showLoadingText]="isGettingMessage" [enableSettings]="false">
+    
+        <div body style="min-height: 450px;">
+    
+            <!-- Toolbar Outlet -->
+            <ng-container *ngTemplateOutlet="tplToolbar"></ng-container>
+            <!-- End of Toolbar Outlet -->
+    
+            <!-- Job Table Outlet -->
+            <ng-container *ngIf="activities.selectedActivity.code == activitiesList.jobs.code">
+                <ng-container *ngTemplateOutlet="tplJobTable"></ng-container>
+            </ng-container>
+            <!-- End of Job Table Outlet -->
+    
+            <!-- Queries Outlet -->
+            <ng-container *ngIf="activities.selectedActivity.code == activitiesList.queries.code">
+                <!-- Queries Table Outlet -->
+                <ng-container *ngIf="queryViews.selectedQueryView.index == queryViewsList.table.index">
+                    <ng-container *ngTemplateOutlet="tplQueriesTable"></ng-container>
+                </ng-container>
+                <!-- End of Queries Table Outlet -->
+    
+                <!-- Queries Cards Outlet -->
+                <ng-container *ngIf="queryViews.selectedQueryView.index == queryViewsList.card.index">
+                    <ng-container *ngTemplateOutlet="tplQueriesCards"></ng-container>
+                </ng-container>
+                <!-- End of Queries Cards Outlet -->
+            </ng-container>
+            <!-- End of Queries Outlet -->
+    
+            <!-- New Query Outlet -->
+            <ng-container *ngIf="activities.selectedActivity.code == activitiesList.new_query.code">
+                <ng-container *ngTemplateOutlet="tplNewQuery"></ng-container>
+            </ng-container>
+            <!-- End of New Query Outlet -->
+    
+        </div>
+    
+    </pq-section-card>
+    <!-- End of Main Template -->
+    
+    <!-- Toolbar Template -->
+    <ng-template #tplToolbar>
+        <div class="toolbar vstack">
+            <!-- JOB TOOLBAR -->
+            <div class="job-toolbar horizontal-filter-toolbar justify-content-between"
+                [ngClass]="{ 'ps-0': job.isJobSelected}">
+                <div class="flex-fill">
+                    <!-- Show Toolbar Label if no JOB is selected -->
+                    <ng-container *ngIf="!job.isJobSelected">
+                        <div class="hstack gap-2 align-items-center">
+                            <span class="material-symbols-outlined opacity-50">work</span>
+                            <label>Please select a job to begin</label>
+                        </div>
+                    </ng-container>
+    
+                    <!-- Show JOB DETAILS if a JOB is selected -->
+                    <ng-container *ngIf="job.isJobSelected">
+                        <div class="hstack gap-1 justify-content-between align-items center">
+                            <div class="hstack gap-2">
+                                <pq-button buttonStyle="simple" buttonClass="rounded-pill"
+                                    buttonContentClass="hstack align-items-center" (clickEvent)="switchActivity(activitiesList.jobs)">
+                                    <span class="material-symbols-outlined opacity-75">arrow_back</span>
+                                </pq-button>
+    
+                                <div class="vstack gap-1 lh-1 align-items-start"
+                                    [ngClass]="{ 'ps-3': activities.selectedActivity.code === activitiesList.new_query.code }">
+                                    <div class="fw-medium">{{ job.selectedJob.job_name }}</div>
+                                    <div class="hstack gap-2 align-items-center">
+    
+                                        <div class="badge bg-color-light text-dark fw-bold opacity-75">Job ID {{ job.selectedJob.job_id }}</div>
+                                        <div class="list-horizontal-divider-primary"></div>
+    
+                                        <div class="badge bg-color-light text-dark fw-bold opacity-75">FY {{ job.selectedJob.fy }}</div>
+                                        <div class="badge bg-color-light text-dark fw-bold opacity-75">JY {{ job.selectedJob.jy | date: 'dd-MM-yyyy' }}</div>
+                                        <div class="badge bg-color-light text-dark fw-bold opacity-75">{{ job.selectedJob.job_touchpoint }}</div>
+    
+                                        <div class="list-horizontal-divider-primary"></div>
+    
+                                        <div class="badge bg-light text-dark rounded-pill fw-bold opacity-75 hstack align-items-center gap-1"><span class="small material-symbols-outlined opacity-50">functions</span> {{ job.selectedJob.total_queries }} queries</div>
+                                        <div class="badge bg-color-warning text-dark rounded-pill fw-bold opacity-75 hstack align-items-center gap-1"><span class="small material-symbols-outlined opacity-50">timer</span> {{ job.selectedJob.open }} open</div>
+                                        <div class="badge bg-color-success-light text-success rounded-pill fw-bold opacity-75 hstack align-items-center gap-1"><span class="small material-symbols-outlined opacity-50">check</span> {{ job.selectedJob.resolved }} closed</div>
+    
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="hstack gap-3 align-items-center">
+                                
+                                <ng-container *ngIf="activities.selectedActivity.code != activitiesList.new_query.code">
+                                    <div class="hstack gap-1 align-items-center">
+                                        <span *ngIf="queryViews.selectedQueryView.index == queryViewsList.card.index"
+                                            class="material-symbols-outlined">view_agenda</span>
+                                        <span *ngIf="queryViews.selectedQueryView.index == queryViewsList.table.index"
+                                            class="material-symbols-outlined">table</span>
+                                        <pq-dropdown [text]="queryViews.selectedQueryView.label" [hideError]="true" [selectedOption]="queryViews.selectedQueryView.index.toString()"
+                                            [options]="queryViews.list" dropDownType="advanced" [keys]="queryViews.keys"
+                                            (outputObject)="queryViews.selectedQueryView = $event;"></pq-dropdown>
+                                    </div>
+    
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+    
+                <div *ngIf="!job.isJobSelected" class="hstack gap-3 align-items-center">
+                    <!-- Disabled the job filters until its readt -->
+                    <div class="position-relative">
+                        <div class="z-3 position-absolute top-0 start-0 bottom-0 end-0 bg-blur-2 p-2 text-muted hstack align-items-center justify-content-center">Job Filters Coming Soon...</div>                
+                        <div class="pointer-events-none hstack gap-3 align-items-center opacity-30">
+                            <div class="hstack gap-2 align-items-center">
+                                <label>Job Priority</label>
+                                <pq-toggle-switch toggleStyle="primary"></pq-toggle-switch>
+                            </div>
+            
+                            <pq-dropdown label="FY" text="2024" dropDownStyle="link" [hideError]="true"
+                                dropDownButtonClass="flex-fill small"></pq-dropdown>
+                            <pq-dropdown label="JY" text="Any" dropDownStyle="link" [hideError]="true"
+                                dropDownButtonClass="flex-fill small"></pq-dropdown>
+                            <div class="list-horizontal-divider-primary"></div>
+                            <pq-dropdown label="Sub Client" text="All" dropDownStyle="link" [hideError]="true"
+                                dropDownButtonClass="flex-fill small"></pq-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- QUERIES TOOLBAR -->
+            <div *ngIf="activities.selectedActivity.code != activitiesList.new_query.code"
+                class="query-toolbar horizontal-filter-toolbar justify-content-between bg-color-lighter shadow-input-1 border-top border-bottom">
+                <div class="hstack gap-2 align-items-center">
+                    <span class="material-symbols-outlined opacity-50">unknown_document</span>
+                    <label>Query Filters</label>
+                </div>
+    
+                <div class="hstack gap-3 align-items-center">
+                    <div class="position-relative">
+                        <div class="z-3 position-absolute top-0 start-0 bottom-0 end-0 bg-blur-2 p-2 hstack text-muted align-items-center justify-content-center">Query Filters Coming Soon...</div>                
+                        <div class="pointer-events-none hstack gap-3 align-items-center opacity-30">
+    
+                            <pq-dropdown label="Query Status" [text]="queryStatus.selectedStatus.master_name"
+                                dropDownType="advanced" dropDownStyle="link" class="flex-fill px-1 fw-medium"
+                                labelClass="small mb-1 d-block" dropDownButtonClass="small" [options]="queryStatus.list"
+                                [keys]="queryStatus.keys" [hideError]="true"
+                                (outputObject)="queryStatus.selectedStatus = $event; queryFilters.query_status.value = $event.id; masterFilters.query_status.selected.value = $event.id;"></pq-dropdown>
+            
+                            <pq-dropdown label="Query Criticality" [text]="criticalities.selectedCriticality.master_name"
+                                dropDownType="advanced" dropDownStyle="link" class="flex-fill px-1 fw-medium"
+                                labelClass="small mb-1 d-block" dropDownButtonClass="small" [options]="criticalities.list"
+                                [keys]="criticalities.keys" [hideError]="true"
+                                (outputObject)="criticalities.selectedCriticality = $event; queryFilters.criticality.value = $event.id; masterFilters.criticality.selected.value = $event.id;"></pq-dropdown>
+            
+                            <div class="list-horizontal-divider-primary"></div>
+            
+                            <pq-dropdown *ngIf="categories.list.length > 0" label="Category" [text]="categories.selectedCategory.master_name" dropDownType="advanced"
+                                [keys]="categories.keys" [hideError]="true" dropDownStyle="link" labelClass="small mb-1 d-block"
+                                dropDownButtonClass="small" [options]="categories.list"
+                                (outputObject)="categories.selectedCategory = $event; queryFilters.category.value = $event.id; masterFilters.category.selected.value = $event.id;"></pq-dropdown>
+            
+                            <pq-dropdown *ngIf="subCategories.list.length > 0" label="Sub Category" [text]="subCategories.selectedSubCategory.master_name" dropDownType="advanced"
+                                [hideError]="true" dropDownStyle="link" labelClass="small mb-1 d-block" dropDownButtonClass="small" [options]="subCategories.list" [keys]="subCategories.keys"
+                                (outputObject)="subCategories.selectedSubCategory = $event; queryFilters.category.value = $event.id; masterFilters.sub_category.selected.value = $event.id;"></pq-dropdown>
+            
+                            <div class="list-horizontal-divider-primary"></div>
+            
+                            <pq-button buttonStyle="link" (clickEvent)="applyFilters(); ">Apply Filter</pq-button>
+            
+                            <!-- <pq-dropdown [hideError]="true" dropDownStyle="link" class="flex-fill px-1 fw-medium"
+                                dropDownButtonClass="small" labelClass="small mb-1 d-block" label="Assigned To"
+                                text="Any"></pq-dropdown> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <!-- End of Toolbar Template -->
+    
+    
+    <!-- Job TABLE Placeholder -->
+    <ng-template #tplJobTable>
+        <app-job-queries [jobQueries]="jobQueries | objectFilter: jobSearchTerm" (jobSelected)="getQueries($event);" (raiseQueryForJob)="btnOfcTemplates.click(); raiseQueryForJobSilently($event);"></app-job-queries>
+        <button class="opacity-0 h-0 w-0 d-none" data-bs-toggle="offcanvas" data-bs-target="#query-template-selector" #btnOfcTemplates></button>
+    </ng-template>
+    <!-- End of TABLE Placeholder -->
+    
+    
+    <!-- Queries TABLE Placeholder -->
+    <ng-template #tplQueriesTable>
+        <app-admin-queries [queries]="queries | objectFilter: queryTemplateSearchTerm"></app-admin-queries>
+    </ng-template>
+    <!-- End of Queries TABLE Placeholder -->
+    
+    
+    <!-- Queries CARDS Placeholder -->
+    <ng-template #tplQueriesCards>
+        <app-associate-queries [job]="job.selectedJob" [queries]="queries" [refreshQueries]="refreshQueries"
+            (querySelected)="selectQuery($event);" (queryUnSelected)="unselectQuery();" (goBackToJobs)="switchActivity(activitiesList.jobs);"></app-associate-queries>
+    </ng-template>
+    <!-- End of Queries CARDS Placeholder -->
+    
+    
+    <!-- NEW Query Placeholder -->
+    <ng-template #tplNewQuery>
+        <app-new-query [job]="job.selectedJob" [masterFilters]="masterFilters" [queryFilters]="queryFilters" [initialQueryTemplate]="initialQueryTemplate" 
+            (queriesPosted)="switchActivity(activitiesList.queries);"
+            (dismissNewQuery)="switchActivity(activitiesList.queries)"></app-new-query>
+    </ng-template>
+    <!-- End of NEW Query Placeholder -->
+
+</section>    
+
+
+
+<!-- Download Options for Jobs or Queries -->
+<!-- Modal -->
+<div class="modal" data-bs-backdrop="false" id="mdlDownloadOptions" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0 rounded-3">
+            <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="mdlDownloadOptionsLabel">Choose Columns to Download</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0 bg-light border-top border-bottom" style="max-height: 50vh; overflow-y: auto;">
+                <ng-container *ngIf="!job.isJobSelected">
+                    <ul class="list-group list-group-flush py-0">
+                        <li *ngFor="let option of jobsDownloadOptions" class="list-group-item bg-transparent hstack gap-1 align-items-center py-0">
+                            <input class="form-check-input me-1" type="checkbox" [checked]="option.isSelected" id="{{ option.key }}">
+                            <label class="form-check-label w-100 flex-1 py-2" for="{{ option.key }}">{{ option.label }}</label>
+                        </li>
+                    </ul>
+                </ng-container>
+                <ng-container *ngIf="job.isJobSelected">
+                    <ul class="list-group list-group-flush py-0">
+                        <li *ngFor="let option of queriesDownloadOptions" class="list-group-item bg-transparent hstack gap-1 align-items-center py-0">
+                            <input class="form-check-input me-1" type="checkbox" [checked]="option.isSelected" id="{{ option.key }}">
+                            <label class="form-check-label w-100 flex-1 py-2" for="{{ option.key }}">{{ option.label }}</label>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+            <div class="modal-footer border-0 p-1">
+                <pq-button buttonStyle="link">Cancel</pq-button>
+                <pq-button buttonStyle="primary" (clickEvent)="triggerDownloadTable()">Download</pq-button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Download Options for Jobs or Queries -->

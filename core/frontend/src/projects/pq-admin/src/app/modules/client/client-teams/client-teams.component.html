@@ -1,0 +1,118 @@
+<section *ngIf="isGettingTeams" class="p-3">
+    <div class="bg-color-lightest border h-100 text-dark hstack gap-2 justify-content-center align-items-center p-2 rounded">
+        <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <span class="display-9">Loading team details...</span>
+    </div>
+</section>
+
+<ng-container *ngIf="!isGettingTeams">
+    <div class="row mt-4">
+        <div class="col-sm-12 text-center">
+            <pq-simple-tab [tabs]="filterViews.list"
+                [selectedTab]="filterViews.selectedView.index"
+                (tabSelectedEvent)="filterViews.selectedView = $event"></pq-simple-tab>
+        </div>
+    </div>
+    
+    <div class="row mt-2">
+        <!-- Add New Users -->
+        <ng-container *ngIf="filterViews.selectedView == views.add">
+            <div class="col-sm-12">
+                <div class="vstack">
+                    <div class="hstack gap-3 align-items-end mb-3">
+                        <pq-dropdown label="Users" [setOptionAsText]="true" [text]="selfUsers.selectedUser.name" dropDownType="advanced" [hideError]="true"
+                            [options]="selfUsers.list" [keys]="selfUsers.keys" (outputObject)="setUserToTeam($event)"></pq-dropdown>
+        
+                        <div>
+                            <div class="hstack gap-2">
+                                <img class="image h-40 rounded-pill" src="/assets/images/profile_placeholder.png" alt="">
+                                <div class="lh-1">
+                                    <div class="lead">{{ teamPayload.name }}</div>
+                                    <div>{{ teamPayload.email }}</div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Fetching users from works manager no longer needed
+                        <pq-button buttonStyle="link" (clickEvent)="fetchUserFromWMDB()" [isDisabled]="isFetchingUserFromWM">
+                            <span *ngIf="!isFetchingUserFromWM">Fetch user from Works Manager</span>
+                            <span *ngIf="isFetchingUserFromWM">Fetching user...</span>
+                        </pq-button> -->
+                    </div>
+                    <div *ngIf="teamPayload.name != ''" class="hstack gap-2 align-items-start flex-wrap">
+        
+                        <pq-dropdown label="Roles" [setOptionAsText]="true" 
+                            [text]="roles.selectedRoles.title"
+                            helper="Choose a role"
+                            dropDownType="advanced" [options]="roles.list" [keys]="roles.keys"
+                            (outputObject)="teamPayload.role_id = $event.id; roles.selectedRoles = $event;"></pq-dropdown>
+        
+                        <pq-dropdown label="Verticals" [setOptionAsText]="true" 
+                            [text]="verticals.selectedVertical.title"
+                            helper="Choose a vertical"
+                            dropDownType="advanced" [options]="verticals.list" [keys]="verticals.keys"
+                            (outputObject)="teamPayload.vertical_id = $event.wm_vertical_id; verticals.selectedVertical = $event;"></pq-dropdown>
+        
+                        <pq-textbox label="Order" type="number"
+                            [textBoxContent]="teamPayload.heirarchy"
+                            (outputValue)="teamPayload.heirarchy = convertToNumber($event)"></pq-textbox>
+                    </div>
+    
+                    <pq-button (clickEvent)="saveTeam()" 
+                        [isDisabled]="teamPayload.name == ''"
+                        [isLoading]="isSavingTeam" [isLoading]="isSavingTeam">Add to Team</pq-button>
+                </div>
+            </div>
+        </ng-container>
+    
+        <!-- User Cards -->
+        <ng-container *ngIf="filterViews.selectedView == views.list">
+            <div class="col-sm-12">
+                <ng-container *ngIf="isGettingTeams">
+                    <div class="mt-3 fw-medium hstack gap-1 align-items-center justify-content-start">
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span class="small disabled">Fetching user details. Please wait ...</span>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!isGettingTeams" >
+                    <div class="hstack align-items-start justify-content-between gap-2 border-bottom mt-4 mb-2" *ngFor="let user of teams">
+                        <div class="hstack align-items-start gap-2">
+                            <img src="/assets/images/profile_placeholder.png" alt="" class="image h-40 rounded-pill">
+                            <div class="vstack gap-1 mb-3 lh-1 disabled">
+                                <div class="display-9 fw-300">{{ user.name }}</div>
+                                <div>
+                                    <div>{{ user.email }}</div>
+                                    <div class="hstack gap-2 mt-1">
+                                        <div class="smaller fw-400 badge text-dark border rounded-pill">{{ user.role.title }}</div>
+                                        <div class="smaller fw-400 badge text-dark border rounded-pill">{{ user.vertical.title }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="hstack gap-2 align-items-center">
+                                <ng-container *ngIf="user.status == 'active'">
+                                    <pq-button buttonStyle="link" buttonContentClass="text-danger" (clickEvent)="toggleTeamMemberStatus(user.id)">
+                                        <span class="material-symbols-rounded">visibility_off</span>
+                                    </pq-button>
+                                </ng-container>
+                                <ng-container *ngIf="user.status == 'inactive'">
+                                    <pq-button buttonStyle="link" buttonContentClass="text-success" (clickEvent)="toggleTeamMemberStatus(user.id)">
+                                        <span class="material-symbols-rounded">visibility</span>
+                                    </pq-button>
+                                    <pq-button buttonStyle="link" (clickEvent)="deleteTeamMember(user.id)">
+                                        <span class="material-symbols-rounded">delete_forever</span>
+                                    </pq-button>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>

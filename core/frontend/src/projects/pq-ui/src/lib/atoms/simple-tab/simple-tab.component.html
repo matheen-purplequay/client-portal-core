@@ -1,0 +1,38 @@
+<div *ngIf="tabStyle != 'island' && tabStyle != 'form'" 
+    class="btn-group simple-tab-container" [ngClass]="containerClass" role="group">
+    <ng-container *ngFor="let tab of tabs; let index = index;">
+        <ng-container *ngIf="!tab.hide">
+            <input type="radio" class="btn-check" [name]="tabName" [id]="'simple-tab-' + tab.index" autocomplete="off" [checked]="selectedTab == tab.index">
+            <div class="d-flex">
+                <label class="btn simple-tab-label" [ngClass]="(selectedTab === tab.index)? 'active-tab' : ''" 
+                    [for]="'simple-tab-' + tab.index" [innerHTML]="tab.label" [attr.data-selected]="selectedTab"
+                    (click)="emitTabSelected(tab)"></label>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<section *ngIf="tabStyle == 'island'">
+    <div [ngClass]="containerClass" class="island-tab-container hstack gap-2 flex-wrap smooth-all">
+        <ng-container *ngFor="let tab of tabs; let index = index;">
+            <div *ngIf="tab.withDivider" class="ms-2 me-1">&bull;</div>
+            <div *ngIf="!tab.hide"  
+                [class]="'btn ' + labelClass" [ngClass]="(selectedTab === tab.index)? 'bg-color-primary text-light shadow-input-1 fw-bold' : 'bg-white text-dark shadow-sm fw-bold'"
+                (click)="emitTabSelected(tab)">
+                <span [ngClass]="labelContentClass" [innerHTML]="tab.label"></span>
+            </div>
+        </ng-container>
+    </div>
+</section>
+
+<section *ngIf="tabStyle == 'form'">
+    <div [ngClass]="containerClass" class="form-tab-container hstack gap-2 flex-wrap smooth-all">
+        <ng-container *ngFor="let tab of tabs; let index = index;">
+            <div *ngIf="!tab.hide"  
+                class="btn" [ngClass]="(selectedTab === tab.index)? 'bg-white text-dark border border-2 border-color-primary shadow-input-2' : 'bg-white text-dark border border-2 border-white shadow-sm'"
+                (click)="emitTabSelected(tab)">
+                {{ tab.label }}
+            </div>
+        </ng-container>
+    </div>
+</section>

@@ -1,0 +1,56 @@
+<section class="container-fluid">
+    <div *ngFor="let q of queries | paginate: config | objectFilter: queriesSearchTerm; let index = index;" class="row">
+        <div class="col-sm-12 px-0">
+
+            <!-- Query Card Container -->
+            <div class="hstack gap-1 align-items-start p-2 border-bottom"
+                [ngClass]="{ 
+                    'bg-color-primary-lightest': q.queryIndex && query.selectedQuery.query_code == q.query_code, 
+                    'bg-color-success-lighter': q.query_status_id == 4,
+                    'bg-color-lightest': q.query_status_id != 4
+                }">
+                <!-- Attachment -->
+                <div>
+                    <span class="material-symbols-outlined">attach_file</span>
+                </div>
+
+                <!-- Query Details -->
+                <div class="vstack">
+                    <div class="cursor-pointer hover-underline" (click)="selectQuery(q);">
+                        <div class="fw-semibold color-secondary mb-3 hstack gap-2 align-items-center justify-content-start">
+                            <span>{{ q.query_code }} - {{ q.title }}</span>
+                            <span *ngIf="q.sub_query_approval_required > 0" class="badge bg-warning text-dark">Sub Query Approval Required</span>
+                        </div>
+    
+                        <!-- Query Meta Data -->
+                        <div class="pe-4">
+                            <app-card-query-meta layout="horizontal" [job]="job" [query]="q"></app-card-query-meta>
+                        </div>
+                    </div>
+                    <!-- End of Query Meta Data -->
+
+                    <!-- Query Replies -->
+                    <ng-container *ngIf="query.selectedQuery && q.query_code == query.selectedQuery.query_code">
+                        <div class="vstack gap-2 pe-4">
+                            <app-card-query-replies [query]="query.selectedQuery" (queryResolved)="emitQueryResolved()"></app-card-query-replies>
+                        </div>
+                    </ng-container>
+                    <!-- End of Query Replies -->
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Query Card Container -->
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="d-flex justify-content-end mb-2 mt-3 px-2">
+                <pq-pagination [config]="config" (pageChanged)="onPageChange($event)"></pq-pagination>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,35 @@
+.floating-scroll-to-top {
+    position: absolute;
+    bottom: 0px;
+    right: 30px;
+
+    * {
+        -webkit-transition: all 0.1s ease-in-out;
+        -moz-transition: all 0.1s ease-in-out;
+        transition: all 0.1s ease-in-out;
+    }
+
+    button {
+        background: #646464;
+        color: var(--light-color);
+        overflow: hidden;
+        
+        &:hover {
+            background: var(--primary-color) !important;
+            color: var(--light-color) !important;
+        }
+
+        &:active {
+            border: 0px solid;
+        }
+
+        &.hide-button {
+            transform: translateY(110%);
+        }
+
+        &.show-button {
+            transform: translateY(0%);
+        }
+    }
+
+}

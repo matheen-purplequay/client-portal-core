@@ -1,0 +1,12 @@
+# dp_submodules
+
+# dp-dash-insights
+*/node_modules
+*/dist
+*/build
+docs
+
+CLAUDE.md
+.agents
+.skills
+.temp

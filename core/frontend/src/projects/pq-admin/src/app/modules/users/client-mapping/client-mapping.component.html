@@ -1,0 +1,80 @@
+<section class="position-relative">
+    <ng-container *ngIf="fetchingMappedClients && clients.value.length > 0">
+        <div
+            class="position-absolute top-0 bottom-0 start-0 end-0 z-2 bg-color-lighter bg-blur-8 hstack align-items-center justify-content-center">
+            <div class="fw-medium hstack gap-1 align-items-center justify-content-center">
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <span>Loading Links...</span>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container>
+        <div class="mt-3">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <div class="lead fw-400">User - Client Relation</div>
+                        <div class="small disabled">Click + to add clients to selected user</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <ul class="nav nav-underline justify-content-start">
+                        <li class="nav-item disabled">
+                            <a class="nav-link py-0 fw-500">
+                                <span>Available Client ({{ clients.value.length }})</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="border rounded" style="max-height: 400px; overflow-y: auto;">
+                        <ul class="list-group list-group-flush">
+                            <li class="sticky-top top-0 z-2 list-group-item p-0" [ngClass]="{ 'disabled': !isClientsAvailable }">
+                                <input type="text" class="form-control border-0 small" placeholder="Search Available Client" [(ngModel)]="clientSearchTerm">
+                            </li>
+                            <ng-container *ngIf="isClientsAvailable">
+                                <li *ngFor="let client of clients.value | objectFilter: clientSearchTerm; let index = index;" 
+                                    [ngClass]="{ 'bg-color-light': ((index % 2) == 0) }"
+                                    class="list-group-item hstack align-items-center justify-content-between">
+                                    <div class="small">{{ client.name }}</div>
+                                    <pq-button buttonStyle="link_dark" buttonContentClass="small hstack align-items-center" buttonClass="py-0">
+                                        <span class="material-symbols-rounded opacity-40 hover-opacity-1 cursor-pointer">add_circle</span>
+                                    </pq-button>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="nav nav-underline justify-content-start">
+                        <li class="nav-item disabled">
+                            <a class="nav-link py-0 fw-500">
+                                <span>Mapped Client ({{ filterMappedClients.length }})</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="border rounded" style="max-height: 400px; overflow-y: auto;">
+                        <ul class="list-group list-group-flush">
+                            <li class="sticky-top top-0 z-2 list-group-item p-0" [ngClass]="{ 'disabled': filterMappedClients.length < 0 }">
+                                <input type="text" class="form-control border-0 small" placeholder="Search Mapped Client" [(ngModel)]="mappedClientSearchTerm">
+                            </li>
+                            <ng-container *ngIf="filterMappedClients.length > 0">
+                                <li *ngFor="let client of filterMappedClients | objectFilter: mappedClientSearchTerm; let index = index;" 
+                                    [ngClass]="{ 'bg-color-light': ((index % 2) == 0) }"
+                                    class="list-group-item hstack align-items-center justify-content-between">
+                                    <div class="small">{{ client.name }}</div>
+                                    <pq-button buttonStyle="link_dark" buttonContentClass="small hstack align-items-center" buttonClass="py-0">
+                                        <span class="material-symbols-rounded opacity-40 hover-opacity-1 cursor-pointer">backspace</span>
+                                    </pq-button>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</section>

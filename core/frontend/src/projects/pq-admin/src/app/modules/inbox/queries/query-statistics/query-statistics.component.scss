@@ -1,0 +1,71 @@
+.query-count-card-wrapper {
+    &.closed { 
+        .query-count-card {
+            border-bottom-color: var(--success-color) !important; 
+        }
+    }
+
+    &.draft { 
+        .query-count-card {
+            border-bottom-color: var(--bs-warning) !important; 
+        }
+    }
+    &.draft_rejected { 
+        .query-count-card {
+            border-bottom-color: var(--danger-color) !important; 
+        }
+    }
+    &.open { 
+        .query-count-card {
+            border-bottom-color: var(--warning-color) !important; 
+        }
+    }
+    &.resolved { 
+        .query-count-card {
+            border-bottom-color: var(--success-color) !important; 
+        }
+    }
+    &.responded { 
+        .query-count-card {
+            border-bottom-color: var(--bs-info) !important; 
+        }
+    }
+    
+    &[class^="5"] { 
+        .query-count-card {
+            border-bottom-color: var(--info-color) !important; 
+        }
+    }
+    &[class^="<"] { 
+        .query-count-card {
+            border-bottom-color: var(--warning-color) !important; 
+        }
+    }
+    &[class^=">"] { 
+        .query-count-card {
+            border-bottom-color: var(--danger-color) !important; 
+        }
+    }
+
+    &.high { 
+        .query-count-card {
+            border-bottom-color: var(--danger-color) !important; 
+        }
+    }
+    &.low { 
+        .query-count-card {
+            border-bottom-color: var(--info-color) !important; 
+        }
+    }
+    &.medium { 
+        .query-count-card {
+            border-bottom-color: var(--warning-color) !important; 
+        }
+    }
+    &.normal { 
+        .query-count-card {
+            border-bottom-color: transparent !important; 
+        }
+    }
+
+}

@@ -1,0 +1,26 @@
+#reportformrow {
+    * {
+        transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+    }
+
+    #validationcolumn {
+
+        &.main {
+            transform: translateX(-50%);
+            left: 50%;
+            position: absolute;
+        }
+    }
+
+    #formcolumn {
+        transform: translateX(0%);
+        opacity: 1;
+
+        &.hide {
+            transform: translateX(100%);
+            opacity: 0 !important;
+        }
+    }
+}

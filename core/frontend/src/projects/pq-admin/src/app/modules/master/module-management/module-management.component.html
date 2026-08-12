@@ -1,0 +1,68 @@
+<div >
+    <ul class="nav nav-underline justify-content-center">
+        <li class="nav-item cursor-pointer" (click)="isAddNewModule = false;">
+            <a class="nav-link py-0 fw-500" [ngClass]="{ 'active': !isAddNewModule }">Available</a>
+        </li>
+        <li class="nav-item cursor-pointer" (click)="isAddNewModule = true;">
+            <a class="nav-link py-0 fw-500" [ngClass]="{ 'active': isAddNewModule }">Add Module</a>
+        </li>
+    </ul>
+    <div class="border-top border-2 border-color-primary rounded-2">
+        <div class="sticky-top border-bottom border-start border-end bg-white z-1">
+            <div class="input-group border-0">
+                <span class="input-group-text border-0 bg-transparent ps-1 pe-0">
+                    <span class="material-symbols-rounded">search</span>
+                </span>
+                <input type="text" class="form-control border-0" placeholder="Search module"
+                    [(ngModel)]="moduleSearchTerm">
+                <button [ngClass]="{ 'pe-none opacity-50': !moduleSearchTerm }"
+                    data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-title="Reset Search" class="btn hstack border-0"
+                    (click)="moduleSearchTerm = '';">
+                    <span class="material-symbols-rounded">backspace</span>
+                </button>
+            </div>
+        </div>
+        <div class="border-start border-end border-bottom rounded-bottom-2 small-scroll-container overflow-x-hidden">
+            <div *ngIf="isAddNewModule" class="px-3 py-2">
+                <div>
+                    <pq-textbox type="text" placeholder="Module Name"
+                        [textBoxContent]="module.title" (outputValue)="module.title = $event;"></pq-textbox>
+                </div>
+                <div style="vertical-align: middle;">{{ module.title.split(' ').join('_').toLowerCase() }}</div>
+                <div>
+                    <pq-dropdown [text]="module.portal | titlecase" dropDownType="simple" 
+                        [setOptionAsText]="true" [options]="['Admin', 'Client']" [selectedOption]="'0'"
+                        (outputValue)="module.portal = $event"></pq-dropdown>
+                </div>
+                <div>
+                    <pq-textbox type="text" placeholder="Description"
+                        [textBoxContent]="module.description" (outputValue)="module.description = $event"></pq-textbox>
+                </div>
+                <div style="vertical-align: top;">
+                    <pq-button (clickEvent)="addModule()"
+                        [isDisabled]="!module.title">Add Module</pq-button>
+                </div>
+            </div>
+        
+            <div *ngIf="!isAddNewModule">
+                <ng-container *ngIf="modules.length > 0">
+                    <ul class="list-group list-group-flush">
+                        <li 
+                            *ngFor="let m of modules | objectFilter: moduleSearchTerm; let index = index;" 
+                            class="list-group-item cursor-pointer" [ngClass]="{ 'active': selectedModule.code === m.code }"
+                            (click)="selectModule(m)">
+                            <div>{{ m.title }}</div>
+                            <div class="small">{{ m.portal }}</div>
+                        </li>
+                    </ul>
+                </ng-container>
+                <ng-container *ngIf="(isModulesLoaded && (modules.length <= 0))">
+                    <div class="small disabled text-center p-3 shadow-input-1 bg-light rounded">
+                        No modules have been added yet
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

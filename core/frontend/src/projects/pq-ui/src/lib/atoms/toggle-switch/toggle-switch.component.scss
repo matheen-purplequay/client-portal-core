@@ -1,0 +1,104 @@
+$background-color_1: #e6e6e6;
+$background-color_2: #fff;
+$background-color_3: #4BD763;
+
+.form-switch {
+	display: inline-block;
+	cursor: pointer;
+	padding-top: 3px;
+	-webkit-tap-highlight-color: transparent;
+	i {
+		position: relative;
+		display: inline-block;
+		margin-right: .5rem;
+		padding-left: 5px;
+		width: 46px;
+		height: 27px;
+		border-bottom: 1px solid transparent;
+		background: linear-gradient(133deg,rgba(var(--dark-color-rgb),.4),rgba(var(--dark-color-rgb),.2));
+		border-radius: 23px;
+		vertical-align: text-bottom;
+		transition: all 0.3s linear;
+		&::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			width: 42px;
+			height: 22px;
+			background-color: transparent;
+			border-radius: 11px;
+			transform: translate3d(2px, 2px, 0) scale3d(1, 1, 1);
+			transition: all 0.25s linear;
+		}
+		&::after {
+			content: "OFF";
+			position: absolute;
+			left: 1px;
+			width: 22px;
+			height: 22px;
+			background-color: $background-color_2;
+			border-radius: 11px;
+			box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.66);
+			transform: translate3d(2px, 2px, 0);
+			transition: all 0.2s ease-in-out;
+			font-size: 0.6rem;
+			color: rgba(0,0,0,.2);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 1rem;
+
+			&.hide-toggle-text {
+				content: "" !important;
+			}
+		}
+	}
+	&:active {
+		i {
+			&::after {
+				width: 28px;
+				color: rgba(0,0,0,0.2);
+				transform: translate3d(2px, 2px, 0);
+			}
+		}
+		input {
+			&:checked+i {
+				&::after {
+					transform: translate3d(16px, 2px, 0);
+				}
+			}
+		}
+	}
+	input {
+		display: none;
+		&:checked + i {
+			&.toggle-button-default {
+				background: linear-gradient(133deg, rgba(var(--success-color-rgb), .7), rgba(var(--success-color-rgb), .5));
+			}
+			&.toggle-button-primary {
+				background: linear-gradient(133deg, rgba(var(--primary-color-rgb), .9), rgba(var(--primary-color-rgb), .7));
+			}
+			box-shadow: var(--shadow-inset-2);
+			border-bottom: 1px solid white;
+			&::before {
+				transform: translate3d(18px, 2px, 0) scale3d(0, 0, 0);
+			}
+			&::after {
+				content: "ON" !important;
+				transform: translate3d(20px, 2px, 0);
+			}
+			&.hide-toggle-text::after {
+				content: "" !important;
+				transform: translate3d(20px, 2px, 0);
+			}
+			&.toggle-button-default::after {
+				color: rgba(var(--success-color-rgb), 0.5);
+			}
+			&.toggle-button-primary::after {
+				color: rgba(var(--primary-color-rgb), 0.5);
+			}
+		}
+	}
+}

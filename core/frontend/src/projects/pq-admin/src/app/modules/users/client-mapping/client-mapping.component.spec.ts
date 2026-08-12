@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ClientMappingComponent } from './client-mapping.component';
+
+describe('ClientMappingComponent', () => {
+  let component: ClientMappingComponent;
+  let fixture: ComponentFixture<ClientMappingComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ ClientMappingComponent ]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(ClientMappingComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

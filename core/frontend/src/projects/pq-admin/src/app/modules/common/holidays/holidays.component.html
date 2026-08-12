@@ -1,0 +1,211 @@
+<div class="holidays-page">
+
+  <!-- ── Header ─────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <div>
+      <h1>Holidays</h1>
+      <p class="subtitle">Manage public &amp; restricted holidays by country</p>
+    </div>
+    <button class="btn btn-primary" (click)="openCreate()">+ Add Holiday</button>
+  </div>
+
+  <!-- ── Alerts ─────────────────────────────────────────────────── -->
+  <div class="alert alert-success" *ngIf="successMsg">
+    {{ successMsg }}
+    <button class="alert-close" (click)="successMsg = ''">✕</button>
+  </div>
+  <div class="alert alert-error" *ngIf="errorMsg">
+    {{ errorMsg }}
+    <button class="alert-close" (click)="errorMsg = ''">✕</button>
+  </div>
+
+  <!-- ── Filters ────────────────────────────────────────────────── -->
+  <form [formGroup]="filterForm" class="filter-bar">
+    <label>
+      <span>Country</span>
+      <select formControlName="country">
+        <option value="">All</option>
+        <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
+      </select>
+    </label>
+    <label>
+      <span>Year</span>
+      <input type="number" formControlName="year" placeholder="e.g. 2026" min="2000" />
+    </label>
+    <label>
+      <span>Month</span>
+      <select formControlName="month_id">
+        <option value="">All</option>
+        <option *ngFor="let m of months" [value]="m.id">{{ m.name }}</option>
+      </select>
+    </label>
+    <button type="button" class="btn btn-ghost" (click)="filterForm.reset()">Clear</button>
+  </form>
+
+  <!-- ── Loading ────────────────────────────────────────────────── -->
+  <div class="loading-bar" *ngIf="isLoading && !showForm">
+    <div class="loading-inner"></div>
+  </div>
+
+  <!-- ── Table ──────────────────────────────────────────────────── -->
+  <div class="table-wrap" *ngIf="!isLoading || filteredHolidays.length">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>Day</th>
+          <th>Reason</th>
+          <th>Type</th>
+          <th>Country</th>
+          <th>Remarks</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredHolidays.length === 0">
+          <td colspan="8" class="empty-state">No holidays found.</td>
+        </tr>
+        <tr *ngFor="let h of filteredHolidays; trackBy: trackById; let i = index">
+          <td class="id-cell">{{ i + 1 }}</td>
+          <td>
+            <span class="date-badge">{{ h.date }}</span>
+          </td>
+          <td class="day-cell">{{ h.day }}</td>
+          <td><strong>{{ h.reason }}</strong></td>
+          <td>
+            <span class="type-chip" [attr.data-national]="h.type === 'National' || h.type === 'Public'">
+              {{ h.type }}
+            </span>
+          </td>
+          <td>
+            <span class="country-tag">{{ h.iso_country_alpha3_code }}</span>
+          </td>
+          <td class="remarks-cell">{{ h.remarks || '—' }}</td>
+          <td class="actions-cell">
+            <button class="btn btn-sm btn-outline" (click)="openEdit(h)">Edit</button>
+            <button class="btn btn-sm btn-danger-ghost" (click)="confirmDelete(h.id!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-footer">
+      Showing {{ filteredHolidays.length }} of {{ holidays.length }} records
+    </div>
+  </div>
+
+  <!-- ── Form Panel ─────────────────────────────────────────────── -->
+  <div class="form-overlay" *ngIf="showForm" (click)="cancelForm()"></div>
+  <aside class="form-panel" [class.open]="showForm">
+    <div class="panel-loader" *ngIf="isSaving">
+      <div class="loader-box">
+        <span class="spinner spinner-dark"></span>
+        <span>{{ editingId ? 'Updating holiday…' : 'Creating holiday…' }}</span>
+      </div>
+    </div>
+    <div class="panel-header">
+      <h2>{{ editingId ? 'Edit Holiday' : 'New Holiday' }}</h2>
+      <button class="panel-close" (click)="cancelForm()">✕</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()" class="holiday-form" novalidate>
+
+      <!-- Row: Month + Month ID -->
+      <div class="form-row">
+        <div class="field">
+          <label>Month <span class="req">*</span></label>
+          <select formControlName="month_id" [class.error]="isInvalid('month_id')">
+            <option value="">Select month</option>
+            <option *ngFor="let m of months" [value]="m.id">{{ m.name }}</option>
+          </select>
+          <span class="err-msg" *ngIf="isInvalid('month_id')">Required</span>
+        </div>
+        <div class="field">
+          <label>Year <span class="req">*</span></label>
+          <input type="number" formControlName="year" [class.error]="isInvalid('year')"
+                 placeholder="2026" min="2000" />
+          <span class="err-msg" *ngIf="isInvalid('year')">Valid year required</span>
+        </div>
+      </div>
+
+      <!-- Row: Date + Day -->
+      <div class="form-row">
+        <div class="field">
+          <label>Date <span class="req">*</span></label>
+          <input type="text" formControlName="date" [class.error]="isInvalid('date')"
+                 placeholder="e.g. 25 Dec 2026" />
+          <span class="err-msg" *ngIf="isInvalid('date')">Required</span>
+        </div>
+        <div class="field">
+          <label>Day <span class="req">*</span></label>
+          <select formControlName="day" [class.error]="isInvalid('day')">
+            <option value="">Select day</option>
+            <option *ngFor="let d of days" [value]="d">{{ d }}</option>
+          </select>
+          <span class="err-msg" *ngIf="isInvalid('day')">Required</span>
+        </div>
+      </div>
+
+      <!-- Reason -->
+      <div class="field">
+        <label>Reason <span class="req">*</span></label>
+        <input type="text" formControlName="reason" [class.error]="isInvalid('reason')"
+               placeholder="e.g. Christmas Day" />
+        <span class="err-msg" *ngIf="isInvalid('reason')">Required</span>
+      </div>
+
+      <!-- Row: Type + Country -->
+      <div class="form-row">
+        <div class="field">
+          <label>Type <span class="req">*</span></label>
+          <select formControlName="type" [class.error]="isInvalid('type')">
+            <option value="">Select type</option>
+            <option *ngFor="let t of holidayTypes" [value]="t">{{ t }}</option>
+          </select>
+          <span class="err-msg" *ngIf="isInvalid('type')">Required</span>
+        </div>
+        <div class="field">
+          <label>Country (ISO Alpha-3) <span class="req">*</span></label>
+          <select formControlName="iso_country_alpha3_code"
+                  [class.error]="isInvalid('iso_country_alpha3_code')">
+            <option value="">Select country</option>
+            <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
+          </select>
+          <span class="err-msg" *ngIf="isInvalid('iso_country_alpha3_code')">Required</span>
+        </div>
+      </div>
+
+      <!-- Remarks -->
+      <div class="field">
+        <label>Remarks</label>
+        <input type="text" formControlName="remarks"
+               placeholder="Optional notes or regional exceptions" />
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" (click)="cancelForm()" [disabled]="isSaving">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSaving">
+          <span *ngIf="isSaving" class="spinner"></span>
+          {{ editingId ? 'Save Changes' : 'Create Holiday' }}
+        </button>
+      </div>
+    </form>
+  </aside>
+
+  <!-- ── Delete Confirm ─────────────────────────────────────────── -->
+  <div class="confirm-overlay" *ngIf="confirmDeleteId !== null">
+    <div class="confirm-modal">
+      <h3>Delete Holiday</h3>
+      <p>Are you sure you want to delete this record? This cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-ghost" (click)="cancelDelete()" [disabled]="isDeleting">Cancel</button>
+        <button class="btn btn-danger" (click)="deleteConfirmed()" [disabled]="isDeleting">
+          <span *ngIf="isDeleting" class="spinner"></span>
+          {{ isDeleting ? 'Deleting…' : 'Delete' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,45 @@
+<section class="container-fluid px-2" id="queries-container">
+    <div *ngFor="let q of queries; let index = index;" class="row">
+        <div class="col-sm-12 pt-2 pb-1">
+
+            <!-- Query Card Container -->
+            <div class="hstack gap-1 align-items-start p-2 rounded bg-color-light"
+                [ngClass]="{ 'bg-color-primary-lightest': q.queryIndex && query.selectedQuery.query_code == q.query_code }">
+                <!-- Attachment -->
+                <div>
+                    <span *ngIf="q.response_type == 'clarification'" class="material-symbols-outlined">comment</span>
+                    <span *ngIf="q.response_type == 'confirmation'"
+                        class="material-symbols-outlined">question_mark</span>
+                    <span *ngIf="q.response_type == 'document'" class="material-symbols-outlined">attach_file</span>
+                </div>
+
+                <!-- Query Details -->
+                <div class="vstack">
+                    <div class="fw-semibold color-secondary cursor-pointer hover-underline mb-3"
+                        (click)="selectQuery(q);" [innerHTML]="q.query_code + ' - ' + q.title">
+                        {{ q.query_code }} - {{ q.title }}
+                    </div>
+
+                    <!-- Query Meta Data -->
+                    <div class="pe-4">
+                        <app-card-query-meta layout="horizontal" [query]="q"></app-card-query-meta>
+                    </div>
+                    <!-- End of Query Meta Data -->
+
+                    <!-- Query Replies -->
+                    <ng-container *ngIf="query.selectedQuery && q.query_code == query.selectedQuery.query_code">
+                        <div class="vstack gap-2 pe-4">
+                            <app-card-query-replies [query]="query.selectedQuery"></app-card-query-replies>
+                        </div>
+                    </ng-container>
+                    <!-- End of Query Replies -->
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Query Card Container -->
+
+        </div>
+    </div>
+</section>

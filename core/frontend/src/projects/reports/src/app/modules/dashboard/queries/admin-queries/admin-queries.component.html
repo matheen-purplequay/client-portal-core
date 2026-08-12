@@ -1,0 +1,108 @@
+<div id="queries-container">
+    <!-- <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="display-6">No Queries Found</div>
+    </div> -->
+
+    <ng-container>
+        <table class="w-100 tbl-primary">
+            <thead class="bg-color-primary text-light">
+                <th class="px-2 text-light text-center">S.No</th>
+                <th *ngIf="user.role == approverRole" class="text-light">Actions</th>
+                <th class="text-light">Query ID</th>
+                <th class="text-light">Title</th>
+                <th class="text-light">Query</th>
+                <th class="text-light">Raised By</th>
+                <th class="text-light">Raised To</th>
+                <th class="text-light">Category</th>
+                <th class="text-light">Sub Category</th>
+                <th class="text-light">Raised on</th>
+                <th *ngIf="user.role !== approverRole" class="text-light">Last Updated</th>
+                <th class="text-light">Status</th>
+                <th *ngIf="user.role !== approverRole" class="text-light">Closure Date</th>
+                <th class="text-light">Recent Links</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let q of queries; let index = index;">
+                    <tr>
+                        <td class="px-2 text-center">{{ index + 1 }}</td>
+                        <td *ngIf="user.role == approverRole">
+                            <div class="hstack align-items-center">
+                                <pq-button buttonStyle="link"
+                                    buttonContentClass="hstack align-items-center text-success smaller">
+                                    <span class="material-symbols-outlined small">check</span>
+                                    <span>Approve</span>
+                                </pq-button>
+                                <div class="border-start h-100 d-block"></div>
+                                <pq-button buttonStyle="link_danger"
+                                    buttonContentClass="hstack align-items-center smaller">
+                                    <span class="material-symbols-outlined small">close</span>
+                                    <span>Reject</span>
+                                </pq-button>
+                            </div>
+                        </td>
+                        <td>
+                            <pq-button buttonStyle="simple" buttonClass="color-primary" data-bs-toggle="modal"
+                                data-bs-target="#mdlSelectedQuery" (clickEvent)="setSelectedQuery(q);">
+                                {{ q.query_code }}
+                            </pq-button>
+                        </td>
+                        <td>{{ q.title }}</td>
+                        <td>
+                            <div [innerHTML]="q.query"></div>
+                        </td>
+                        <td>{{ q.raised_by_name }}</td>
+                        <td>{{ q.raised_to_name }}</td>
+                        <td>{{ q.category_name }}</td>
+                        <td>{{ q.sub_category_name }}</td>
+                        <td>{{ q.posted_date | date: 'dd-MM-yyyy hh:mm' }}</td>
+                        <td *ngIf="user.role !== approverRole"></td>
+                        <td>{{ q.query_status_name }}</td>
+                        <td *ngIf="user.role !== approverRole"></td>
+                        <td></td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </ng-container>
+</div>
+
+
+<!-- Edit Query Table Popup -->
+<div class="modal fade" id="mdlSelectedQuery" data-bs-backdrop="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-0 bg-transparent pb-0">
+                <div class="hstack gap-2 align-items-center flex-fill">
+                    <span class="material-symbols-outlined">attach_file</span>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ query.selectedQuery.title }}</h1>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="deselectQuery()"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Query Card Container -->
+                <div class="pt-3 px-3 pb-1 rounded-3 border-bottom bg-color-light shadow-input-1 h-100 overflow-y-auto">
+
+                    <!-- Query Details -->
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <!-- Query Meta Data -->
+                            <app-card-query-meta layout="vertical" [query]="query.selectedQuery"></app-card-query-meta>
+                            <!-- End of Query Meta Data -->
+                        </div>
+                        <div class="col-sm-8">
+                            <!-- Query Replies -->
+                            <app-card-query-replies [query]="query.selectedQuery"></app-card-query-replies>
+                            <!-- End of Query Replies -->
+                        </div>
+                    </div>
+                    <!-- End of Query Details -->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Edit Query Table Popup -->

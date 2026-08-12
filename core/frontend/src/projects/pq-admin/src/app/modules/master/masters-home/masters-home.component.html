@@ -1,0 +1,54 @@
+<section class="container-fluid">
+    <div class="row align-items-start">
+        <div class="col-sm-8">
+            <div class="display-6 mb-0">Master Data</div>
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div>
+</section>
+
+<pq-section-card sectionTitle="Master Management" 
+    sectionSubtitle="Manage all masters related to modules here"
+    [showLoading]="isLoadingModules" showLoadingText="Loading modules..."
+    cardClass="shadow-sm" [enableSettings]="false">
+
+    <div body>
+        <div class="row">
+            <div class="col-sm-3">
+                <!-- Modules Management -->
+                <app-module-management (moduleSelected)="selectedModule = $event; getMasterGroupByModule();"></app-module-management>
+            </div>
+        
+            <div class="col-sm-9">
+                <ng-container *ngIf="isMasterGroupsLoaded">
+                    <div>
+                        <div class="h5">{{ selectedModule.title }}</div>
+                    </div>
+
+                    <div>
+                        <div class="hstack gap-2 justify-content-end px-2 py-1 bg-color-light shadow-input-1 border rounded">
+                            <pq-dropdown [text]="filterHomeViews.selectedView.label" dropDownType="advanced"
+                                [options]="filterHomeViews.list" [keys]="filterHomeViews.keys" [selectedOption]="filterHomeViews.selectedView.code"
+                                [setOptionAsText]="true" [hideError]="true" (outputObject)="filterHomeViews.selectedView = $event;"></pq-dropdown>
+                        </div>
+    
+                        <div class="py-3">
+                            <!-- Jobs Management -->
+                            <ng-container *ngIf="filterHomeViews.selectedView.code == 'dashboard_jobs_master'">
+                                <app-jobs-master-management></app-jobs-master-management>
+                            </ng-container>
+                    
+                            <!-- Colors Management -->
+                            <ng-container *ngIf="filterHomeViews.selectedView.code == 'dashboard_colors_master'">
+                                <app-colors-master-management></app-colors-master-management>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-container>
+
+            </div>
+        </div>
+    </div>
+
+</pq-section-card>

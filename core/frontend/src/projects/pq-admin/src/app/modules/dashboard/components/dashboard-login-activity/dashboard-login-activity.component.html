@@ -1,0 +1,80 @@
+<pq-section-card sectionTitle="Client login activities" [fluidContainer]="true"
+    sectionSubtitle="Find recent login activities of client for this month" cardClass="border-0 shadow-sm"
+    cardBodyClass="p-0" cardFooterClass="px-2" [enableSettings]="false" [showLoading]="isGettingLoginActivities" showLoadingText="Fetching client user login activities...">
+
+    <div actions class="hstack gap-2 align-items-center justify-content-end">
+        <pq-simple-tab [tabs]="filterPortalTypes.list" [selectedTab]="filterPortalTypes.selected.index" (tabSelectedEvent)="filterPortalTypes.selected = $event; getClientLoginActivities();"></pq-simple-tab>
+    </div>
+
+    <div body>
+        <ng-container *ngIf="login_activities && login_activities.length > 0">
+            <table class="w-100">
+                <thead>
+                    <th class="text-center">S. No</th>
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th *ngIf="user.role == 'admin'">IP Address</th>
+                    <th>Location</th>
+                    <th>Device</th>
+                    <th>OS</th>
+                    <th>Login Time</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let activity of login_activities | paginate: config; let index = index;">
+                        <td class="text-center">{{ (currentPage > 1)? (currentPage * 10) + (index + 1) : index + 1 }}</td>
+                        <td>
+                            <div>{{ activity.first_name }} {{ activity.last_name }}</div>
+                            <div>{{ activity.email }}</div>
+                        </td>
+                        <td>{{ activity.company_name }}</td>
+                        <td *ngIf="user.role == 'admin'">{{ activity.ip_address }}</td>
+                        <td>
+                            <ng-container *ngIf="activity.location">
+                                {{ getJSONValue(activity.location).countryCode }}
+                            </ng-container>
+                            <ng-container *ngIf="!activity.location">
+                                -
+                            </ng-container>
+                        </td>
+                        <td>
+                            <div class="hstack gap-1 align-items-center">                                
+                                <img [src]="getBrowserLogo(getJSONValue(activity.device_info).browser)" class="image h-24"
+                                    alt="">
+                                {{ getJSONValue(activity.device_info).browser }}
+                            </div>
+                        </td>
+                        <td>{{ getJSONValue(activity.device_info).os }}</td>
+                        <td>
+                            <div class="vstack gap-2 align-items-start lh-1 small">
+                                <div class="hstack align-items-center">
+                                    <span class="material-symbols-rounded small opacity-50">calendar_month</span>
+                                    {{activity.login_timestamp | date: 'dd-MMM-yyyy' }}
+                                </div>
+                                <div class="hstack gap-1 align-items-center">
+                                    <span class="material-symbols-rounded small opacity-50">schedule</span>
+                                    {{activity.login_timestamp | date: 'hh:mm' }}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-container>
+    </div>
+
+    <div footer class="hstack align-items-center justify-content-end">
+        <pq-pagination [config]="config" (pageChanged)="config.currentPage = $event"></pq-pagination>
+        <!-- <nav class="hstack align-items-center justify-content-end">
+            <ul class="pagination mb-0">
+                <ng-container *ngFor="let pg of pagination; let index = index; let first = first; let last = last;" >
+                    <li *ngIf="!first && !last"
+                        class="page-item" [ngClass]="{ 'active': currentPage == toNumber(pg.label) }">
+                        <button class="page-link" 
+                            [innerHTML]="pg.label" (click)="getClientLoginActivities(pg.label)"></button>
+                    </li>
+                </ng-container>
+            </ul>
+        </nav> -->
+    </div>
+
+</pq-section-card>

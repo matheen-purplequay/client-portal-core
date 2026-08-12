@@ -1,0 +1,151 @@
+<section class="container mb-3">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">My Profile</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 offset-md-2">
+
+            <pq-section-card [sectionTitle]="filterTabs.selectedTab.label" cardClass="shadow-sm" [clipContents]="false"
+                [enableSettings]="false" cardHeaderClass="pe-2">
+
+                <div body *ngIf="filterTabs.selectedTab.index === 1">
+                    <div class="row mb-3">
+                        <div class="col-sm-12 text-center">
+                            <div class="vstack gap-1 align-items-center justify-content-center">
+
+                                <img class="image h-128 rounded-pill user-profile-picture cursor-pointer border border-light border-4 shadow"
+                                    [src]="(isCustomPhoto)? croppedImage : (isPhotoLoaded)? profilePicture : emptyProfilePicture"
+                                    alt="user photo"
+                                    (click)="isShowProfilePictureSelector = ((isShowProfilePictureSelector) && (profilePicture == originalProfilePicture))? false : true;"
+                                    (load)="isPhotoLoaded = true;">
+
+                                <div class="small opacity-50 hstack gap-1 align-items-center justify-content-center"
+                                    [ngClass]="{ 'fw-bold': isShowProfilePictureSelector }">
+                                    <span class="material-symbols-rounded small">info</span>
+                                    <span *ngIf="!isShowProfilePictureSelector">Click to change profile picture</span>
+                                    <span *ngIf="isShowProfilePictureSelector">Choose profile image from default list</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="profile-image-picker shadow-input-2 rounded-pill bg-color-light"
+                                [ngClass]="(isShowProfilePictureSelector)? 'show-picker' : ''">
+                                <div
+                                    class="hstack gap-2 justify-content-between align-items-center w-100 position-absolute bottom-0">
+                                    <div class="hstack gap-2 py-2 px-2 align-items-center overflow-auto no-wrap">
+                                        <img *ngFor="let picture of profilePictures"
+                                            class="image h-40 cursor-pointer rounded-pill border border-light border-3 shadow-sm"
+                                            [src]="picture" alt="profile photo list"
+                                            (click)="profilePicture = picture; isCustomPhoto = false;">
+                                        <div class="position-relative cursor-pointer" data-bs-toggle="modal"
+                                            data-bs-target="#mdlcropper">
+                                            <img class="image h-40 cursor-pointer rounded-pill border border-light border-3 shadow-sm"
+                                                [src]="emptyProfilePicture" alt="profile photo list">
+
+                                            <span
+                                                class="material-symbols-rounded position-absolute bottom-0 start-50 color-primary">add_circle</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="pe-2 hstack gap-2 align-items-center">
+                                        <pq-button buttonClass="rounded-pill" [isLoading]="isProfilePictureSaving"
+                                            [isDisabled]="isProfilePictureSaving"
+                                            (clickEvent)="(isCustomPhoto)? saveProfilePhoto() : saveProfilePicture(profilePicture)">Save
+                                            Picture</pq-button>
+
+                                        <pq-button buttonStyle="simple"
+                                            buttonClass="bg-white shadow-sm rounded-pill px-2"
+                                            (clickEvent)="resetProfilePicture()">&times;</pq-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <pq-textbox label="First Name" type="text" [readonly]="true"
+                                [textBoxContent]="user.first_name"></pq-textbox>
+                        </div>
+                        <div class="col-sm-6">
+                            <pq-textbox label="Last Name" type="text" [readonly]="true"
+                                [textBoxContent]="user.last_name"></pq-textbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <pq-textbox label="Email Address" type="text" [readonly]="true"
+                                [textBoxContent]="user.email"></pq-textbox>
+                        </div>
+                        <div class="col-sm-6">
+                            <pq-textbox label="Organization" type="text" [readonly]="true"
+                                [textBoxContent]="user.company_name"></pq-textbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-end">
+                            <pq-button buttonStyle="link" [isLoading]="isSendingTestNotification" (clickEvent)="sendTestNotification()">
+                                Send Test Notification
+                            </pq-button>
+                        </div>
+                    </div>
+                    <div class="row d-none">
+                        <div class="col-sm-6">
+                            <pq-textbox label="Phone Number" type="phone" [textBoxContent]="user.phone"
+                                (outputValue)="user.phone = $event;"></pq-textbox>
+                        </div>
+                        <div class="col-sm-6">
+                            <pq-textbox label="Location" type="text" [textBoxContent]="user.location"
+                                (outputValue)="user.location = $event;"></pq-textbox>
+                        </div>
+                    </div>
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Image Cropper Modal -->
+<div class="modal fade" style="z-index: 9999;" data-bs-backdrop="false"
+    id="mdlcropper" tabindex="-1">
+    <div class="modal-dialog border-0">
+        <div class="modal-content shadow-lg border-0 rounded bg-color-lighter-2 bg-blur-8">
+            <div class="modal-header border-0 pb-0">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Upload and crop photo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetProfilePicture()"></button>
+            </div>
+            <div class="modal-body">
+                <div [ngClass]="{ 'd-none': showCropper }">
+                    <div class="text-center p-5 border boder-dashed rounded cursor-pointer bg-white shadow-input-1" (click)="inpuserphoto.click()">Upload photo</div>
+                    <input id="inpuserphoto"
+                        #inpuserphoto
+                        class="w-0 h-0 opacity-0 d-none" type="file" accept="image/gif, image/jpeg"
+                        (change)="fileChangeEvent($event)" />
+                </div>
+                <div [ngClass]="{ 'd-none': !showCropper }" class="bg-white rounded shadow-input-1">
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                        [aspectRatio]="1 / 1" format="jpeg" (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded($event)" (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()"></image-cropper>
+                </div>
+            </div>
+            <div class="modal-footer pt-0 border-0 hstack align-items-center justify-content-between">
+                <pq-button buttonStyle="simple" buttonClass="bg-white shadow-sm" buttonContentClass="px-3" (clickEvent)="inpuserphoto.click()">Change Picture</pq-button>
+                <pq-button buttonContentClass="px-4" data-bs-toggle="modal" data-bs-target="#mdlcropper" (clickEvent)="isCustomPhoto = true;">Crop Photo</pq-button>
+            </div>
+        </div>
+    </div>
+</div>

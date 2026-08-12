@@ -1,0 +1,111 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+
+            <pq-section-card sectionTitle="Add to Team" sectionSubtitle="Search for user by email address and add to team"
+                cardClass="shadow-sm" cardBodyClass="pb-0" [showLoading]="isFetchingUsers" showLoadingText="Loading users"
+                [enableSettings]="false" [clipContents]="false" cardFooterClass="p-0">
+
+                <div actions>
+                    <div class="hstack gap-3">
+                        <ng-container *ngIf="teamPermissions.create">
+                            <pq-button (clickEvent)="addToTeam()" 
+                                [isDisabled]="teamsPayload.name == ''"
+                                [isLoading]="isAddingToTeam" [isLoading]="isAddingToTeam">Add to Team</pq-button>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div body>
+                    <div class="hstack gap-3 align-items-end mb-3">
+                        <pq-dropdown label="Users" [setOptionAsText]="true" [text]="selfUsers.selectedUser.name" dropDownType="advanced" [hideError]="true"
+                            [options]="selfUsers.list" [keys]="selfUsers.keys" (outputObject)="setUserToTeam($event)"></pq-dropdown>
+
+                        <div>
+                            <div class="hstack gap-2">
+                                <img class="image h-40 rounded-pill" src="/assets/images/profile_placeholder.png" alt="">
+                                <div class="lh-1">
+                                    <div class="lead">{{ teamsPayload.name }}</div>
+                                    <div>{{ teamsPayload.email }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fetching users from works manager no longer needed
+                        <pq-button buttonStyle="link" (clickEvent)="fetchUserFromWMDB()" [isDisabled]="isFetchingUserFromWM">
+                            <span *ngIf="!isFetchingUserFromWM">Fetch user from Works Manager</span>
+                            <span *ngIf="isFetchingUserFromWM">Fetching user...</span>
+                        </pq-button> -->
+                    </div>
+                    <div *ngIf="teamsPayload.name != ''" class="hstack gap-2 align-items-start flex-wrap">
+
+                        <pq-dropdown label="Roles" [setOptionAsText]="true" 
+                            [text]="roles.selectedRoles.title"
+                            helper="Choose a role"
+                            dropDownType="advanced" [options]="roles.list" [keys]="roles.keys"
+                            (outputObject)="teamsPayload.role_id = $event.id; roles.selectedRoles = $event;"></pq-dropdown>
+
+                        <pq-dropdown label="Verticals" [setOptionAsText]="true" 
+                            [text]="verticals.selectedVertical.title"
+                            helper="Choose a vertical"
+                            dropDownType="advanced" [options]="verticals.list" [keys]="verticals.keys"
+                            (outputObject)="teamsPayload.vertical_id = $event.wm_vertical_id; verticals.selectedVertical = $event;"></pq-dropdown>
+
+                        <pq-textbox label="Order" type="number"
+                            [textBoxContent]="teamsPayload.heirarchy"
+                            (outputValue)="teamsPayload.heirarchy = convertToNumber($event)"></pq-textbox>
+                    </div>
+                </div>
+            </pq-section-card>
+
+            <pq-section-card sectionTitle="Team List"
+                cardClass="shadow-sm"
+                [showLoading]="isTeamUpdating" showLoadingText="Updating team. Please wait..."
+                [enableSettings]="false">
+
+                <div body>
+                    <table *ngIf="teamsData" class="w-100">
+                        <thead>
+                            <th>S.No</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Vertical</th>
+                            <th>Email</th>
+                            <th>Order</th>
+                            <th>Actions</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let td of teamsData; let index = index;">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ td.name }}</td>
+                                <td>{{ td.role.title }}</td>
+                                <td>{{ td.vertical.title }}</td>
+                                <td>{{ td.email }}</td>
+                                <td>{{ td.heirarchy }}</td>
+                                <td>
+                                    <div class="hstack gap-2 align-items-center">
+                                        <ng-container *ngIf="td.status == 'active'">
+                                            <pq-button buttonStyle="link" buttonContentClass="text-danger" (clickEvent)="toggleTeamMemberStatus(td.id)">
+                                                <span class="material-symbols-rounded">visibility_off</span>
+                                            </pq-button>
+                                        </ng-container>
+                                        <ng-container *ngIf="td.status == 'inactive'">
+                                            <pq-button buttonStyle="link" buttonContentClass="text-success" (clickEvent)="toggleTeamMemberStatus(td.id)">
+                                                <span class="material-symbols-rounded">visibility</span>
+                                            </pq-button>
+                                            <pq-button buttonStyle="link" (clickEvent)="deleteTeamMember(td.id)">
+                                                <span class="material-symbols-rounded">delete_forever</span>
+                                            </pq-button>
+                                        </ng-container>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,37 @@
+<section class="container-fluid mb-3 mt-5">
+    <div class="row">
+        <div class="col-sm-6 text-start">
+            <div class="display-6 mb-0">System</div>
+        </div>
+        <div class="col-sm-6 text-end">
+            <div class="hstack gap-2 align-items-center justify-content-end">
+                <pq-button
+                    buttonContentClass="hstack gap-1 align-items-center fw-500" (clickEvent)="appSystemHealth.getSystemHealth()">
+                        <span class="material-symbols-rounded">refresh</span>
+                        <span>Refresh</span>
+                </pq-button>
+
+                <div [ngClass]="{ 'disabled': (isChangingAppStatus || !app) }">
+                    <div *ngIf="user.role == 'admin'" class="px-2 py-2 rounded cursor-pointer"
+                        [ngClass]="(isUnderMaintenance)? 'is-under-maintenance text-dark fw-700 shadow-input-2' : 'bg-white shadow-sm'"
+                        (click)="setUnderMaintenance();">
+                        <div class="rounded overflow-hidden" [ngClass]="(isUnderMaintenance)? 'bg-color-lightest bg-blur-8 text-danger' : ''">
+                            <div class="px-1 rounded" [ngClass]="(isUnderMaintenance)? 'bg-color-lightest bg-blur-8 text-danger' : ''">
+                                <span *ngIf="isUnderMaintenance" class="hstack gap-2 align-items-center">
+                                    <span class="material-symbols-rounded small">warning</span>
+                                    <span>Turn OFF Maintenance Mode</span>
+                                </span>
+                                <span *ngIf="!isUnderMaintenance" class="hstack gap-2 align-items-center">
+                                    <span class="material-symbols-rounded small">construction</span>
+                                    <span>Turn ON Maintenance Mode</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-system-health #appSystemHealth></app-system-health>

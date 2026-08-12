@@ -1,0 +1,72 @@
+[
+    {
+        "client_id": "217",   
+        "name": "June 1st Week Report",   
+        "pages": "12",
+        "month": "June",
+        "year": "2023",
+        "client_director": "Prasoon",
+        "team_lead": "Kavitha K",
+        "file": "217/weekly/1/weekly-29.09.2023.xlsx"
+    },
+    {
+        "client_id": "205",   
+        "name": "August 06-08-2023 Report",   
+        "pages": "1",
+        "month": "June",
+        "year": "2023",
+        "client_director": "Prasoon",
+        "team_lead": "Sundar / Yathish",
+        "file": "205/weekly/0/Weekly_06-08-2023.xlsx"
+    },
+    {
+        "client_id": "205",   
+        "name": "August 13-08-2023 1st Week Report",   
+        "pages": "1",
+        "month": "June",
+        "year": "2023",
+        "client_director": "Prasoon",
+        "team_lead": "Sundar / Yathish",
+        "file": "205/weekly/0/Weekly_13-08-2023.xlsx"
+    },
+    {
+        "client_id": "205",   
+        "name": "August 21-8-2023 Report",   
+        "pages": "1",
+        "month": "August",
+        "year": "2023",
+        "client_director": "Prasoon",
+        "team_lead": "Sundar / Yathish",
+        "file": "205/weekly/0/Weekly_21-08-2023.xlsx"
+    },
+    {
+        "client_id": "205",   
+        "name": "September 10-09-2023 Report",   
+        "pages": "1",
+        "month": "June",
+        "year": "2023",
+        "client_director": "Prasoon",
+        "team_lead": "Sundar / Yathish",
+        "file": "205/weekly/0/Weekly_10-09-2023.xlsx"
+    },
+    {
+        "client_id": "205",   
+        "name": "September 17-09-2023 Week Report",   
+        "pages": "1",
+        "month": "September",
+        "year": "2023",
+        "client_director": "Prasoon",
+        "team_lead": "Sundar / Yathish",
+        "file": "205/weekly/0/Weekly_17-09-2023.xlsx"
+    },
+    {
+        "client_id": "205",   
+        "name": "October 02-10-2023 Report",   
+        "pages": "1",
+        "month": "June",
+        "year": "2023",
+        "client_director": "Prasoon",
+        "team_lead": "Sundar / Yathish",
+        "file": "205/weekly/0/Weekly_02-10-2023.xlsx"
+    }
+]

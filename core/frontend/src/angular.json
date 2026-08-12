@@ -1,0 +1,418 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "pq-ui": {
+      "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/pq-ui",
+      "sourceRoot": "projects/pq-ui/src",
+      "prefix": "pq",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/pq-ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/pq-ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/pq-ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/pq-ui/src/test.ts",
+            "tsConfig": "projects/pq-ui/tsconfig.spec.json",
+            "karmaConfig": "projects/pq-ui/karma.conf.js"
+          }
+        }
+      }
+    },
+    "reports": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/reports",
+      "sourceRoot": "projects/reports/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/reports",
+            "outputHashing": "all",
+            "index": "projects/reports/src/index.html",
+            "main": "projects/reports/src/main.ts",
+            "polyfills": "projects/reports/src/polyfills.ts",
+            "tsConfig": "projects/reports/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/reports/src/favicon.ico",
+              "projects/reports/src/assets",
+              "projects/reports/src/firebase-messaging-sw.js",
+              {
+                "glob": "**/*",
+                "input": "dist/pq-ui",
+                "output": "assets"
+              },
+              {
+                "glob": "web.config",
+                "input": "src",
+                "output": ""
+              },
+              "projects/reports/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/reports/src/styles.scss",
+              "projects/pq-ui/styles/index.scss"
+            ],
+            "scripts": [
+              "node_modules/pusher-js/dist/web/pusher.min.js"
+            ],
+            "serviceWorker": true,
+            "ngswConfigPath": "projects/reports/ngsw-config.json"
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "4mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/reports/src/environments/environment.ts",
+                  "with": "projects/reports/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "staging": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "4mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/reports/src/environments/environment.ts",
+                  "with": "projects/reports/src/environments/environment.staging.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "reports:build:production"
+            },
+            "staging": {
+              "browserTarget": "reports:build:staging"
+            },
+            "development": {
+              "browserTarget": "reports:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "reports:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/reports/src/test.ts",
+            "polyfills": "projects/reports/src/polyfills.ts",
+            "tsConfig": "projects/reports/tsconfig.spec.json",
+            "karmaConfig": "projects/reports/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/reports/src/favicon.ico",
+              "projects/reports/src/assets",
+              "projects/reports/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/reports/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "pq-admin": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/pq-admin",
+      "sourceRoot": "projects/pq-admin/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/pq-admin",
+            "outputHashing": "all",
+            "index": "projects/pq-admin/src/index.html",
+            "main": "projects/pq-admin/src/main.ts",
+            "polyfills": "projects/pq-admin/src/polyfills.ts",
+            "tsConfig": "projects/pq-admin/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/pq-admin/src/favicon.ico",
+              "projects/pq-admin/src/assets",
+              "projects/pq-admin/src/firebase-messaging-sw.js",
+              {
+                "glob": "**/*",
+                "input": "dist/pq-ui",
+                "output": "assets"
+              },
+              {
+                "glob": "web.config",
+                "input": "src",
+                "output": ""
+              },
+              "projects/pq-admin/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "projects/pq-admin/src/styles.scss",
+              "projects/pq-ui/styles/index.scss"
+            ],
+            "scripts": [
+              "node_modules/@popperjs/core/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ],
+            "serviceWorker": true,
+            "ngswConfigPath": "projects/pq-admin/ngsw-config.json"
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4mb",
+                  "maximumError": "7mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2mb",
+                  "maximumError": "4mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/pq-admin/src/environments/environment.ts",
+                  "with": "projects/pq-admin/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "pq-admin:build:production"
+            },
+            "development": {
+              "browserTarget": "pq-admin:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "pq-admin:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/pq-admin/src/test.ts",
+            "polyfills": "projects/pq-admin/src/polyfills.ts",
+            "tsConfig": "projects/pq-admin/tsconfig.spec.json",
+            "karmaConfig": "projects/pq-admin/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/pq-admin/src/favicon.ico",
+              "projects/pq-admin/src/assets",
+              "projects/pq-admin/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "projects/pq-admin/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "cp-inbox": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/cp-inbox",
+      "sourceRoot": "projects/cp-inbox/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/cp-inbox",
+            "index": "projects/cp-inbox/src/index.html",
+            "main": "projects/cp-inbox/src/main.ts",
+            "polyfills": "projects/cp-inbox/src/polyfills.ts",
+            "tsConfig": "projects/cp-inbox/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/cp-inbox/src/favicon.ico",
+              "projects/cp-inbox/src/assets",
+              {
+                "glob": "**/*",
+                "input": "dist/pq-ui",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "projects/cp-inbox/src/styles.scss",
+              "projects/pq-ui/styles/index.scss",
+              "node_modules/@ionic/core/css/ionic.bundle.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1024kb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2mb",
+                  "maximumError": "4mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/cp-inbox/src/environments/environment.ts",
+                  "with": "projects/cp-inbox/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "cp-inbox:build:production"
+            },
+            "development": {
+              "browserTarget": "cp-inbox:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "cp-inbox:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/cp-inbox/src/test.ts",
+            "polyfills": "projects/cp-inbox/src/polyfills.ts",
+            "tsConfig": "projects/cp-inbox/tsconfig.spec.json",
+            "karmaConfig": "projects/cp-inbox/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/cp-inbox/src/favicon.ico",
+              "projects/cp-inbox/src/assets"
+            ],
+            "styles": [
+              "projects/cp-inbox/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

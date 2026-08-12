@@ -1,0 +1,88 @@
+<section class="container mb-3 py-4">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">FAQ</div>
+
+                <!-- <pq-simple-tab [tabs]="aboutTabs.tabs" containerClass="shadow-sm bg-white" labelClass="px-4"
+                    tabName="dashboard-type" [selectedTab]="aboutTabs.selectedTab.index"
+                    (tabSelectedEvent)="handleTabChange($event)"></pq-simple-tab> -->
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<section *ngIf="aboutTabs.selectedTab.index == 0" class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10 offset-sm-1">
+                <div class="accordion accordion-flush shadow-sm rounded overflow-hidden" id="aboutAccordion">
+                    <ng-container *ngFor="let ab of about; let index = index;">
+                        <div *ngIf="company_id != 6 && ab.code != 'dashboard_neo'" class="accordion-item border-0">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button hstack gap-3 lead" type="button" data-bs-toggle="collapse"
+                                    [ngClass]="(index != 0)? 'collapsed' : ''"
+                                    [attr.data-bs-target]="'#flush-accordion-' + index" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    <span class="material-symbols-rounded color-primary">{{ ab.icon }}</span> <span [innerHTML]="ab.title"></span>
+                                </button>
+                            </h2>
+                            <div [attr.id]="'flush-accordion-' + index" class="accordion-collapse collapse"
+                                [ngClass]="(index != 0)? '' : 'show'"
+                                data-bs-parent="#aboutAccordion">
+                                <div class="accordion-body">
+                                    <div class="fw-normal py-2" [innerHTML]="ab.text"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="company_id == 6 && ab.code != 'dashboard'" class="accordion-item border-0">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button hstack gap-3 lead" type="button" data-bs-toggle="collapse"
+                                    [ngClass]="(ab.code != 'dashboard_neo')? 'collapsed' : ''"
+                                    [attr.data-bs-target]="'#flush-accordion-' + index" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    <span class="material-symbols-rounded color-primary">{{ ab.icon }}</span> <span [innerHTML]="ab.title"></span>
+                                </button>
+                            </h2>
+                            <div [attr.id]="'flush-accordion-' + index" class="accordion-collapse collapse"
+                                [ngClass]="(ab.code == 'dashboard_neo')? 'show' : ''"
+                                data-bs-parent="#aboutAccordion">
+                                <div class="accordion-body">
+                                    <div class="fw-normal py-2" [innerHTML]="ab.text"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section *ngIf="aboutTabs.selectedTab.index == 1" class="container">
+    <div class="row">
+        <div class="col-sm-10 offset-sm-1">
+            <div class="row">
+                <div class="col-sm-4">
+                    <pq-dropdown label="Vertical" [text]="verticals.selectedVertical.name" [setOptionAsText]="true" dropDownType="advanced"
+                        [options]="verticals.list" [keys]="verticals.keys"
+                        [selectedOption]="verticals.selectedVertical.index.toString()"
+                        (outputObject)="getSelectedVertical($event)"></pq-dropdown>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-12">
+                    <app-html-frame *ngIf="htmlTemplate" [htmlTemplate]="htmlTemplate"></app-html-frame>
+                    <div *ngIf="!htmlTemplate"
+                        class="text-center p-4 disabled hstack gap-2 justify-content-center bg-white rounded shadow-sm">
+                        <span>No details available. </span>
+                        <span *ngIf="!selectedVertical">Choose a vertical to show details</span>
+                        <span *ngIf="selectedVertical">Try a different vertical to show details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

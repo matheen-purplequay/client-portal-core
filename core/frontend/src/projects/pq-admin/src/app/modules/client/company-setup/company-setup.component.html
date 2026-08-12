@@ -1,0 +1,301 @@
+<!-- Showing loading details -->
+<ng-container *ngIf="isFetchingClient">
+    <app-simple-loading-text containerClass="mt-3 border" loadingStyle="light">
+        Loading company details. Please wait...
+    </app-simple-loading-text>
+</ng-container>
+
+<!-- Showing company details -->
+<div *ngIf="!isFetchingClient" class="container mt-1 z-1">
+    <div class="row">
+        <div class="col-sm-12 position-relative">
+            <div class="hstack gap-2 align-items-center justify-content-end pb-1">
+                <div *ngIf="!doesClientExists"
+                    class="hstack gap-1 align-items-center px-2 bg-danger text-light rounded-1">
+                    <span class="material-symbols-rounded small">warning</span>
+                    <span>Not Synced</span>
+                </div>
+                <div *ngIf="!engagementVertical || engagementVertical.length <= 0"
+                    class="hstack gap-1 align-items-center px-2 bg-warning text-dark rounded-1">
+                    <span class="material-symbols-rounded small">warning</span>
+                    <span>No Verticals Added</span>
+                </div>
+                <div *ngIf="companyServices && companyServices.length > 0" class="hstack gap-2 align-items-center">
+                    <div 
+                        class="hstack gap-1 align-items-center bg-transparent text-success rounded-1">
+                        <span class="material-symbols-rounded small">verified_user</span>
+                        <span>Last synced {{ existingCompany.updated_at | date: 'd-MMM-Y' }}</span>
+                    </div>
+                    <div>
+                        <pq-button buttonStyle="link" buttonClass="py-0" buttonContentClass="small"
+                            (clickEvent)="syncCompanyDetails()">Sync Now</pq-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="!isLoading">
+        <ng-container *ngIf="filterViews1.selectedView.index == views1.Setup.index">
+
+            <!-- Basic Details -->
+            <div class="row mt-1">
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <div class="lead fw-400">Basic Details</div>
+                        <div class="smaller disabled">Choose industry type and parent company</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <pq-dropdown label="Choose Industry Type" dropDownType="advanced" [setOptionAsText]="true"
+                        class="disabled" [hideError]="true" [keys]="industryType.keys"
+                        [text]="industryType.selectedIndustryType.label" [options]="industryType.list"
+                        (outputObject)="handleIndutryType($event)"></pq-dropdown>
+                </div>
+                <div class="col-sm-6">
+                    <pq-dropdown label="In Contract With" dropDownType="advanced" [setOptionAsText]="true"
+                        [text]="masterCompany.selectedCompanyType.label" [hideError]="true" 
+                        [keys]="masterCompany.keys" [text]="masterCompany.selectedCompanyType.label"
+                        [selectedOption]="masterCompany.selectedCompanyType.index.toString()"
+                        [options]="masterCompany.list" (outputObject)="handleCompany($event)"></pq-dropdown>
+                </div>
+            </div>
+
+            <!-- Dashboards -->
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <div class="lead fw-400">Dashboards</div>
+                        <div class="smaller disabled">Choose dashboards available to this client</div>
+                    </div>
+                    <div class="hstack gap-2 flex-wrap align-items-start">
+                        <div *ngFor="let dashboard of dashboardType.list"
+                            class="px-3 py-1 rounded border border-width-3 cursor-pointer"
+                            [ngClass]="(selectedDashboards.includes(dashboard.code.toString()))? 'bg-color-lighter border-color-primary shadow-input-2 trf-pressed-in' : 'bg-color-lightest shadow-sm'"
+                            (click)="handleDashboard(dashboard.code, dashboard.title)">
+                            {{ dashboard.title }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testing Dasboards -->
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <div class="lead fw-400">Testing Dashboards</div>
+                        <div class="smaller disabled">Choose testing dashboards available to this client</div>
+                    </div>
+                    <div class="hstack gap-2 flex-wrap align-items-start">
+                        <div *ngFor="let dashboard of dashboardType.list"
+                            class="px-3 py-1 rounded border border-width-3 cursor-pointer"
+                            [ngClass]="(selectedTestingDashboards.includes(dashboard.code.toString()))? 'bg-color-lighter border-color-primary shadow-input-2 trf-pressed-in' : 'bg-color-lightest shadow-sm'"
+                            (click)="handleTestingDashboard(dashboard.code, dashboard.title)">
+                            {{ dashboard.title }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Engagement Verticals -->
+            <div class="row mt-5" [ngClass]="{ 'disabled': disableDroppingVerticals }">
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <div class="lead fw-400">Engagement - Vertical Relation</div>
+                        <div class="small disabled">Drag and drop verticals to appropriate engagements</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="nav nav-underline justify-content-start">
+                        <li class="nav-item disabled">
+                            <a class="nav-link py-0 fw-500">Available Verticals</a>
+                        </li>
+                    </ul>
+                    <div class="rounded border p-2 bg-light shadow-input-1" style="height: 350px; overflow-y: auto;"
+                        (drop)="removeVerticalFromEngagement($event)" (dragover)="dragOver($event)">
+                        <div *ngFor="let vertical of verticals.list"
+                            class="py-1 px-2 rounded-1 mb-2 bg-white cursor-grab shadow-sm hstack gap-1 align-items-center"
+                            draggable="true" (dragstart)="dragVertical(vertical); toggleDroppingDisable('verticals');">
+                            <span class="material-symbols-rounded small opacity-50">drag_indicator</span>
+                            {{ vertical.title }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="nav nav-underline justify-content-center">
+                        <li *ngFor="let enagement of engagements.list" class="nav-item cursor-pointer"
+                            (click)="engagements.selectedEngagements = enagement; filterEngagementVertical();">
+                            <a class="nav-link py-0 fw-500"
+                                [ngClass]="{ 'active': engagements.selectedEngagements == enagement}">{{ enagement.label
+                                }}</a>
+                        </li>
+                    </ul>
+                    <div class="rounded border-top border-color-primary border-width-3 p-2 bg-light shadow-input-2"
+                        style="height: 350px; overflow-y: auto;"
+                        (drop)="addVerticalToEngagement($event); resetDroppingDisable();" (dragover)="dragOver($event)">
+                        <ng-container *ngIf="!filteredEngagementVertical || filteredEngagementVertical.length <= 0">
+                            <div class="vstack align-items-center justify-content-center p-3 h-100">
+                                <img class="image h-72 opacity-25 mb-3" src="/assets/icons/drag.png" alt="">
+                                <div class="opacity-40 fw-500 small text-center text-shadow">
+                                    Drag and drop verticals from <br>Available Verticals to {{
+                                    engagements.selectedEngagements.label | titlecase }}.
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="filteredEngagementVertical && filteredEngagementVertical.length > 0">
+                            <div *ngFor="let ev of filteredEngagementVertical"
+                                class="px-2 py-1 rounded-1 mb-2 bg-white shadow-sm cursor-grab hstack gap-1 align-items-center"
+                                draggable="true" (dragstart)="dragVertical(ev);">
+                                <span class="material-symbols-rounded small opacity-50">drag_indicator</span>
+                                {{ ev.title }}
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5 mb-3">
+                <div class="col-sm-12">
+                    <div class="border-top py-2"></div>
+                </div>
+            </div>
+
+            <!-- Status Grouping -->
+            <div class="row"
+                *ngIf="(selectedDashboards.includes('0') || selectedDashboards.includes('3')) || selectedTestingDashboards.includes('0') || selectedTestingDashboards.includes('3')">
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <div class="lead fw-400">Job Status</div>
+                        <div class="small disabled hstack gap-1 align-items-center">Click <span
+                                class="material-symbols-rounded small opacity-75">add_circle</span> to add and <span
+                                class="material-symbols-rounded small opacity-75">backspace</span> to remove</div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-12 position-relative">
+
+                        <!-- To show loading while mapping -->
+                        <div *ngIf="isMappingStatus"
+                            class="z-2 rounded px-4 position-absolute top-0 start-0 end-0 bottom-0 bg-color-lighter bg-blur-2 hstack align-items-center justify-content-center">
+                            <app-simple-loading-text loadingStyle="simple_primary">
+                                Mapping job status. Please wait...
+                            </app-simple-loading-text>
+                        </div>
+
+                        <div class="row">
+                            <!-- Primary Job Status -->
+                            <ng-container *ngIf="primaryJobStatus">
+                                <div class="col-sm-6"
+                                    [ngClass]="{ 'disabled': (primaryJobStatus.length <= 0 || isMappingStatus) }">
+                                    <ul class="nav nav-underline justify-content-start">
+                                        <li class="nav-item disabled">
+                                            <a class="nav-link py-0 fw-500">Available Status</a>
+                                        </li>
+                                    </ul>
+                                    <div class="rounded border p-2 bg-light shadow-input-1"
+                                        style="height: 350px; overflow-y: auto;">
+                                        <div *ngFor="let status of primaryJobStatus"
+                                            class="py-1 px-2 rounded-1 mb-2 bg-white shadow-sm hstack gap-1 justify-content-between align-items-center hover-opacity">
+                                            {{ status.Name }}
+                                            <span
+                                                class="material-symbols-rounded opacity-40 hover-opacity-1 cursor-pointer"
+                                                (click)="mapPrimarytoSecondaryStatus(status.Code)">add_circle</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <!-- Secondary Job Status / Client Job Status -->
+                            <ng-container
+                                *ngIf="primaryJobStatus && clientJobStatus && clientJobStatus.selectedJobStatus">
+                                <div class="col-sm-6"
+                                    [ngClass]="{ 'disabled': (clientJobStatus.list.length <= 0 || isMappingStatus) }">
+
+                                    <pq-dropdown label="Client status" [text]="clientJobStatus.selectedJobStatus.Name"
+                                        [options]="clientJobStatus.list" dropDownType="advanced"
+                                        [keys]="clientJobStatus.keys" [setOptionAsText]="true" [hideError]="true"
+                                        (outputObject)="clientJobStatus.selectedJobStatus = $event;"></pq-dropdown>
+
+                                    <div class="rounded border mt-2 p-2 bg-light shadow-input-1"
+                                        style="height: 306px; overflow-y: auto;">
+                                        <div *ngFor="let status of mappedPrimaryJobStatus[clientJobStatus.selectedJobStatus.Code]"
+                                            class="py-1 px-2 rounded-1 mb-2 bg-white shadow-sm hstack gap-1 align-items-center hover-opacity">
+                                            <span
+                                                class="material-symbols-rounded opacity-60 hover-opacity-1 cursor-pointer color-primary"
+                                                (click)="removePrimaryStatusMapping(status.code)">backspace</span>
+                                            {{ status.primarystatus }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Admin View -->
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    <ng-container *ngIf="isAdmin">
+                        <details class="small rounded bg-light overflow-hidden border">
+                            <summary class="border-bottom text-dark fw-500 bg-light p-1 shadow-sm text-center">
+                                System Admin View
+                            </summary>
+                            <div class="p-2" style="max-height: 200px; overflow-y: auto;">
+                                <div class="text-dark border-bottom px-2 py-1">Company Object
+                                </div>
+                                <div class="hstack gap-2 align-items-center flex-wrap py-2">
+                                    <div class="hstack align-items-stretch justify-content-between bg-white rounded text-dark fw-500"
+                                        *ngFor="let item of existingCompany | keyvalue"
+                                        [ngClass]="{ 'opacity-50': !item.value, 'shadow-sm': item.value }">
+                                        <div class="fw-500 px-2">{{ item.key }}</div>
+                                        <div class="border-end"></div>
+                                        <div class="px-2">{{ item.value }}</div>
+                                    </div>
+                                </div>
+                                <div class="text-dark border-bottom px-2 py-1 mt-2">Engagement Verticals Objects</div>
+                                <div class="hstack gap-2 align-items-center flex-wrap py-2"
+                                    *ngIf="companyServices && companyServices.length > 0">
+                                    <div class="hstack align-items-stretch justify-content-between bg-white rounded text-dark fw-500"
+                                        *ngFor="let item of companyServices"
+                                        [ngClass]="{ 'opacity-50': !item, 'shadow-sm': item }">
+                                        <div class="fw-500 px-2">{{ item.id }}</div>
+                                        <div class="border-end"></div>
+                                        <div class="px-2">{{ item.title }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <ng-container *ngIf="isEdited">
+                <div class="row sticky-bottom mt-3 py-2 px-2 bg-blur-10 shadow-sm rounded"
+                    style="background: rgba(var(--warning-color-2-rgb), .5)">
+                    <div class="hstack gap-2 align-items-center justify-content-between">
+                        <div class="vstack">
+                            <div class="lead fw-500 disabled">Changes made</div>
+                            <div class="small disabled">Click Update to save or click Canel to reset</div>
+                        </div>
+                        <div class="hstack gap-2 align-items-center justify-content-between">
+                            <pq-button [isLoading]="isUpdatingClient" buttonContentClass="hstack align-items-center"
+                                (clickEvent)="emitIsEdited(false); getCompany();" buttonStyle="simple">
+                                <span class="material-symbols-rounded">close</span>
+                                Cancel
+                            </pq-button>
+
+                            <pq-button type="button" [isLoading]="isUpdatingClient"
+                                (clickEvent)="updateCompanyDetails()" buttonStyle="primary">
+                                Update Changes
+                            </pq-button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</div>

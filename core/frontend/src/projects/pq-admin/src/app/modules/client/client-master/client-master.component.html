@@ -1,0 +1,16 @@
+<div class="row h-100 body-main-content">
+	<div class="col-sm-3 col-lg-2 h-100 pe-0 sidebar-wrapper" id="sidebarWrapper" #sidebarWrapper>
+		<div class="sticky-top">
+			<app-sidebar></app-sidebar>
+		</div>
+	</div>
+	<div class="col-sm-9 col-lg-10 ps-0 page-main-content">
+		<app-navbar></app-navbar>
+
+		<client-setup [attr.user-data]="userData | json"></client-setup>
+
+
+	</div>
+</div>
+
+<app-floating-support></app-floating-support>

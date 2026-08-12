@@ -1,0 +1,40 @@
+.authentication-container {
+    .bg-white-left-gradient {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background: linear-gradient(to right, #FFF 40%, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+        backdrop-filter: blur(30px);
+    }
+    .card {
+        height: 90vh;
+        width: 100%;
+        border-radius: 25px;
+        overflow: hidden;
+        transform: translateX(35px);
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;        
+
+        .card-img {
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-img-overlay {
+            background: linear-gradient(to top, rgba(0,0,0, 0.6) 1%, transparent, transparent 90%);
+
+            .card-body-content {
+                text-shadow: rgba(0,0,0, 0.4) 0px 2px 5px !important;
+            }
+
+            .badge {
+                padding-top: 7px;
+                background: linear-gradient(to bottom, #000, rgba(0,0,0,0.7));
+                color: #fff;
+                text-shadow: rgba(0,0,0, 0.2) 0px 2px 5px !important;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,97 @@
+[
+    {
+        "title": "Job Status",
+        "id": "job_status",
+        "rules": [
+            { 
+                "id": "show_job_status",
+                "title": "Show Section",
+                "type": "visibility",
+                "target": "section",
+                "value": "1",
+                "values": [
+                    { "0": "Hide" },
+                    { "1": "Show" }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Monthly Productivity",
+        "id": "monthly_productivity",
+        "rules": [
+            { 
+                "id": "show_monthly_productivity_section",
+                "title": "Show Monthly Productivity Section",
+                "type": "visibility",
+                "target": "section",
+                "value": "1",
+                "values": [
+                    { "0": "Hide" },
+                    { "1": "Show" }
+                ]
+            },
+            { 
+                "id": "show_monthly_productivity_chart",
+                "title": "Show Monthly Productivity Chart",
+                "type": "visibility",
+                "target": "block",
+                "value": "1",
+                "values": [
+                    { "0": "Hide" },
+                    { "1": "Show" }
+                ]
+            },
+            { 
+                "id": "show_comparitive_chart",
+                "title": "Show Comparitive Chart",
+                "type": "visibility",
+                "target": "block",
+                "value": "1",
+                "values": [
+                    { "0": "Hide" },
+                    { "1": "Show" }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Budget Vs Actuals",
+        "id": "budget_vs_actuals",
+        "rules": [
+            { 
+                "id": "show_budget_hours_section",
+                "title": "Show Budget Hours Section",
+                "type": "visibility",
+                "target": "section",
+                "value": "1",
+                "values": [
+                    { "0": "Hide" },
+                    { "1": "Show" }
+                ]
+            },
+            { 
+                "id": "show_budget_hours",
+                "title": "Show Budget Hours",
+                "type": "visibility",
+                "target": "table-column",
+                "value": "1",
+                "values": [
+                    { "0": "Hide" },
+                    { "1": "Show" }
+                ]
+            },
+            { 
+                "id": "show_actual_hours",
+                "title": "Show Actual Hours",
+                "type": "visibility",
+                "target": "table-column",
+                "value": "1",
+                "values": [
+                    { "0": "Hide" },
+                    { "1": "Show" }
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,11 @@
+.new-query-modal {
+    .new-query-tab {
+        .title {
+            min-width: 70px;
+            max-width: 90px; 
+            overflow: hidden;
+            text-wrap: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+}

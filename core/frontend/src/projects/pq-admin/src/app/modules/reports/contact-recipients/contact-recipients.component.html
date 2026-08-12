@@ -1,0 +1,37 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+
+            <pq-section-card sectionTitle="Email recipients for contact form in Client Portal"
+                cardClass="shadow-sm"
+                [enableSettings]="false">
+                
+                <div actions>
+                    <div class="hstack gap-2">
+                        <pq-button buttonStyle="outline" (clickEvent)="getRecipients()" [isDisabled]="isRecipientsLoading" [isLoading]="isRecipientsLoading">Refresh Recipients</pq-button>
+                        <pq-button (clickEvent)="saveRecipients()" [isDisabled]="isRecipientsSaving" [isLoading]="isRecipientsSaving">Save Recipients</pq-button>
+                    </div>
+                </div>
+
+                <div body>
+                    <div class="row" [ngClass]="{ 'disabled': isRecipientsLoading }">
+                        <div class="col-sm-6 vstack gap-2">
+                            <pq-textbox label="Email To" helper="Separate emails with comma (,)"
+                                [showAsTextArea]="true"
+                                [textBoxContent]="recipients.email_to"
+                                (outputValue)="recipients.email_to = $event"></pq-textbox>
+                        </div>
+                        <div class="col-sm-6 vstack gap-2">
+                            <pq-textbox label="Email CC" helper="Separate emails with comma (,)"
+                                [showAsTextArea]="true"
+                                [textBoxContent]="recipients.email_cc"
+                                (outputValue)="recipients.email_cc = $event"></pq-textbox>
+                        </div>
+                    </div>
+                </div>
+
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>

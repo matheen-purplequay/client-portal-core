@@ -1,0 +1,6 @@
+<div class="toggle-switch-container" [ngClass]="containerClass">
+    <label class="form-switch px-0" [ngClass]="switchClass">
+        <input type="checkbox" [(ngModel)]="checked" (change)="emitIsChecked()">
+        <i [ngClass]="toggleButtonClass"></i>
+    </label>
+</div>

@@ -1,0 +1,87 @@
+<div class="ticket-container rounded d-none">
+    <div class="ticket-form-trigger-button-container text-end hover-show">
+        <pq-button class="ticket-button" 
+            [ngClass]="(isShowTicketFormContainer)? 'hide': ''"
+            buttonClass="rounded-pill shadow fw-bold"
+            (clickEvent)="isShowTicketFormContainer = true">
+            <i class="fa-solid fa-envelope small"></i>
+            <div class="ps-1 hover-show-content">Support</div>
+        </pq-button>
+    </div>
+
+    <div class="ticket-form-container bg-white rounded overflow-hidden" [ngClass]="(isShowTicketFormContainer)? '': 'hide'">
+        <div class="ticket-form-header shadow-sm hstack gap-2 justify-content-between align-items-center ps-3 pe-2 bg-dark text-light">
+            Support Ticket
+            <div class="hstack align-items-center">
+                <pq-button buttonStyle="link_light" buttonContainerClass="px-1" (clickEvent)="minimizeTicketContainer()">
+                    <i *ngIf="!isTicketFormContainerMinimize" class="fa-solid fa-minus"></i>
+                    <i *ngIf="isTicketFormContainerMinimize" class="fa-regular fa-window-maximize"></i>
+                </pq-button>
+                <pq-button buttonStyle="link_light" (clickEvent)="resetTicketForm()">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </pq-button>
+            </div>
+        </div>
+        <div class="ticket-form-content" [ngClass]="{ 'minimized': isTicketFormContainerMinimize }">
+            <div class="text-center mt-2">
+                <pq-simple-tab [tabs]="filterTabs.tabs" [selectedTab]="filterTabs.selectedTab.index" (tabSelectedEvent)="handleFilterTab($event)"></pq-simple-tab>
+            </div>
+            <div *ngIf="filterTabs.selectedTab.index == tabs.new.index" class="ticker-form-body vstack gap-2">
+                <div class="mh-300 overflow-auto p-3">
+
+                    <pq-dropdown label="Support Type" [text]="supportType.selectedSupportType.value" [setOptionAsText]="true"
+                        dropDownType="advanced" [options]="supportType.list" [keys]="supportType.keys"
+                        [selectedOption]="supportType.selectedSupportType.index.toString()"
+                        (outputObject)="supportType.selectedSupportType = $event"></pq-dropdown>
+
+                    <pq-dropdown *ngIf="supportType.selectedSupportType.index == 2" label="Issue Type" [text]="issues.selectedIssue.value" [setOptionAsText]="true"
+                        dropDownType="advanced" [options]="issues.list" [keys]="issues.keys"
+                        [selectedOption]="issues.selectedIssue.index.toString()"
+                        (outputObject)="issues.selectedIssue = $event"></pq-dropdown>
+
+                    <pq-textbox placeholder="Query" placeholder="Please explain the issue briefly" [showAsTextArea]="true"></pq-textbox>
+                    <div class="opacity-75 small vstack gap-1 bg-light shadow-input-1 px-2 py-1 rounded">
+                        <details>
+                            <summary>
+                                <label><i class='fa-solid fa-circle-info'></i> Additional details will be included</label>
+                            </summary>
+                            <div class="vstack gap-1 py-2 px-3">
+                                <div>
+                                    <label class="small">Account</label>
+                                    {{ user.first_name }} {{ user.last_name }}
+                                </div>
+                                <div>
+                                    <label class="small">Device Type</label>
+                                    {{ deviceType }}
+                                </div>
+                                <div>
+                                    <label class="small">OS & Version</label>
+                                    {{ deviceInfo.os }} {{ (deviceInfo.osVersion != 'unknown')? deviceInfo.osVersion : '' }}
+                                </div>
+                                <div>
+                                    <label class="small">Screen Resolution</label>
+                                    {{ deviceInfo.screen_resolution }}
+                                </div>
+                                <div>
+                                    <label class="small">Browser</label>
+                                    {{ deviceInfo.browser }}
+                                </div>
+                                <div>
+                                    <label class="small">Page link</label>
+                                    {{ currentURL }}
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                <div class="px-3 pb-3">
+                    <pq-button (clickEvent)="isShowTicketFormContainer = false" buttonWidth="full">Send Ticket</pq-button>
+                </div>
+
+            </div>
+            <div *ngIf="filterTabs.selectedTab.index == tabs.tickets.index" class="ticker-form-body p-3">
+                <label>All Tickets</label>
+            </div>
+        </div>
+    </div>
+</div>

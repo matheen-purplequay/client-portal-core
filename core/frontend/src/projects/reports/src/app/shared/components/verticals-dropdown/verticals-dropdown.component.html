@@ -1,0 +1,5 @@
+<pq-dropdown label="Vertical" [text]="(verticalFilters.selectedVertical)? verticalFilters.selectedVertical.name : 'Choose a vertical'" [hideError]="true"
+    [setOptionAsText]="true" [options]="verticalFilters.verticals" dropDownType="advanced"
+    (outputObject)="emitVertical($event)"
+    [keys]="{ key: 'index', value: 'name' }">
+</pq-dropdown>

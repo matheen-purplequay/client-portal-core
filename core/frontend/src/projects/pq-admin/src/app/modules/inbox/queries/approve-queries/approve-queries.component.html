@@ -1,0 +1,266 @@
+<div>
+    <!-- <div *ngIf="jobs.list.length <= 0" class="vstack align-items-center justify-content-center p-5">
+        <span class="material-symbols-outlined fs-1 opacity-50">inbox</span>
+        <div class="opacity-75">No draft queries available</div>
+    </div> -->
+
+    <ng-container>
+        <!-- <ng-container *ngIf="!jobs.isJobSelected">
+            <table class="w-100 tbl-primary">
+                <thead class="bg-color-primary text-light">
+                    <th class="px-2 small fw-400 text-light text-center">S.No</th>
+                    <th class="small fw-400 text-light">Job ID</th>
+                    <th class="small fw-400 text-light">Job Name</th>
+                    <th class="small fw-400 text-light text-center">Total Queries</th>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let job of jobs.list; let index = index;">
+                        <tr (click)="setSelectedJob(job.job_id)" class="cursor-pointer">
+                            <td class="px-2 text-center">{{ index + 1 }}</td>
+                            <td>{{ job.job_id }}</td>
+                            <td>
+                                <div *ngIf="job.job_name" class="vstack lh-1" style="max-height: 3.0rem; overflow: hidden;">
+                                    <div>{{ job.job_name }}</div>
+                                    <div class="small disabled">{{ job.client_name }}</div>
+                                </div>
+                            </td>
+                            <td class="px-2 text-center">{{ job.total_queries }}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </ng-container> -->
+        <ng-container>
+            <table class="w-100 tbl-primary">
+                <thead class="bg-color-primary text-light">
+                    <th class="px-2 text-center">
+                        <input type="checkbox" (change)="toggleSelectAll($event)" />
+                    </th>
+                    <th class="px-2 small fw-400 text-light text-center">S.No</th>
+                    <th class="small fw-400 text-light">Query ID</th>
+                    <!-- <th class="small fw-400 text-light">Client</th> -->
+                    <th class="small fw-400 text-light">Job</th>
+                    <th class="small fw-400 text-light">Title</th>
+                    <th class="small fw-400 text-light">Query</th>
+                    <th class="small fw-400 text-light">Raised By</th>
+                    <th class="small fw-400 text-light">Raised To</th>
+                    <th class="small fw-400 text-light">Category</th>
+                    <th class="small fw-400 text-light">Sub Category</th>
+                    <th class="small fw-400 text-light">Raised on</th>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let q of queries | paginate: config; let index = index;">
+                        <tr>
+                            <td class="px-2 text-center">
+                                <input type="checkbox" [(ngModel)]="q.selected" />
+                            </td>
+                            <td class="px-2 text-center">{{ index + 1 }}</td>
+                            <td>
+                                <pq-button buttonStyle="simple" buttonClass="color-primary" data-bs-toggle="modal"
+                                    data-bs-target="#mdlSelectedQuery" (clickEvent)="setSelectedQuery(q);">
+                                    {{ q.query_code }}
+                                </pq-button>
+                            </td>
+                            <!-- <td>
+                                <div *ngIf="q.client_name" style="max-height: 2.5rem; overflow: hidden;">
+                                    {{ q.client_name }}
+                                </div>
+                            </td> -->
+                            <td>
+                                <div *ngIf="q.job_name" class="vstack lh-1" style="max-height: 3.0rem; overflow: hidden;">
+                                    <div>{{ q.job_name }}</div>
+                                    <div class="small disabled">{{ q.job_id }}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="max-height: 2.7rem; overflow: hidden;">
+                                    {{ q.title }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="max-height: 2.7rem; overflow: hidden;">
+                                    <div [innerHTML]="q.query"></div>
+                                </div>
+                            </td>
+                            <td>{{ q.raised_by_name }}</td>
+                            <td>{{ q.raised_to_name }}</td>
+                            <td>{{ q.category_name }}</td>
+                            <td>{{ q.sub_category_name }}</td>
+                            <td>
+                                <div class="vstack lh-1 small">
+                                    <div>{{ q.posted_date | date: 'dd-MM-yyyy' }}</div>
+                                    <div>{{ q.posted_date | date: 'hh:mm' }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </ng-container>
+    </ng-container>
+
+    <div class="p-2 hstack align-items-center justify-content-end">
+        <pq-pagination [config]="config" (pageChanged)="config.currentPage = $event"></pq-pagination>
+    </div>
+</div>
+
+
+<!-- Edit Query Table Popup -->
+<div class="modal" id="mdlSelectedQuery" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg bg-white">
+            <div class="modal-header border-0 bg-transparent pb-0 align-items-start">
+                <div class="hstack gap-2 align-items-start flex-fill">
+                    <span class="material-symbols-outlined mt-1">attach_file</span>
+                    <div class="vstack lh-1">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ query.selectedQuery.title }}</h1>
+                        <div class="hstack gap-2 align-items-center">
+                            <div
+                                class="small fw-semibold badge bg-light border text-dark rounded-pill hstack gap-2 align-items-center">
+                                <span class="disabled">Query Code </span>
+                                <span class="disabled border-start">&nbsp;</span>
+                                <span class="disabled">{{ query.selectedQuery.query_code }}</span>
+                                <span class="material-symbols-outlined cursor-pointer small"
+                                    (click)="copyMessage(query.selectedQuery.query_code);">content_copy</span>
+                            </div>
+                            <div
+                                class="small fw-semibold badge bg-light border text-dark rounded-pill hstack gap-2 align-items-center">
+                                <span class="disabled">Job {{ query.selectedQuery.job_id }}</span>
+                                <span class="disabled border-start">&nbsp;</span>
+                                <span class="disabled">{{ query.selectedQuery.job_name }}</span>
+                                <span class="material-symbols-outlined cursor-pointer small"
+                                    (click)="copyMessage(query.selectedQuery.job_name);">content_copy</span>
+                            </div>
+                            <div *ngIf="query.selectedQuery.client_name"
+                                class="small fw-semibold badge bg-light border text-dark rounded-pill hstack gap-2 align-items-center">
+                                <span class="disabled">Client {{ query.selectedQuery.client_name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="deselectQuery();"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Query Card Container -->
+                <div class="pt-3 px-3 pb-1 rounded-3 border-bottom bg-color-light shadow-input-2 h-100 overflow-y-auto">
+
+                    <!-- Query Details -->
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <!-- Query Meta Data -->
+                            <app-card-query-meta layout="vertical" [query]="query.selectedQuery"></app-card-query-meta>
+                            <!-- End of Query Meta Data -->
+                        </div>
+                        <div class="col-sm-8 py-3">
+                            <div class="hstack gap-2 align-items-center justify-content-between mb-3">
+                                <pq-button *ngIf="!isEditMode" buttonStyle="simple" buttonClass="text-uppercase"
+                                    buttonContentClass="hstack gap-2 align-items-center"
+                                    (clickEvent)="isEditMode = true; showRejectReason = false;">
+                                    <span class="material-symbols-outlined">edit</span>
+                                    Edit Query
+                                </pq-button>
+
+                                <ng-container *ngIf="isEditMode">
+                                    <pq-button buttonClass="bg-white color-primary rounded-3 text-uppercase"
+                                        buttonContentClass="hstack gap-2 align-items-center"
+                                        (clickEvent)="query.selectedQuery = originalQuery; isEditMode = false; isQueryModified = false;">
+                                        <span class="material-symbols-outlined">close</span>
+                                        Cancel & Reset
+                                    </pq-button>
+
+                                    <pq-button buttonClass="bg-color-success text-light rounded-3 text-uppercase"
+                                        buttonContentClass="hstack gap-2 align-items-center" (clickEvent)="saveQuery()">
+                                        <span class="material-symbols-outlined">save</span>
+                                        Save Query
+                                    </pq-button>
+                                </ng-container>
+                            </div>
+                            <app-card-query-replies [query]="query.selectedQuery" [isEditMode]="isEditMode"
+                                [hideReplies]="true" (typed)="isQueryModified = true;"
+                                (queryEdited)="onQueryEdited($event)"></app-card-query-replies>
+                            <ng-container *ngIf="!queryApprovedOrRejected">
+                                <div class="animate-sizing smooth"
+                                    [ngClass]="(showRejectReason)? 'h-0 opacity-0 overflow-hidden' : 'h-auto opacity-100'">
+                                    <div *ngIf="isQueryModified" class="vstack gap-2 py-3">
+                                        <pq-textbox id="editedReasonInput" label="Why query has been modified?"
+                                            labelClass="badge bg-warning text-dark d-inline-flex rounded mb-2 font-bold"
+                                            helper="Provide a clear and concise explanation for why query has been modified."
+                                            [required]="true" [textBoxContent]="draftQueryRequest.edited_reason"
+                                            (outputValue)="draftQueryRequest.edited_reason = $event;"></pq-textbox>
+                                    </div>
+                                    <div class="hstack gap-3 justify-content-between align-items-center mt-3 py-2">
+                                        <ng-container *ngIf="!isEditMode">
+                                            <pq-button buttonStyle="simple"
+                                                buttonClass="bg-color-danger text-light shadow rounded-3 text-uppercase"
+                                                buttonContentClass="hstack gap-2 align-items-center px-4 py-1"
+                                                (clickEvent)="showRejectReason = true; resetSelectedQuery();">
+                                                <span class="material-symbols-outlined">block</span>
+                                                <span>{{ (isQueryModified)? 'Reset & Delete' : 'Delete' }}</span>
+                                            </pq-button>
+
+                                            <pq-button buttonStyle="simple"
+                                                buttonClass="bg-color-success text-light shadow rounded-3 text-uppercase"
+                                                buttonContentClass="hstack gap-2 align-items-center px-4 py-1"
+                                                (clickEvent)="approveQuery()">
+                                                <span class="material-symbols-outlined">verified</span>
+                                                <span>Approve</span>
+                                            </pq-button>
+                                        </ng-container>
+                                    </div>
+
+                                </div>
+                                <div class="animate-sizing smooth"
+                                    [ngClass]="(!showRejectReason)? 'h-0 opacity-0 overflow-hidden' : 'h-auto opacity-100'">
+                                    <div class="vstack gap-2 py-3">
+                                        <pq-textbox label="Need a reason to reject" labelClass="text-danger font-bold"
+                                            helper="Provide a clear and concise explanation for why the request is being rejected."
+                                            [required]="true" [textBoxContent]="draftQueryRequest.reject_reason"
+                                            (outputValue)="draftQueryRequest.reject_reason = $event;"></pq-textbox>
+                                        <div class="hstack gap-3 justify-content-end">
+                                            <pq-button buttonStyle="simple" buttonClass="bg-white shadow-sm"
+                                                buttonContentClass="hstack align-items-center"
+                                                (clickEvent)="showRejectReason = false;">
+                                                <span class="material-symbols-outlined">close</span>
+                                                Cancel
+                                            </pq-button>
+                                            <pq-button buttonStyle="simple"
+                                                buttonClass="bg-color-danger text-light shadow-lg"
+                                                (clickEvent)="rejectQuery()">Delete</pq-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="queryApprovedOrRejected">
+                                <div class="p-2">
+                                    <div class="vstack align-items-center justify-content-center">
+                                        <ng-container *ngIf="draftQueryRequest.status_id == 2">
+                                            <span class="material-symbols-outlined fs-1 text-success">verified</span>
+                                            <h3 class="text-success">Query Approved</h3>
+                                        </ng-container>
+                                        <ng-container *ngIf="draftQueryRequest.status_id == 5">
+                                            <span class="material-symbols-outlined fs-1 text-danger">block</span>
+                                            <h3 class="text-danger">Query Rejected</h3>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="draftQueryRequest.status_id != 2 && draftQueryRequest.status_id != 5">
+                                            <span class="material-symbols-outlined fs-1 text-dark">thumb_up</span>
+                                            <h3 class="text-dark">Query Updated</h3>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <!-- End of Query Details -->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Edit Query Table Popup -->

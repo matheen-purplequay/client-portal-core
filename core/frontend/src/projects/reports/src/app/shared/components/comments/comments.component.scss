@@ -1,0 +1,35 @@
+.comments-main-container {
+    
+    .comment-header {
+        z-index: 999;
+        top: 40px;
+    }
+
+    .comments-wrapper {
+        .comments-container {            
+            .user-name {
+                color: rgba(0,0,0,0.7);
+            }
+        }
+    
+        .comments-input-container {
+            position: sticky;
+            bottom: 0;
+        }
+    }
+}
+
+
+.comments {
+    min-height: 300px;
+    overflow-y: auto;
+    max-height: 100%;
+
+    .comment_user {        
+        border-bottom: 1px solid var(--primary-color);
+    }
+    
+    .comment_owner {
+        border-bottom: 1px solid var(--light-color);
+    }
+}

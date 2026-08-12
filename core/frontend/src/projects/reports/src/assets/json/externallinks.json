@@ -1,0 +1,18 @@
+{
+    "cs": {
+        "code": "cs",
+        "title": "Carisma Solutions",
+        "description": "",
+        "url": "https://www.carisma-solutions.com.au",
+        "logo": "/assets/brand/cs_logo.png",
+        "square_logo": "/assets/brand/CSBrandmark.png"
+    },
+    "pq": {
+        "code": "pq",
+        "title": "PurpleQuay",
+        "description": "",
+        "url": "https://purplequay.com.au",
+        "logo": "/assets/brand/pq_logo.png",
+        "square_logo": "/assets/brand/PQBrandmark.png"
+    }
+}

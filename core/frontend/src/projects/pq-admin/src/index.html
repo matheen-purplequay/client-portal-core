@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Admin Portal for Client Portal</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/assets/icons/CSBrandmark.png">
+  <link rel="favicon" type="image/x-icon" href="/assets/icons/CSBrandmark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="theme-color" content="#f8f9fa">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@100;200;300;400;500;600;700;900&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"/>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,200,1,0"/> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --header-height: 62px;
+
+      /* Colors */
+      --light-color: #F5F5F5;
+      --light-color-rgb: 245, 245, 245;
+      --dark-color: #43425D;
+      --dark-color-rgb: 67, 66, 93;
+      --darker-color: #272636;
+      --darker-color-rgb: 39, 38, 54;
+      --darkest-color: #1b1a27;
+      --darkest-color-rgb: 27, 26, 39;
+      --light-grey-color: #F0F0F7;
+      --white-color: #FFFFFF;
+      --white-color-rgb: 255, 255, 255;
+      --black-color: #000000;
+      --black-color-rgb: 0, 0, 0;
+      --light-green-color: #D7E7FF;
+      --warning-color-2: #fffd6e;
+      --warning-color-2-rgb: 255, 253, 110;
+      
+      /* Status Colors */
+      --awaiting: #FFA600;
+      --closed: #FF562F;
+      --hold: #37CB89;
+      --inprogress: #2FC1FF;
+
+      /* Shadows */
+      --text-shadow-small: 0 .125rem .25rem rgba(var(--dark-color), .075);
+      --text-shadow: 0 .5rem 1rem rgba(var(--dark-color), .15);
+      --text-shadow-large: 0 1rem 3rem rgba(var(--dark-color), .175);
+
+      /* Bootstrap Variables */
+      --bs-btn-close-color: #f00 !important;
+
+      /* Sidebar */
+      --sidebar-collapsed-width: 70px;
+      --sidebar-width: 230px;
+
+    }
+  </style>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1976d2">
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    import '@material/web/all.js';
+    import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
+
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+  </script>
+
+    <script
+      src="https://www.dropbox.com/static/api/2/dropins.js"
+      id="dropboxjs"
+      data-app-key="qqfs19iiljke43i">
+    </script>
+</head>
+
+<body>
+  <app-root></app-root>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script> -->
+  <script src="https://kit.fontawesome.com/4d763511d2.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <!-- <script src="http://172.16.16.105:9000/embed.js" crossorigin="anonymous"></script> -->
+
+  <script src="assets/bs-dashboard/polyfills.js" type="module"></script>
+
+  <!-- <script src="assets/widgets//dp-dash-queries/assets/query-widget.js" type="module"></script> -->
+  <script src="https://deliveryportal-tools.purplequay.com/dm-queries/assets/query-widget.js" type="module"></script>
+
+  <script src="https://deliveryportal-tools.purplequay.com/dm-client-setup/assets/client-setup-widget.js" type="module"></script>
+  
+
+
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+<!-- Job Rating -->
+<div *ngIf="isRatingLoading" class="position-absolute top-0 start-0 end-0 bottom-0 hstack align-items-center justify-content-center">
+    <pq-simple-horizontal-loading loadingText="Getting rating details..."></pq-simple-horizontal-loading>
+</div>
+<div *ngIf="!isRatingLoading" class="container pt-5 pb-5">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+            <div>
+                <h4>Rate this job</h4>
+                <div class="small disabled">Rating a job would help us serve you better.</div>
+            </div>
+            <section>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12 vstack gap-2">
+                                <!-- Rating stars -->
+                                <label class="text-dark">Choose rating for each category</label>
+                                <ul class="list-group bg-white shadow-input-1 z-1">
+                                    <li class="list-group-item bg-transparent">
+                                        <div class="hstack gap-4 align-items-center justify-content-between">
+                                            <div class="h6 mb-0">Quality</div>
+                                            <div class="hstack gap-1 align-items-center color-gold z-2">
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.quality= 1; calculateAverageRating();"
+                                                    [innerHTML]="(rating.quality >= 1)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.quality= 2; calculateAverageRating();"
+                                                    [innerHTML]="(rating.quality >= 2)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.quality= 3; calculateAverageRating();"
+                                                    [innerHTML]="(rating.quality >= 3)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.quality= 4; calculateAverageRating();"
+                                                    [innerHTML]="(rating.quality >= 4)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.quality= 5; calculateAverageRating();"
+                                                    [innerHTML]="(rating.quality == 5)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bg-transparent">
+                                        <div class="hstack gap-4 align-items-center justify-content-between">
+                                            <div class="h6 mb-0">Presentation</div>
+                                            <div class="hstack gap-1 align-items-center color-gold z-2">
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.presentation= 1; calculateAverageRating();"
+                                                    [innerHTML]="(rating.presentation >= 1)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.presentation= 2; calculateAverageRating();"
+                                                    [innerHTML]="(rating.presentation >= 2)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.presentation= 3; calculateAverageRating();"
+                                                    [innerHTML]="(rating.presentation >= 3)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.presentation= 4; calculateAverageRating();"
+                                                    [innerHTML]="(rating.presentation >= 4)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer"
+                                                    (click)="rating.presentation= 5; calculateAverageRating();"
+                                                    [innerHTML]="(rating.presentation == 5)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bg-transparent">
+                                        <div class="hstack gap-4 align-items-center justify-content-between">
+                                            <div class="h6 mb-0">Turnaround Time</div>
+                                            <div class="hstack gap-1 align-items-center color-gold z-2">
+                                                <div class="cursor-pointer" (click)="rating.tat = 1; calculateAverageRating();"
+                                                    [innerHTML]="(rating.tat >= 1)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer" (click)="rating.tat = 2; calculateAverageRating();"
+                                                    [innerHTML]="(rating.tat >= 2)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer" (click)="rating.tat = 3; calculateAverageRating();"
+                                                    [innerHTML]="(rating.tat >= 3)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer" (click)="rating.tat = 4; calculateAverageRating();"
+                                                    [innerHTML]="(rating.tat >= 4)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                                <div class="cursor-pointer" (click)="rating.tat = 5; calculateAverageRating();"
+                                                    [innerHTML]="(rating.tat == 5)? ratingStarFilled : ratingStarUnFilled">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="my-3 opacity-80 hstack gap-1 align-items-center justify-content-between">
+                                    <div class="h4 mb-0 fw-400">Overall Rating</div>
+                                    <div class="h5 hstack gap-1 align-items-center color-gold z-2 mb-0">
+                                        <div [innerHTML]="(rating.average >= 1)? ratingStarFilled : ratingStarUnFilled"></div>
+                                        <div [innerHTML]="(rating.average >= 2)? ratingStarFilled : ratingStarUnFilled"></div>
+                                        <div [innerHTML]="(rating.average >= 3)? ratingStarFilled : ratingStarUnFilled"></div>
+                                        <div [innerHTML]="(rating.average >= 4)? ratingStarFilled : ratingStarUnFilled"></div>
+                                        <div [innerHTML]="(rating.average == 5)? ratingStarFilled : ratingStarUnFilled"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <!-- Get additional details -->
+                                <div class="vstack gap-2">
+                                    <ng-container>
+                                        <div>
+                                            <label class="d-block text-dark" *ngIf="rating.average <= 3">What could be done
+                                                better?</label>
+                                            <label class="d-block text-dark"
+                                                *ngIf="rating.average > 3 && rating.average < 5">What impressed you?</label>
+                                            <label class="d-block text-dark lh-1" *ngIf="rating.average == 5">Your 5-star rating
+                                                means a lot to us. <br>Thank you!</label>
+                                        </div>
+                                        <div>
+                                            <textarea class="form-control small-text-area"></textarea>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="vstack gap-2">
+
+                            <div class="mt-2 hstack gap-2 align-items-center justify-content-between">
+                                <pq-button [ngClass]="(rating.average > 0)? '' : 'disabled'"
+                                    buttonContentClass="px-4" [isLoading]="isSavingRating" (clickEvent)="saveRating()">Save Rating</pq-button>
+                                <pq-button buttonStyle="outline" buttonContentClass="px-4" [isDisabled]="isSavingRating" (clickEvent)="resetRating(); saveRating();">Reset Rating</pq-button>
+                            </div>
+
+                            <div *ngIf="showSuccessAlert" class="z-3 alert alert-success bg-blur-8 text-center py-2 border-0 shadow-lg position-absolute top-0 start-50 translate-middle-x">
+                                Rating posted successfully
+                            </div>
+                            <div *ngIf="showWarningAlert" class="z-3 alert alert-warning bg-blur-8 text-center py-2 border-0 shadow-lg position-absolute top-0 start-50 translate-middle-x">
+                                {{ warningMessage }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="smooth-all position-relative z-0">
+                            <img [ngClass]="(rating.average == 0)? 'show-image' : ''" class="image w-100 review-image"
+                                src="/assets/svg/review.svg" alt="">
+
+                            <img [ngClass]="(rating.average > 0 && rating.average <= 4)? 'show-image' : ''"
+                                class="image w-100 review-image" src="/assets/svg/question.svg" alt="">
+
+                            <img [ngClass]="(rating.average > 4 && rating.average < 5)? 'show-image' : ''"
+                                class="image w-100 review-image" src="/assets/svg/approve.svg" alt="">
+
+                            <img [ngClass]="(rating.average == 5)? 'show-image' : ''" class="image w-100 review-image"
+                                src="/assets/svg/happy.svg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

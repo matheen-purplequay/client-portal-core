@@ -1,0 +1,160 @@
+<ng-container *ngIf="isFetchingClientsUsers">
+    <app-simple-loading-text containerClass="mt-3 border" loadingStyle="light">
+        Fetching user details. Please wait...
+    </app-simple-loading-text>
+</ng-container>
+
+<div *ngIf="!isFetchingClients && !isFetchingClientsUsers" class="row">
+    <div class="col-sm-12">
+
+        <ng-container *ngIf="addNewUser">
+            <div class="bg-color-light py-2 ps-2 pe-3 shadow-input-2     rounded-bottom">
+                <div class="hstack gap-3 align-items-start mb-3">
+                    <img src="/assets/images/profile_placeholder.png" alt="user photo" class="image h-40 mt-1 rounded-pill user-profile-picture">
+                    <div class="vstack">
+                        <pq-textbox type="text" floatingLabel="true" label="Name" [required]="true"
+                            [textBoxContent]="clientUser.first_name + ' ' + clientUser.middle_name + (clientUser.middle_name)? ' ' : '' + clientUser.last_name"
+                            placeholder="Client Name" (outputOnFocusChange)="setName($event)"></pq-textbox>
+    
+                        <pq-textbox type="email" floatingLabel="true" label="Email"
+                            [required]="true" [textBoxContent]="clientUser.email"
+                            (outputValue)="clientUser.email = $event;" (isValid)="isValid = $event;"
+                            (outputOnFocusChange)="checkClientIfExistsWMDB();"></pq-textbox>
+    
+                        <pq-dropdown label="Roles" [setOptionAsText]="true" [hideError]="true"
+                            [text]="(roles.selectedRoles.title)? roles.selectedRoles.title : 'Choose a role'"
+                            dropDownType="advanced" [options]="roles.list" [keys]="roles.keys"
+                            (outputObject)="setRole($event)"></pq-dropdown>
+
+                        </div>
+                    </div>
+                    <div class="my-2">
+                        <div *ngIf="!doesUserExists && !isFetchingUserFromWM" class="border-warning border rounded bg-color-warning text-dark px-3 py-2 hstack gap-1 align-items-start">
+                            <span class="material-symbols-rounded mt-1">person_alert</span>
+                            <div>
+                                <span class="fw-500">User does not exist Works Manager.</span> Please create the user first in WM and then try again in Client Portal.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 ps-0 hstack gap-2 align-items-center justify-content-between">
+                        <pq-button buttonStyle="simple" buttonContentClass="hstack gap-1 align-items-center justify-content-start"
+                            (clickEvent)="addNewUser = false; resetClientUser();">
+                            <span class="material-symbols-rounded small">close</span>
+                            Cancel
+                        </pq-button>
+                        <div [ngClass]="{ 'disabled': !isUserLoaded }">
+                            <pq-button class="{ 'disabled': !doesUserExists }"
+                                [buttonContentClass]="(isFetchingUserFromWM)? 'px-1' : 'px-4'" [isLoading]="isSavingClientUser || isFetchingUserFromWM" 
+                                (clickEvent)="saveAdminAccess()">
+                                <span *ngIf="isFetchingUserFromWM">Checking user</span>
+                                <span *ngIf="!isFetchingUserFromWM && !isUserLoaded">Add User</span>
+                                <span *ngIf="!isFetchingUserFromWM && isUserLoaded">Add User Now</span>
+                            </pq-button>
+                        </div>
+                    </div>
+                </div>
+        </ng-container>
+
+        <ng-container *ngIf="!addNewUser">
+            <div class="container px-2 border-bottom">
+                <div class="row align-items-center py-2">
+                    <div class="col-sm-6">
+                        <div class="input-group rounded-pill bg-color-lighter shadow-input-2 border-bototm">
+                            <span class="input-group-text border-0 bg-transparent ps-1 pe-0 opacity-50">
+                                <span class="material-symbols-rounded">search</span>
+                            </span>
+                            <input type="text" class="form-control border-0 bg-transparent" placeholder="Search users" #inpSearchClientUser
+                                [(ngModel)]="searchTerm">
+                            <button [ngClass]="{ 'pe-none opacity-50': !searchTerm }" data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-title="Reset Search" class="btn hstack border-0" (click)="resetSearch()"><span
+                                    class="material-symbols-rounded">backspace</span></button>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 text-end">
+                        <pq-button [ngClass]="{ 'disabled': addNewUser }" buttonContentClass="hstack gap-2 px-3" (clickEvent)="addNewUser = true;">
+                            <span class="material-symbols-rounded opacity-75">person_add</span>
+                            New User
+                        </pq-button>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <div class="container pb-2">
+            <div class="row mt-3">
+                <!-- User Cards -->
+                <div class="col-sm-12 px-0">
+                    <ng-container *ngIf="!isFetchingClientsUsers">
+                        <div class="vstack gap-2">
+                            <ul class="list-group p-0 list-group-flush">
+                                <li *ngFor="let user of filteredClientUsers; let first = first; let last = last;"
+                                    [ngClass]="(user.isEditMode)? 'bg-color-light shadow-input-1 py-2' : 'bg-white py-1'"
+                                    class="smooth smooth-all list-group-item px-1 pe-2 hstack gap-2 align-items-start">
+                                    <div class="p-2">
+                                        <img src="/assets/images/profile_placeholder.png" alt="user photo" class="image h-76 rounded-circle ">
+                                    </div>
+                                    <ng-container *ngIf="!user.isEditMode">
+                                        <div class="hstack flex-fill">
+                                            <div class="flex-fill px-1" [ngClass]="{ 'opacity-50': !user.is_active}">
+                                                <div class="lead hstack gap-1 align-items-center flex-wrap">
+                                                    <span class="fw-400">{{ user.first_name }}</span>
+                                                    <span class="fw-300">{{ user.last_name }}</span>
+                                                </div>
+                                                <div>
+                                                    <a class="text-decoration-none" href="mailto:{{ user.email }}">{{ user.email }}</a>
+                                                    <div class="small">{{ user.role }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="rounded">
+                                                <div class="border-bottom flex-grow-1">
+                                                    <pq-button buttonStyle="simple" buttonContentClass="hstack">
+                                                        <span class="material-symbols-outlined">info</span>
+                                                    </pq-button>
+                                                </div>
+                                                <div *ngIf="canEdit" class="flex-grow-1">
+                                                    <pq-button buttonStyle="simple" buttonContentClass="hstack" (click)="user.isEditMode = true;">
+                                                        <span class="material-symbols-outlined">edit</span>
+                                                    </pq-button>
+                                                </div>
+                                                <div *ngIf="canDelete" class="flex-grow-1">
+                                                    <pq-button buttonStyle="simple" buttonContentClass="hstack" (click)="removeUser(user)">
+                                                        <span class="material-symbols-outlined">delete</span>
+                                                    </pq-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="user.isEditMode">
+                                        <div class="vstack gap-1" [ngClass]="{ 'disabled': isSavingClientUser }">
+                                            <div class="hstack gap-1 align-items-center">
+                                                <pq-textbox label="First Name" [textBoxContent]="user.first_name" (outputValue)="user.first_name = $event;"></pq-textbox>
+                                                <pq-textbox label="Middle Name" [textBoxContent]="user.middle_name" (outputValue)="user.middle_name = $event;"></pq-textbox>
+                                                <pq-textbox label="Last Name" [textBoxContent]="user.last_name" (outputValue)="user.last_name = $event;"></pq-textbox>
+                                            </div>
+                                            <div>
+                                                <pq-textbox label="Email" [textBoxContent]="user.email" (outputValue)="user.email = $event;"></pq-textbox>
+                                            </div>
+                                            <div class="hstack gap-1 justify-content-between align-items-center">
+                                                <label>Show in user dropdowns</label>
+                                                <pq-toggle-switch [checked]="user.is_active" (isChecked)="user.is_active = $event;"></pq-toggle-switch>
+                                            </div>
+                                            <div class="mt-1 mb-2 hstack gap-1 justify-content-between align-items-center">
+                                                <pq-button [isLoading]="isSavingClientUser" buttonStyle="outline_primary"
+                                                    (clickEvent)="user.isEditMode = false;">Cancel</pq-button>
+                                                <pq-button [isLoading]="isSavingClientUser"
+                                                    (clickEvent)="updateUser(user);">Save User</pq-button>
+                                            </div> 
+                                        </div>
+                                    </ng-container>
+                                </li>
+                            </ul>
+                            <div class="mt-2">
+
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

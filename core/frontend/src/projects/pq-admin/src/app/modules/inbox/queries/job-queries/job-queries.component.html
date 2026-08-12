@@ -1,0 +1,113 @@
+<div>
+    <!-- <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="display-6">No Jobs or Queries Found</div>
+    </div> -->
+
+    <ng-container>
+        <div style="max-height: 550px; overflow-y: auto;">
+            <table class="w-100 tbl-primary tbl-stripped">
+                <thead class="bg-color-primary-lighter shadow-none">
+                    <th class="px-2 text-center">S. No</th>
+                    <th>Name</th>
+                    <th>Client</th>
+                    <th>Vertical</th>
+                    <th>FY</th>
+                    <th>JY</th>
+                    <th>Last Query</th>
+                    <th class="text-center">Total Queries</th>
+                    <th class="text-center">Open</th>
+                    <th class="text-center">Responded</th>
+                    <th class="text-center">Resolved</th>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let jq of jobQueries | paginate: config; let index = index;">
+                        <tr>
+                            <td class="px-2 text-center">{{ config.currentPage * config.itemsPerPage -
+                                config.itemsPerPage + index + 1 }}</td>
+                            <td class="w-200p">
+                                <div class="d-inline-flex w-auto gap-1 align-items-center"
+                                    [ngClass]="{'bg-color-warning text-dark rounded-pill ps-1 pe-1 py-1': jq.sub_query_approval_required > 0}">
+                                    <span *ngIf="jq.sub_query_approval_required > 0" class="hstack material-symbols-outlined">info</span>
+                                    <div *ngIf="jq.total_queries > 0"
+                                        class="cursor-pointer color-primary w-200p truncate pe-3"
+                                        (click)="emitJobSelected(jq)"
+                                        [title]="jq.sub_query_approval_required > 0 ? 'Sub query approval pending for ' + jq.job_name : jq.job_name">
+                                        {{ jq.job_name }}
+                                    </div>
+                                </div>
+                                <div *ngIf="jq.total_queries <= 0" class="w-200p truncate pe-3" [title]="jq.job_name">
+                                    {{ jq.job_name }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="vstack gap-1 lh-1">
+                                    <div>{{ jq.client }}</div>
+                                    <div class="small disabled">{{ jq.sub_client }}</div>
+                                </div>
+                            </td>
+                            <td>{{ jq.vertical_name }}</td>
+                            <td>{{ jq.fy }}</td>
+                            <td>
+                                <div class="vstack gap-1 lh-1">
+                                    <div>{{ jq.jy | date: 'y' }}</div>
+                                    <div class="small disabled">{{ jq.jy | date: 'd-M-y' }}</div>
+                                </div>
+                            </td>
+                            <td class="w-200p">
+                                <ng-container *ngIf="jq.total_queries > 0">
+                                    <div *ngIf="jq.query_code" class="vstack gap-1 lh-1 truncate w-200p cursor-pointer"
+                                        (click)="emitJobSelected(jq)">
+                                        <div class="truncate fw-medium mb-1 color-primary"
+                                            [innerHTML]="jq.query_code + ' - ' + jq.query_title">
+                                        </div>
+                                        <div class="small opacity-50 fw-medium text-dark">{{ jq.query_posted_date |
+                                            date: 'd-M-Y hh:mm a' }}</div>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="jq.total_queries <= 0">
+                                    <pq-button buttonStyle="simple"
+                                        buttonContentClass="bg-color-primary-lightest color-primary pe-2 pt-1 border rounded-pill hstack"
+                                        (clickEvent)="raiseNewQuery(jq)">
+                                        <div class="hstack gap-1 align-items-center opacity-90">
+                                            <span class="material-symbols-outlined">add_circle</span>
+                                            Raise New Query
+                                        </div>
+                                    </pq-button>
+                                </ng-container>
+                            </td>
+                            <td class="text-center">
+                                <div
+                                    class="badge fs-6 fw-400 bg-color-light text-dark rounded-pill d-inline-flex align-items-center justify-content-center">
+                                    <span class="material-symbols-outlined opacity-50">functions</span> {{
+                                    jq.total_queries }}
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div
+                                    class="badge fs-6 fw-400 bg-color-warning-lightest text-dark rounded-pill d-inline-flex align-items-center justify-content-center">
+                                    <span class="material-symbols-outlined opacity-50">timer</span> {{ jq.open }}
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div
+                                    class="badge fs-6 fw-400 bg-color-warning-lightest text-dark rounded-pill d-inline-flex align-items-center justify-content-center">
+                                    <span class="material-symbols-outlined opacity-50">reply</span> {{ jq.responded }}
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div
+                                    class="badge fs-6 fw-400 bg-color-success-light text-success rounded-pill d-inline-flex align-items-center justify-content-center">
+                                    <span class="material-symbols-outlined opacity-50">check</span> {{ jq.resolved }}
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="p-2 hstack align-items-center justify-content-end">
+            <pq-pagination [config]="config" (pageChanged)="config.currentPage = $event"></pq-pagination>
+        </div>
+    </ng-container>
+</div>

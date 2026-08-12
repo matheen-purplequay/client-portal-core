@@ -1,0 +1,39 @@
+.card-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.stepperTabs {
+    * {
+        transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+    }
+
+    overflow-x: hidden;
+
+    .stepperTab {
+        position: absolute;
+        top: 0; 
+        left: 0;
+        bottom: 0;
+        right: 0;
+        opacity: 0;
+        height: 0;
+        
+        &:first-child {
+            transform: translateX(-200%);
+        }
+
+        &:last-child {
+            transform: translateX(200%);
+        }
+
+        &.showTab {
+            transform: translateX(0%);
+            opacity: 1;
+            height: auto !important;
+            interpolate-size: allow-keywords;
+        }
+    }
+}

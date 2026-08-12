@@ -1,0 +1,33 @@
+<div [ngClass]="buttonContainerClass">
+    <button *ngIf="!link" [ngClass]="buttonClass + ' ' + ((isLoading || isDisabled)? 'button-disabled' : '')" (click)="emitClick()">
+        <span class="button-content" [ngClass]="buttonContentClass">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            <ng-container *ngTemplateOutlet="buttontext"></ng-container>
+        </span>
+    </button>
+    <a 
+        *ngIf="link && isExternal" 
+        [ngClass]="buttonClass + ' ' + ((isLoading || isDisabled)? 'button-disabled' : '')"
+        [href]="link"
+        [target]="(isExternal)? '_blank' : null">
+        <span class="button-content" [ngClass]="buttonContentClass">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            <ng-container *ngTemplateOutlet="buttontext"></ng-container>
+        </span>
+    </a>
+    <a 
+        *ngIf="link && !isExternal" 
+        [ngClass]="buttonClass + ' ' + ((isLoading || isDisabled)? 'button-disabled' : '')"
+        [routerLink]="link">
+        <span class="button-content" [ngClass]="buttonContentClass">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            <ng-container *ngTemplateOutlet="buttontext"></ng-container>
+        </span>
+    </a>
+</div>
+
+<ng-template #buttontext>
+    <ng-container *ngIf="!hideContent">
+        <ng-content></ng-content>
+    </ng-container>
+</ng-template>

@@ -1,0 +1,21 @@
+<div body class="disabled hstack gap-2 justify-content-between" role="toolbar">
+    <div class="hstack gap-1">
+        <ng-container *ngIf="job">
+            <div>
+                <div>{{ job.JobName }}</div>
+                <div *ngIf="job.jobid != 0" class="small">Job ID <span class="fw-500">{{ job.jobid }}</span></div>
+            </div>
+        </ng-container>
+        <!-- <label class="small text-end lh-1">Sort comment <br>list by</label>
+        <pq-dropdown [hideError]="true" dropDownType="simple"
+            text="Recent" [setOptionAsText]="true"
+            [options]="['Recent', 'Old']">
+        </pq-dropdown> -->
+    </div>
+    <div class="btn-group" role="group" aria-label="Third group">
+        <button type="button" class="btn text-danger btn-sm opacity-90 hstack gap-1 align-items-center">
+            <span class="material-symbols-rounded">inventory_2</span>
+            Archive
+        </button>
+    </div>
+</div>

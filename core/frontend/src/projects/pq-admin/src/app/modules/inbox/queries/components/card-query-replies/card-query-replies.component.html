@@ -1,0 +1,262 @@
+<section class="vstack gap-2">
+    <div class="query-replies vstack gap-2 align-items-start shadow-sm"
+        [ngClass]="(query.query)? 'bg-white' : 'bg-color-white-lighter opacity-50'">
+        <ng-container *ngIf="!isEditMode">
+            <div class="hstack gap-2 align-items-start p-3">
+                <span class="material-symbols-outlined">description</span>
+                <div>
+                    <div class="small">Description</div>
+                    <div *ngIf="query.query" [innerHTML]="getQueryDescription()"></div>
+                    <div *ngIf="!query.query">No description provided</div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="isEditMode">
+            <ng-container *ngTemplateOutlet="tplDescription"></ng-container>
+        </ng-container>
+
+        <div *ngIf="query.attachments.length > 0"
+            class="border-top flex-fill w-100 px-3 hstack gap-2 align-items-start flex-wrap">
+            <span class="material-symbols-outlined">attach_file</span>
+            <div class="hstack gap-2 align-items-center flex-wrap py-1">
+                <ng-container *ngFor="let attachment of query.attachments; let qa = index;">
+                    <div class="badge bg-color-primary-lightest border rounded-pill px-2 fw-400">
+                        <a class="small color-primary text-decoration-none" target="_blank" [href]="attachment.link">{{
+                            attachment.title }}</a>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="isGettingQueryReplies">
+        <div class="text-center disabled">
+            <app-simple-loading-text>Getting all replies...</app-simple-loading-text>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!isGettingQueryReplies">
+        <div class="query-replies vstack gap-1">
+            <!-- Replies List -->
+            <ng-container *ngFor="let qr of queryReplies; let index = index; let last = last;">
+                <div class="vstack gap-2 align-items-start shadow-sm p-2" 
+                    [ngClass]="(qr.status_code === 'sub_query_draft')? 'bg-color-warning-lightest border-start border-2 border-warning' : 'bg-white'">
+                    <div class="hstack gap-2 align-items-start justify-content-between p-2">
+                        <div class="hstack gap-2 align-items-start">
+                            <span class="material-symbols-outlined">person</span>
+                            <div>
+                                <div class="small">{{ qr.raised_by_name }}</div>
+                                <div *ngIf="qr.response_value" class="fw-semibold" [innerHTML]="qr.response_value">
+                                </div>
+                                <div *ngIf="qr.query" [innerHTML]="qr.query"></div>
+                            </div>
+                        </div>
+                        <div class="small opacity-75">Posted on {{ qr.posted_date | date: 'd-M-yyyy hh:mm a' }}</div>
+                    </div>
+                    <div *ngIf="qr.attachments.length > 0"
+                        class=" flex-fill w-100 px-3 hstack gap-2 align-items-start flex-wrap">
+                        <span class="material-symbols-outlined">attach_file</span>
+                        <div class="hstack gap-2 align-items-center flex-wrap py-1">
+                            <ng-container *ngFor="let attachment of qr.attachments; let qa = index;">
+                                <div class="badge bg-color-primary-lightest border rounded-pill px-2 fw-400">
+                                    <a class="small color-primary text-decoration-none" target="_blank"
+                                        [href]="attachment.link">{{ attachment.title }}</a>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div *ngIf="qr.status_code === 'sub_query_draft'" class="mb-0 ps-3 pe-2 py-2 rounded-pill hstack gap-2 align-items-center justify-content-between">
+                        <div class="hstack gap-2 align-items-center fw-500">
+                            <span class="material-symbols-outlined">info</span>
+                            <div>Sub query needs approval</div>
+                        </div>
+                        <div class="hstack gap-2 align-items-center">
+                            <pq-button buttonStyle="simple" buttonShape="rounded" buttonContentClass="hstack gap-1 align-items-center" (clickEvent)="rejectSubQuery(qr)">
+                                <span class="material-symbols-outlined">delete</span>
+                                Delete
+                            </pq-button>
+                            <pq-button buttonStyle="primary" buttonShape="rounded" buttonContentClass="hstack gap-1 align-items-center"
+                                (clickEvent)="approveSubQuery(qr)"
+                            >
+                                <span class="material-symbols-outlined">verified</span>
+                                Approve
+                            </pq-button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <!-- End of Replies List -->
+
+            <ng-container *ngIf="!hideReplies">
+                <!-- Query Reply Input -->
+                <ng-container *ngIf="!showQueryReply">
+                    <div *ngIf="!isSubQueryNeedApprove" class="py-1 flex-fill hstack gap-2 justify-content-start align-items-center">
+                        <pq-button *ngIf="query.query_status_id != 4"
+                            buttonContentClass="hstack gap-2 align-items-center" (clickEvent)="showQueryReply = true">
+                            <span class="material-symbols-outlined">reply</span>
+                            <span>Reply back</span>
+                        </pq-button>
+
+                        <pq-button *ngIf="query.query_status_id == 3" buttonClass="bg-color-success text-light"
+                            buttonContentClass="hstack gap-2 align-items-center" [isLoading]="isResolvingQuery"
+                            [isDisabled]="isResolvingQuery" (clickEvent)="markAsResolved()">
+                            <span class="material-symbols-outlined">done_all</span>
+                            Mark as Resolved
+                        </pq-button>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="showQueryReply">
+                    <div class="bg-white rounded-bottom shadow-sm px-3 py-1 mb-2 flex-fill vstack gap-2">
+                        <ng-container *ngIf="requiredResponse.type == 'confirmation'">
+                            <div class="vstack gap-1">
+                                <div class="small disabled fw-semibold fst-italic">{{ requiredResponse.description }}
+                                </div>
+                                <div class="hstack gap-2 align-items-center">
+                                    <label>No</label>
+                                    <pq-toggle-switch [hideToggleText]="true"
+                                        [checked]="(requiredResponse.value == 'yes')"
+                                        (isChecked)="requiredResponse.value = ($event)? 'yes' : 'no'"></pq-toggle-switch>
+                                    <label>Yes</label>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="requiredResponse.type == 'clarification'">
+                            <div class="vstack gap-1">
+                                <div class="small disabled fw-semibold fst-italic">{{ requiredResponse.description }}
+                                </div>
+                                <pq-textbox label="Clarification Response" helper="Provide your precise clarification response" [textBoxContent]="requiredResponse.value"
+                                    (outputValue)="requiredResponse.value = $event;"></pq-textbox>
+                                <label>Additional Notes</label>
+                            </div>
+                        </ng-container>
+
+
+                        <ng-container>
+                            <!-- Prioritize Document Before Description -->
+                            <ng-container *ngIf="requiredResponse.type == 'document'">
+                                <!-- Inline Attachment Outlet -->
+                                <ng-container *ngTemplateOutlet="tplAttachments"></ng-container>
+                                <!-- End of Inline Attachment Outlet -->
+
+                                <!-- Description Outlet -->
+                                <ng-container *ngTemplateOutlet="tplDescription"></ng-container>
+                                <!-- End of Description Outlet -->
+                            </ng-container>
+
+                            <!-- Prioritize Description Before Document -->
+                            <ng-container *ngIf="requiredResponse.type != 'document'">
+                                <!-- Description Outlet -->
+                                <ng-container *ngTemplateOutlet="tplDescription"></ng-container>
+                                <!-- End of Description Outlet -->
+
+                                <!-- Inline Attachment Outlet -->
+                                <ng-container *ngTemplateOutlet="tplAttachments"></ng-container>
+                                <!-- End of Inline Attachment Outlet -->
+                            </ng-container>
+                        </ng-container>
+
+                        <!-- HIDDEN FOR NOW -->
+                        <div class="d-none">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" [attr.id]="'chkResponseType'"
+                                    [(ngModel)]="doesReplyQueryRequiresResponse">
+                                <label class="form-check-label" [attr.for]="'chkResponseType'">This reply requires a
+                                    response</label>
+                            </div>
+
+                            <!-- Response Type -->
+                            <div *ngIf="doesReplyQueryRequiresResponse" class="py-2">
+                                <div class="vstack gap-1">
+                                    <label>Recommended response type</label>
+                                    <pq-simple-tab tabStyle="minimal" [tabs]="newQueryResponseType.tabs"
+                                        labelClass="rounded-pill"
+                                        (tabSelectedEvent)="newQueryResponseType.selectedTab = $event; queryReply.response_type = $event.data.code;"></pq-simple-tab>
+                                </div>
+
+                                <div>
+                                    <pq-textbox placeholder="Add description here to tell client why you need this"
+                                        [textBoxContent]="queryReply.response_type_description"
+                                        (outputValue)="queryReply.response_type_description = $event;"></pq-textbox>
+                                </div>
+                            </div>
+                            <!-- End of Response Type -->
+                        </div>
+
+                        <div class="hstack gap-2 justify-content-between align-items-center">
+                            <div [ngClass]="{ 'disabled': !doesReplyQueryRequiresResponse }">
+                            </div>
+                            <pq-button buttonStyle="link" buttonContentClass="hstack gap-1 align-items-center"
+                                [isLoading]="isSendingQueryReply" (clickEvent)="sendReply()">
+                                Send Reply
+                                <span class="material-symbols-outlined">send</span>
+                            </pq-button>
+                        </div>
+                    </div>
+                </ng-container>
+                <!-- End of Query Reply Input -->
+            </ng-container>
+
+
+        </div>
+    </ng-container>
+</section>
+
+
+<!-- Attachment Template -->
+<ng-template #tplAttachments>
+    <div class="flex-fill vstack py-2">
+        <div class="small disabled fw-semibold fst-italic">
+            {{ (requiredResponse.type == 'document')? requiredResponse.description : 'Add additional document links if
+            required' }}
+        </div>
+        <div class="hstack gap-2 align-items-center flex-wrap">
+            <div *ngIf="queryReply.attachments.length > 0 || !queryReply.show_attachment_input"
+                class="hstack gap-2 align-items-center flex-wrap py-1">
+                <div *ngFor="let attachment of queryReply.attachments; let index = index;"
+                    class="badge bg-color-primary-lightest text-dark border-bottom border-color-primary rounded-0 shadow-sm hstack gap-2 align-items-center pe-0 py-0">
+                    <div class="vstack align-items-start attachment-link-badge">
+                        <div class="fw-semibold fs-6">{{ attachment.title }}</div>
+                        <div class="fw-medium fs-normal">{{ attachment.link }}</div>
+                    </div>
+                    <span
+                        class="material-symbols-outlined cursor-pointer fs-5 color-danger h-100 hstack align-items-center border-start"
+                        (click)="removeQueryAttachment(index)">delete</span>
+                </div>
+            </div>
+
+            <ng-container>
+                <div *ngIf="queryReply.attachments.length < maxAttachments && !queryReply.show_attachment_input"
+                    class="cursor-pointer hstack gap-2" (click)="queryReply.show_attachment_input = true;">
+                    <span class="material-symbols-outlined">attach_file</span> Add
+                    Attachment Link
+                </div>
+                <div *ngIf="queryReply.attachments.length >= maxAttachments">
+                    <span class="opacity-50 color-primary hstack gap-2 align-items-center">
+                        <span class="material-symbols-outlined">attach_file_off</span>
+                        You have reached the maximum allowable attachment limit.
+                    </span>
+                </div>
+            </ng-container>
+        </div>
+        <ng-container *ngIf="queryReply.show_attachment_input">
+            <div class="bg-white">
+                <app-inline-attachment (cancelAttachment)="queryReply.show_attachment_input = false;"
+                    (addAttachment)="setNewQueryAttachment($event)"></app-inline-attachment>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+<!-- End of Attachment Template -->
+
+<!-- Description Template -->
+<ng-template #tplDescription>
+    <div class="position-relative">
+        <ckeditor [editor]="Editor" [(ngModel)]="editorData" [config]="queryReplyEditorConfig"
+            (change)="emitModified($event)" (blur)="queryReply.query = editorData">
+        </ckeditor>
+    </div>
+</ng-template>
+<!-- End of Description Template -->

@@ -1,0 +1,148 @@
+<!-- <section class="container">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <div class="hstack gap-2">
+                <pq-button buttonStyle="link" (clickEvent)="goBack()"><i class="fa-solid fa-chevron-left"></i> Go back</pq-button>
+                <div class="h5 mb-0">Upload {{ page | titlecase }} Report</div>
+            </div>
+        </div>
+    </div>
+</section> -->
+ 
+<section class="container-fluid position-relative">
+    <div id="reportformrow" class="row">
+        <div id="validationcolumn" [ngClass]="(isValidationChecklistRead)? 'col-sm-5' : 'main col-sm-5'">
+
+            <!-- Checklist information card -->
+            <pq-section-card *ngIf="client" cardClass="shadow-sm section-card" containerClass="px-0" colClass="px-0" cardBodyClass="pb-0"
+            sectionTitle="<div class='hstack gap-2 align-items-center'><span class='material-symbols-rounded'>warning</span><span>Important Guideline</span></div>"
+            sectionSubtitle="Read the instructions carefully"
+            [fluidContainer]="true"
+            [clipContents]="false" [enableSettings]="false">
+
+                <div body>
+                    <div class="text-center mb-4">
+                        <img class="image h-96" src="/assets/icons/verified_docs.svg" alt="">
+                    </div>
+                    <div class="mb-3">
+                        Please ensure that the following conditions are met before uploading the report. If any of these conditions are not satisfied, the report upload will be unsuccessful:
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item hstack gap-2 align-items-start px-2 py-3">
+                            <span class="material-symbols-outlined">task_alt</span>
+                            <div class="vstack gap-2 align-items-start">
+                                <img class="image h-48" src="/assets/illustrations/client_name_comparision.png" alt="">
+                                <span>The client name in the report must <b>precisely match</b> the selected client name in the Admin Portal.</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item hstack gap-2 align-items-start px-2 py-3">
+                            <span class="material-symbols-outlined">task_alt</span>
+                            <div class="vstack gap-2 align-items-start">
+                                <img class="image h-32" src="/assets/illustrations/month_year.png" alt="">
+                                <span>The appropriate report <b>month and year</b> must be selected.</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item hstack gap-2 align-items-start px-2 py-3">
+                            <span class="material-symbols-outlined">task_alt</span>
+                            <div class="vstack gap-2 align-items-start">
+                                <img class="image h-48" src="/assets/illustrations/report_file.png" alt="">
+                                <span>The report file size <b>should not exceed 5 MB</b> and content must be <b>aligned properly</b>.</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div *ngIf="!isValidationChecklistRead" class="mt-3">
+                        <pq-button buttonWidth="full" (clickEvent)="isValidationChecklistRead = true;">Start Upload</pq-button>
+                    </div>
+                </div>
+            </pq-section-card>
+            
+        </div>
+
+        <div id="formcolumn" [ngClass]="(isValidationChecklistRead)? 'col-sm-7' : 'col-sm-7 hide'">
+
+            <!-- Report upload card -->
+            <pq-section-card *ngIf="client" class="sticky-top" style="top: 70px" cardClass="shadow-sm section-card" containerClass="pe-0" colClass="pe-0"
+                sectionTitle="Upload Report"
+                [fluidContainer]="true"
+                sectionSubtitle="Choose month and click Save to upload the report" 
+                [showLoading]="isCheckingReport"
+                showLoadingText="Checking for valid report..."
+                [clipContents]="false" [enableSettings]="false">
+
+                <div actions class="hstack gap-2 align-items-center">
+                    <!-- <app-slide-button sliderText="Slide to upload"><span class="material-symbols-rounded small mt-1">arrow_forward</span></app-slide-button> -->
+                    
+                    <pq-button [isDisabled]="isUploading || isValidReport != 1" [isLoading]="isUploading" 
+                        (clickEvent)="saveReport()">
+                        <span *ngIf="!isUploading">Save</span><span *ngIf="isUploading">Saving</span> Connect Report
+                    </pq-button>
+
+                    <pq-button buttonStyle="outline" (clickEvent)="dismiss()">
+                        <i class="fa-solid fa-xmark me-1"></i>
+                        Cancel
+                    </pq-button>
+                </div>
+
+                <div body>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="vstack gap-2">
+
+                                <pq-textbox type="text" label="Client Name"
+                                    [readonly]="true"
+                                    [textBoxContent]="client.value.name"></pq-textbox>
+
+                                <div class="hstack gap-2">
+                                    <pq-dropdown label="Month" dropDownType="simple"
+                                        [text]="report.month"
+                                        [options]="period.monthNames" 
+                                        (outputKey)="setMonth($event); isAllFieldsValidated = validateReport();"></pq-dropdown>
+
+                                    <pq-dropdown label="Year" dropDownType="simple"
+                                        [text]="report.year"
+                                        [options]="period.years" 
+                                        [selectedOption]="report.year.toString()"
+                                        (outputValue)="setYear($event); isAllFieldsValidated = validateReport();"></pq-dropdown>
+
+                                    <!-- <pq-textbox type="text" label="Year"
+                                        [readonly]="true"
+                                        [textBoxContent]="period.selctedPeriod.year"
+                                        (outputValue)="setYear($event); isAllFieldsValidated = validateReport();"></pq-textbox> -->
+                                </div>
+
+                                <!-- 
+                                Hidden because not needed
+                                <div class="hstack gap-2 flex-fill w-100">
+                                    <pq-textbox class="flex-fill" type="text" label="Client Director"
+                                        [textBoxContent]="report.client_director"
+                                        (outputValue)="report.client_director = $event"></pq-textbox>
+                                    <pq-textbox class="flex-fill" type="text" label="Team Lead"
+                                        [textBoxContent]="report.team_lead"
+                                        (outputValue)="report.team_lead = $event"></pq-textbox>
+                                </div> 
+                                -->
+
+                                <div class="vstack gap-3 flex-fill w-100">
+                                    <div>
+                                        <label for="formFile" class="form-label">Upload report file</label>
+                                        <input class="form-control" type="file" id="formFile" #fileInput
+                                            [ngClass]="{ 'border-2 border-danger': isValidReport == 0, 'border-2 border-success': isValidReport == 1 }"
+                                            accept="application/pdf"
+                                            (change)="onFileSelected($event, this); isAllFieldsValidated = validateReport();">
+                                    </div>
+                                    <!-- 
+                                    Hidden because not needed
+                                    <pq-textbox type="number" label="Pages"
+                                        [textBoxContent]="report.pages"
+                                        (outputValue)="report.pages = $event"></pq-textbox> -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </pq-section-card>
+
+        </div>
+    </div>
+</section>

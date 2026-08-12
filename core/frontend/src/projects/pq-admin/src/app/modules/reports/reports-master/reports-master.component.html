@@ -1,0 +1,106 @@
+<div class="row h-100 body-main-content">
+	<div class="col-sm-3 col-lg-2 h-100 pe-0 sidebar-wrapper" id="sidebarWrapper" #sidebarWrapper>
+		<div class="sticky-top">
+			<app-sidebar></app-sidebar>
+		</div>
+	</div>
+	<div class="col-sm-9 col-lg-10 ps-0 page-main-content">
+		<app-navbar></app-navbar>
+		<div class="h-100 vstack">
+			<div class="flex-fill py-3">
+				<section class="container-fluid">
+					<div class="row">
+						<div class="col-sm-12 text-start">
+							<div class="display-6 mb-0">Reports</div>
+						</div>
+					</div>
+				</section>
+				<pq-section-card cardClass="shadow-sm section-card" cardBodyClass="pb-0 pt-2"
+					[sectionTitle]="(clients.value.selectedClient.works_manager_client_id == 0)? 'Choose a client' : 'Client Details'"
+					[fluidContainer]="true"
+					[sectionSubtitle]="(clients.value.selectedClient.works_manager_client_id == 0)? 'Choose a client from dropdown to view reports' : 'Use dropdown to change clients'"
+					[clipContents]="false" [enableSettings]="false" [showLoading]="isClientsLoading"
+					showLoadingText="Loading Client Details">
+
+					<div actions class="hstack gap-2 align-items-center">
+						<pq-dropdown [text]="(clients.value.selectedClient.works_manager_client_id != 0)? clients.value.selectedClient.name : 'Choose a client'" [setOptionAsText]="true" dropDownType="advanced"
+							[showSearch]="true" [hideError]="true" [options]="clients.value.companies"
+							[keys]="{ key: 'works_manager_client_id', value: 'name' }"
+							[selectedOption]="clients.value.selectedClient.works_manager_client_id.toString()" [showSearch]="true"
+							(outputObject)="clients.value.selectedClient = $event; setClient($event)"></pq-dropdown>
+						
+						<pq-button buttonStyle="simple" title="Refresh Clients" buttonClass="shadow-sm border" buttonContentClass="hstack" 
+							(clickEvent)="getAllClients()">
+							<span class="material-symbols-rounded">refresh</span>
+						</pq-button>
+					</div>
+
+					<div body>
+						<div *ngIf="clients && clients.value.selectedClient.name"
+							class="row align-items-end">
+							<div class="col-sm-6">
+								<div class="hstack gap-3 align-items-end">
+									<div class="h4 mb-0 bg-color-lighter rounded-pill shadow-input-2 hstack justify-content-center align-items-center"
+										style="height: 45px; width: 45px; border: 1px solid var(--primary-color);">
+										<i class="fa-solid fa-building color-primary"></i>
+									</div>
+									<div class="vstack">
+										<label class="small">Client Name</label>
+										<div class="h5 mb-0">{{ clients.value.selectedClient.name }}</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 text-end">
+								<ng-container *ngIf="isContractLoaded">
+									<pq-simple-tab
+										[tabs]="filterTabs.tabs" containerClass="shadow-sm bg-white" labelClass="px-4" tabName="contract-type"
+										[selectedTab]="filterTabs.selectedTab.index"
+										(tabSelectedEvent)="handleFilterTab($event);">
+									</pq-simple-tab>
+								</ng-container>
+								<ng-container *ngIf="!isContractLoaded">
+									<div class="hstack gap-2 align-items-center justify-content-end">
+										<div class="spinner-border spinner-border-sm color-primary" role="status">
+											<span class="visually-hidden">Loading...</span>
+										</div>
+										<span>Loading contracts...</span>
+									</div>
+								</ng-container>
+							</div>
+						</div>
+					</div>
+				</pq-section-card>
+
+				
+				<ng-container *ngIf="clients.value.selectedClient.works_manager_client_id != 0 && isContractLoaded">
+					<section class="container-fluid">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="pt-3 pb-1">
+									<div class="display-9 fw-medium">{{ filterTabs.selectedTab.label }}</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<!-- Reports List Component -->
+					<app-reports-list *ngIf="filterTabs.selectedTab.index == this.tabs['connect_report'].index" [selectedClient]="selectedClient" [refresh]="refresh" (activityChangedEvent)="activity = $event"></app-reports-list>
+					
+					<!-- Agreed List Component -->
+					<app-agreed-list *ngIf="filterTabs.selectedTab.index == this.tabs['agreed'].index" [selectedClient]="selectedClient" [refresh]="refresh" (activityChangedEvent)="activity = $event"></app-agreed-list>
+
+					<!-- Teams Component
+					<app-teams *ngIf="filterTabs.selectedTab.index == this.tabs['team'].index" [selectedClient]="selectedClient" [refresh]="refresh" (activityChangedEvent)="activity = $event"></app-teams> -->
+
+					<!-- Invoices List Component -->
+					<!-- <app-invoices-list *ngIf="tab == 3" [selectedClient]="selectedClient" [refresh]="refresh" (activityChangedEvent)="activity = $event"></app-invoices-list> -->
+
+					<!-- Contact Recipient List Component -->
+					<!-- <app-contact-recipients *ngIf="filterTabs.selectedTab.index == this.tabs['contact'].index" [selectedClient]="selectedClient" [refresh]="refresh" (activityChangedEvent)="activity = $event"></app-contact-recipients> -->
+				</ng-container>
+			</div>
+		</div>
+	</div>
+</div>
+
+<app-floating-support></app-floating-support>

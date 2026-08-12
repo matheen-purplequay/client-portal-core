@@ -1,0 +1,41 @@
+<router-outlet></router-outlet>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button
+      tab="home"
+      routerLink="/home"
+      routerLinkActive="tab-selected"
+    >
+      <span class="material-symbols-outlined">chat</span>
+      <ion-label>Instructions</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="queries"
+      routerLink="/queries"
+      routerLinkActive="tab-selected"
+    >
+      <span class="material-symbols-outlined">contact_support</span>
+      <ion-label>Queries</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="library"
+      routerLink="/library"
+      routerLinkActive="tab-selected"
+    >
+      <span class="material-symbols-outlined">feedback</span>
+      <ion-label>Feedback</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="search"
+      routerLink="/search"
+      routerLinkActive="tab-selected"
+    >
+      <span class="material-symbols-outlined">account_circle</span>
+      <ion-label>Account</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

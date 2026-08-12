@@ -1,0 +1,62 @@
+<div class="container-fluid container1 authentication-container h-100" style="background: url(/assets/images/login-banner-1.jpg); background-size: cover;">
+    <div class="bg-white-left-gradient"></div>
+    <div class="row h-100 align-items-center">
+        <div class="col-sm-6">
+            <div class="position-relative">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img class="image h-32" [src]="(masterCompany && masterCompany.logo)? masterCompany.logo : fallback_logo" alt="">
+                </div>
+                <div class="display-5 mb-4 text-center">Client Portal</div>
+                <div>
+                    <ng-container *ngIf="activity == activities.login">
+                        <app-login-form (isOTPSent)="email = $event; setActivity(activities.otp)"></app-login-form>
+                    </ng-container>
+                    <ng-container *ngIf="activity == activities.otp">
+                        <app-otp-form (isBackToLogin)="setActivity(activities.login)" [email]="email"></app-otp-form>
+                    </ng-container>
+                </div>
+    
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8 offset-sm-2 mt-4 smaller opacity-75 text-center">
+                            <div class="mb-2 text-center">
+                                <div class="fw-medium">
+                                    For any enquiries contact <br><a class="text-decoration-none br-bottom-dashed-lighter" href="mailto:{{ carismaSupportEmail }}">{{ carismaSupportEmail }}</a>
+                                </div>
+                            </div>
+                            <div class="hstack gap-1 justify-content-between">
+                                <span>&copy; {{ currentYear }} Purple Quay.</span>
+                                <span>All rights reserved.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 h-100 hstack justify-content-end align-items-center position-relative">
+            <div class="card border-0">
+                <!-- <video class="card-img login-banner" loop autoplay="" muted="" preload="auto" poster="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1600" src="https://player.vimeo.com/external/374101467.sd.mp4?s=25a9073f9bc206499ceaffdd6f785dd48d29d27a&profile_id=164&oauth2_token_id=57447761"></video> -->
+                <img class="card-img login-banner" src="/assets/images/login-banner-1.jpg" alt="">
+                <div class="card-img-overlay vstack justify-content-end align-items-start color-light ps-0 pe-5 py-5">
+                    <div class="ps-5">
+                        <div class="display-5 fw-700 card-title ff-garamond opacity-90">
+                            Client Portal
+                        </div>
+                        <div class="fw-medium text-light col-sm-8 card-body-content">
+                            A portal designed to enhance communication and collaboration between clients and us
+                        </div>
+                        <div class="hstack gap-2 flex-wrap mt-2">
+                            <span class="badge rounded-pill px-2 opacity-90 bg-blur-4">Dashboards</span>
+                            <span>&nbsp;&bull;&nbsp;</span>
+                            <span class="badge rounded-pill px-2 opacity-90 bg-blur-4">Reports</span>
+                            <span>&nbsp;&bull;&nbsp;</span>
+                            <span class="badge rounded-pill px-2 opacity-90 bg-blur-4">Newsletters</span>
+                            <span>&nbsp;&bull;&nbsp;</span>
+                            <span class="badge rounded-pill px-2 opacity-90 bg-blur-4">Knowledge Center</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<section>
+    <div class="row">
+        <div class="col-sm-4 offset-sm-8">
+            <pq-dropdown [hideError]="true" [options]="filterColorsView.list" [keys]="filterColorsView.keys"
+                [setOptionAsText]="true" [text]="filterColorsView.selectedView.label"
+                dropDownType="advanced"></pq-dropdown>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="row">
+        <div class="col-sm-12">
+
+            <ng-container *ngIf="filterColorsView.selectedView == colorsViewList.dashboardCharts">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="h6">Dashboard chart colors</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <ul *ngIf="colors" class="list-group">
+                                <li *ngFor="let color of colors" class="list-group-item hstack gap-2 justify-content-between">
+                                    <div>{{ color.title }}</div>
+                                    <input type="color" class="form-control">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+</section>

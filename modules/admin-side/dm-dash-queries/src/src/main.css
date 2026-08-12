@@ -1,0 +1,23 @@
+.list-horizontal-divider {
+   width: 1px;
+   height: 100%;
+   background-image: linear-gradient(to bottom, transparent, #aaa, transparent);
+   display: block;
+}
+
+.list-horizontal-divider-simple {
+    width: 1px;
+    height: 100%;
+    background-color: #aaa;
+    display: block;
+ }
+
+
+.smooth-animation {
+   interpolate-size: allow-keywords;
+ }
+
+ table th {
+   position: sticky;
+   top: 0;
+ }

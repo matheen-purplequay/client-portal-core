@@ -1,0 +1,46 @@
+<div class="container-fluid authentication-container h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-sm-6 h-100 hstack justify-content-end align-items-center">
+            <div class="card border-0">
+                <img class="card-img login-banner" src="/assets/images/login-banner-1.jpg" alt="">
+                <div class="ps-5">
+                    <div class="card-img-overlay vstack justify-content-end align-items-start color-light p-5">
+                        <div class="display-5 shadow-sm fw-700 card-title ff-garamond">
+                            Delivery Manager
+                        </div>
+                        <div class="fw-medium text-light col-sm-8 card-body-content">
+                            A portal designed to manage client's reports, useful tool links and other information helpful to clients.
+                        </div>
+                        <div class="fw-700 hstack gap-2 flex-wrap mt-2">
+                            <span class="badge rounded-pill px-2 text-dark opacity-90 bg-blur-4">Upload</span>
+                            <span>&nbsp;&bull;&nbsp;</span>
+                            <span class="badge rounded-pill px-2 text-dark opacity-90 bg-blur-4">Approve</span>
+                            <span>&nbsp;&bull;&nbsp;</span>
+                            <span class="badge rounded-pill px-2 text-dark opacity-90 bg-blur-4">Manage</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="vstack align-items-center">
+                <img class="image h-32" src="/assets/icons/cs_logo.png" alt="">
+                <div class="display-5 mb-4 text-center">
+                    <img class="image h-52" src="/assets/brands/logo.png" />
+                </div>
+            </div>
+            <router-outlet></router-outlet>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-8 offset-sm-2 mt-4 smaller opacity-75 text-center">
+                        <div class="hstack gap-1 justify-content-between">
+                            <span>&copy; {{ currentYear }} Purple Quay.</span>
+                            <span>All rights reserved.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="container-fluid hstack gap-3 flex-wrap py-2 position-relative">
+    <div class="hstack gap-2 justify-content-center align-items-center bg-white shadow-sm px-2 py-2 flex-fill border-2">
+        <div class="h3 mb-0">{{ counts.totalClients }}</div>
+        <div class="lh-1 small fw-500 opacity-50">Available <br>Clients</div>
+    </div>
+    <div class="border-start">&nbsp;</div>
+    <div class="cursor-pointer hstack gap-2 justify-content-center align-items-center bg-white shadow-sm px-2 py-2 flex-fill border-2"
+        (click)="handleFilterTabs(tabs.all);">
+        <div class="h3 mb-0">{{ counts.availableReports }}</div>
+        <div class="lh-1 small fw-500 opacity-50">Uploaded <br>Reports</div>
+    </div>
+    <div class="hstack gap-2 justify-content-center align-items-center bg-white shadow-sm px-2 py-2 flex-fill border-2">
+        <div class="h3 mb-0">{{ counts.unavailableReports }}</div>
+        <div class="lh-1 small fw-500 opacity-50">Yet To <br>Upload</div>
+    </div>
+    <div class="border-start">&nbsp;</div>
+    <div class="cursor-pointer hstack gap-2 justify-content-center align-items-center shadow-sm px-2 py-2 flex-fill border-bottom border-2 border-warning"
+        [ngClass]="(filterTabs.selectedTab == tabs.pending)? 'bg-color-warning text-dark bg-noise fw-bold' : 'bg-white text-dark'"
+        (click)="handleFilterTabs(tabs.pending);">
+        <div class="h3 mb-0">{{ counts.pendingApproval }}</div>
+        <div class="lh-1 small fw-500 opacity-75">Pending <br>Approval</div>
+    </div>
+    <div class="cursor-pointer hstack gap-2 justify-content-center align-items-center shadow-sm px-2 py-2 flex-fill border-bottom border-2 border-danger"
+        [ngClass]="(filterTabs.selectedTab == tabs.rejected)? 'bg-danger text-light fw-bold' : 'bg-white text-dark'"
+        (click)="handleFilterTabs(tabs.rejected);">
+        <div class="h3 mb-0">{{ counts.rejectedReports }}</div>
+        <div class="lh-1 small fw-500 opacity-75">Rejected <br>Reports</div>
+    </div>
+    <div class="cursor-pointer hstack gap-2 justify-content-center align-items-center shadow-sm px-2 py-2 flex-fill border-bottom border-2 border-success"
+        [ngClass]="(filterTabs.selectedTab == tabs.approved)? 'bg-success text-light fw-bold' : 'bg-white text-dark'"
+        (click)="handleFilterTabs(tabs.approved);">
+        <div class="h3 mb-0">{{ counts.approvedReports }}</div>
+        <div class="lh-1 small fw-500 opacity-75">Approved <br>Reports</div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+.offcanvas {
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+
+    width: var(--bs-offcanvas-width);
+}
+
+.offcanvas-large {
+    width: var(--bs-offcanvas-width-large)
+}

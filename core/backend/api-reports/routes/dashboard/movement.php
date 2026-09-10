@@ -28,50 +28,82 @@ Route::prefix('client')->group(function() {
         // applies status_id only to the jobs result set (not to the counts).
         // -------------------------------------------------------------------------
     
-        function buildJobFilters(Request $request) {
-            $where_parts = [];
-            $status_id = 0; // 0 = no status filter (proc contract)
-    
-            if ($request->has('filters')) {
-                $filters = json_decode($request->input('filters'));
-    
-                if (isset($filters->status_id)) {
-                    // Note: the OLD getMovement() translated -1 into
-                    // 'J.wsid != 11 and J.wsid != 35' inline. That logic now lives
-                    // inside the proc, so we just forward the raw int.
-                    $status_id = (int) $filters->status_id;
-                }
-    
-                if (isset($filters->received_from)) {
-                    $where_parts[] = "C.Contactname = '" . addslashes($filters->received_from) . "'";
-                }
-    
-                if (isset($filters->accountant)) {
-                    $where_parts[] = "U.Usename = '" . addslashes($filters->accountant) . "'";
-                }
-    
-                if (isset($filters->financial_year)) {
-                    $where_parts[] = "J.FinancialYear = '" . addslashes($filters->financial_year) . "'";
-                }
-    
-                if (isset($filters->received_date_range)) {
-                    $where_parts[] = "J.daterecieved between '" . addslashes($filters->received_date_range->from) . "' and '" . addslashes($filters->received_date_range->to) . "'";
-                }
-    
-                if (isset($filters->commenced_date_range)) {
-                    $where_parts[] = "J.datecommence between '" . addslashes($filters->commenced_date_range->from) . "' and '" . addslashes($filters->commenced_date_range->to) . "'";
-                }
-    
-                if (isset($filters->nature_of_job)) {
-                    $where_parts[] = "N.Naturejob = '" . addslashes($filters->nature_of_job) . "'";
-                }
-            }
-    
-            return [
-                'where_condition' => implode(' AND ', $where_parts),
-                'status_id'       => $status_id,
-            ];
+       function buildJobFilters(Request $request) {
+    $where_parts = [];
+    $status_id = 0; // 0 = no status filter (proc contract)
+
+    if ($request->has('filters')) {
+        $filters = json_decode($request->input('filters'));
+        $pdo = DB::connection('wm_mysql')->getPdo();
+
+        $q = function ($value) use ($pdo) {
+            return $pdo->quote(trim((string) $value));
+        };
+        $filled = function ($value) {
+            return isset($value) && trim((string) $value) !== '';
+        };
+
+        if (isset($filters->status_id)) {
+            // Note: the OLD getMovement() translated -1 into
+            // 'J.wsid != 11 and J.wsid != 35' inline. That logic now lives
+            // inside the proc, so we just forward the raw int.
+            $status_id = (int) $filters->status_id;
         }
+
+        if ($filled($filters->received_from ?? null)) {
+            $where_parts[] = "J.ReceivedForm IN (SELECT cid FROM contacts "
+                . "WHERE LOWER(TRIM(Contactname)) = LOWER(" . $q($filters->received_from) . "))";
+        }
+
+        if ($filled($filters->accountant ?? null)) {
+            $where_parts[] = "J.uid IN (SELECT uid FROM user "
+                . "WHERE LOWER(TRIM(Usename)) = LOWER(" . $q($filters->accountant) . "))";
+        }
+
+        // Partner and director may hold a contacts.Cid or the name string
+        // itself, so both are matched. Drop the leg that does not apply once
+        // the column storage is confirmed.
+        if ($filled($filters->partner ?? null)) {
+            $partner = $q($filters->partner);
+            $where_parts[] = "(J.partner IN (SELECT Cid FROM contacts "
+                . "WHERE LOWER(TRIM(Contactname)) = LOWER(" . $partner . "))"
+                . " OR LOWER(TRIM(J.partner)) = LOWER(" . $partner . "))";
+        }
+
+        if ($filled($filters->director ?? null)) {
+            $director = $q($filters->director);
+            $where_parts[] = "(J.director IN (SELECT Cid FROM contacts "
+                . "WHERE LOWER(TRIM(Contactname)) = LOWER(" . $director . "))"
+                . " OR LOWER(TRIM(J.director)) = LOWER(" . $director . "))";
+        }
+
+        if ($filled($filters->financial_year ?? null)) {
+            $where_parts[] = "J.FinancialYear = " . $q($filters->financial_year);
+        }
+
+        if (isset($filters->received_date_range)) {
+            $where_parts[] = "J.daterecieved BETWEEN " . $q($filters->received_date_range->from)
+                . " AND " . $q($filters->received_date_range->to);
+        }
+
+        if (isset($filters->commenced_date_range)) {
+            $where_parts[] = "J.datecommence BETWEEN " . $q($filters->commenced_date_range->from)
+                . " AND " . $q($filters->commenced_date_range->to);
+        }
+
+        // natureofjob (N) is joined in the jobs subquery but NOT in the counts
+        // query, so this filters via J.nojid to stay valid in both.
+        if ($filled($filters->nature_of_job ?? null)) {
+            $where_parts[] = "J.nojid IN (SELECT nojid FROM natureofjob "
+                . "WHERE LOWER(TRIM(Naturejob)) = LOWER(" . $q($filters->nature_of_job) . "))";
+        }
+    }
+
+    return [
+        'where_condition' => implode(' AND ', $where_parts),
+        'status_id'       => $status_id,
+    ];
+}
     
         // -------------------------------------------------------------------------
         // Helper: calls the merged proc, walks both result sets, applies the
@@ -191,41 +223,52 @@ Route::prefix('client')->group(function() {
                 }
     
                 $data = $result['data']; // counts ignored for export
-    
-                $dataArray = [
-                    [
-                        "GroupJobName",
-                        "Jobname",
-                        "Naturejob",
-                        "ReceivedFrom",
-                        "Accountant",
-                        "Workstatus",
-                        "FinancialYear",
-                        "ReceivedDate",
-                        "CommencedDate",
-                        "TimeTakenTillDate",
-                    ],
+
+                // Columns returned by the proc vary (Partner/Director/AssociateName
+                // are conditional, per-project hide-columns can drop others), so
+                // derive the export columns from the actual result instead of a
+                // fixed list that drifts out of sync with the stored procedure.
+                $excludedColumns = ['Aid', 'StatusId'];
+
+                $labelMap = [
+                    'GroupJobName'  => 'Group Job Name',
+                    'Jobname'       => 'Job Name',
+                    'Naturejob'     => 'Nature of Job',
+                    'ReceivedFrom'  => 'Received From',
+                    'Partner'       => 'Partner',
+                    'Director'      => 'Director',
+                    'AssociateName' => 'Associate Name',
+                    'Accountant'    => 'Accountant',
+                    'Workstatus'    => 'Work Status',
+                    'FinancialYear' => 'Financial Year',
+                    'ReceivedDate'  => 'Received Date',
+                    'CommencedDate' => 'Commenced Date',
+
+                    // Per-status timeline dates, pivoted by SP_FetchBSjobDashboardWithCounts_final.
+                    'YetToStartDate'                       => 'Job In Yet To Start',
+                    'WipProcessingDate'                    => 'WIP Processing',
+                    'SentForQueriesDate'                   => 'Sent For Queries',
+                    'QueryRepliesReceivedYetToAttendDate'  => 'Query Replies Rcvd. Yet To Attend',
+                    'WipQueryRepliesDate'                  => 'WIP Query Replies',
+                    'InternalReviewDate'                   => 'Internal Review',
+                    'WipInternalReviewRepliesDate'         => 'WIP Internal Review Replies',
+                    'SentForReviewDate'                    => 'Sent For Review',
+                    'ReviewRepliesReceivedYetToAttendDate' => 'Review Replies Rcvd. Yet To Attend',
+                    'WipReviewRepliesDate'                 => 'WIP Review Replies',
+                    'SentForFinalReviewDate'                => 'Sent For Final Review',
+                    'JobCompletedDate'                     => 'Job Completed',
+                    'OnHoldDate'                            => 'On Hold',
+                    'CancelledDate'                         => 'Cancelled',
                 ];
-    
-                $headers = [
-                    "GroupJobName",
-                    "Job Name",
-                    "Nature of Job",
-                    "Received From",
-                    "Accountant",
-                    "Work Status",
-                    "Financial Year",
-                    "Received Date",
-                    "Commenced Date",
-                    "Time Taken Till Date",
-                ];
-    
-                foreach ($data as $item) {
-                    $dataArray[] = (array) $item;
-                }
-    
+
+                $columns = !empty($data)
+                    ? array_values(array_diff(array_keys((array) $data[0]), $excludedColumns))
+                    : array_values(array_diff(array_keys($labelMap), $excludedColumns));
+
+                $headers = array_map(fn($column) => $labelMap[$column] ?? $column, $columns);
+
                 return Excel::download(
-                    new ExcelExport($data, $dataArray[0], $headers),
+                    new ExcelExport($data, $columns, $headers),
                     'Job_Movement_Export.xlsx'
                 );
             } catch (Exception $e) {
@@ -267,19 +310,19 @@ Route::prefix('client')->group(function() {
                 
                 if (isset($filters->received_from)) {
                     // Use quotes for string filters
-                    $where_parts[] = "C.Contactname = '" . addslashes($filters->received_from) . "'";
+                    $where_parts[] = "LOWER(TRIM(C.Contactname)) = LOWER(TRIM('" . addslashes($filters->received_from) . "'))";
                 }
-                
+
                 if (isset($filters->accountant)) {
                     // Use quotes for string filters
-                    $where_parts[] = "U.Usename = '" . addslashes($filters->accountant) . "'";
+                    $where_parts[] = "LOWER(TRIM(U.Usename)) = LOWER(TRIM('" . addslashes($filters->accountant) . "'))";
                 }
-                
+
                 if (isset($filters->financial_year)) {
                     // Use quotes for string filters
                     $where_parts[] = "J.FinancialYear = '" . addslashes($filters->financial_year) . "'";
                 }
-                
+
                 if (isset($filters->received_date_range)) {
                     // Use quotes for string filters
                     $where_parts[] = "J.daterecieved between '" . addslashes($filters->received_date_range->from) . "' and '" . addslashes($filters->received_date_range->to) . "'";
@@ -289,10 +332,10 @@ Route::prefix('client')->group(function() {
                     // Use quotes for string filters
                     $where_parts[] = "J.datecommence between '" . addslashes($filters->commenced_date_range->from) . "' and '" . addslashes($filters->commenced_date_range->to) . "'";
                 }
-                
+
                 if (isset($filters->nature_of_job)) {
                     // Use quotes for string filters
-                    $where_parts[] = "N.Naturejob = '" . addslashes($filters->nature_of_job) . "'";
+                    $where_parts[] = "LOWER(TRIM(N.Naturejob)) = LOWER(TRIM('" . addslashes($filters->nature_of_job) . "'))";
                 }
                 
                 // Add more filters in the future easily here

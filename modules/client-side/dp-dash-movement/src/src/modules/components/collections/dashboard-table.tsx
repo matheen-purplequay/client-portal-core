@@ -46,62 +46,58 @@ export const DashboardTable = <T extends Record<string, any>>({
 
     // 1. Filtering
     useEffect(() => {
-        if (rows.length > 0) {
-            const result = rows.filter(row =>
-                Object.values(row).some(val =>
-                    String(val).toLowerCase().includes(searchTerm.toLowerCase())
-                )
-            );
-            setFilteredRows(result);
-        }
+        const result = rows.filter(row =>
+            Object.values(row).some(val =>
+                String(val).toLowerCase().includes(searchTerm.toLowerCase())
+            )
+        );
+        setFilteredRows(result);
     }, [rows, searchTerm]);
 
     // 2. Sorting
     useEffect(() => {
-        if (filteredRows.length > 0) {
-            const sorted = [...filteredRows].sort((a, b) => {
-                const aValue = a[orderBy];
-                const bValue = b[orderBy];
+        const sorted = [...filteredRows].sort((a, b) => {
+            const aValue = a[orderBy];
+            const bValue = b[orderBy];
 
-                // Handle empty values (null, undefined, empty string)
-                const isAEmpty = aValue === null || aValue === undefined || aValue === '';
-                const isBEmpty = bValue === null || bValue === undefined || bValue === '';
+            // Handle empty values (null, undefined, empty string)
+            const isAEmpty = aValue === null || aValue === undefined || aValue === '';
+            const isBEmpty = bValue === null || bValue === undefined || bValue === '';
 
-                if (isAEmpty && isBEmpty) return 0;
-                if (isAEmpty) return 1;
-                if (isBEmpty) return -1;
+            if (isAEmpty && isBEmpty) return 0;
+            if (isAEmpty) return 1;
+            if (isBEmpty) return -1;
 
-                const isADate = typeof aValue === 'string' && isDateValue(aValue);
-                const isBDate = typeof bValue === 'string' && isDateValue(bValue);
+            const isADate = typeof aValue === 'string' && isDateValue(aValue);
+            const isBDate = typeof bValue === 'string' && isDateValue(bValue);
 
-                const parseCustomDate = (val: any) => {
-                    if (typeof val !== 'string') return new Date(val).getTime();
-                    const trimmed = val.trim();
-                    const parts = trimmed.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
-                    if (parts) {
-                        return new Date(`${parts[3]}-${parts[2]}-${parts[1]}`).getTime();
-                    }
-                    return new Date(trimmed).getTime();
-                };
-
-                if (orderBy.toString().toLowerCase().includes("date") || isADate || isBDate) {
-                    // Try parsing as date first
-                    const dateA = parseCustomDate(aValue);
-                    const dateB = parseCustomDate(bValue);
-                    
-                    if (!isNaN(dateA) && !isNaN(dateB)) {
-                        if (dateA < dateB) return order === 'asc' ? -1 : 1;
-                        if (dateA > dateB) return order === 'asc' ? 1 : -1;
-                        return 0;
-                    }
+            const parseCustomDate = (val: any) => {
+                if (typeof val !== 'string') return new Date(val).getTime();
+                const trimmed = val.trim();
+                const parts = trimmed.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
+                if (parts) {
+                    return new Date(`${parts[3]}-${parts[2]}-${parts[1]}`).getTime();
                 }
+                return new Date(trimmed).getTime();
+            };
 
-                if (aValue < bValue) return order === 'asc' ? -1 : 1;
-                if (aValue > bValue) return order === 'asc' ? 1 : -1;
-                return 0;
-            });
-            setSortedRows(sorted);
-        }
+            if (orderBy.toString().toLowerCase().includes("date") || isADate || isBDate) {
+                // Try parsing as date first
+                const dateA = parseCustomDate(aValue);
+                const dateB = parseCustomDate(bValue);
+
+                if (!isNaN(dateA) && !isNaN(dateB)) {
+                    if (dateA < dateB) return order === 'asc' ? -1 : 1;
+                    if (dateA > dateB) return order === 'asc' ? 1 : -1;
+                    return 0;
+                }
+            }
+
+            if (aValue < bValue) return order === 'asc' ? -1 : 1;
+            if (aValue > bValue) return order === 'asc' ? 1 : -1;
+            return 0;
+        });
+        setSortedRows(sorted);
     }, [filteredRows, order, orderBy]);
 
     // 3. Pagination

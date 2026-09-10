@@ -7,7 +7,7 @@
 // Production Base
 const WM_API_BASE_URL = `https://clientqueryapi.purplequay.com.au/api`;
 // const REPORTS_API_BASE_URL = 'https://www.deliveryportal-reportsapi.purplequay.com/api';
-const REPORTS_API_BASE_URL = 'https://pqreports.welingkaronline.org/api';
+const REPORTS_API_BASE_URL = 'https://cpreports.carisma-solutions.com.au/api';
 
 
 const MOVEMENT_API_BASE_URL = `${REPORTS_API_BASE_URL}/client/business-services`;

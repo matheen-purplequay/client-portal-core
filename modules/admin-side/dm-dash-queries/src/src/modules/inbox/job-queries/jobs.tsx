@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Pagination, Table, TableBody, TableHead, TableHeadCell, TableHeadRow, TableRow, TableRowData } from "../../../shell/components/collections/table";
 import { Button } from "../../../shell/components/atoms/buttons";
 import Queries from "../query-lists/queries";
 import { X } from "lucide-react";
 import JobToolbar from "./components/jobs-toolbar";
+import { MultiSelectDropdown } from "../../../shell/components/atoms/dropdowns";
 import { useClientSelection, type Client } from "../../../core/utils/stores/ClientSelectionContext";
 
 export interface JobQuery {
@@ -113,6 +114,23 @@ export default function Jobs({ jobQueries, onRefresh, isRefreshing, autoOpenJobI
         field: null,
         minCount: 0
     });
+    const [columnFilters, setColumnFilters] = useState({
+        job_name: "",
+        client: [] as string[],
+        fy: "",
+        ob_touchpoint: "",
+        jy: "",
+        vertical_name: "",
+        query_title: "",
+        total_queries: "",
+        open: "",
+        responded: "",
+        resolved: "",
+    });
+    const clientNameOptions = useMemo(() => {
+        const names = Array.from(new Set(jobQueries.map(j => j.client).filter(Boolean)));
+        return names.map(name => ({ client: name }));
+    }, [jobQueries]);
     const [viewPerTab, setViewPerTab] = useState<Record<number, string>>({});
     const [windowPerTab, setWindowPerTab] = useState<Record<number, string>>({});
     const [autoOpenNotFound, setAutoOpenNotFound] = useState(false);
@@ -173,7 +191,7 @@ export default function Jobs({ jobQueries, onRefresh, isRefreshing, autoOpenJobI
     // 5. Filtering
     useEffect(() => {
         filterRows();
-    }, [jobQueries, selectedClients, showOnlyWithQueries]);
+    }, [jobQueries, selectedClients, showOnlyWithQueries, columnFilters]);
 
     // 6. Sorting
     useEffect(() => {
@@ -257,26 +275,46 @@ export default function Jobs({ jobQueries, onRefresh, isRefreshing, autoOpenJobI
     setPage(0);
     }, [selectedFilter]);
 
+    const getClientFilteredRows = () => {
+        return jobQueries.filter(row => {
+            // Filter by selected clients
+            const clientMatch = selectedClients && selectedClients.length > 0
+                ? selectedClients.some(client => client.client_id === row.client_id)
+                : false;
+
+            if (!clientMatch) {
+                return false;
+            }
+
+            // Filter by total_queries if toggle is on
+            if (showOnlyWithQueries && row.total_queries <= 0) {
+                return false;
+            }
+
+            // Per-column filter row
+            if (columnFilters.client.length > 0 && !columnFilters.client.includes(row.client)) return false;
+
+            const textMatch = (filterValue: string, rowValue: unknown) =>
+                !filterValue || String(rowValue ?? "").toLowerCase().includes(filterValue.toLowerCase());
+
+            if (!textMatch(columnFilters.job_name, row.job_name)) return false;
+            if (!textMatch(columnFilters.fy, row.fy)) return false;
+            if (!textMatch(columnFilters.ob_touchpoint, row.ob_touchpoint)) return false;
+            if (!textMatch(columnFilters.jy, row.jy)) return false;
+            if (!textMatch(columnFilters.vertical_name, row.vertical_name)) return false;
+            if (!textMatch(columnFilters.query_title, row.query_title)) return false;
+            if (!textMatch(columnFilters.total_queries, row.total_queries)) return false;
+            if (!textMatch(columnFilters.open, row.open)) return false;
+            if (!textMatch(columnFilters.responded, row.responded)) return false;
+            if (!textMatch(columnFilters.resolved, row.resolved)) return false;
+
+            return true;
+        });
+    };
+
     const filterRows = () => {
         if (jobQueries.length > 0) {
-
-            const result = jobQueries.filter(row => {
-                // Filter by selected clients
-                const clientMatch = selectedClients && selectedClients.length > 0
-                    ? selectedClients.some(client => client.client_id === row.client_id)
-                    : false;
-
-                if (!clientMatch) {
-                    return false;
-                }
-
-                // Filter by total_queries if toggle is on
-                if (showOnlyWithQueries && row.total_queries <= 0) {
-                    return false;
-                }
-
-                return true;
-            });
+            const result = getClientFilteredRows();
             setFilteredRows(result);
             setIsLoading(false);
             if (searchTerm) {
@@ -289,7 +327,11 @@ export default function Jobs({ jobQueries, onRefresh, isRefreshing, autoOpenJobI
 
     const searchRows = () => {
         if (searchTerm) {
-            const result = filteredRows.filter((row: JobQuery) => {
+            // Always search from the client/toggle-filtered base, not the
+            // previous search result — otherwise narrowing the term back down
+            // (e.g. backspacing) can never bring back rows that were already
+            // filtered out by a longer search term.
+            const result = getClientFilteredRows().filter((row: JobQuery) => {
                 return Object.values(row).some(val =>
                     String(val).toLowerCase().includes(searchTerm.toLowerCase())
                 );
@@ -548,6 +590,110 @@ export default function Jobs({ jobQueries, onRefresh, isRefreshing, autoOpenJobI
                                                                     <TableHeadCell onClick={() => { setOrderBy("resolved"); setOrder(order === "asc" ? "desc" : "asc"); }} className="text-right">Resolved</TableHeadCell>
                                                                     <TableHeadCell className="text-center">Raise Query</TableHeadCell>
                                                                 </TableHeadRow>
+                                                                <TableHeadRow className="bg-white">
+                                                                    <TableHeadCell>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.job_name}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, job_name: e.target.value }))}
+                                                                            className="w-full text-xs font-normal border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <th className="px-4 py-2 text-xs font-normal overflow-visible">
+                                                                        <MultiSelectDropdown
+                                                                            title=""
+                                                                            items={clientNameOptions}
+                                                                            labelKey="client"
+                                                                            selectedItems={clientNameOptions.filter(c => columnFilters.client.includes(c.client))}
+                                                                            onChange={(selected) => setColumnFilters(prev => ({ ...prev, client: selected.map(s => s.client) }))}
+                                                                            dropdownStyle="simple"
+                                                                            buttonClassName="text-xs font-normal"
+                                                                        />
+                                                                    </th>
+                                                                    <TableHeadCell className="text-right">
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.fy}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, fy: e.target.value }))}
+                                                                            className="w-full text-xs font-normal text-right border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <TableHeadCell>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.ob_touchpoint}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, ob_touchpoint: e.target.value }))}
+                                                                            className="w-full text-xs font-normal border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <TableHeadCell>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.jy}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, jy: e.target.value }))}
+                                                                            className="w-full text-xs font-normal border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <TableHeadCell>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.vertical_name}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, vertical_name: e.target.value }))}
+                                                                            className="w-full text-xs font-normal border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <TableHeadCell>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.query_title}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, query_title: e.target.value }))}
+                                                                            className="w-full text-xs font-normal border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <TableHeadCell className="text-right">
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.total_queries}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, total_queries: e.target.value }))}
+                                                                            className="w-full text-xs font-normal text-right border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <TableHeadCell className="text-right">
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.open}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, open: e.target.value }))}
+                                                                            className="w-full text-xs font-normal text-right border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <TableHeadCell className="text-right">
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.responded}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, responded: e.target.value }))}
+                                                                            className="w-full text-xs font-normal text-right border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <TableHeadCell className="text-right">
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Filter..."
+                                                                            value={columnFilters.resolved}
+                                                                            onChange={(e) => setColumnFilters(prev => ({ ...prev, resolved: e.target.value }))}
+                                                                            className="w-full text-xs font-normal text-right border border-slate-300 rounded px-2 py-1 outline-none focus:border-primary"
+                                                                        />
+                                                                    </TableHeadCell>
+                                                                    <TableHeadCell>{null}</TableHeadCell>
+                                                                </TableHeadRow>
                                                             </TableHead>
                                                             <TableBody>
                                                                 {paginatedRows.map((job: JobQuery) => (
@@ -662,7 +808,7 @@ const JobQueryCount = ({
             `}>
                 {label}
             </div>
-            <div 
+            <div
                 className={`
                     text-lg
                     ${highlightCount && count > highlightCount ? "text-red-500 font-semibold bg-red-50" : "text-slate-700"}

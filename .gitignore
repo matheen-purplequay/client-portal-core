@@ -2,3 +2,10 @@ core/frontend/src/.angular
 requirements/
 plans/
 build/
+
+node_modules/
+vendor
+publish
+.idea
+.scribe
+.well-known

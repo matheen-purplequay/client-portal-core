@@ -25,6 +25,7 @@ import Tiptap from "../../../shell/components/tools/TipTap";
 import type { ClientUser } from "../../../core/models/user";
 import { useAppContext } from "../../../core/utils/stores/AppContext";
 import { decryptData } from "../../../core/utils/helpers/localStorage";
+import { stripInlineStyles } from "../../../core/utils/helpers/sanitizeHtml";
 
 interface JobQueryProps {
     selectedJobQuery: JobQuery;
@@ -669,7 +670,7 @@ const QueryRow = ({
                             <div
                                 className={`overflow-hidden ${selectedQuery?.id === query.id ? "max-h-auto" : "max-h-[100px] "}`}
                                 dangerouslySetInnerHTML={{
-                                    __html: updatedQuery.query ?? query.query ?? "-",
+                                    __html: stripInlineStyles(updatedQuery.query ?? query.query ?? "-"),
                                 }}
                             />
                             {selectedQuery && selectedQuery.id === query.id && (

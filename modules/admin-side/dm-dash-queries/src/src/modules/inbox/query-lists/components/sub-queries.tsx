@@ -9,6 +9,7 @@ import { type Attachment, type SubQuery } from "../../../../core/models/query";
 import { useAppContext } from "../../../../core/utils/stores/AppContext";
 import { decryptData } from "../../../../core/utils/helpers/localStorage";
 import { AttachmentForm } from "../new-queries/components/attachment-form";
+import { stripInlineStyles } from "../../../../core/utils/helpers/sanitizeHtml";
 
 declare global {
     interface Window {
@@ -230,7 +231,7 @@ export const SubQueries = ({ queryId, containerClassName, isApprover }: SubQueri
                                         </div>
                                         <div className="pl-[32px] w-full flex-1 mt-2 space-y-2">
                                             {subQuery.response_value && <p className="text-sm text-slate-700" dangerouslySetInnerHTML={{ __html: subQuery.response_value }}></p>}
-                                            <p className="text-sm text-slate-700" dangerouslySetInnerHTML={{ __html: subQuery.query }}></p>
+                                            <p className="text-sm text-slate-700" dangerouslySetInnerHTML={{ __html: stripInlineStyles(subQuery.query) }}></p>
                                         </div>
                                         {
                                             subQuery.status_code === "sub_query_draft" ?
@@ -241,8 +242,8 @@ export const SubQueries = ({ queryId, containerClassName, isApprover }: SubQueri
                                                             <div className="flex items-center gap-4">
                                                                 <Button theme="minimal" className="px-0" onClick={() => approveDraftQuery(subQuery, "")}>
                                                                     <div className="flex items-center gap-0">
-                                                                        <p className="px-0 text-xs font-medium " style={{ color: "green" }} >Approve</p>
-                                                                        <Check size={18} style={{ color: "green" }} />
+                                                                        <p className="px-0 text-xs font-medium text-green-700" >Approve</p>
+                                                                        <Check size={18} className="text-green-700" />
                                                                     </div>
                                                                 </Button>
                                                                 <Button theme="minimal" className="px-0" onClick={() => {
@@ -252,8 +253,8 @@ export const SubQueries = ({ queryId, containerClassName, isApprover }: SubQueri
                                                                     }
                                                                 }}>
                                                                     <div className="flex items-center gap-0">
-                                                                        <p className="px-0 text-xs font-medium" style={{ color: "red" }} >Reject</p>
-                                                                        <X size={18} style={{ color: "red" }} />
+                                                                        <p className="px-0 text-xs font-medium text-red-700">Reject</p>
+                                                                        <X size={18} className="text-red-700" />
                                                                     </div>
                                                                 </Button>
                                                             </div>

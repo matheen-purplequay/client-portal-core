@@ -6,8 +6,8 @@
 // const ACCOUNTS_API_BASE_URL = "https://www.deliveryportal-accountsapi.purplequay.com/api";
 // const REPORTS_API_BASE_URL = "https://www.deliveryportal-reportsapi.purplequay.com/api";
 
-const ACCOUNTS_API_BASE_URL = "https://pqaccountsapi.welingkaronline.org/api";
-const REPORTS_API_BASE_URL = "https://pqreports.welingkaronline.org/api";
+const ACCOUNTS_API_BASE_URL = "https://clientportalapi.carisma-solutions.com.au/api";
+const REPORTS_API_BASE_URL = "https://cpreports.carisma-solutions.com.au/api";
 const WM_API_BASE_URL = `https://clientqueryapi.purplequay.com.au/api`;
 //const WM_API_BASE_URL = `https://localhost:44389/api`;
 
@@ -23,8 +23,9 @@ export const apiRoutes = {
       // getQueryStatistics: `${QUERIES_API_URL}/GetQueryCounts`,
       getQueryStatistics: `${REPORTS_QUERIES_API_URL}/get-query-statistics`,
       getJobQueries: `${QUERIES_API_URL}/RetrieveAdminJobDetails`,
-      getQueries: `${QUERIES_API_URL}/RetrieveQueriesAdmin`,
-      getSubQueries: `${QUERIES_API_URL}/RetrieveAllSubQueries`,
+      getQueries: `${QUERIES_API_URL}/RetrieveQueries`,
+      // getSubQueries: `${QUERIES_API_URL}/RetrieveSubQueriesForAdmin`,
+      getSubQueries: `${REPORTS_QUERIES_API_URL}/get-draft-sub-queries`,
       getDraftQueries: `${QUERIES_API_URL}/GetDraftQueries`,
       getRejectedQueries: `${REPORTS_API_BASE_URL}/admin/queries/get-rejected-queries`,
       getDraftSubQueries: `${REPORTS_QUERIES_API_URL}/get-draft-sub-queries`,
@@ -52,7 +53,7 @@ export const apiRoutes = {
   templates: {
     get: {
       getQueryTemplates: `${QUERIES_API_URL}/GetQueryTemplates`,
-      getQueryTemplate: `${QUERIES_API_URL}/GetQueryTemplate/{id}`,
+      getQueryTemplate: `${QUERIES_API_URL}/GetQueryTemplate?id={id}`,
       getQueryTemplatesById: `${REPORTS_API_BASE_URL}/query-templates/get-query-templates`,
     },
     insert: {

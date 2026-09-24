@@ -4,13 +4,22 @@ Static mockup of the client-facing portal, styled to match the real dashboard. B
 
 ## Run
 
-`fetch()` needs HTTP, so serve the folder (don't open files directly):
+`fetch()` needs HTTP, so serve the folder (don't open files directly). A dependency-free Node server is included (works on Windows and Linux):
 
 ```bash
 cd core/prototype
-python3 -m http.server 8000
-# open http://localhost:8000
+node server.js                        # http://localhost:8000
+PORT=9000 node server.js              # custom port
 ```
+
+With pm2:
+
+```bash
+pm2 start ecosystem.config.js         # port from PORT env var, or PORT in .env, default 8000
+pm2 logs client-portal-prototype
+```
+
+To change the port for pm2, put `PORT=9000` in `core/prototype/.env`, then `pm2 delete client-portal-prototype && pm2 start ecosystem.config.js`.
 
 ## Demo logins
 

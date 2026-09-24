@@ -1,0 +1,72 @@
+<div x-data="landingPage">
+  <div x-show="loading" class="py-24 text-center text-sm text-slate-400">Loading…</div>
+  <template x-if="!loading">
+    <div>
+      <div class="mb-5">
+        <h1 class="text-2xl font-bold text-slate-800" x-text="'Welcome back, ' + user.first_name"></h1>
+        <p class="text-sm text-slate-500" x-text="CP.fmt.weekday(CP.TODAY) + ', ' + CP.fmt.long(CP.TODAY) + ' — here is where your work stands today.'"></p>
+      </div>
+
+      <!-- headline tiles -->
+      <div class="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-6">
+        <template x-for="t in [
+          { l: 'Workflow · Today', v: workflowRows.length, u: 'stand-up jobs', tone: 'border-brand text-brand', r: '/dashboard/workflow' },
+          { l: 'Movement · Last 7 Days', v: moves.length, u: 'status changes', tone: 'border-cyan-500 text-cyan-700', r: '/dashboard/movement' },
+          { l: 'Jobs in Queries', v: inQueries.length, u: 'jobs', tone: 'border-amber-400 text-amber-700', r: '/dashboard/job-status' },
+          { l: 'Sent for Review', v: inReview.length, u: 'jobs', tone: 'border-purple-500 text-purple-700', r: '/dashboard/job-status' },
+          { l: 'Sent for Final Review', v: inFinal.length, u: 'jobs', tone: 'border-teal-500 text-teal-700', r: '/dashboard/job-status' },
+          { l: 'Open Queries', v: openQueries.length, u: 'queries', tone: 'border-rose-400 text-rose-700', r: '/dashboard/queries' }]" :key="t.l">
+          <button class="rounded-xl border-b-4 bg-white p-4 text-left shadow transition hover:shadow-lg" :class="t.tone" @click="go(t.r)">
+            <div class="text-[11px] font-semibold uppercase" x-text="t.l"></div><div class="mt-1 text-3xl font-bold" x-text="t.v"></div><div class="text-[10px] uppercase opacity-60" x-text="t.u"></div></button>
+        </template>
+      </div>
+
+      <div class="grid gap-4 lg:grid-cols-2">
+        <!-- workflow -->
+        <div class="card overflow-hidden">
+          <div class="flex items-center justify-between bg-brand px-4 py-2.5 text-white"><div class="font-bold">Workflow · Today's Stand-Up</div><button class="text-xs underline" @click="go('/dashboard/workflow')">View all</button></div>
+          <table class="tbl w-full"><thead><tr><th class="!cursor-default">Job</th><th class="!cursor-default">Associate</th><th class="!cursor-default">Status</th><th class="!cursor-default">Est.Time</th></tr></thead>
+            <tbody><template x-for="r in workflowRows.slice(0, 6)" :key="r.jmid"><tr><td class="max-w-[220px] truncate font-medium" x-text="r.job_description"></td><td x-text="r.name_a"></td><td x-text="r.workstatus"></td><td x-text="r.time_will_take"></td></tr></template></tbody></table>
+          <div x-show="!workflowRows.length" class="py-8 text-center text-sm text-slate-400">No stand-up logged for today.</div>
+        </div>
+
+        <!-- movement, last 7 days -->
+        <div class="card overflow-hidden">
+          <div class="flex items-center justify-between bg-brand px-4 py-2.5 text-white"><div class="font-bold">Movement · Last 7 Days</div><button class="text-xs underline" @click="go('/dashboard/movement')">View all</button></div>
+          <div class="p-4">
+            <div class="flex h-32 items-end gap-2">
+              <template x-for="d in perDay" :key="d.d"><div class="flex flex-1 flex-col items-center justify-end gap-1"><span class="text-[11px] font-semibold text-slate-600" x-text="d.n"></span>
+                <div class="w-full rounded-t bg-brand/80" :style="'height:' + Math.max(Math.round(d.h * 0.85), d.n ? 4 : 1) + 'px'"></div><span class="text-[10px] text-slate-400" x-text="dow(d.d)"></span></div></template>
+            </div>
+            <div class="mt-4 grid grid-cols-4 gap-2 text-center text-xs">
+              <template x-for="c in [['New Jobs Received', 'text-green-700'], ['Sent for Queries', 'text-orange-600'], ['Sent for Review', 'text-purple-700'], ['Closed', 'text-teal-700']]" :key="c[0]">
+                <div class="rounded-lg bg-slate-50 py-2"><div class="text-xl font-bold" :class="c[1]" x-text="cat(c[0])"></div><div class="text-[10px] text-slate-500" x-text="c[0]"></div></div></template>
+            </div>
+          </div>
+        </div>
+
+        <!-- jobs in queries / review / final review -->
+        <template x-for="p in [
+          { t: 'Jobs in Queries', rows: inQueries, extra: true, tone: 'bg-amber-100 text-amber-900' },
+          { t: 'Sent for Review', rows: inReview, tone: 'bg-purple-100 text-purple-900' },
+          { t: 'Sent for Final Review', rows: inFinal, tone: 'bg-teal-100 text-teal-900' }]" :key="p.t">
+          <div class="card overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-2.5" :class="p.tone"><div class="font-bold"><span x-text="p.t"></span> <span class="ml-1 rounded-full bg-white/70 px-2 py-0.5 text-xs" x-text="p.rows.length"></span></div><button class="text-xs underline" @click="go('/dashboard/job-status')">View all</button></div>
+            <table class="tbl w-full"><thead><tr><th class="!cursor-default">Job</th><th class="!cursor-default">Associate</th><th class="!cursor-default">Status</th><th class="!cursor-default">Days</th><th class="!cursor-default" x-show="p.extra">Queries</th></tr></thead>
+              <tbody><template x-for="j in p.rows.slice(0, 5)" :key="j.job_id"><tr><td class="max-w-[240px] truncate font-medium" x-text="j.job_name"></td><td x-text="j.associate"></td><td x-text="j.status"></td>
+                <td><span class="chip" :class="j.days > 10 ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-600'" x-text="j.days + 'd'"></span></td><td x-show="p.extra" x-text="j.open_q"></td></tr></template></tbody></table>
+            <div x-show="!p.rows.length" class="py-8 text-center text-sm text-slate-400">Nothing here right now.</div>
+          </div>
+        </template>
+        <!-- open queries -->
+        <div class="card overflow-hidden">
+          <div class="flex items-center justify-between bg-rose-100 px-4 py-2.5 text-rose-900"><div class="font-bold">Open Queries <span class="ml-1 rounded-full bg-white/70 px-2 py-0.5 text-xs" x-text="openQueries.length"></span></div><button class="text-xs underline" @click="go('/dashboard/queries')">View all</button></div>
+          <table class="tbl w-full"><thead><tr><th class="!cursor-default">Query</th><th class="!cursor-default">Job</th><th class="!cursor-default">Criticality</th><th class="!cursor-default">Days</th></tr></thead>
+            <tbody><template x-for="q in openQueries.slice(0, 5)" :key="q.id"><tr class="cursor-pointer" @click="go('/dashboard/queries?job=' + q.job_id)"><td class="max-w-[180px] truncate"><span class="link font-medium" x-text="q.id"></span> <span class="text-slate-500" x-text="q.title"></span></td><td class="max-w-[200px] truncate" x-text="q.job_name"></td><td x-text="q.criticality"></td>
+              <td><span class="chip" :class="q.days > 10 ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-600'" x-text="q.days + 'd'"></span></td></tr></template></tbody></table>
+          <div x-show="!openQueries.length" class="py-8 text-center text-sm text-slate-400">No open queries.</div>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>

@@ -50,9 +50,21 @@ const CP = (() => {
 
   /* ---------- routes: one master page (app.html), each view is an HTML fragment swapped in by htmx ---------- */
   const ROUTES = {
-    '/dashboard/movement': { view: 'views/dashboard/movement.html', group: 'dashboard', title: 'Movement' },
-    '/dashboard/job-status': { view: 'views/dashboard/job-status.html', group: 'dashboard', title: 'Job Status' },
+    /* Delivery Dashboard widget screens (keep the pill-tab bar): touch-point Movement, Job Status (Jobs), Queries */
+    '/dashboard/home': { view: 'views/dashboard/movement.html', group: 'dashboard', title: 'Delivery Dashboard' },
+    '/dashboard/job-status': { view: 'views/dashboard/job-status.html', group: 'dashboard', title: 'Jobs' },
     '/dashboard/queries': { view: 'views/dashboard/queries.html', group: 'dashboard', title: 'Queries' },
+    /* Screens from the dev branch (config-driven grid = views/dashboard/grid.html, see pages/dev-screens.js) */
+    '/dashboard/landing': { view: 'views/dashboard/landing.html', group: 'screen', title: 'Home' },
+    '/dashboard/workflow': { view: 'views/dashboard/grid.html', group: 'screen', title: 'Workflow' },
+    '/dashboard/movement': { view: 'views/dashboard/grid.html', group: 'screen', title: 'Movement' },
+    '/dashboard/budget-overview': { view: 'views/dashboard/grid.html', group: 'screen', title: 'Budget Overview' },
+    '/dashboard/turnaround-report': { view: 'views/dashboard/grid.html', group: 'screen', title: 'Turnaround Report' },
+    '/dashboard/production-report': { view: 'views/dashboard/production.html', group: 'screen', title: 'Production Report' },
+    '/dashboard/closed-jobs-feedback': { view: 'views/dashboard/grid.html', group: 'screen', title: 'Feedback' },
+    '/dashboard/mom': { view: 'views/dashboard/grid.html', group: 'screen', title: 'MOM' },
+    '/dashboard/job-allocation': { view: 'views/dashboard/job-allocation.html', group: 'screen', title: 'Job Allocation' },
+    '/dashboard/overview': { view: 'views/dashboard/overview.html', group: 'screen', title: 'Overview' },
     '/reports/connect': { view: 'views/reports/connect.html', group: 'reports', title: 'Reports' },
     '/reports/weekly': { view: 'views/reports/weekly.html', group: 'reports', title: 'Reports' },
     '/reports/invoices': { view: 'views/reports/invoices.html', group: 'reports', title: 'Reports' },
@@ -66,7 +78,7 @@ const CP = (() => {
     '/contact': { view: 'views/content/contact.html', group: 'content', title: 'Contact Us' },
     '/profile': { view: 'views/content/profile.html', group: 'content', title: 'My Profile' },
   };
-  const DEFAULT = '/dashboard/movement';
+  const DEFAULT = '/dashboard/landing';   // Home: workflow, 7-day movement, jobs in queries / review / final review
 
   function route() {
     const path = (location.hash.slice(1) || DEFAULT).split('?')[0];

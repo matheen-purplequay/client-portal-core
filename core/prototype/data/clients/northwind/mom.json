@@ -1,0 +1,98 @@
+[
+ {
+  "client_name": "Kestrel Superannuation Fund",
+  "date": "2026-09-23",
+  "client_present": "Jack Morrison",
+  "purpose": "Process Walkthrough",
+  "description": "<p>Discussed pending queries on bank reconciliations. Client to provide statements by end of week.</p>",
+  "vertical": "Bookkeeping"
+ },
+ {
+  "client_name": "Norcross Group",
+  "date": "2026-09-20",
+  "client_present": "Priya Shah",
+  "purpose": "Query Discussion",
+  "description": "<p>Discussed pending queries on bank reconciliations. Client to provide statements by end of week.</p>",
+  "vertical": "Business Services"
+ },
+ {
+  "client_name": "Gresham Investments Pty Ltd",
+  "date": "2026-09-18",
+  "client_present": "Olivia Bennett",
+  "purpose": "Process Walkthrough",
+  "description": "<p>Agreed the escalation path for delayed responses and confirmed the account manager as first contact.</p>",
+  "vertical": "Bookkeeping"
+ },
+ {
+  "client_name": "Garrick Family Super Fund",
+  "date": "2026-09-16",
+  "client_present": "Tom Harris",
+  "purpose": "Escalation Call",
+  "description": "<p>Discussed pending queries on bank reconciliations. Client to provide statements by end of week.</p>",
+  "vertical": "Business Services"
+ },
+ {
+  "client_name": "Devlin Investments Pty Ltd",
+  "date": "2026-09-13",
+  "client_present": "Olivia Bennett",
+  "purpose": "Onboarding",
+  "description": "<p>Agreed the escalation path for delayed responses and confirmed the account manager as first contact.</p>",
+  "vertical": "Bookkeeping"
+ },
+ {
+  "client_name": "Ellery Family Super Fund",
+  "date": "2026-09-11",
+  "client_present": "Priya Shah",
+  "purpose": "Year-end Planning",
+  "description": "<p>Agreed the escalation path for delayed responses and confirmed the account manager as first contact.</p>",
+  "vertical": "SMSF"
+ },
+ {
+  "client_name": "Jasper & Associates Pty Ltd",
+  "date": "2026-09-10",
+  "client_present": "Tom Harris",
+  "purpose": "Onboarding",
+  "description": "<p>Reviewed the open job list and agreed priorities for the coming fortnight.</p><ul><li>Two jobs flagged as urgent</li><li>Outstanding queries to be closed by Friday</li></ul>",
+  "vertical": "SMSF"
+ },
+ {
+  "client_name": "Brennan Holdings Pty Ltd",
+  "date": "2026-09-07",
+  "client_present": "Priya Shah",
+  "purpose": "Year-end Planning",
+  "description": "<p>Reviewed the open job list and agreed priorities for the coming fortnight.</p><ul><li>Two jobs flagged as urgent</li><li>Outstanding queries to be closed by Friday</li></ul>",
+  "vertical": "Business Services"
+ },
+ {
+  "client_name": "Stannard Investments Pty Ltd",
+  "date": "2026-09-05",
+  "client_present": "Olivia Bennett",
+  "purpose": "Query Discussion",
+  "description": "<p>Discussed pending queries on bank reconciliations. Client to provide statements by end of week.</p>",
+  "vertical": "Business Services"
+ },
+ {
+  "client_name": "Lockhart Investments Pty Ltd",
+  "date": "2026-09-02",
+  "client_present": "Priya Shah",
+  "purpose": "Monthly Review",
+  "description": "<p>Planned year-end deliverables and turnaround expectations. Budgets to be reconfirmed next month.</p>",
+  "vertical": "SMSF"
+ },
+ {
+  "client_name": "Cortland Family Trust",
+  "date": "2026-08-31",
+  "client_present": "Priya Shah",
+  "purpose": "Onboarding",
+  "description": "<p>Planned year-end deliverables and turnaround expectations. Budgets to be reconfirmed next month.</p>",
+  "vertical": "Business Services"
+ },
+ {
+  "client_name": "Lockhart Superannuation Fund",
+  "date": "2026-08-28",
+  "client_present": "Olivia Bennett",
+  "purpose": "Query Discussion",
+  "description": "<p>Reviewed the open job list and agreed priorities for the coming fortnight.</p><ul><li>Two jobs flagged as urgent</li><li>Outstanding queries to be closed by Friday</li></ul>",
+  "vertical": "Business Services"
+ }
+]

@@ -1,0 +1,118 @@
+{
+ "current_label": "September 2026",
+ "previous_label": "August 2026",
+ "rows": [
+  {
+   "name": "Sneha Kulkarni",
+   "vertical": "Bookkeeping",
+   "current": {
+    "jobs": 30,
+    "hours": 166.56,
+    "productive": 148.63
+   },
+   "previous": {
+    "jobs": 21,
+    "hours": 133.16,
+    "productive": 111.55
+   }
+  },
+  {
+   "name": "Karthik Rao",
+   "vertical": "Bookkeeping",
+   "current": {
+    "jobs": 30,
+    "hours": 148.13,
+    "productive": 111.26
+   },
+   "previous": {
+    "jobs": 27,
+    "hours": 125.55,
+    "productive": 114.95
+   }
+  },
+  {
+   "name": "Rahul Menon",
+   "vertical": "SMSF",
+   "current": {
+    "jobs": 31,
+    "hours": 160.71,
+    "productive": 141.91
+   },
+   "previous": {
+    "jobs": 36,
+    "hours": 241.51,
+    "productive": 187.5
+   }
+  },
+  {
+   "name": "Priya Nair",
+   "vertical": "SMSF",
+   "current": {
+    "jobs": 24,
+    "hours": 119.17,
+    "productive": 91.46
+   },
+   "previous": {
+    "jobs": 29,
+    "hours": 162.31,
+    "productive": 124.19
+   }
+  },
+  {
+   "name": "Ananya Iyer",
+   "vertical": "Business Services",
+   "current": {
+    "jobs": 30,
+    "hours": 166.92,
+    "productive": 151.68
+   },
+   "previous": {
+    "jobs": 39,
+    "hours": 231.21,
+    "productive": 199.17
+   }
+  },
+  {
+   "name": "Divya Shetty",
+   "vertical": "Business Services",
+   "current": {
+    "jobs": 29,
+    "hours": 167.56,
+    "productive": 136.01
+   },
+   "previous": {
+    "jobs": 24,
+    "hours": 109.78,
+    "productive": 99.5
+   }
+  },
+  {
+   "name": "Arjun Pillai",
+   "vertical": "Business Services",
+   "current": {
+    "jobs": 27,
+    "hours": 146.15,
+    "productive": 113.92
+   },
+   "previous": {
+    "jobs": 31,
+    "hours": 135.44,
+    "productive": 111.28
+   }
+  },
+  {
+   "name": "Vikram Hegde",
+   "vertical": "Bookkeeping",
+   "current": {
+    "jobs": 26,
+    "hours": 175.94,
+    "productive": 130.17
+   },
+   "previous": {
+    "jobs": 24,
+    "hours": 108.19,
+    "productive": 79.49
+   }
+  }
+ ]
+}

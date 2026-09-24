@@ -1,0 +1,118 @@
+{
+ "current_label": "September 2026",
+ "previous_label": "August 2026",
+ "rows": [
+  {
+   "name": "Arjun Pillai",
+   "vertical": "Bookkeeping",
+   "current": {
+    "jobs": 23,
+    "hours": 123.99,
+    "productive": 99.49
+   },
+   "previous": {
+    "jobs": 36,
+    "hours": 158.83,
+    "productive": 117.03
+   }
+  },
+  {
+   "name": "Vikram Hegde",
+   "vertical": "Financial Planning",
+   "current": {
+    "jobs": 19,
+    "hours": 91.12,
+    "productive": 75.64
+   },
+   "previous": {
+    "jobs": 26,
+    "hours": 117.27,
+    "productive": 99.54
+   }
+  },
+  {
+   "name": "Sneha Kulkarni",
+   "vertical": "Financial Planning",
+   "current": {
+    "jobs": 34,
+    "hours": 164.59,
+    "productive": 136.41
+   },
+   "previous": {
+    "jobs": 34,
+    "hours": 159.52,
+    "productive": 120.13
+   }
+  },
+  {
+   "name": "Rahul Menon",
+   "vertical": "Financial Planning",
+   "current": {
+    "jobs": 39,
+    "hours": 168.26,
+    "productive": 123.01
+   },
+   "previous": {
+    "jobs": 20,
+    "hours": 121.94,
+    "productive": 100.3
+   }
+  },
+  {
+   "name": "Karthik Rao",
+   "vertical": "Financial Planning",
+   "current": {
+    "jobs": 32,
+    "hours": 149.25,
+    "productive": 121.18
+   },
+   "previous": {
+    "jobs": 34,
+    "hours": 166.51,
+    "productive": 150.9
+   }
+  },
+  {
+   "name": "Priya Nair",
+   "vertical": "Financial Planning",
+   "current": {
+    "jobs": 36,
+    "hours": 196.29,
+    "productive": 164.48
+   },
+   "previous": {
+    "jobs": 26,
+    "hours": 133.7,
+    "productive": 110.3
+   }
+  },
+  {
+   "name": "Ananya Iyer",
+   "vertical": "Financial Planning",
+   "current": {
+    "jobs": 30,
+    "hours": 192.53,
+    "productive": 173.48
+   },
+   "previous": {
+    "jobs": 18,
+    "hours": 115.26,
+    "productive": 90.79
+   }
+  },
+  {
+   "name": "Divya Shetty",
+   "vertical": "Financial Planning",
+   "current": {
+    "jobs": 26,
+    "hours": 134.78,
+    "productive": 108.95
+   },
+   "previous": {
+    "jobs": 31,
+    "hours": 209.23,
+    "productive": 154.37
+   }
+  }
+ ]
+}

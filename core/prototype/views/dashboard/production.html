@@ -1,0 +1,47 @@
+<div x-data="productionPage">
+  <div x-show="loading" class="py-24 text-center text-sm text-slate-400">Loading…</div>
+  <template x-if="!loading">
+    <div>
+      <h1 class="mb-4 text-center text-2xl font-bold text-slate-800">Production Report</h1>
+      <div class="overflow-hidden rounded-2xl border border-brand bg-white shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-brand px-4 py-2.5 text-white">
+          <div class="font-bold">Associate Productivity - Month on Month</div>
+          <div class="flex items-center gap-2">
+            <span class="rounded-md bg-white/15 px-3 py-1 text-xs font-semibold" x-text="data.current_label"></span>
+            <select class="field !py-1 text-xs text-slate-700" x-model="vertical"><option value="">All Verticals</option><template x-for="v in verticals" :key="v.code"><option :value="v.title" x-text="v.title"></option></template></select>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="tbl min-w-full text-center">
+            <thead>
+              <tr class="bg-slate-50">
+                <th rowspan="2" class="!cursor-default text-center">S.No</th><th rowspan="2" class="!cursor-default !text-left">Associate Name</th>
+                <th colspan="3" class="!cursor-default border-b bg-brand-lighter text-center text-brand" x-text="data.current_label"></th>
+                <th rowspan="2" class="!cursor-default text-center">Job Trend</th><th rowspan="2" class="!cursor-default text-center">Time Trend</th>
+                <th colspan="3" class="!cursor-default border-b text-center" x-text="data.previous_label"></th>
+              </tr>
+              <tr class="bg-slate-50"><template x-for="(h, i) in ['Total Jobs Worked', 'Total Hours', 'Productive Hours', 'Total Jobs Worked', 'Total Hours', 'Productive Hours']" :key="i"><th class="!cursor-default text-center !text-xs" x-text="h"></th></template></tr>
+            </thead>
+            <tbody>
+              <template x-for="(r, i) in rows" :key="r.name">
+                <tr>
+                  <td x-text="i + 1"></td><td class="!text-left font-medium" x-text="r.name"></td>
+                  <td x-text="r.current.jobs"></td><td x-text="fx(r.current.hours)"></td><td x-text="fx(r.current.productive)"></td>
+                  <td :class="pct(r.current.jobs, r.previous.jobs) >= 0 ? 'text-green-700' : 'text-red-600'"><span class="msym !text-[16px]" x-text="pct(r.current.jobs, r.previous.jobs) >= 0 ? 'trending_up' : 'trending_down'"></span> <span x-text="Math.abs(pct(r.current.jobs, r.previous.jobs)) + '%'"></span></td>
+                  <td :class="pct(r.current.productive, r.previous.productive) >= 0 ? 'text-green-700' : 'text-red-600'"><span class="msym !text-[16px]" x-text="pct(r.current.productive, r.previous.productive) >= 0 ? 'trending_up' : 'trending_down'"></span> <span x-text="Math.abs(pct(r.current.productive, r.previous.productive)) + '%'"></span></td>
+                  <td x-text="r.previous.jobs"></td><td x-text="fx(r.previous.hours)"></td><td x-text="fx(r.previous.productive)"></td>
+                </tr>
+              </template>
+              <tr class="border-t-2 bg-slate-50 font-bold">
+                <td></td><td class="!text-left">Total</td>
+                <td x-text="total('current', 'jobs')"></td><td x-text="fx(total('current', 'hours'))"></td><td x-text="fx(total('current', 'productive'))"></td><td></td><td></td>
+                <td x-text="total('previous', 'jobs')"></td><td x-text="fx(total('previous', 'hours'))"></td><td x-text="fx(total('previous', 'productive'))"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div x-show="!rows.length" class="py-10 text-center text-sm text-slate-400">No productivity data found.</div>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>

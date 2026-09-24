@@ -7,7 +7,7 @@
         <div class="flex items-center gap-3">
           <span class="msym !text-[44px] text-slate-500">work_outline</span>
           <div>
-            <h1 class="text-xl font-semibold leading-tight">Job Status</h1>
+            <h1 class="text-xl font-semibold leading-tight">Jobs</h1>
             <p class="text-[11px] text-slate-500">Use SHIFT + Click to open job details in background tab</p>
           </div>
         </div>
@@ -17,10 +17,6 @@
               <button class="border-r border-slate-200 px-3 py-1.5 text-[13px] font-medium last:border-0" :class="vertical === v.title ? 'bg-[#dbe6f5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="setVertical(v.title)" x-text="v.title"></button>
             </template>
           </div>
-          <div class="inline-flex rounded-lg bg-white p-1 text-xs font-semibold shadow">
-            <button class="rounded-md px-3 py-1" :class="mode === 'live' ? 'bg-brand-lighter text-brand' : 'text-slate-500'" @click="mode = 'live'">Live Data</button>
-            <button class="rounded-md px-3 py-1" :class="mode === 'report' ? 'bg-brand-lighter text-brand' : 'text-slate-500'" @click="mode = 'report'">Report</button>
-          </div>
         </div>
       </div>
 
@@ -29,12 +25,12 @@
         <div class="w-[92px] shrink-0 px-2 py-1 text-[11px] leading-tight">Jobs status as of Today<div class="text-[13px] text-slate-800" x-text="todayLabel"></div></div>
         <template x-for="t in tiles" :key="t.key">
           <button class="flex w-[86px] shrink-0 flex-col justify-between border-l border-slate-100 px-2 py-1 text-left text-[11px] leading-tight hover:brightness-95" :class="[t.tone, status === t.key && 'outline outline-2 -outline-offset-2 outline-brand']" @click="mode = 'live'; setStatus(t.key)">
-            <span x-text="t.label"></span><span class="self-end text-[15px] text-slate-800" x-text="count(t.key)"></span></button>
+            <span x-text="t.label"></span><span class="self-end text-[15px] text-slate-800" x-text="count(t)"></span></button>
         </template>
         <button class="flex w-[86px] shrink-0 flex-col justify-between border-l border-slate-100 px-2 py-1 text-left text-[11px] leading-tight" :class="status === 'live' && 'outline outline-2 -outline-offset-2 outline-brand'" @click="mode = 'live'; setStatus('live')">
           <span>Total Live Jobs</span><span class="text-[15px] text-slate-800" x-text="liveCount"></span></button>
         <button class="flex w-[86px] shrink-0 flex-col justify-between border-l border-slate-100 bg-slate-50 px-2 py-1 text-left text-[11px] leading-tight" :class="status === 'all' && 'outline outline-2 -outline-offset-2 outline-brand'" @click="mode = 'live'; setStatus('all')">
-          <span>Total All Jobs</span><span class="text-[15px] text-slate-800" x-text="vJobs.length"></span></button>
+          <span>Total All Jobs</span><span class="text-[15px] text-slate-800" x-text="allCount"></span></button>
       </div>
       <div x-component="'legends'"></div>
 
@@ -80,72 +76,100 @@
           <div x-component="'pagination-status'"></div>
         </div>
 
-        <!-- job detail -->
+        <!-- job detail (dev layout: header facts + vertical timeline | budget, instructions, queries, appreciation & feedback) -->
         <template x-if="active !== 'list' && job">
           <div class="fade-in overflow-hidden rounded-2xl border border-navy bg-white">
             <div class="flex flex-wrap items-stretch border-b">
               <button class="m-3 flex items-center gap-1 rounded-full bg-slate-100 px-4 py-1.5 text-[15px] font-medium hover:bg-slate-200" @click="closeJob(active)"><span class="msym">close</span>Close</button>
               <div class="border-l px-4 py-2"><div class="text-lg font-bold text-navy" x-text="job.job_name"></div><div class="text-[11px] font-bold" x-text="'Last Modified ' + D(job.last_modified)"></div></div>
-              <div class="flex items-center gap-3 border-l px-4"><span class="msym !text-[38px]">badge</span><span class="text-xs" x-text="job.associate"></span></div>
-              <div class="border-l px-4 py-2"><div class="text-[11px] text-slate-500">Job Status</div><div class="text-[15px] font-medium" x-text="job.work_status"></div></div>
-              <div class="ml-auto flex items-center border-b-2 border-brand px-4 text-brand"><div class="text-center text-xs font-bold"><span class="msym block">error_outline</span>Information</div></div>
+              <div class="flex items-center gap-3 border-l px-4"><span class="msym !text-[38px]">badge</span><div><div class="text-[11px] text-slate-500">Accountant</div><div class="text-xs font-medium" x-text="job.associate"></div></div></div>
+              <template x-for="f in [['Job Status', statusOf(job)], ['Group Job Name', job.group_job_name], ['Nature of Job', job.nature_of_job], ['Received From', job.received_from], ['Received Date', D(job.received_date)]]" :key="f[0]">
+                <div class="border-l px-4 py-2"><div class="text-[11px] text-slate-500" x-text="f[0]"></div><div class="text-[15px] font-medium" x-text="f[1]"></div></div>
+              </template>
             </div>
 
-            <div class="bg-[#dfe5ef] px-6 py-4">
-              <h3 class="mb-3 text-lg font-semibold text-slate-600">Job Timeline</h3>
-              <div class="flex flex-nowrap items-center gap-2 overflow-x-auto pb-3">
-                <template x-for="(t, i) in job.timeline" :key="i">
-                  <div class="flex shrink-0 items-center gap-2">
-                    <div x-show="i > 0" class="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-sm shadow"><b x-text="gap(i)"></b> day<span class="msym rounded-full bg-slate-400 text-white !text-[18px]">arrow_forward</span></div>
-                    <div class="min-w-[170px] rounded-md bg-white px-3 py-2 shadow" :class="i === job.timeline.length - 1 && 'border-b-2 border-navy'"><div class="text-sm font-semibold" x-text="t.status"></div><div class="mt-2 text-right text-sm text-slate-600" x-text="D(t.on)"></div></div>
-                  </div>
-                </template>
-              </div>
-            </div>
-
-            <div class="px-6 py-5">
-              <h3 class="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-600"><span class="msym">work_outline</span>Basic Details</h3>
-              <div class="grid grid-cols-2 gap-4 text-sm md:grid-cols-5">
-                <template x-for="f in [['Group Job Name', job.group_job_name],['Nature of Job', job.nature_of_job],['Received Date', D(job.received_date)],['Commenced Date', D(job.commenced_date)],['Received From', job.received_from]]">
-                  <div><div class="text-[13px] text-slate-400" x-text="f[0]"></div><div class="font-medium" x-text="f[1]"></div></div></template>
-              </div>
-            </div>
-
-            <div class="grid gap-6 border-t px-6 py-5 lg:grid-cols-2">
-              <div class="space-y-6">
-                <div><h3 class="mb-2 flex items-center gap-2 text-lg font-semibold text-slate-600"><span class="msym">account_balance</span>Financial Information</h3>
-                  <div class="flex gap-6"><div class="w-40"><div class="text-[13px] text-slate-400">Job ID</div><div class="border-b bg-slate-50 px-2 py-1 text-sm" x-text="job.job_id"></div></div>
-                  <div class="w-56"><div class="text-[13px] text-slate-400">Job Status</div><div class="border-b bg-slate-50 px-2 py-1 text-sm" x-text="job.work_status"></div></div></div></div>
-                <div><h3 class="mb-2 flex items-center gap-2 text-lg font-semibold text-slate-600"><span class="msym">attach_money</span>Budget Details</h3>
-                  <div class="max-w-sm"><div class="mb-1 flex justify-between text-sm"><span x-text="job.actual_hours + ' of ' + job.budget_hours + ' hrs'"></span><span class="font-semibold" x-text="pct(job) + '%'"></span></div>
-                  <div class="h-2 rounded-full bg-slate-100"><div class="h-2 rounded-full" :class="pct(job) >= 100 ? 'bg-red-600' : 'bg-navy'" :style="'width:' + pct(job) + '%'"></div></div></div></div>
-                <div><h3 class="mb-2 flex items-center gap-2 text-lg font-semibold text-slate-600"><span class="msym">work_outline</span>Job Details</h3>
-                  <div class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
-                    <template x-for="f in [['Partner', job.partner],['Director', job.director],['Manager', job.manager],['Reviewer', job.reviewer],['Financial Year', job.financial_year],['Due Date', D(job.due_date)]]">
-                      <div><div class="text-[13px] text-slate-400" x-text="f[0]"></div><div class="font-medium" x-text="f[1]"></div></div></template></div></div>
-              </div>
-
+            <div class="grid gap-4 bg-[#dfe5ef] lg:grid-cols-2">
+              <!-- vertical job timeline -->
               <div>
-                <h3 class="mb-2 flex items-center gap-2 text-lg font-semibold text-slate-600"><span class="msym">chat_bubble_outline</span>Instructions</h3>
-                <div class="overflow-hidden rounded-lg border bg-slate-50">
-                  <div class="flex items-center justify-between border-b bg-white px-3 py-2">
-                    <button class="flex items-center gap-2 text-sm text-brand disabled:opacity-60" :disabled="priority[active]" @click="requestPriority()"><span class="msym">error_outline</span><span x-text="priority[active] ? 'Priority requested' : 'Request to mark as priority'"></span></button>
-                    <div class="flex gap-4 text-slate-500"><span class="msym border-b-2 border-brand pb-1 text-brand">chat</span><span class="msym">menu_book</span><span class="msym">account_circle</span></div>
-                  </div>
-                  <div class="grid min-h-[210px] sm:grid-cols-2">
-                    <div class="flex flex-col justify-between border-r p-3 text-sm">
-                      <div class="space-y-2">
-                        <div x-show="!(instr[active] || []).length" class="pt-6 text-center text-slate-500">No instructions found<br>Send new instruction to begin</div>
-                        <template x-for="m in (instr[active] || [])"><div class="rounded-lg bg-brand-light p-2"><div x-text="m.text"></div><div class="mt-1 text-right text-[11px] text-slate-500" x-text="CP.fmt.dt(m.at)"></div></div></template>
+                <h3 class="px-6 pt-3 text-lg font-semibold text-slate-600">Job Timeline</h3>
+                <ol class="px-6 py-4">
+                  <template x-for="(t, i) in job.timeline" :key="i">
+                    <li class="flex gap-4">
+                      <div class="w-24 shrink-0 pt-0.5 text-right text-xs font-semibold text-slate-500" x-text="D(t.on)"></div>
+                      <div class="flex flex-col items-center">
+                        <span class="relative mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 border-brand" :class="i === job.timeline.length - 1 ? 'bg-white' : 'bg-brand'"><span x-show="i === job.timeline.length - 1" class="h-2 w-2 animate-pulse rounded-full bg-brand"></span></span>
+                        <div x-show="i < job.timeline.length - 1" class="relative min-h-[56px] w-0.5 flex-1 bg-brand/70">
+                          <span class="absolute left-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border px-2 py-0.5 text-[11px] font-semibold" :class="gap(i + 1) > 30 ? 'border-red-300 bg-red-100 text-red-700' : gap(i + 1) > 10 ? 'border-yellow-300 bg-yellow-50 text-yellow-700' : 'border-slate-300 bg-slate-100 text-slate-600'" x-text="gap(i + 1) + (gap(i + 1) === 1 ? ' day' : ' days')"></span>
+                        </div>
                       </div>
-                      <div class="mt-3 flex items-center gap-2"><input class="field flex-1" placeholder="Type an instruction…" x-model="newInstr" @keydown.enter="sendInstr()"><button class="btn-soft" @click="sendInstr()"><span class="msym">send</span></button></div>
+                      <div class="flex-1 pb-4">
+                        <div class="flex flex-wrap items-center gap-2"><span class="text-sm font-semibold" :class="i === job.timeline.length - 1 ? 'text-brand' : 'text-slate-700'" x-text="t.status"></span><span x-show="i === job.timeline.length - 1" class="rounded-full bg-brand/10 px-2 py-0.5 text-[11px] font-semibold text-brand">Current</span></div>
+                        <div class="mt-0.5 text-xs text-slate-500">Time taken: <strong class="text-slate-700" x-text="hm(stepTimes[i])"></strong> hrs</div>
+                      </div>
+                    </li>
+                  </template>
+                </ol>
+              </div>
+
+              <!-- right-hand cards -->
+              <div class="space-y-4 px-6 py-4 lg:pl-0">
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+                  <div class="flex items-center gap-2 border-b px-4 py-2 text-sm font-semibold text-brand"><span class="msym !text-[16px]">tune</span>Under / Over Budget</div>
+                  <div class="space-y-2 px-4 py-3 text-sm">
+                    <div class="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+                      <span>Budget <strong x-text="hm(job.budget_hours)"></strong></span><span>Time taken <strong x-text="hm(job.actual_hours)"></strong></span>
+                      <span>Variance <strong :class="job.actual_hours > job.budget_hours ? 'text-red-600' : 'text-green-700'" x-text="hm(Math.abs(job.budget_hours - job.actual_hours))"></strong></span><span>Utilisation <span x-text="pct(job) + '%'"></span></span>
                     </div>
-                    <div class="p-3"><div class="text-sm font-bold">Standard Instructions</div><div class="mb-2 text-xs text-slate-500">Select an instruction to include it in the instruction field.</div>
-                      <template x-for="s in standard"><button class="mb-2 flex w-full items-start gap-2 rounded-md bg-white p-2 text-left text-sm shadow-sm hover:shadow" @click="newInstr = s"><span class="msym !text-[16px] text-slate-400">chat_bubble_outline</span><span x-text="s"></span></button></template></div>
+                    <span class="inline-block rounded-full border px-3 py-0.5 text-xs font-semibold" :class="job.actual_hours > job.budget_hours ? 'border-red-300 bg-red-50 text-red-700' : 'border-green-300 bg-green-50 text-green-700'" x-text="job.actual_hours > job.budget_hours ? 'Over budget' : 'Under budget'"></span>
+                  </div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+                  <div class="flex items-center gap-2 border-b px-4 py-2 text-sm font-semibold text-brand"><span class="msym !text-[16px]">assignment</span>Instructions</div>
+                  <div class="max-h-[260px] min-h-[120px] space-y-2 overflow-y-auto p-3">
+                    <div x-show="!(instr[active] || []).length" class="text-sm text-slate-500">No instructions found</div>
+                    <template x-for="m in (instr[active] || [])"><div class="rounded-lg border bg-white px-3 py-2 shadow-sm"><div class="flex justify-between text-xs"><span class="font-semibold text-brand" x-text="$store.app.user.first_name"></span><span class="text-slate-400" x-text="CP.fmt.dt(m.at)"></span></div><div class="mt-1 text-sm" x-text="m.text"></div></div></template>
+                  </div>
+                  <div class="flex items-center gap-2 border-t p-2"><input class="field flex-1 !py-1 text-xs" placeholder="Type an instruction…" x-model="newInstr" @keydown.enter="sendInstr()"><button class="btn-soft" @click="sendInstr()"><span class="msym">send</span></button></div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+                  <div class="flex items-center gap-2 border-b px-4 py-2 text-sm font-semibold text-brand"><span class="msym !text-[16px]">help_outline</span>Queries</div>
+                  <div class="flex min-h-[80px] items-center justify-center p-3">
+                    <div x-show="!jobQueryCount" class="text-sm text-slate-500">No queries found</div>
+                    <button x-show="jobQueryCount" class="flex flex-col items-center gap-0.5 rounded-lg px-4 py-1 hover:bg-brand-lighter" @click="openQueries()">
+                      <span class="text-2xl font-semibold text-brand" x-text="jobQueryCount"></span><span class="text-xs font-medium text-slate-500 underline" x-text="jobQueryCount === 1 ? 'View Query' : 'View Queries'"></span></button>
+                  </div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+                  <div class="flex items-center justify-between gap-2 border-b px-4 py-2 text-sm font-semibold text-brand">
+                    <span class="flex items-center gap-2"><span class="msym !text-[16px]">favorite_border</span>Appreciation and Feedback</span>
+                    <button x-show="jobSurvey" class="text-xs font-semibold underline" @click="feedbackOpen = true">View Feedback</button>
+                  </div>
+                  <div class="max-h-[260px] min-h-[120px] space-y-2 overflow-y-auto p-3">
+                    <div x-show="!jobAppreciation.length" class="text-sm text-slate-500">No appreciation received for this job yet</div>
+                    <template x-for="a in jobAppreciation" :key="a.id"><div class="rounded-lg border bg-white px-3 py-2 shadow-sm">
+                      <div class="text-right text-xs text-slate-400" x-text="D(a.received_date)"></div><div class="text-sm" x-text="a.message"></div>
+                      <div class="mt-1.5 flex flex-wrap gap-1.5 text-[11px]"><template x-for="r in a.appreciation_for.split(', ')"><span class="rounded-full bg-brand/10 px-2 py-0.5 font-semibold text-brand" x-text="r"></span></template></div></div></template>
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- submitted feedback survey (read-only) -->
+            <template x-if="feedbackOpen && jobSurvey">
+              <div class="fixed inset-0 z-[80] grid place-items-center bg-black/50 p-4" @click.self="feedbackOpen = false">
+                <div class="w-full max-w-lg rounded-xl bg-white shadow-xl">
+                  <div class="flex items-center justify-between border-b px-5 py-3"><h5 class="font-semibold">Feedback</h5><button @click="feedbackOpen = false"><span class="msym">close</span></button></div>
+                  <div class="space-y-3 p-5 text-sm">
+                    <div><div class="font-semibold text-slate-600">Overall Satisfaction</div><div x-text="jobSurvey.overall_satisfaction || '-'"></div><div class="mt-0.5 text-slate-600" x-text="jobSurvey.overall_insights"></div></div>
+                    <div><div class="font-semibold text-slate-600">Responsiveness</div><div x-text="jobSurvey.responsiveness || '-'"></div><div class="mt-0.5 text-slate-600" x-text="jobSurvey.responsiveness_insights"></div></div>
+                    <div x-show="jobSurvey.improvements"><div class="font-semibold text-slate-600">Suggested Improvements</div><div x-text="jobSurvey.improvements"></div></div>
+                  </div>
+                </div>
+              </div>
+            </template>
           </div>
         </template>
       </div>

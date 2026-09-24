@@ -17,6 +17,9 @@ document.addEventListener('alpine:init', () => {
       [this.jobs, this.queries] = await Promise.all([CP.clientData('jobs'), CP.clientData('queries')]);
       this.tbl = CP.makeTable({ rows: () => this.jobRows, columns: COLS, size: 10, searchKeys: ['job_id', 'job_name', 'vertical', 'title_last'] });
       this.loading = false;
+      /* deep link from a job's detail (#/dashboard/queries?job=<id>) lands straight on that job's queries, like the real portal's ?jobId= */
+      const deep = /[?&]job=(\d+)/.exec(location.hash);
+      if (deep && this.jobs.some((j) => j.job_id === +deep[1])) this.openJob(+deep[1]);
     },
 
     elapsed(q) { return CP.daysBetween(q.posted_on.slice(0, 10), CP.TODAY); },

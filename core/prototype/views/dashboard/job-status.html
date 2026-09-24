@@ -93,9 +93,9 @@
 
             <div class="bg-[#dfe5ef] px-6 py-4">
               <h3 class="mb-3 text-lg font-semibold text-slate-600">Job Timeline</h3>
-              <div class="flex flex-wrap items-center gap-2">
+              <div class="flex flex-nowrap items-center gap-2 overflow-x-auto pb-3">
                 <template x-for="(t, i) in job.timeline" :key="i">
-                  <div class="flex items-center gap-2">
+                  <div class="flex shrink-0 items-center gap-2">
                     <div x-show="i > 0" class="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-sm shadow"><b x-text="gap(i)"></b> day<span class="msym rounded-full bg-slate-400 text-white !text-[18px]">arrow_forward</span></div>
                     <div class="min-w-[170px] rounded-md bg-white px-3 py-2 shadow" :class="i === job.timeline.length - 1 && 'border-b-2 border-navy'"><div class="text-sm font-semibold" x-text="t.status"></div><div class="mt-2 text-right text-sm text-slate-600" x-text="D(t.on)"></div></div>
                   </div>

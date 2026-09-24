@@ -1,0 +1,166 @@
+.dashboard-filters-header {
+    background: var(--primary-color, #7a1f2b);
+}
+
+.dashboard-filters-apply-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-color, #7a1f2b);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.vertical-tabs {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.vertical-tab {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        color: var(--primary-color, #7a1f2b);
+    }
+
+    &.is-active {
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 600;
+        border-bottom-color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.dashboard-summary-card {
+    border-top: 4px solid var(--primary-color, #7a1f2b);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+        transform: translateY(-2px);
+    }
+}
+
+.dashboard-summary-card-icon {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(var(--primary-color-rgb, 122, 31, 43), 0.1);
+    color: var(--primary-color, #7a1f2b);
+}
+
+.dashboard-summary-card-title {
+    color: var(--primary-color, #7a1f2b);
+}
+
+// Fixed accent (not tied to the tenant's theme primary color) for cards
+// that should keep a consistent color regardless of client branding.
+.dashboard-summary-card--green {
+    border-top-color: #0f6a5c;
+
+    .dashboard-summary-card-icon {
+        background-color: rgba(15, 106, 92, 0.1);
+        color: #0f6a5c;
+    }
+
+    .dashboard-summary-card-title {
+        color: #0f6a5c;
+    }
+}
+
+.dashboard-summary-card--indigo {
+    border-top-color: #4338ca;
+
+    .dashboard-summary-card-icon {
+        background-color: rgba(67, 56, 202, 0.1);
+        color: #4338ca;
+    }
+
+    .dashboard-summary-card-title {
+        color: #4338ca;
+    }
+}
+
+.dashboard-summary-card--amber {
+    border-top-color: #b5541c;
+
+    .dashboard-summary-card-icon {
+        background-color: rgba(181, 84, 28, 0.1);
+        color: #b5541c;
+    }
+
+    .dashboard-summary-card-title {
+        color: #b5541c;
+    }
+}
+
+.dashboard-summary-card--cyan {
+    border-top-color: #0e7490;
+
+    .dashboard-summary-card-icon {
+        background-color: rgba(14, 116, 144, 0.1);
+        color: #0e7490;
+    }
+
+    .dashboard-summary-card-title {
+        color: #0e7490;
+    }
+}
+
+.dashboard-summary-card--rose {
+    border-top-color: #be185d;
+
+    .dashboard-summary-card-icon {
+        background-color: rgba(190, 24, 93, 0.1);
+        color: #be185d;
+    }
+
+    .dashboard-summary-card-title {
+        color: #be185d;
+    }
+}
+
+.dashboard-summary-card--purple {
+    border-top-color: #6d28d9;
+
+    .dashboard-summary-card-icon {
+        background-color: rgba(109, 40, 217, 0.1);
+        color: #6d28d9;
+    }
+
+    .dashboard-summary-card-title {
+        color: #6d28d9;
+    }
+}
+
+.budget-pill {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.budget-pill--under {
+    background-color: rgba(21, 128, 61, 0.1);
+    color: #15803d;
+}
+
+.budget-pill--over {
+    background-color: rgba(185, 28, 28, 0.1);
+    color: #b91c1c;
+}

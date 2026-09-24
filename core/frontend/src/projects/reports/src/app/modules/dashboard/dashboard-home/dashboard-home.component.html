@@ -102,22 +102,9 @@
                 <div class="row align-items-center">
                     <div class="col-sm-1">
                     </div>
-                    <div class="col-sm-8 hstack justify-content-center">
-                        <div 
-                            class="hstack gap-2 justify-content-center align-items-center"
-                            [ngClass]="(filterDashboardType.tabs && filterDashboardType.tabs.length <= 1)? 'h-0 opacity-0 overflow-hidden pe-none' : ''"
-                        >
-                            <div *ngIf="filterDashboardType.selectedTab != dashboardTypes.monthlyConnect"
-                                class="fw-500 hstack justify-content-center align-items-center gap-2 pe-1">
-                                <span class="material-symbols-rounded color-primary">business_center</span> Job 
-                                <span
-                                    class="material-symbols-rounded">arrow_right</span>
-                            </div>
-                            <pq-simple-tab [tabs]="filterDashboardType.tabs" labelClass="px-4" tabName="dashboard-type"
-                                [selectedTab]="filterDashboardType.selectedTab.index" tabStyle="island"
-                                labelClass="rounded-pill"
-                                (tabSelectedEvent)="handleFilterDashboardTypeTab($event)"></pq-simple-tab>
-                        </div>
+                    <div class="col-sm-8">
+                        <!-- Tab switcher removed: each dashboard type (Movement, Job Status,
+                             Queries, ...) now has its own direct sidebar link instead. -->
                     </div>
                     <div class="col-sm-1">
                         <ng-container *ngIf="isRulesApplied">
@@ -1167,7 +1154,7 @@
 
         <!-- Queries Tab -->
         <ng-container *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.QUERIES">
-            <app-queries-home></app-queries-home>
+            <app-queries-home [jobId]="requestedJobId"></app-queries-home>
         </ng-container>
 
         <ng-container *ngIf="filterDashboardType.selectedTab.index == filterDashboardType.legends.BS_MOVEMENT">

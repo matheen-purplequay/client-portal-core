@@ -1,0 +1,309 @@
+.feedback-header {
+    background: var(--primary-color, #7a1f2b);
+}
+
+.feedback-table {
+    border-collapse: collapse;
+    font-size: 13px;
+
+    th, td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #f0e5e7;
+        text-align: left;
+    }
+
+    th {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.08);
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 600;
+    }
+
+    .job-name-cell {
+        color: var(--primary-color, #7a1f2b);
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    tbody tr:hover {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.03);
+    }
+}
+
+.feedback-btn {
+    background: transparent;
+    border: 1px solid var(--primary-color, #7a1f2b);
+    color: var(--primary-color, #7a1f2b);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: var(--primary-color, #7a1f2b);
+        color: #fff;
+    }
+}
+
+.feedback-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    padding: 16px;
+}
+
+.feedback-popup {
+    background: #fff;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.survey-question {
+    margin-bottom: 18px;
+}
+
+.survey-label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.survey-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding: 2px 0 2px 12px;
+    cursor: pointer;
+
+    input {
+        accent-color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.feedback-popup-header {
+    background: var(--primary-color, #7a1f2b);
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+
+.feedback-popup-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    display: flex;
+    cursor: pointer;
+}
+
+.feedback-textarea {
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    resize: vertical;
+
+    &:focus {
+        outline: none;
+        border-color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.feedback-popup-btn {
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.feedback-popup-btn--cancel {
+    background: transparent;
+    border: 1px solid #d8dee6;
+    color: #4b5563;
+
+    &:hover {
+        background: #f4f5f7;
+    }
+}
+
+.feedback-popup-btn--submit {
+    background: var(--primary-color, #7a1f2b);
+    border: 1px solid var(--primary-color, #7a1f2b);
+    color: #fff;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.vertical-tabs {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.vertical-tab {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        color: var(--primary-color, #7a1f2b);
+    }
+
+    &.is-active {
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 600;
+        border-bottom-color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.filter-row th {
+    background: #fff;
+    padding: 6px 10px;
+
+    input:not([type="checkbox"]) {
+        width: 100%;
+        border: 1px solid #dcdcdc;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 12px;
+
+        &:focus {
+            outline: none;
+            border-color: var(--primary-color, #7a1f2b);
+        }
+    }
+}
+
+.ms-filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    width: 100%;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 12px;
+    background: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+
+    .ms-filter-btn-label {
+        display: inline-block;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #374151;
+    }
+
+    .material-symbols-rounded {
+        font-size: 16px;
+        color: #6b7280;
+        flex-shrink: 0;
+    }
+
+    &:hover {
+        border-color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.ms-filter-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 20;
+    margin-top: 4px;
+    width: 180px;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 6px 0;
+    white-space: normal;
+    font-weight: 400;
+    text-align: left;
+}
+
+.ms-filter-cell {
+    position: relative;
+}
+
+.ms-filter-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    text-align: left;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #374151;
+    white-space: normal;
+
+    input[type="checkbox"] {
+        flex: 0 0 auto;
+        width: 14px;
+        height: 14px;
+        margin: 2px 0 0 0;
+        padding: 0;
+    }
+
+    .ms-filter-option-text {
+        flex: 1 1 auto;
+        color: #374151;
+    }
+
+    &:hover {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.06);
+    }
+}
+
+.ms-filter-option--all {
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 2px;
+}
+
+.ms-filter-search {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding: 4px 10px 6px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid #eee;
+
+    input {
+        width: 100%;
+        border: 1px solid #dcdcdc;
+        border-radius: 4px;
+        padding: 3px 8px;
+        font-size: 12px;
+
+        &:focus {
+            outline: none;
+            border-color: var(--primary-color, #7a1f2b);
+        }
+    }
+}
+
+.ms-filter-empty {
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #9ca3af;
+}

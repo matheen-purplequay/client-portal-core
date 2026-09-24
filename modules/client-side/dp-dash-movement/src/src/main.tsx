@@ -64,29 +64,37 @@ class MyReactWidget extends HTMLElement {
   }
 
   renderReactApp() {
-    const shadowRoot = this.shadowRoot || this.attachShadow({ mode: 'open' });
-    shadowRoot.innerHTML = '';
+    // Angular's attribute binding, property binding, and this element's own
+    // connectedCallback all call this independently, often within the same
+    // tick on initial load. This used to call ReactDOM.createRoot() fresh
+    // every time — spinning up a brand-new React tree (and re-firing every
+    // top-level useEffect/data fetch, e.g. get-verticals/get-manager-status)
+    // 3x on a single page load, on top of leaking the previous root's DOM.
+    // Now the shadow root/styles/mount point/React root are created once;
+    // later calls just re-render the existing root with the latest props,
+    // which React reconciles without remounting (so effects don't refire).
+    if (!this.root) {
+      const shadowRoot = this.shadowRoot || this.attachShadow({ mode: 'open' });
 
-    // Inject Tailwind styles
-    const twStyle = document.createElement('style');
-    twStyle.textContent = tailwind;
-    shadowRoot.appendChild(twStyle);
+      const twStyle = document.createElement('style');
+      twStyle.textContent = tailwind;
+      shadowRoot.appendChild(twStyle);
 
-    // Inject custom app styles
-    const mainStyle = document.createElement('style');
-    mainStyle.textContent = main;
-    shadowRoot.appendChild(mainStyle);
+      const mainStyle = document.createElement('style');
+      mainStyle.textContent = main;
+      shadowRoot.appendChild(mainStyle);
 
-    // Mount React app
-    this.mountPoint = document.createElement('div');
-    shadowRoot.appendChild(this.mountPoint);
+      this.mountPoint = document.createElement('div');
+      shadowRoot.appendChild(this.mountPoint);
+
+      this.root = ReactDOM.createRoot(this.mountPoint);
+    }
 
     const passedData = {
       userData: this._userData,
       selectedClientUser: this._selectedClientUser
     };
 
-    this.root = ReactDOM.createRoot(this.mountPoint);
     this.root.render(<App {...passedData} />);
   }
 }

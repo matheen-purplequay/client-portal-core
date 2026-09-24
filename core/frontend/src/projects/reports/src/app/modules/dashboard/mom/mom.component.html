@@ -1,0 +1,77 @@
+<section class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="h3 fw-bold mb-0">Meeting</div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="mom-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="mom-header px-4 py-3">
+            <div class="fw-bold text-white">Meetings</div>
+        </div>
+
+        <div class="p-3 d-flex align-items-end gap-2 flex-wrap">
+            <div>
+                <label class="small d-block mb-1 opacity-75">From</label>
+                <input type="date" class="mom-date" [(ngModel)]="dateFrom">
+            </div>
+            <div>
+                <label class="small d-block mb-1 opacity-75">To</label>
+                <input type="date" class="mom-date" [(ngModel)]="dateTo">
+            </div>
+            <button type="button" class="clear-date-btn" (click)="clearDateFilter()" *ngIf="dateFrom || dateTo">
+                Clear
+            </button>
+        </div>
+
+        <div *ngIf="isLoading" class="p-5 text-center opacity-75">
+            Loading meetings...
+        </div>
+
+        <div *ngIf="!isLoading" class="table-responsive">
+            <table class="mom-table w-100">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Date</th>
+                        <th>Client Present</th>
+                        <th>Purpose</th>
+                        <th>Description</th>
+                        <th>Vertical</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredRows.length === 0">
+                        <td colspan="6" class="text-center py-4 opacity-75">No meetings found.</td>
+                    </tr>
+                    <tr *ngFor="let row of filteredRows">
+                        <td class="fw-medium">{{ row.clientName }}</td>
+                        <td>{{ row.date }}</td>
+                        <td>{{ row.clientPresent }}</td>
+                        <td>{{ row.purpose }}</td>
+                        <td class="text-center">
+                            <button type="button" class="view-description-btn" data-bs-toggle="modal" data-bs-target="#momDescriptionModal" (click)="viewDescription(row)" title="View description">
+                                <span class="material-symbols-rounded">visibility</span>
+                            </button>
+                        </td>
+                        <td>{{ row.vertical }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="momDescriptionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ selectedRow?.clientName }} — {{ selectedRow?.date }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body mom-description-body" [innerHTML]="selectedRow?.description"></div>
+        </div>
+    </div>
+</div>

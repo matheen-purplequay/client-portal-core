@@ -1,5 +1,5 @@
 // Dev Base
-// const REPORTS_API_BASE_URL = 'http://localhost:8001/api';
+const REPORTS_API_BASE_URL = 'http://localhost:8001/api';
 // const WM_API_BASE_URL = `http://172.16.11.9:5064/api`;
 
 //import { report } from "process";
@@ -7,7 +7,7 @@
 // Production Base
 const WM_API_BASE_URL = `https://clientqueryapi.purplequay.com.au/api`;
 // const REPORTS_API_BASE_URL = 'https://www.deliveryportal-reportsapi.purplequay.com/api';
-const REPORTS_API_BASE_URL = 'https://cpreports.carisma-solutions.com.au/api';
+// const REPORTS_API_BASE_URL = 'https://cpreports.carisma-solutions.com.au/api';
 
 
 const MOVEMENT_API_BASE_URL = `${REPORTS_API_BASE_URL}/client/business-services`;
@@ -34,6 +34,8 @@ export const apiRoutes = {
         download: `${MOVEMENT_API_BASE_URL}/export-movement`,
         getWithCounts: `${REPORTS_API_BASE_URL}/client/dashboard/get-movement-with-counts`,
         downloadWithCounts: `${REPORTS_API_BASE_URL}/client/dashboard/export-movement-with-counts`,
+        getPartnerWiseJobs: `${REPORTS_API_BASE_URL}/client/dashboard/get-partner-wise-jobs`,
+        getManagerStatus: `${REPORTS_API_BASE_URL}/client/dashboard/get-manager-status`,
     },
     instructions: {
         get: `${INSTRUCTIONS_API_BASE_URL}/comments/get`,
@@ -70,6 +72,9 @@ export const apiRoutes = {
     },
     job: {
         getDetailsById: `${JOB_API_BASE_URL}/get-job-status-history`,
-        getJobInformation: `${JOB_API_BASE_URL}/get-job-information`
+        getJobInformation: `${JOB_API_BASE_URL}/get-job-information`,
+        getBudgetSummary: `${JOB_API_BASE_URL}/get-job-budget-summary`,
+        getAppreciation: `${JOB_API_BASE_URL}/get-job-appreciation`,
+        getFeedback: `${JOB_API_BASE_URL}/get-job-feedback`
     }
 };

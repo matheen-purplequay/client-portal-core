@@ -626,6 +626,12 @@ namespace WMAPI.Repositories.QueryRepository
             try
             {
                 var jobData = new List<Dictionary<string, object>>();
+                // Rows needing attachments are tracked separately and resolved with
+                // one batched query after the main result set is read, instead of
+                // one extra DB round trip (new connection + stored procedure call)
+                // per row — that N+1 pattern was the main cause of RetrieveQueries
+                // being slow for jobs with more than a handful of queries.
+                var rowsNeedingAttachments = new List<(Dictionary<string, object> row, int queryId)>();
 
                 if (string.IsNullOrWhiteSpace(requestModel.filters[0].code))
                 {
@@ -647,11 +653,9 @@ namespace WMAPI.Repositories.QueryRepository
                                         row.Add(reader.GetName(i), reader[i]);
                                     }
 
-                                    // Get the query ID and fetch attachments
                                     if (row.ContainsKey("id") && int.TryParse(row["id"].ToString(), out var queryId))
                                     {
-                                        var attachments = await GetAttachmentsForQuery(queryId);
-                                        row["attachments"] = attachments;
+                                        rowsNeedingAttachments.Add((row, queryId));
                                     }
 
                                     jobData.Add(row);
@@ -691,7 +695,7 @@ namespace WMAPI.Repositories.QueryRepository
                     {
                         whereConditionStr.Append(" and q1.status_id != 1 and ").Append(" q1.status_id != 5 ");
                     }
-                    
+
                     Console.WriteLine(whereCondition);
 
                     using (var connection = new MySqlConnection(_connectionString))
@@ -715,17 +719,26 @@ namespace WMAPI.Repositories.QueryRepository
                                         row.Add(reader.GetName(i), reader.IsDBNull(i) ? "" : reader[i]);
                                     }
 
-                                    // Get the query ID and fetch attachments
                                     if (includeAttachments && row.ContainsKey("id") && int.TryParse(row["id"].ToString(), out var queryId))
                                     {
-                                        var attachments = await GetAttachmentsForQuery(queryId);
-                                        row["attachments"] = attachments;
+                                        rowsNeedingAttachments.Add((row, queryId));
                                     }
 
                                     jobData.Add(row);
                                 }
                             }
                         }
+                    }
+                }
+
+                if (rowsNeedingAttachments.Count > 0)
+                {
+                    var attachmentsByQueryId = await GetAttachmentsForQueries(rowsNeedingAttachments.Select(r => r.queryId).Distinct().ToList());
+                    foreach (var (row, queryId) in rowsNeedingAttachments)
+                    {
+                        row["attachments"] = attachmentsByQueryId.TryGetValue(queryId, out var attachments)
+                            ? attachments
+                            : new List<Dictionary<string, object>>();
                     }
                 }
 
@@ -885,6 +898,53 @@ namespace WMAPI.Repositories.QueryRepository
             catch (Exception ex)
             {
                 throw new Exception("Error while fetching data.", ex);
+            }
+        }
+
+        // Batched equivalent of GetAttachmentsForQuery: one query for every
+        // query_id in the list instead of one connection + stored-procedure
+        // call per query. Same columns as SP_SMSF_Portal_GetAttachmentsForQuery
+        // (link_id, title, link, user_id), plus query_id to group by.
+        private async Task<Dictionary<int, List<Dictionary<string, object>>>> GetAttachmentsForQueries(List<int> queryIds)
+        {
+            var result = new Dictionary<int, List<Dictionary<string, object>>>();
+
+            try
+            {
+                if (queryIds == null || queryIds.Count == 0) return result;
+
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    var idList = string.Join(",", queryIds.Distinct());
+                    var query = $"SELECT id AS link_id, title, link, user_id, query_id FROM tbl_doc_link WHERE query_id IN ({idList});";
+
+                    using (var command = new MySqlCommand(query, connection))
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var row = new Dictionary<string, object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                row.Add(reader.GetName(i), reader[i]);
+                            }
+
+                            var queryId = Convert.ToInt32(row["query_id"]);
+                            row.Remove("query_id");
+
+                            if (!result.ContainsKey(queryId)) result[queryId] = new List<Dictionary<string, object>>();
+                            result[queryId].Add(row);
+                        }
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while fetching attachments.", ex);
             }
         }
 

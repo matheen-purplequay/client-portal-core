@@ -1,0 +1,161 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="h3 fw-bold mb-1">Closed Jobs - Feedback</div>
+            <div class="text-slate-600">
+                All closed jobs for this engagement. Add feedback on service quality for any job.
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vertical-tabs hstack gap-3 flex-wrap mt-3">
+                <div class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</div>
+                <div class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="feedback-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="feedback-header px-4 py-3">
+            <div class="fw-bold text-white">Closed Jobs</div>
+        </div>
+
+        <div *ngIf="isLoading" class="p-5 text-center opacity-75">
+            Loading closed jobs...
+        </div>
+
+        <div *ngIf="!isLoading" class="table-responsive">
+            <table class="feedback-table w-100">
+                <thead>
+                    <tr>
+                        <th>Received From</th>
+                        <th>Job Name</th>
+                        <th>Nature of Job</th>
+                        <th class="text-center">Budget</th>
+                        <th class="text-center">Time Taken</th>
+                        <th class="text-center">Turnaround (Days)</th>
+                        <th>Job Status</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('receivedFrom')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('receivedFrom') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.receivedFrom" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.receivedFrom && receivedFromOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('receivedFrom')" (change)="toggleSelectAll('receivedFrom')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('receivedFrom')">
+                                    <input type="checkbox" [checked]="isOptionSelected('receivedFrom', opt)" (change)="toggleFilterOption('receivedFrom', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('receivedFrom').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th><input type="text" [(ngModel)]="filters.jobName" placeholder=""></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('natureOfJob')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('natureOfJob') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.natureOfJob" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.natureOfJob && natureOfJobOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('natureOfJob')" (change)="toggleSelectAll('natureOfJob')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('natureOfJob')">
+                                    <input type="checkbox" [checked]="isOptionSelected('natureOfJob', opt)" (change)="toggleFilterOption('natureOfJob', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('natureOfJob').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredRows.length === 0">
+                        <td colspan="8" class="text-center py-4 opacity-75">No closed jobs found.</td>
+                    </tr>
+                    <tr *ngFor="let row of filteredRows">
+                        <td>{{ row.receivedFrom }}</td>
+                        <td class="fw-medium job-name-cell" [title]="row.jobName">{{ row.jobName }}</td>
+                        <td>{{ row.natureOfJob }}</td>
+                        <td class="text-center">{{ row.budgetTime }}</td>
+                        <td class="text-center">{{ row.timeTaken }}</td>
+                        <td class="text-center">{{ row.turnaroundDays }}</td>
+                        <td>Closed</td>
+                        <td class="text-center">
+                            <button type="button" class="feedback-btn" (click)="openFeedbackPopup(row)">{{ row.surveySubmitted ? 'Edit Feedback' : 'Add Feedback' }}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<div class="feedback-popup-overlay" *ngIf="isPopupOpen" (click)="closeFeedbackPopup()">
+    <div class="feedback-popup rounded-4 shadow" (click)="$event.stopPropagation()">
+        <div class="feedback-popup-header d-flex align-items-center justify-content-between px-4 py-3">
+            <div class="fw-bold text-white">Add Feedback</div>
+            <button type="button" class="feedback-popup-close" (click)="closeFeedbackPopup()">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+        <div class="p-4">
+            <div class="small text-slate-600 mb-3" *ngIf="selectedJob">{{ selectedJob.jobName }} &mdash; {{ selectedJob.receivedFrom }}</div>
+            <div class="feedback-survey">
+                <div class="survey-question">
+                    <div class="survey-label">1. Overall, how satisfied are you with the job completed?</div>
+                    <label class="survey-option" *ngFor="let opt of ratingOptions">
+                        <input type="radio" name="overallSatisfaction" [value]="opt" [(ngModel)]="survey.overallSatisfaction"> {{ opt }}
+                    </label>
+                </div>
+                <div class="survey-question">
+                    <div class="survey-label">2. Please share any additional insights on the above question.</div>
+                    <textarea class="feedback-textarea w-100" rows="3" name="overallInsights" [(ngModel)]="survey.overallInsights"></textarea>
+                </div>
+                <div class="survey-question">
+                    <div class="survey-label">3. How responsive have we been to your queries about the job?</div>
+                    <label class="survey-option" *ngFor="let opt of ratingOptions">
+                        <input type="radio" name="responsiveness" [value]="opt" [(ngModel)]="survey.responsiveness"> {{ opt }}
+                    </label>
+                </div>
+                <div class="survey-question">
+                    <div class="survey-label">4. Please share any additional insights on the above question.</div>
+                    <textarea class="feedback-textarea w-100" rows="3" name="responsivenessInsights" [(ngModel)]="survey.responsivenessInsights"></textarea>
+                </div>
+                <div class="survey-question">
+                    <div class="survey-label">5. What can be improved or enhanced in the job delivery?</div>
+                    <textarea class="feedback-textarea w-100" rows="3" name="improvements" [(ngModel)]="survey.improvements"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="px-4 pb-2 small text-danger" *ngIf="submitError">{{ submitError }}</div>
+        <div class="feedback-popup-footer d-flex justify-content-end gap-2 px-4 pb-4">
+            <button type="button" class="feedback-popup-btn feedback-popup-btn--cancel" (click)="closeFeedbackPopup()">Cancel</button>
+            <button type="button" class="feedback-popup-btn feedback-popup-btn--submit" (click)="submitFeedback()" [disabled]="isSubmitting">{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
+        </div>
+    </div>
+</div>

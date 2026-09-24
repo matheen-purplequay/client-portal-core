@@ -1,0 +1,79 @@
+.productivity-header {
+    background: var(--primary-color, #7a1f2b);
+}
+
+.header-select {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.productivity-table {
+    border-collapse: collapse;
+    font-size: 13px;
+    white-space: nowrap;
+
+    th, td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #f0e5e7;
+    }
+
+    thead {
+        .group-row th {
+            background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.08);
+            color: var(--primary-color, #7a1f2b);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .group-row th.prev-month {
+            background: #eef1fb;
+            color: #2a3f9d;
+        }
+
+        .sub-row th {
+            background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.04);
+            font-weight: 500;
+            text-align: center;
+            color: #555;
+        }
+
+        .sno-col { width: 60px; }
+        .name-col { min-width: 140px; }
+    }
+
+    tbody tr:hover {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.03);
+    }
+
+    tfoot .total-row td {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.08);
+        border-top: 2px solid rgba(var(--primary-color-rgb, 122, 31, 43), 0.2);
+    }
+}
+
+.trend-icon {
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.trend-up {
+    color: #15803d;
+}
+
+.trend-down {
+    color: #b91c1c;
+}
+
+.trend-flat {
+    color: #6b7280;
+}

@@ -181,25 +181,34 @@ Route::prefix('client')->group(function () {
             $userIds = collect($comments)->pluck('UserId')->toArray();
             $user_ids = collect($userIds)->unique()->values()->all();
 
-            $users = User::leftJoin('{$accounts_base_table}.user_details', '{$accounts_base_table}.user_details.user_id', '=', 'users.id')
+            // FIX: table names were single-quoted, so PHP never interpolated
+            // $accounts_base_table — the join literally targeted a table
+            // named "{$accounts_base_table}.user_details", which doesn't
+            // exist. That made this query fail (500) on every job that has
+            // any comments, which is most of them.
+            $users = User::leftJoin("{$accounts_base_table}.user_details", "{$accounts_base_table}.user_details.user_id", '=', 'users.id')
                 ->whereIn('users.id', $user_ids)->get();
-            
-            $comments = $comments->map(function ($comment) use ($users) {
-                foreach ($users as $user) {
-                    if(file_exists(Storage::disk('local')->url($user->profile_picture))) {
-                        // $profile_photo = asset(Storage::disk('local')->url($user->profile_picture));
-                        $profile_photo = Storage::url($user->profile_picture);
-                        str_replace('pqreports', 'pqaccountsapi', $profile_photo);
-                    }
-                    else 
-                        $profile_photo = $user->profile_picture;
 
-                    if ($comment->UserId == $user->user_id) {
-                        $commentArray = (array) $comment; // Convert stdClass to array
-                        $commentArray['username'] = "$user->first_name $user->last_name";
-                        $commentArray['profile_picture'] = 'https://pqaccountsapi.welingkaronline.org/storage/' . $profile_photo;
-                        $comment = (object) $commentArray;
-                    }
+            // Precompute each user's profile photo URL once instead of
+            // recomputing it (including a filesystem file_exists() stat
+            // call) inside a comments x users nested loop.
+            $profilePhotoByUserId = [];
+            foreach ($users as $user) {
+                if (file_exists(Storage::disk('local')->url($user->profile_picture))) {
+                    $profilePhotoByUserId[$user->user_id] = Storage::url($user->profile_picture);
+                } else {
+                    $profilePhotoByUserId[$user->user_id] = $user->profile_picture;
+                }
+            }
+            $usersById = collect($users)->keyBy('user_id');
+
+            $comments = $comments->map(function ($comment) use ($usersById, $profilePhotoByUserId) {
+                $user = $usersById->get($comment->UserId);
+                if ($user) {
+                    $commentArray = (array) $comment; // Convert stdClass to array
+                    $commentArray['username'] = "$user->first_name $user->last_name";
+                    $commentArray['profile_picture'] = 'https://pqaccountsapi.welingkaronline.org/storage/' . ($profilePhotoByUserId[$user->user_id] ?? '');
+                    $comment = (object) $commentArray;
                 }
                 return $comment;
             });

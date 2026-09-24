@@ -1,0 +1,319 @@
+.turnaround-stat-card {
+    background: #fff;
+    border: 1px solid #d8dee6;
+}
+
+.turnaround-stat-label {
+    color: #6b7280;
+    font-size: 11px;
+}
+
+.turnaround-stat-unit {
+    color: #6b7280;
+    font-size: 10px;
+}
+
+.turnaround-stat-value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1f2937;
+}
+
+// Total Jobs Closed is called out with a filled background; the elapsed-day
+// buckets stay white with just a colored border/number, per the screenshot.
+.turnaround-stat-card--total {
+    background: #e3f2fb;
+    border-color: #0f6a5c;
+
+    .turnaround-stat-label,
+    .turnaround-stat-value {
+        color: #0f6a5c;
+    }
+}
+
+.turnaround-stat-card--green {
+    border-color: #15803d;
+
+    .turnaround-stat-value {
+        color: #15803d;
+    }
+}
+
+.turnaround-stat-card--teal {
+    border-color: #0f6a5c;
+
+    .turnaround-stat-value {
+        color: #0f6a5c;
+    }
+}
+
+.turnaround-stat-card--blue {
+    border-color: #2a3f9d;
+
+    .turnaround-stat-value {
+        color: #2a3f9d;
+    }
+}
+
+.turnaround-stat-card--orange {
+    border-color: #c2650a;
+
+    .turnaround-stat-value {
+        color: #c2650a;
+    }
+}
+
+.turnaround-stat-card--maroon {
+    border-color: #7a1f2b;
+
+    .turnaround-stat-value {
+        color: #7a1f2b;
+    }
+}
+
+.turnaround-stat-card--red {
+    border-color: #b91c1c;
+
+    .turnaround-stat-value {
+        color: #b91c1c;
+    }
+}
+
+.turnaround-toggle-card {
+    background: #fff;
+    border: 1px solid #d8dee6;
+    transition: box-shadow 0.15s ease;
+
+    .turnaround-stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        color: #1f2937;
+    }
+
+    &.is-selected {
+        border-color: var(--primary-color, #7a1f2b);
+        border-width: 2px;
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.06);
+
+        .turnaround-stat-value {
+            color: var(--primary-color, #7a1f2b);
+        }
+    }
+}
+
+.turnaround-header {
+    background: var(--primary-color, #7a1f2b);
+}
+
+.turnaround-table {
+    border-collapse: collapse;
+    font-size: 13px;
+    white-space: nowrap;
+
+    th, td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #f0e5e7;
+    }
+
+    thead tr:not(.filter-row) th {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.08);
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .filter-row th {
+        background: #fff;
+        padding: 6px 10px;
+
+        // :not([type="checkbox"]) so this text-input styling (100% width,
+        // border, padding) doesn't leak into the multi-select dropdowns'
+        // checkboxes nested inside these same th's — it was overriding
+        // their sizing (higher specificity: .turnaround-table .filter-row
+        // th input beats .ms-filter-option input[type="checkbox"]),
+        // stretching each checkbox to full row width and forcing its
+        // label text onto the next line.
+        input:not([type="checkbox"]), select {
+            width: 100%;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            background: #fff;
+
+            &:focus {
+                outline: none;
+                border-color: var(--primary-color, #7a1f2b);
+            }
+        }
+    }
+
+    .job-name-cell {
+        color: var(--primary-color, #7a1f2b);
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    tbody tr:hover {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.03);
+    }
+}
+
+.ms-filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    width: 100%;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 12px;
+    background: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+
+    .ms-filter-btn-label {
+        display: inline-block;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #374151;
+    }
+
+    .material-symbols-rounded {
+        font-size: 16px;
+        color: #6b7280;
+        flex-shrink: 0;
+    }
+
+    &:hover {
+        border-color: var(--primary-color, #7a1f2b);
+    }
+}
+
+// Overlays instead of pushing the filter row taller. (An earlier attempt
+// at this looked badly broken, but that turned out to be caused by the
+// checkbox-stretching specificity bug above, not by absolute positioning
+// itself — now that the checkboxes render correctly, the overlay works.)
+.ms-filter-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 20;
+    margin-top: 4px;
+    width: 180px;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 6px 0;
+    white-space: normal;
+    font-weight: 400;
+    text-align: left;
+}
+
+.ms-filter-cell {
+    position: relative;
+}
+
+// The earlier "checkbox stretched full-width, text pushed to its own
+// line" bug was actually the .filter-row th input rule (width:100%,
+// border, padding) leaking onto these checkboxes via higher CSS
+// specificity — fixed above with :not([type="checkbox"]). With that
+// settled, use flex so the checkbox gets its own column and any
+// wrapped text (long accountant names) lines up under itself instead
+// of falling back to the label's left edge under the checkbox.
+.ms-filter-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    text-align: left;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #374151;
+    white-space: normal;
+
+    input[type="checkbox"] {
+        flex: 0 0 auto;
+        width: 14px;
+        height: 14px;
+        margin: 2px 0 0 0;
+        padding: 0;
+    }
+
+    .ms-filter-option-text {
+        flex: 1 1 auto;
+        color: #374151;
+    }
+
+    &:hover {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.06);
+    }
+}
+
+.ms-filter-option--all {
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 2px;
+}
+
+.ms-filter-search {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding: 4px 10px 6px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid #eee;
+
+    input {
+        width: 100%;
+        border: 1px solid #dcdcdc;
+        border-radius: 4px;
+        padding: 3px 8px;
+        font-size: 12px;
+
+        &:focus {
+            outline: none;
+            border-color: var(--primary-color, #7a1f2b);
+        }
+    }
+}
+
+.ms-filter-empty {
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.vertical-tabs {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.vertical-tab {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        color: var(--primary-color, #7a1f2b);
+    }
+
+    &.is-active {
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 600;
+        border-bottom-color: var(--primary-color, #7a1f2b);
+    }
+}

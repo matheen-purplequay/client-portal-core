@@ -1,0 +1,216 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">Dashboard</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<section class="container mt-3">
+    <div class="dashboard-filters-card rounded-4 shadow-sm bg-white">
+        <div class="dashboard-filters-header rounded-top-4 px-3 py-2">
+            <div class="fw-bold text-white small">Filters</div>
+        </div>
+        <div class="px-3 py-2">
+            <div class="d-flex align-items-end gap-3 flex-wrap">
+                <div>
+                    <label class="small d-block mb-1">From Date</label>
+                    <app-simple-date-input [(value)]="dashboardFilters.fromDate"></app-simple-date-input>
+                </div>
+                <div>
+                    <label class="small d-block mb-1">To Date</label>
+                    <app-simple-date-input [(value)]="dashboardFilters.toDate"></app-simple-date-input>
+                </div>
+                <button type="button" class="dashboard-filters-apply-btn" (click)="applyDashboardFilters()">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">search</span>
+                    Apply
+                </button>
+            </div>
+
+            <div class="vertical-tabs hstack gap-3 flex-wrap mt-3">
+                <div class="vertical-tab" [class.is-active]="selectedVerticalId === 0" (click)="selectVertical(0)">All</div>
+                <div class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedVerticalId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-3">
+    <div class="row g-3">
+        <div class="col-sm-4">
+            <div class="dashboard-summary-card bg-white rounded-4 shadow-sm p-4 cursor-pointer h-100"
+                (click)="openJobsWidget()">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="dashboard-summary-card-icon rounded-3 d-inline-flex align-items-center justify-content-center">
+                        <span class="material-symbols-rounded">work</span>
+                    </div>
+                    <div class="fw-bold fs-5 dashboard-summary-card-title">Jobs</div>
+                </div>
+                <div class="text-slate-600 small mb-3">
+                    Track every allocated job, its current work status and the accountant assigned to it.
+                </div>
+                <hr class="my-2">
+                <div class="hstack gap-4">
+                    <div>
+                        <div class="text-uppercase small opacity-75">Open</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ jobsSummary.open }}</div>
+                    </div>
+                    <div>
+                        <div class="text-uppercase small opacity-75">Closed</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ jobsSummary.closed }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="dashboard-summary-card dashboard-summary-card--green bg-white rounded-4 shadow-sm p-4 cursor-pointer h-100"
+                (click)="openProductionReport()">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="dashboard-summary-card-icon rounded-3 d-inline-flex align-items-center justify-content-center">
+                        <span class="material-symbols-rounded">bar_chart</span>
+                    </div>
+                    <div class="fw-bold fs-5 dashboard-summary-card-title">Production Report</div>
+                </div>
+                <div class="text-slate-600 small mb-3">
+                    Output by accountant, team and job type for the selected period, with drill down to daily activity.
+                </div>
+                <hr class="my-2">
+                <div class="hstack gap-4">
+                    <div>
+                        <div class="text-uppercase small opacity-75">Jobs This Month</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ productionSummary.jobsThisMonth }}</div>
+                    </div>
+                    <div>
+                        <div class="text-uppercase small opacity-75">Productive Hours</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ productionSummary.productiveHours }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="dashboard-summary-card dashboard-summary-card--indigo bg-white rounded-4 shadow-sm p-4 cursor-pointer h-100"
+                (click)="openTurnaroundReport()">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="dashboard-summary-card-icon rounded-3 d-inline-flex align-items-center justify-content-center">
+                        <span class="material-symbols-rounded">schedule</span>
+                    </div>
+                    <div class="fw-bold fs-5 dashboard-summary-card-title">Turnaround Report</div>
+                </div>
+                <div class="text-slate-600 small mb-3">
+                    Elapsed time from job allocation to delivery, measured against the agreed turnaround standard.
+                </div>
+                <hr class="my-2">
+                <div class="hstack gap-4">
+                    <div>
+                        <div class="text-uppercase small opacity-75">Average TAT</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ turnaroundSummary.averageTat }}</div>
+                    </div>
+                    <div>
+                        <div class="text-uppercase small opacity-75">Total Closed Jobs</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ turnaroundSummary.totalClosedJobs }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="dashboard-summary-card dashboard-summary-card--amber bg-white rounded-4 shadow-sm p-4 cursor-pointer h-100"
+                (click)="openBudgetOverview()">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="dashboard-summary-card-icon rounded-3 d-inline-flex align-items-center justify-content-center">
+                        <span class="material-symbols-rounded">tune</span>
+                    </div>
+                    <div class="fw-bold fs-5 dashboard-summary-card-title">Budget Overview</div>
+                </div>
+                <div class="text-slate-600 small mb-3">
+                    Budgeted hours against actual hours for each job, flagging the jobs running over or under budget.
+                </div>
+                <hr class="my-2">
+                <div class="hstack gap-4">
+                    <div>
+                        <div class="text-uppercase small opacity-75 mb-1">Under Budget</div>
+                        <span class="budget-pill budget-pill--under">{{ budgetSummary.underBudget }} jobs</span>
+                    </div>
+                    <div>
+                        <div class="text-uppercase small opacity-75 mb-1">Over Budget</div>
+                        <span class="budget-pill budget-pill--over">{{ budgetSummary.overBudget }} jobs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="dashboard-summary-card dashboard-summary-card--purple bg-white rounded-4 shadow-sm p-4 cursor-pointer h-100"
+                (click)="openFeedback()">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="dashboard-summary-card-icon rounded-3 d-inline-flex align-items-center justify-content-center">
+                        <span class="material-symbols-rounded">feedback</span>
+                    </div>
+                    <div class="fw-bold fs-5 dashboard-summary-card-title">Feedback</div>
+                </div>
+                <div class="text-slate-600 small mb-3">
+                    Closed jobs awaiting a quality check, with the ability to add feedback on any job.
+                </div>
+                <hr class="my-2">
+                <div class="hstack gap-4">
+                    <div>
+                        <div class="text-uppercase small opacity-75">Closed Jobs</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ feedbackSummary.closedJobs }}</div>
+                    </div>
+                    <div>
+                        <div class="text-uppercase small opacity-75">Pending Feedback</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ feedbackSummary.pendingFeedback }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="dashboard-summary-card dashboard-summary-card--cyan bg-white rounded-4 shadow-sm p-4 cursor-pointer h-100"
+                (click)="openMovement()">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="dashboard-summary-card-icon rounded-3 d-inline-flex align-items-center justify-content-center">
+                        <span class="material-symbols-rounded">swap_horiz</span>
+                    </div>
+                    <div class="fw-bold fs-5 dashboard-summary-card-title">Movement</div>
+                </div>
+                <div class="text-slate-600 small mb-3">
+                    Job status changes over a selected period, from new jobs received through to closed.
+                </div>
+                <hr class="my-2">
+                <div class="hstack gap-4">
+                    <div>
+                        <div class="text-uppercase small opacity-75">New Jobs</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ movementSummary.newJobs }}</div>
+                    </div>
+                    <div>
+                        <div class="text-uppercase small opacity-75">All Movement</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ movementSummary.allMovement }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="dashboard-summary-card dashboard-summary-card--rose bg-white rounded-4 shadow-sm p-4 cursor-pointer h-100"
+                (click)="openMOM()">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="dashboard-summary-card-icon rounded-3 d-inline-flex align-items-center justify-content-center">
+                        <span class="material-symbols-rounded">event_note</span>
+                    </div>
+                    <div class="fw-bold fs-5 dashboard-summary-card-title">MOM</div>
+                </div>
+                <div class="text-slate-600 small mb-3">
+                    Minutes of meetings held with the client, with notes and action items on record.
+                </div>
+                <hr class="my-2">
+                <div class="hstack gap-4">
+                    <div>
+                        <div class="text-uppercase small opacity-75">Meetings This Month</div>
+                        <div class="fw-bold fs-5 dashboard-summary-card-title">{{ momSummary.meetingsThisMonth }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

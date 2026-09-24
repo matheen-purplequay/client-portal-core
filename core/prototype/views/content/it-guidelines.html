@@ -1,0 +1,7 @@
+<div x-data="content('shared', 'it-guidelines')" class="mx-auto max-w-[1100px]"><template x-if="data"><div>
+<h1 class="mb-1 flex items-center gap-2 text-2xl font-semibold text-brand"><span class="msym !text-[28px]">devices</span>IT Guidelines</h1><p class="mb-5 text-sm text-slate-500">Security and access guidance for working with Carisma.</p>
+<div class="grid gap-4 md:grid-cols-2">
+  <template x-for="g in data" :key="g.title"><section class="card p-5"><h3 class="mb-3 flex items-center gap-2 font-semibold"><span class="msym text-brand" x-text="g.icon"></span><span x-text="g.title"></span></h3>
+    <ul class="list-inside list-disc space-y-1 text-sm text-slate-600"><template x-for="p in g.points"><li x-text="p"></li></template></ul></section></template>
+</div>
+</div></template></div>

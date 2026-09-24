@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Secure file sharing",
+    "icon": "lock",
+    "points": [
+      "Use the approved secure share link only",
+      "Never email TFNs or bank details in plain text",
+      "Links expire after 14 days"
+    ]
+  },
+  {
+    "title": "Access & authentication",
+    "icon": "key",
+    "points": [
+      "Log in with your email and one-time passcode",
+      "Access is limited to whitelisted networks",
+      "Report lost devices immediately"
+    ]
+  },
+  {
+    "title": "Supported browsers",
+    "icon": "language",
+    "points": [
+      "Latest Chrome, Edge, Safari or Firefox",
+      "Enable pop-ups for report downloads",
+      "Clear cache if the dashboard looks outdated"
+    ]
+  },
+  {
+    "title": "Getting IT help",
+    "icon": "support_agent",
+    "points": [
+      "Email clientportalsupport@carisma.example",
+      "Business hours: 9am\u20136pm AEST",
+      "Include screenshots and the job number"
+    ]
+  }
+]

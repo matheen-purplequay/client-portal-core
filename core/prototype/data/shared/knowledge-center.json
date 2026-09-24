@@ -1,0 +1,67 @@
+{
+  "categories": [
+    "Getting Started",
+    "Job Lifecycle",
+    "Queries",
+    "Reports & Billing",
+    "Security"
+  ],
+  "articles": [
+    {
+      "id": 0,
+      "title": "How to read the Delivery Dashboard",
+      "category": "Getting Started",
+      "updated_on": "2026-09-20",
+      "read_min": 3
+    },
+    {
+      "id": 1,
+      "title": "Understanding job stages (In Progress, Query, DWP, RDWP)",
+      "category": "Job Lifecycle",
+      "updated_on": "2026-09-14",
+      "read_min": 2
+    },
+    {
+      "id": 2,
+      "title": "Raising and answering a query",
+      "category": "Queries",
+      "updated_on": "2026-09-08",
+      "read_min": 5
+    },
+    {
+      "id": 3,
+      "title": "How turnaround time is calculated",
+      "category": "Job Lifecycle",
+      "updated_on": "2026-09-02",
+      "read_min": 8
+    },
+    {
+      "id": 4,
+      "title": "Downloading Monthly Connect reports",
+      "category": "Reports & Billing",
+      "updated_on": "2026-08-27",
+      "read_min": 6
+    },
+    {
+      "id": 5,
+      "title": "Reading your invoice",
+      "category": "Reports & Billing",
+      "updated_on": "2026-08-21",
+      "read_min": 5
+    },
+    {
+      "id": 6,
+      "title": "Managing users and access",
+      "category": "Security",
+      "updated_on": "2026-08-15",
+      "read_min": 6
+    },
+    {
+      "id": 7,
+      "title": "Sending documents securely",
+      "category": "Security",
+      "updated_on": "2026-08-09",
+      "read_min": 8
+    }
+  ]
+}

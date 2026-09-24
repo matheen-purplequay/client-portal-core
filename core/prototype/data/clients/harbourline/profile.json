@@ -1,0 +1,24 @@
+{
+  "company": "Harbourline Wealth Partners",
+  "abn": "34 190 662 417",
+  "city": "Sydney NSW",
+  "contracts": [
+    "Agreed"
+  ],
+  "verticals": [
+    {
+      "id": 5,
+      "code": "FP",
+      "title": "Financial Planning"
+    },
+    {
+      "id": 6,
+      "code": "BK",
+      "title": "Bookkeeping"
+    }
+  ],
+  "engagement_start": "2023-03-01",
+  "account_manager": "Marcus Doyle",
+  "support_email": "clientportalsupport@carisma.example",
+  "support_phone": "+61 3 9000 1234"
+}

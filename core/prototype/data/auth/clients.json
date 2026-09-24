@@ -1,0 +1,71 @@
+[
+ {
+  "id": "northwind",
+  "name": "Northwind Advisory Pty Ltd",
+  "short": "NW",
+  "color": "#1d4ed8",
+  "verticals": [
+   {
+    "id": 1,
+    "code": "BS",
+    "title": "Business Services"
+   },
+   {
+    "id": 2,
+    "code": "SMSF",
+    "title": "SMSF"
+   },
+   {
+    "id": 3,
+    "code": "BK",
+    "title": "Bookkeeping"
+   }
+  ],
+  "contracts": [
+   "Staff",
+   "Hourly"
+  ],
+  "sub_clients": [
+   "Northwind Trading",
+   "Kestrel Holdings",
+   "Bayview Cafe Group",
+   "Summit Family Trust",
+   "Ironbark Constructions",
+   "Lotus Health Clinics"
+  ],
+  "city": "Melbourne VIC",
+  "abn": "51 824 753 556",
+  "account_manager": "Helen Carmichael"
+ },
+ {
+  "id": "harbourline",
+  "name": "Harbourline Wealth Partners",
+  "short": "HW",
+  "color": "#0f766e",
+  "verticals": [
+   {
+    "id": 1,
+    "code": "FP",
+    "title": "Financial Planning"
+   },
+   {
+    "id": 2,
+    "code": "BK",
+    "title": "Bookkeeping"
+   }
+  ],
+  "contracts": [
+   "Agreed"
+  ],
+  "sub_clients": [
+   "Marsh Family",
+   "Chen & Partners",
+   "Okafor Superannuation",
+   "Delgado Estate",
+   "Whitfield Retirement Fund"
+  ],
+  "city": "Sydney NSW",
+  "abn": "34 190 662 417",
+  "account_manager": "Marcus Doyle"
+ }
+]

@@ -1,0 +1,30 @@
+{
+  "company": "Northwind Advisory Pty Ltd",
+  "abn": "51 824 753 556",
+  "city": "Melbourne VIC",
+  "contracts": [
+    "Staff",
+    "Hourly"
+  ],
+  "verticals": [
+    {
+      "id": 1,
+      "code": "OBS",
+      "title": "Business Services"
+    },
+    {
+      "id": 2,
+      "code": "SMSF",
+      "title": "SMSF"
+    },
+    {
+      "id": 6,
+      "code": "BK",
+      "title": "Bookkeeping"
+    }
+  ],
+  "engagement_start": "2023-03-01",
+  "account_manager": "Helen Carmichael",
+  "support_email": "clientportalsupport@carisma.example",
+  "support_phone": "+61 3 9000 1234"
+}

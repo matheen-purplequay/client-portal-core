@@ -1,0 +1,9 @@
+<div x-data="content('shared', 'knowledge-center')" class="mx-auto max-w-[1100px]"><template x-if="data"><div>
+<h1 class="mb-1 flex items-center gap-2 text-2xl font-semibold text-brand"><span class="msym !text-[28px]">text_snippet</span>Knowledge Center</h1><p class="mb-5 text-sm text-slate-500">Guides to help you get the most from the portal.</p>
+<div class="mb-4 flex flex-wrap gap-2">
+  <template x-for="c in ['', ...data.categories]"><button class="rounded-full px-3 py-1 text-sm font-semibold shadow-sm" :class="cat === c ? 'bg-brand text-white' : 'bg-white hover:bg-brand-light'" @click="cat = c" x-text="c || 'All'"></button></template></div>
+<div class="grid gap-3 md:grid-cols-2">
+  <template x-for="a in data.articles.filter((x) => !cat || x.category === cat)" :key="a.id"><a href="#/knowledge-center" class="card flex items-start gap-3 p-4 hover:shadow-md"><span class="msym text-brand">article</span>
+    <div><div class="font-semibold" x-text="a.title"></div><div class="mt-1 text-xs text-slate-400" x-text="a.category + ' · ' + a.read_min + ' min read · Updated ' + fmt.dmy(a.updated_on)"></div></div></a></template>
+</div>
+</div></template></div>

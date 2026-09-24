@@ -1,0 +1,5 @@
+<div x-data="content('shared', 'holidays')" class="mx-auto max-w-[1100px]"><template x-if="data"><div>
+<h1 class="mb-1 flex items-center gap-2 text-2xl font-semibold text-brand"><span class="msym !text-[28px]">calendar_month</span>Calendar</h1><p class="mb-5 text-sm text-slate-500">Upcoming public holidays that may affect turnaround.</p>
+<div class="card overflow-hidden"><table class="tbl w-full"><thead class="bg-slate-50"><tr><th>Date</th><th>Holiday</th><th>Region</th></tr></thead>
+  <tbody><template x-for="h in data" :key="h.date + h.name"><tr><td x-text="fmt.dmy(h.date)"></td><td x-text="h.name"></td><td><span class="chip !shadow-none" :class="tone(h.region)" x-text="h.region"></span></td></tr></template></tbody></table></div>
+</div></template></div>

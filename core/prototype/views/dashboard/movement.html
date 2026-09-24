@@ -1,0 +1,65 @@
+<div x-data="movementPage">
+  <div x-show="loading" class="py-24 text-center text-sm text-slate-400">Loading…</div>
+  <template x-if="!loading">
+    <div class="mx-auto max-w-[1080px]">
+      <!-- filters -->
+      <div class="mb-4 flex flex-wrap items-end justify-between gap-4">
+        <div class="flex flex-wrap items-end gap-2">
+          <label class="text-[11px] font-semibold text-slate-500">Touch Points From<input type="date" class="field mt-1 block w-[150px]" x-model="from" :max="to"></label>
+          <label class="text-[11px] font-semibold text-slate-500">Touch Points To<input type="date" class="field mt-1 block w-[150px]" x-model="to" :min="from"></label>
+          <label class="text-[11px] font-semibold text-slate-400">Touch Points Updated On<input readonly class="field mt-1 block w-[170px] bg-slate-100 text-slate-500" :value="updated"></label>
+          <button class="field grid h-[35px] w-[38px] place-items-center" @click="refresh()"><span class="msym" :class="spin && 'animate-spin'">sync</span></button>
+        </div>
+        <div class="text-right text-[11px]">
+          <div class="flex items-center justify-end gap-2"><b class="text-brand">Legends</b><span class="chip">DWP - Draft Work Paper</span><span class="chip">RDWP - Revised Draft Work Paper</span></div>
+          <div class="mt-2 flex items-center justify-end gap-1 text-[12px] text-slate-600"><span class="msym !text-[14px]">south</span>Click on Touch Points to view more details</div>
+        </div>
+      </div>
+
+      <!-- total -->
+      <div class="card mb-5 flex items-center justify-between px-4 py-3">
+        <div><div class="text-[11px] font-bold text-brand">Total</div><div class="text-2xl" x-text="tp.actual"></div></div>
+        <span class="msym !text-[34px] text-slate-300">folder_open</span>
+      </div>
+
+      <!-- summary: touch points -->
+      <section class="card mb-5 p-4">
+        <h2 class="text-lg font-semibold text-brand" x-text="'Summary of Touch Points as of ' + range()"></h2>
+        <p class="mb-4 text-[12px] text-slate-600">Target Touch Points per day:</p>
+        <table class="w-full text-[13px]">
+          <thead><tr class="bg-slate-100 text-center font-bold"><th class="px-3 py-2 text-left">Details</th><th>Target Touch Points</th><th>Actual Touch Points</th><th>Balance</th></tr></thead>
+          <tbody><tr class="border-b text-center">
+            <td class="px-3 py-2 text-left">No. of Jobs</td>
+            <td class="text-slate-500" x-text="tp.target + ' ( x ' + working + 'd)'"></td>
+            <td><button :class="tp.actual && 'link font-semibold'" @click="show('Touch points · ' + range(), tp.rows)" x-text="tp.actual"></button></td>
+            <td :class="tp.actual - tp.target < 0 ? 'text-red-600' : 'text-green-700'" x-text="tp.actual - tp.target"></td></tr></tbody>
+        </table>
+        <div class="h-6"></div>
+      </section>
+
+      <!-- summary: completed DWP -->
+      <section class="card p-4">
+        <h2 class="text-lg font-semibold text-brand" x-text="'Summary of Completed DWP as of ' + range()"></h2>
+        <p class="mb-4 text-[12px] text-slate-600">Target Touch Points per day:</p>
+        <table class="w-full text-[13px]">
+          <thead><tr class="bg-slate-100 text-center font-bold"><th class="px-3 py-2 text-left">Details</th><th>Target Completed Jobs</th><th>Actual Completed Jobs</th><th>Balance</th></tr></thead>
+          <tbody><tr class="border-b text-center">
+            <td class="px-3 py-2 text-left">No. of Jobs</td>
+            <td class="text-slate-500" x-text="dwp.target + ' ( x ' + working + 'd)'"></td>
+            <td><button :class="dwp.actual && 'link font-semibold'" @click="show('Completed DWP · ' + range(), dwp.rows)" x-text="dwp.actual"></button></td>
+            <td :class="dwp.actual - dwp.target < 0 ? 'text-red-600' : 'text-green-700'" x-text="dwp.actual - dwp.target"></td></tr></tbody>
+        </table>
+        <div class="h-6"></div>
+      </section>
+
+      <!-- details drawer -->
+      <div x-show="drawer" x-transition.opacity class="fixed inset-0 z-40 flex justify-end bg-black/30" @click.self="drawer = null" @keydown.escape.window="drawer = null">
+        <div class="h-full w-full max-w-2xl overflow-y-auto bg-white p-5 shadow-xl">
+          <div class="mb-3 flex items-center justify-between"><h3 class="text-lg font-semibold text-brand" x-text="drawer && drawer.title"></h3><button @click="drawer = null"><span class="msym">close</span></button></div>
+          <table class="tbl w-full"><thead><tr><th>Job ID</th><th>Job</th><th>Status</th><th>By</th><th>Time</th></tr></thead>
+            <tbody><template x-for="r in (drawer ? drawer.rows : [])"><tr><td x-text="r.job_id"></td><td class="link" x-text="r.job_name"></td><td x-text="r.status"></td><td x-text="r.by"></td><td x-text="time(r.at)"></td></tr></template></tbody></table>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>

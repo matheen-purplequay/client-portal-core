@@ -1,0 +1,2511 @@
+{
+ "updated_at": "2026-09-24T16:41:36",
+ "days": [
+  {
+   "date": "2026-09-24",
+   "target": 43,
+   "actual": 29,
+   "dwp_target": 10,
+   "dwp_actual": 7,
+   "touchpoints": [
+    {
+     "job_id": 333117,
+     "job_name": "Whitcombe Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T09:47:00"
+    },
+    {
+     "job_id": 336191,
+     "job_name": "Oakes Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-24T14:09:00"
+    },
+    {
+     "job_id": 335620,
+     "job_name": "Yardley Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T11:59:00"
+    },
+    {
+     "job_id": 334506,
+     "job_name": "Quinlan & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T18:31:00"
+    },
+    {
+     "job_id": 330655,
+     "job_name": "Lockhart Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Priya Nair",
+     "at": "2026-09-24T13:40:00"
+    },
+    {
+     "job_id": 334391,
+     "job_name": "Stannard Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-24T14:19:00"
+    },
+    {
+     "job_id": 331760,
+     "job_name": "Lockhart Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T17:53:00"
+    },
+    {
+     "job_id": 331528,
+     "job_name": "Oakes & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-24T10:37:00"
+    },
+    {
+     "job_id": 331395,
+     "job_name": "Zeller Group - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T11:40:00"
+    },
+    {
+     "job_id": 335231,
+     "job_name": "Ashford Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Review Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-24T14:11:00"
+    },
+    {
+     "job_id": 333250,
+     "job_name": "Yardley Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-24T14:08:00"
+    },
+    {
+     "job_id": 333507,
+     "job_name": "Abbott Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Query Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-24T14:14:00"
+    },
+    {
+     "job_id": 335061,
+     "job_name": "Everhart Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-24T16:59:00"
+    },
+    {
+     "job_id": 334157,
+     "job_name": "Whitcombe Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Queries",
+     "by": "Divya Shetty",
+     "at": "2026-09-24T14:04:00"
+    },
+    {
+     "job_id": 335755,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-24T15:49:00"
+    },
+    {
+     "job_id": 331040,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-24T11:17:00"
+    },
+    {
+     "job_id": 334780,
+     "job_name": "Jasper Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Query Replies",
+     "by": "Karthik Rao",
+     "at": "2026-09-24T10:17:00"
+    },
+    {
+     "job_id": 333659,
+     "job_name": "Abbott Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-24T12:13:00"
+    },
+    {
+     "job_id": 333416,
+     "job_name": "Garrick Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Review Replies",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T16:16:00"
+    },
+    {
+     "job_id": 334778,
+     "job_name": "Underhill Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-24T15:31:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Ellery Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-24T10:19:00"
+    },
+    {
+     "job_id": 331172,
+     "job_name": "Devlin Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-24T18:28:00"
+    },
+    {
+     "job_id": 333347,
+     "job_name": "Beaumont Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-24T09:33:00"
+    },
+    {
+     "job_id": 333288,
+     "job_name": "Dunmore Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-24T18:47:00"
+    },
+    {
+     "job_id": 330736,
+     "job_name": "Gresham Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-24T16:26:00"
+    },
+    {
+     "job_id": 331227,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-24T11:35:00"
+    },
+    {
+     "job_id": 335348,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-24T17:38:00"
+    },
+    {
+     "job_id": 333276,
+     "job_name": "Hartwell Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Divya Shetty",
+     "at": "2026-09-24T10:24:00"
+    },
+    {
+     "job_id": 332190,
+     "job_name": "Stannard Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Priya Nair",
+     "at": "2026-09-24T16:36:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 335409,
+     "job_name": "Pemberton Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Divya Shetty",
+     "at": "2026-09-24T14:44:00"
+    },
+    {
+     "job_id": 332077,
+     "job_name": "Halden Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-24T13:02:00"
+    },
+    {
+     "job_id": 333416,
+     "job_name": "Garrick Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T18:21:00"
+    },
+    {
+     "job_id": 336075,
+     "job_name": "Jasper Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-24T18:16:00"
+    },
+    {
+     "job_id": 331532,
+     "job_name": "Holloway Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T11:34:00"
+    },
+    {
+     "job_id": 333903,
+     "job_name": "Ellery Family Super Fund - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-24T09:23:00"
+    },
+    {
+     "job_id": 331395,
+     "job_name": "Zeller Group - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T15:35:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-23",
+   "target": 43,
+   "actual": 20,
+   "dwp_target": 10,
+   "dwp_actual": 7,
+   "touchpoints": [
+    {
+     "job_id": 333892,
+     "job_name": "Thackray & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T13:09:00"
+    },
+    {
+     "job_id": 332402,
+     "job_name": "Ellery & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T09:33:00"
+    },
+    {
+     "job_id": 331395,
+     "job_name": "Zeller Group - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T16:14:00"
+    },
+    {
+     "job_id": 334157,
+     "job_name": "Whitcombe Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Queries",
+     "by": "Divya Shetty",
+     "at": "2026-09-23T10:21:00"
+    },
+    {
+     "job_id": 332840,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-23T17:41:00"
+    },
+    {
+     "job_id": 332323,
+     "job_name": "Marlow Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-23T15:16:00"
+    },
+    {
+     "job_id": 333230,
+     "job_name": "Foxley Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T09:32:00"
+    },
+    {
+     "job_id": 334551,
+     "job_name": "Calloway Group - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Priya Nair",
+     "at": "2026-09-23T16:25:00"
+    },
+    {
+     "job_id": 332443,
+     "job_name": "Kestrel Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-23T12:53:00"
+    },
+    {
+     "job_id": 332060,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-23T17:37:00"
+    },
+    {
+     "job_id": 334473,
+     "job_name": "Holloway Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-23T18:08:00"
+    },
+    {
+     "job_id": 330736,
+     "job_name": "Gresham Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-23T12:42:00"
+    },
+    {
+     "job_id": 330684,
+     "job_name": "Cortland & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-23T11:42:00"
+    },
+    {
+     "job_id": 335369,
+     "job_name": "Devlin Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-23T18:23:00"
+    },
+    {
+     "job_id": 332723,
+     "job_name": "Kingsley & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T17:50:00"
+    },
+    {
+     "job_id": 332507,
+     "job_name": "Brennan Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-23T16:54:00"
+    },
+    {
+     "job_id": 330876,
+     "job_name": "Ellery Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Ananya Iyer",
+     "at": "2026-09-23T10:14:00"
+    },
+    {
+     "job_id": 334778,
+     "job_name": "Underhill Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T18:58:00"
+    },
+    {
+     "job_id": 335457,
+     "job_name": "Underhill Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Karthik Rao",
+     "at": "2026-09-23T14:11:00"
+    },
+    {
+     "job_id": 335061,
+     "job_name": "Everhart Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-23T09:27:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 334442,
+     "job_name": "Calloway Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-23T18:39:00"
+    },
+    {
+     "job_id": 330939,
+     "job_name": "Halden Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-23T14:36:00"
+    },
+    {
+     "job_id": 333175,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-23T12:50:00"
+    },
+    {
+     "job_id": 335076,
+     "job_name": "Vance & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-23T09:35:00"
+    },
+    {
+     "job_id": 330736,
+     "job_name": "Gresham Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-23T10:53:00"
+    },
+    {
+     "job_id": 335020,
+     "job_name": "Norcross & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-23T16:27:00"
+    },
+    {
+     "job_id": 330539,
+     "job_name": "Everhart Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-23T13:43:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-22",
+   "target": 43,
+   "actual": 25,
+   "dwp_target": 10,
+   "dwp_actual": 9,
+   "touchpoints": [
+    {
+     "job_id": 330759,
+     "job_name": "Ashford Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-22T18:18:00"
+    },
+    {
+     "job_id": 333864,
+     "job_name": "Gresham Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T09:38:00"
+    },
+    {
+     "job_id": 334391,
+     "job_name": "Stannard Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-22T10:55:00"
+    },
+    {
+     "job_id": 330813,
+     "job_name": "Ironside Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Divya Shetty",
+     "at": "2026-09-22T11:04:00"
+    },
+    {
+     "job_id": 335369,
+     "job_name": "Devlin Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-22T17:20:00"
+    },
+    {
+     "job_id": 330684,
+     "job_name": "Cortland & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T16:04:00"
+    },
+    {
+     "job_id": 335231,
+     "job_name": "Ashford Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Review Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-22T09:29:00"
+    },
+    {
+     "job_id": 335932,
+     "job_name": "Lockhart Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-22T17:41:00"
+    },
+    {
+     "job_id": 331227,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-22T09:19:00"
+    },
+    {
+     "job_id": 332323,
+     "job_name": "Marlow Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-22T18:50:00"
+    },
+    {
+     "job_id": 335905,
+     "job_name": "Jasper Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T18:47:00"
+    },
+    {
+     "job_id": 334616,
+     "job_name": "Stannard Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T18:15:00"
+    },
+    {
+     "job_id": 336184,
+     "job_name": "Kestrel Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T09:57:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Ellery Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T18:20:00"
+    },
+    {
+     "job_id": 336015,
+     "job_name": "Yardley Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-22T10:13:00"
+    },
+    {
+     "job_id": 336008,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-22T14:26:00"
+    },
+    {
+     "job_id": 331172,
+     "job_name": "Devlin Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T18:30:00"
+    },
+    {
+     "job_id": 333733,
+     "job_name": "Beaumont & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Queries",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T09:57:00"
+    },
+    {
+     "job_id": 330736,
+     "job_name": "Gresham Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-22T11:00:00"
+    },
+    {
+     "job_id": 331321,
+     "job_name": "Ashford Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Priya Nair",
+     "at": "2026-09-22T11:58:00"
+    },
+    {
+     "job_id": 330876,
+     "job_name": "Ellery Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Ananya Iyer",
+     "at": "2026-09-22T09:15:00"
+    },
+    {
+     "job_id": 336418,
+     "job_name": "Underhill Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Ananya Iyer",
+     "at": "2026-09-22T12:51:00"
+    },
+    {
+     "job_id": 335825,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-22T18:16:00"
+    },
+    {
+     "job_id": 333979,
+     "job_name": "Stannard Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T16:59:00"
+    },
+    {
+     "job_id": 334157,
+     "job_name": "Whitcombe Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Queries",
+     "by": "Divya Shetty",
+     "at": "2026-09-22T09:21:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 334262,
+     "job_name": "Vance Superannuation Fund - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T18:39:00"
+    },
+    {
+     "job_id": 336328,
+     "job_name": "Merrick Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Divya Shetty",
+     "at": "2026-09-22T18:55:00"
+    },
+    {
+     "job_id": 335905,
+     "job_name": "Jasper Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T11:42:00"
+    },
+    {
+     "job_id": 332670,
+     "job_name": "Fairholm & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T18:22:00"
+    },
+    {
+     "job_id": 331321,
+     "job_name": "Ashford Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-22T16:32:00"
+    },
+    {
+     "job_id": 333507,
+     "job_name": "Abbott Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-22T16:16:00"
+    },
+    {
+     "job_id": 336184,
+     "job_name": "Kestrel Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T17:14:00"
+    },
+    {
+     "job_id": 335974,
+     "job_name": "Devlin & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T17:00:00"
+    },
+    {
+     "job_id": 331532,
+     "job_name": "Holloway Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T13:49:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-21",
+   "target": 43,
+   "actual": 23,
+   "dwp_target": 10,
+   "dwp_actual": 7,
+   "touchpoints": [
+    {
+     "job_id": 332323,
+     "job_name": "Marlow Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-21T12:40:00"
+    },
+    {
+     "job_id": 332675,
+     "job_name": "Fairholm Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T12:28:00"
+    },
+    {
+     "job_id": 331722,
+     "job_name": "Holloway Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T18:51:00"
+    },
+    {
+     "job_id": 333276,
+     "job_name": "Hartwell Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Divya Shetty",
+     "at": "2026-09-21T17:02:00"
+    },
+    {
+     "job_id": 331075,
+     "job_name": "Abbott Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T14:38:00"
+    },
+    {
+     "job_id": 333892,
+     "job_name": "Thackray & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-21T11:26:00"
+    },
+    {
+     "job_id": 331532,
+     "job_name": "Holloway Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T18:04:00"
+    },
+    {
+     "job_id": 333389,
+     "job_name": "Ironside & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T09:22:00"
+    },
+    {
+     "job_id": 335231,
+     "job_name": "Ashford Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Review Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-21T16:03:00"
+    },
+    {
+     "job_id": 330684,
+     "job_name": "Cortland & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T09:24:00"
+    },
+    {
+     "job_id": 333733,
+     "job_name": "Beaumont & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Queries",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-21T18:25:00"
+    },
+    {
+     "job_id": 336284,
+     "job_name": "Brennan & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T11:57:00"
+    },
+    {
+     "job_id": 335868,
+     "job_name": "Ironside Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-21T14:19:00"
+    },
+    {
+     "job_id": 336008,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-21T16:16:00"
+    },
+    {
+     "job_id": 334874,
+     "job_name": "Norcross Group - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Divya Shetty",
+     "at": "2026-09-21T13:13:00"
+    },
+    {
+     "job_id": 333117,
+     "job_name": "Whitcombe Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T10:53:00"
+    },
+    {
+     "job_id": 332060,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-21T14:06:00"
+    },
+    {
+     "job_id": 334157,
+     "job_name": "Whitcombe Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Queries",
+     "by": "Divya Shetty",
+     "at": "2026-09-21T16:48:00"
+    },
+    {
+     "job_id": 330985,
+     "job_name": "Fairholm Group - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T10:29:00"
+    },
+    {
+     "job_id": 332984,
+     "job_name": "Halden Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-21T11:00:00"
+    },
+    {
+     "job_id": 335409,
+     "job_name": "Pemberton Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-21T17:59:00"
+    },
+    {
+     "job_id": 331040,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T17:50:00"
+    },
+    {
+     "job_id": 332443,
+     "job_name": "Kestrel Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T10:10:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 330939,
+     "job_name": "Halden Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-21T15:50:00"
+    },
+    {
+     "job_id": 330684,
+     "job_name": "Cortland & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T16:39:00"
+    },
+    {
+     "job_id": 330546,
+     "job_name": "Thackray Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T12:37:00"
+    },
+    {
+     "job_id": 332060,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-21T14:21:00"
+    },
+    {
+     "job_id": 333347,
+     "job_name": "Beaumont Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-21T15:00:00"
+    },
+    {
+     "job_id": 330839,
+     "job_name": "Yardley Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T17:35:00"
+    },
+    {
+     "job_id": 335755,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-21T10:22:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-20",
+   "target": 0,
+   "actual": 0,
+   "dwp_target": 0,
+   "dwp_actual": 0,
+   "touchpoints": [],
+   "dwp": []
+  },
+  {
+   "date": "2026-09-19",
+   "target": 0,
+   "actual": 0,
+   "dwp_target": 0,
+   "dwp_actual": 0,
+   "touchpoints": [],
+   "dwp": []
+  },
+  {
+   "date": "2026-09-18",
+   "target": 43,
+   "actual": 15,
+   "dwp_target": 10,
+   "dwp_actual": 3,
+   "touchpoints": [
+    {
+     "job_id": 330793,
+     "job_name": "Holloway Group - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-18T17:23:00"
+    },
+    {
+     "job_id": 332507,
+     "job_name": "Brennan Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-18T17:41:00"
+    },
+    {
+     "job_id": 336191,
+     "job_name": "Oakes Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-18T15:26:00"
+    },
+    {
+     "job_id": 334442,
+     "job_name": "Calloway Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-18T15:17:00"
+    },
+    {
+     "job_id": 330891,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T14:05:00"
+    },
+    {
+     "job_id": 336075,
+     "job_name": "Jasper Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-18T16:55:00"
+    },
+    {
+     "job_id": 333117,
+     "job_name": "Whitcombe Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-18T09:23:00"
+    },
+    {
+     "job_id": 331760,
+     "job_name": "Lockhart Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T17:49:00"
+    },
+    {
+     "job_id": 330839,
+     "job_name": "Yardley Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T11:14:00"
+    },
+    {
+     "job_id": 335348,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-18T10:40:00"
+    },
+    {
+     "job_id": 330539,
+     "job_name": "Everhart Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Priya Nair",
+     "at": "2026-09-18T15:04:00"
+    },
+    {
+     "job_id": 333211,
+     "job_name": "Brennan Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Divya Shetty",
+     "at": "2026-09-18T17:10:00"
+    },
+    {
+     "job_id": 332777,
+     "job_name": "Pemberton Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Divya Shetty",
+     "at": "2026-09-18T14:42:00"
+    },
+    {
+     "job_id": 331075,
+     "job_name": "Abbott Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-18T10:21:00"
+    },
+    {
+     "job_id": 332582,
+     "job_name": "Underhill Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-18T18:50:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 333117,
+     "job_name": "Whitcombe Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-18T09:57:00"
+    },
+    {
+     "job_id": 333954,
+     "job_name": "Vance Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-18T18:29:00"
+    },
+    {
+     "job_id": 330876,
+     "job_name": "Ellery Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-18T12:49:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-17",
+   "target": 43,
+   "actual": 20,
+   "dwp_target": 10,
+   "dwp_actual": 3,
+   "touchpoints": [
+    {
+     "job_id": 331227,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-17T15:00:00"
+    },
+    {
+     "job_id": 330839,
+     "job_name": "Yardley Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T14:49:00"
+    },
+    {
+     "job_id": 332723,
+     "job_name": "Kingsley & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T13:15:00"
+    },
+    {
+     "job_id": 333175,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T10:22:00"
+    },
+    {
+     "job_id": 334756,
+     "job_name": "Garrick Group - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Query Replies",
+     "by": "Priya Nair",
+     "at": "2026-09-17T17:05:00"
+    },
+    {
+     "job_id": 336418,
+     "job_name": "Underhill Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Ananya Iyer",
+     "at": "2026-09-17T11:46:00"
+    },
+    {
+     "job_id": 333117,
+     "job_name": "Whitcombe Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-17T16:06:00"
+    },
+    {
+     "job_id": 332840,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-17T18:51:00"
+    },
+    {
+     "job_id": 334671,
+     "job_name": "Garrick Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-17T13:44:00"
+    },
+    {
+     "job_id": 333389,
+     "job_name": "Ironside & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T18:43:00"
+    },
+    {
+     "job_id": 333211,
+     "job_name": "Brennan Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Divya Shetty",
+     "at": "2026-09-17T09:40:00"
+    },
+    {
+     "job_id": 332854,
+     "job_name": "Zeller Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T18:54:00"
+    },
+    {
+     "job_id": 335348,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-17T15:07:00"
+    },
+    {
+     "job_id": 332984,
+     "job_name": "Halden Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-17T10:30:00"
+    },
+    {
+     "job_id": 334874,
+     "job_name": "Norcross Group - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Divya Shetty",
+     "at": "2026-09-17T15:54:00"
+    },
+    {
+     "job_id": 334780,
+     "job_name": "Jasper Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Query Replies",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T14:26:00"
+    },
+    {
+     "job_id": 335620,
+     "job_name": "Yardley Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-17T11:22:00"
+    },
+    {
+     "job_id": 332402,
+     "job_name": "Ellery & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T12:49:00"
+    },
+    {
+     "job_id": 334601,
+     "job_name": "Fairholm Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T14:36:00"
+    },
+    {
+     "job_id": 333276,
+     "job_name": "Hartwell Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Divya Shetty",
+     "at": "2026-09-17T15:31:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 330891,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T16:39:00"
+    },
+    {
+     "job_id": 330793,
+     "job_name": "Holloway Group - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-17T16:10:00"
+    },
+    {
+     "job_id": 333933,
+     "job_name": "Zeller Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T15:32:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-16",
+   "target": 43,
+   "actual": 23,
+   "dwp_target": 10,
+   "dwp_actual": 3,
+   "touchpoints": [
+    {
+     "job_id": 336015,
+     "job_name": "Yardley Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-16T17:43:00"
+    },
+    {
+     "job_id": 335509,
+     "job_name": "Gresham & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Divya Shetty",
+     "at": "2026-09-16T13:02:00"
+    },
+    {
+     "job_id": 331716,
+     "job_name": "Oakes Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Rahul Menon",
+     "at": "2026-09-16T15:35:00"
+    },
+    {
+     "job_id": 335868,
+     "job_name": "Ironside Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-16T10:03:00"
+    },
+    {
+     "job_id": 332582,
+     "job_name": "Underhill Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-16T18:10:00"
+    },
+    {
+     "job_id": 334150,
+     "job_name": "Kingsley Superannuation Fund - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-16T13:45:00"
+    },
+    {
+     "job_id": 333864,
+     "job_name": "Gresham Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-16T13:56:00"
+    },
+    {
+     "job_id": 335409,
+     "job_name": "Pemberton Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-16T17:48:00"
+    },
+    {
+     "job_id": 330655,
+     "job_name": "Lockhart Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Priya Nair",
+     "at": "2026-09-16T15:43:00"
+    },
+    {
+     "job_id": 335348,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-16T11:33:00"
+    },
+    {
+     "job_id": 332060,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-16T12:15:00"
+    },
+    {
+     "job_id": 335905,
+     "job_name": "Jasper Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-16T17:58:00"
+    },
+    {
+     "job_id": 331321,
+     "job_name": "Ashford Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Priya Nair",
+     "at": "2026-09-16T14:33:00"
+    },
+    {
+     "job_id": 334473,
+     "job_name": "Holloway Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-16T11:35:00"
+    },
+    {
+     "job_id": 331262,
+     "job_name": "Pemberton Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-16T12:49:00"
+    },
+    {
+     "job_id": 331560,
+     "job_name": "Abbott Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Arjun Pillai",
+     "at": "2026-09-16T09:42:00"
+    },
+    {
+     "job_id": 333117,
+     "job_name": "Whitcombe Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-16T17:41:00"
+    },
+    {
+     "job_id": 333756,
+     "job_name": "Stannard Family Super Fund - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-16T16:24:00"
+    },
+    {
+     "job_id": 333464,
+     "job_name": "Jasper & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-16T17:18:00"
+    },
+    {
+     "job_id": 333682,
+     "job_name": "Pemberton Group - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-16T11:19:00"
+    },
+    {
+     "job_id": 333230,
+     "job_name": "Foxley Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-16T16:46:00"
+    },
+    {
+     "job_id": 335020,
+     "job_name": "Norcross & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-16T16:47:00"
+    },
+    {
+     "job_id": 333416,
+     "job_name": "Garrick Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Review Replies",
+     "by": "Arjun Pillai",
+     "at": "2026-09-16T15:11:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 335409,
+     "job_name": "Pemberton Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Divya Shetty",
+     "at": "2026-09-16T14:31:00"
+    },
+    {
+     "job_id": 336117,
+     "job_name": "Marlow Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-16T11:46:00"
+    },
+    {
+     "job_id": 334442,
+     "job_name": "Calloway Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-16T14:45:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-15",
+   "target": 43,
+   "actual": 23,
+   "dwp_target": 10,
+   "dwp_actual": 6,
+   "touchpoints": [
+    {
+     "job_id": 330759,
+     "job_name": "Ashford Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T13:32:00"
+    },
+    {
+     "job_id": 334601,
+     "job_name": "Fairholm Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-15T12:34:00"
+    },
+    {
+     "job_id": 332402,
+     "job_name": "Ellery & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-15T17:22:00"
+    },
+    {
+     "job_id": 333175,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-15T18:27:00"
+    },
+    {
+     "job_id": 333117,
+     "job_name": "Whitcombe Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-15T09:13:00"
+    },
+    {
+     "job_id": 332190,
+     "job_name": "Stannard Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Priya Nair",
+     "at": "2026-09-15T15:12:00"
+    },
+    {
+     "job_id": 334473,
+     "job_name": "Holloway Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-15T17:06:00"
+    },
+    {
+     "job_id": 333205,
+     "job_name": "Pemberton Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-15T18:41:00"
+    },
+    {
+     "job_id": 332984,
+     "job_name": "Halden Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T10:22:00"
+    },
+    {
+     "job_id": 334391,
+     "job_name": "Stannard Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-15T15:00:00"
+    },
+    {
+     "job_id": 333933,
+     "job_name": "Zeller Family Trust - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Karthik Rao",
+     "at": "2026-09-15T13:38:00"
+    },
+    {
+     "job_id": 332142,
+     "job_name": "Holloway & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T13:12:00"
+    },
+    {
+     "job_id": 335061,
+     "job_name": "Everhart Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-15T12:49:00"
+    },
+    {
+     "job_id": 336191,
+     "job_name": "Oakes Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-15T16:52:00"
+    },
+    {
+     "job_id": 335905,
+     "job_name": "Jasper Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-15T09:26:00"
+    },
+    {
+     "job_id": 331422,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-15T15:01:00"
+    },
+    {
+     "job_id": 332807,
+     "job_name": "Pemberton Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-15T16:50:00"
+    },
+    {
+     "job_id": 334840,
+     "job_name": "Foxley & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Review Replies",
+     "by": "Karthik Rao",
+     "at": "2026-09-15T15:26:00"
+    },
+    {
+     "job_id": 335020,
+     "job_name": "Norcross & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-15T17:22:00"
+    },
+    {
+     "job_id": 331395,
+     "job_name": "Zeller Group - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Rahul Menon",
+     "at": "2026-09-15T12:40:00"
+    },
+    {
+     "job_id": 335613,
+     "job_name": "Rathbone Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T14:56:00"
+    },
+    {
+     "job_id": 332675,
+     "job_name": "Fairholm Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Karthik Rao",
+     "at": "2026-09-15T09:06:00"
+    },
+    {
+     "job_id": 333288,
+     "job_name": "Dunmore Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-15T11:07:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 330839,
+     "job_name": "Yardley Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-15T16:13:00"
+    },
+    {
+     "job_id": 333903,
+     "job_name": "Ellery Family Super Fund - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-15T13:15:00"
+    },
+    {
+     "job_id": 335620,
+     "job_name": "Yardley Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-15T18:16:00"
+    },
+    {
+     "job_id": 333117,
+     "job_name": "Whitcombe Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-15T15:02:00"
+    },
+    {
+     "job_id": 333276,
+     "job_name": "Hartwell Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Divya Shetty",
+     "at": "2026-09-15T17:46:00"
+    },
+    {
+     "job_id": 335746,
+     "job_name": "Ashford Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-15T16:24:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-14",
+   "target": 43,
+   "actual": 30,
+   "dwp_target": 10,
+   "dwp_actual": 7,
+   "touchpoints": [
+    {
+     "job_id": 335592,
+     "job_name": "Gresham Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Divya Shetty",
+     "at": "2026-09-14T13:33:00"
+    },
+    {
+     "job_id": 333659,
+     "job_name": "Abbott Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-14T12:34:00"
+    },
+    {
+     "job_id": 335825,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-14T14:08:00"
+    },
+    {
+     "job_id": 333810,
+     "job_name": "Beaumont Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Review Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-14T12:20:00"
+    },
+    {
+     "job_id": 333250,
+     "job_name": "Yardley Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-14T11:42:00"
+    },
+    {
+     "job_id": 335076,
+     "job_name": "Vance & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-14T09:59:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Ellery Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T17:43:00"
+    },
+    {
+     "job_id": 331262,
+     "job_name": "Pemberton Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T18:43:00"
+    },
+    {
+     "job_id": 334778,
+     "job_name": "Underhill Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-14T14:31:00"
+    },
+    {
+     "job_id": 332323,
+     "job_name": "Marlow Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-14T18:03:00"
+    },
+    {
+     "job_id": 336008,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-14T13:37:00"
+    },
+    {
+     "job_id": 330684,
+     "job_name": "Cortland & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T18:24:00"
+    },
+    {
+     "job_id": 333234,
+     "job_name": "Brennan Group - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T09:06:00"
+    },
+    {
+     "job_id": 332624,
+     "job_name": "Cortland Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-14T12:51:00"
+    },
+    {
+     "job_id": 330793,
+     "job_name": "Holloway Group - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T14:13:00"
+    },
+    {
+     "job_id": 334391,
+     "job_name": "Stannard Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-14T16:43:00"
+    },
+    {
+     "job_id": 331560,
+     "job_name": "Abbott Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T17:43:00"
+    },
+    {
+     "job_id": 332520,
+     "job_name": "Whitcombe Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-14T18:27:00"
+    },
+    {
+     "job_id": 331892,
+     "job_name": "Cortland Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T17:03:00"
+    },
+    {
+     "job_id": 335178,
+     "job_name": "Garrick Superannuation Fund - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-14T12:30:00"
+    },
+    {
+     "job_id": 333864,
+     "job_name": "Gresham Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-14T12:21:00"
+    },
+    {
+     "job_id": 336418,
+     "job_name": "Underhill Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Ananya Iyer",
+     "at": "2026-09-14T16:20:00"
+    },
+    {
+     "job_id": 331242,
+     "job_name": "Brennan Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T11:22:00"
+    },
+    {
+     "job_id": 333347,
+     "job_name": "Beaumont Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-14T14:58:00"
+    },
+    {
+     "job_id": 332854,
+     "job_name": "Zeller Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-14T18:16:00"
+    },
+    {
+     "job_id": 331716,
+     "job_name": "Oakes Holdings Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Rahul Menon",
+     "at": "2026-09-14T15:19:00"
+    },
+    {
+     "job_id": 333288,
+     "job_name": "Dunmore Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-14T18:42:00"
+    },
+    {
+     "job_id": 336117,
+     "job_name": "Marlow Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T17:49:00"
+    },
+    {
+     "job_id": 335409,
+     "job_name": "Pemberton Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-14T09:04:00"
+    },
+    {
+     "job_id": 333954,
+     "job_name": "Vance Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-14T09:00:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 330939,
+     "job_name": "Halden Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T14:40:00"
+    },
+    {
+     "job_id": 330985,
+     "job_name": "Fairholm Group - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-14T18:07:00"
+    },
+    {
+     "job_id": 332245,
+     "job_name": "Ironside Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-14T15:51:00"
+    },
+    {
+     "job_id": 335409,
+     "job_name": "Pemberton Retirement Fund - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Divya Shetty",
+     "at": "2026-09-14T12:28:00"
+    },
+    {
+     "job_id": 335612,
+     "job_name": "Ellery Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T11:14:00"
+    },
+    {
+     "job_id": 335231,
+     "job_name": "Ashford Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-14T15:11:00"
+    },
+    {
+     "job_id": 331262,
+     "job_name": "Pemberton Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T11:55:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-13",
+   "target": 0,
+   "actual": 0,
+   "dwp_target": 0,
+   "dwp_actual": 0,
+   "touchpoints": [],
+   "dwp": []
+  },
+  {
+   "date": "2026-09-12",
+   "target": 0,
+   "actual": 0,
+   "dwp_target": 0,
+   "dwp_actual": 0,
+   "touchpoints": [],
+   "dwp": []
+  },
+  {
+   "date": "2026-09-11",
+   "target": 43,
+   "actual": 27,
+   "dwp_target": 10,
+   "dwp_actual": 8,
+   "touchpoints": [
+    {
+     "job_id": 331892,
+     "job_name": "Cortland Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-11T09:07:00"
+    },
+    {
+     "job_id": 332507,
+     "job_name": "Brennan Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Queries",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-11T15:46:00"
+    },
+    {
+     "job_id": 332789,
+     "job_name": "Garrick Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T14:26:00"
+    },
+    {
+     "job_id": 331422,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T13:42:00"
+    },
+    {
+     "job_id": 330759,
+     "job_name": "Ashford Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Review Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T11:41:00"
+    },
+    {
+     "job_id": 335178,
+     "job_name": "Garrick Superannuation Fund - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T17:43:00"
+    },
+    {
+     "job_id": 336184,
+     "job_name": "Kestrel Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T10:57:00"
+    },
+    {
+     "job_id": 333892,
+     "job_name": "Thackray & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T18:50:00"
+    },
+    {
+     "job_id": 335620,
+     "job_name": "Yardley Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-11T10:26:00"
+    },
+    {
+     "job_id": 335020,
+     "job_name": "Norcross & Associates Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-11T16:30:00"
+    },
+    {
+     "job_id": 331262,
+     "job_name": "Pemberton Investments Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-11T12:38:00"
+    },
+    {
+     "job_id": 330655,
+     "job_name": "Lockhart Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Priya Nair",
+     "at": "2026-09-11T16:25:00"
+    },
+    {
+     "job_id": 335974,
+     "job_name": "Devlin & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-11T16:01:00"
+    },
+    {
+     "job_id": 335825,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-11T12:43:00"
+    },
+    {
+     "job_id": 332723,
+     "job_name": "Kingsley & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T11:10:00"
+    },
+    {
+     "job_id": 335613,
+     "job_name": "Rathbone Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T15:39:00"
+    },
+    {
+     "job_id": 335905,
+     "job_name": "Jasper Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-11T17:32:00"
+    },
+    {
+     "job_id": 333842,
+     "job_name": "Dunmore Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Priya Nair",
+     "at": "2026-09-11T16:23:00"
+    },
+    {
+     "job_id": 332840,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-11T17:24:00"
+    },
+    {
+     "job_id": 333250,
+     "job_name": "Yardley Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-11T12:20:00"
+    },
+    {
+     "job_id": 334473,
+     "job_name": "Holloway Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-11T13:54:00"
+    },
+    {
+     "job_id": 336008,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T13:37:00"
+    },
+    {
+     "job_id": 330539,
+     "job_name": "Everhart Superannuation Fund - 2026",
+     "vertical": "Business Services",
+     "status": "WIP - Query Replies",
+     "by": "Priya Nair",
+     "at": "2026-09-11T18:31:00"
+    },
+    {
+     "job_id": 333756,
+     "job_name": "Stannard Family Super Fund - 2026",
+     "vertical": "SMSF",
+     "status": "Sent For Final Review",
+     "by": "Karthik Rao",
+     "at": "2026-09-11T09:37:00"
+    },
+    {
+     "job_id": 332670,
+     "job_name": "Fairholm & Associates Pty Ltd - 2026",
+     "vertical": "Business Services",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-11T16:01:00"
+    },
+    {
+     "job_id": 333954,
+     "job_name": "Vance Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-11T13:35:00"
+    },
+    {
+     "job_id": 335868,
+     "job_name": "Ironside Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-11T13:29:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 332984,
+     "job_name": "Halden Family Trust - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T11:15:00"
+    },
+    {
+     "job_id": 335369,
+     "job_name": "Devlin Holdings Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-11T16:34:00"
+    },
+    {
+     "job_id": 335612,
+     "job_name": "Ellery Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-11T11:09:00"
+    },
+    {
+     "job_id": 330985,
+     "job_name": "Fairholm Group - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-11T09:23:00"
+    },
+    {
+     "job_id": 335545,
+     "job_name": "Calloway Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-11T10:30:00"
+    },
+    {
+     "job_id": 330655,
+     "job_name": "Lockhart Retirement Fund - 2026",
+     "vertical": "Business Services",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-11T15:47:00"
+    },
+    {
+     "job_id": 336284,
+     "job_name": "Brennan & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T11:23:00"
+    },
+    {
+     "job_id": 335231,
+     "job_name": "Ashford Investments Pty Ltd - 2026",
+     "vertical": "SMSF",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-11T14:08:00"
+    }
+   ]
+  }
+ ]
+}

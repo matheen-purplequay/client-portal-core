@@ -1,0 +1,17 @@
+<!-- Needs scope: tbl -->
+<div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-3 py-2 text-[13px]">
+  <div class="flex items-center gap-2">
+    <template x-for="n in [10, 20, 30]"><button @click="tbl.setSize(n)" class="grid h-7 w-7 place-items-center rounded-full text-xs font-semibold" :class="tbl.size === n ? 'bg-brand text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" x-text="n"></button></template>
+    <span class="ml-2 text-slate-500" x-text="`Showing ${tbl.from}–${tbl.to} of ${tbl.total}`"></span>
+  </div>
+  <div class="flex items-center gap-3">
+    <button class="flex items-center gap-1 text-slate-600" @click="CP.toast('Page bookmarked')"><span class="msym !text-[16px]">bookmark_border</span>Bookmark Page</button>
+    <div class="flex items-center gap-1 rounded-full bg-slate-100 px-1 py-0.5">
+      <button class="grid h-7 w-7 place-items-center rounded-full text-slate-400 hover:text-brand" @click="tbl.go(1)"><span class="msym !text-[18px]">first_page</span></button>
+      <button class="grid h-7 w-7 place-items-center rounded-full text-slate-400 hover:text-brand" @click="tbl.go(tbl.cur - 1)"><span class="msym !text-[18px]">arrow_back</span></button>
+      <span class="grid h-7 min-w-7 place-items-center rounded-full bg-white px-2 text-xs font-bold text-navy shadow" x-text="tbl.cur"></span>
+      <button class="grid h-7 w-7 place-items-center rounded-full text-slate-400 hover:text-brand" @click="tbl.go(tbl.cur + 1)"><span class="msym !text-[18px]">arrow_forward</span></button>
+      <button class="grid h-7 w-7 place-items-center rounded-full text-slate-400 hover:text-brand" @click="tbl.go(tbl.pages)"><span class="msym !text-[18px]">last_page</span></button>
+    </div>
+  </div>
+</div>

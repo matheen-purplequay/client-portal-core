@@ -1,0 +1,37 @@
+<!-- Needs scope: tbl, statusLabel, clearStatus(), filters, filterOpts, refresh(), refreshing -->
+<div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-3 py-2">
+  <div class="relative">
+    <div class="text-[11px] font-bold text-slate-600">Show Columns</div>
+    <button class="flex items-center gap-1 text-[11px] font-semibold" @click.stop="tbl.colsOpen = !tbl.colsOpen">
+      <span x-text="tbl.selectedCount + '/' + tbl.columns.length + ' selected'"></span><span class="msym !text-[16px]">expand_more</span></button>
+    <div x-show="tbl.colsOpen" @click.outside="tbl.colsOpen = false" x-transition class="absolute left-0 z-30 mt-1 max-h-72 w-52 overflow-y-auto rounded-lg bg-white p-2 shadow-xl ring-1 ring-black/5">
+      <template x-for="c in tbl.columns" :key="c.key">
+        <label class="flex items-center gap-2 rounded px-2 py-1 text-[13px] hover:bg-slate-50"><input type="checkbox" class="rounded border-slate-300 text-brand focus:ring-brand" x-model="tbl.visible[c.key]"><span x-text="c.label"></span></label>
+      </template>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-2">
+    <div class="flex items-center gap-2 text-[11px] leading-tight text-slate-500">
+      <div class="text-right"><div>Selected</div><div class="text-[13px]">Filters</div></div>
+      <div x-show="statusLabel" class="flex items-center gap-2 rounded-md bg-slate-100 px-2 py-1">
+        <div><div class="text-[11px]">Status</div><div class="text-[13px] font-semibold text-navy" x-text="statusLabel"></div></div>
+        <button @click="clearStatus()" class="text-slate-400 hover:text-brand"><span class="msym !text-[16px]">close</span></button>
+      </div>
+    </div>
+    <div class="relative flex items-center rounded-full bg-slate-100 px-1">
+      <div class="relative">
+        <button class="btn-soft !text-slate-700" @click.stop="filtersOpen = !filtersOpen"><span class="msym !text-[16px]">filter_list</span>Filters</button>
+        <div x-show="filtersOpen" @click.outside="filtersOpen = false" x-transition class="absolute right-0 z-30 mt-1 w-64 space-y-2 rounded-lg bg-white p-3 shadow-xl ring-1 ring-black/5">
+          <template x-for="f in filterOpts" :key="f.key"><label class="block text-[11px] font-semibold text-slate-500"><span x-text="f.label"></span>
+            <select class="field mt-1 block w-full" x-model="filters[f.key]" @change="tbl.reset()"><option value="">All</option><template x-for="o in f.options"><option :value="o" x-text="o"></option></template></select></label></template>
+          <button class="text-xs font-semibold text-brand" @click="Object.keys(filters).forEach(k => filters[k] = ''); tbl.reset()">Clear filters</button>
+        </div>
+      </div>
+      <button class="btn-soft !text-slate-700" @click="refresh()"><span class="msym !text-[16px]" :class="refreshing && 'animate-spin'">sync</span>Refresh</button>
+      <button class="btn-soft !text-slate-700" @click="CP.download('Jobs list')"><span class="msym !text-[16px]">download</span>Download</button>
+    </div>
+    <label class="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5"><span class="msym text-slate-500">search</span>
+      <input type="search" placeholder="Search..." class="w-44 border-0 bg-transparent p-0 text-[13px] focus:ring-0" x-model="tbl.q" @input="tbl.reset()"></label>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+[
+  {
+    "invoice_no": "INV-NO-202609",
+    "period": "August 2026",
+    "issued_on": "2026-09-02",
+    "due_on": "2026-10-02",
+    "amount": 8526,
+    "gst": 852.6,
+    "total": 9378.6,
+    "currency": "AUD",
+    "status": "Due"
+  },
+  {
+    "invoice_no": "INV-NO-202608",
+    "period": "July 2026",
+    "issued_on": "2026-08-03",
+    "due_on": "2026-09-02",
+    "amount": 6626,
+    "gst": 662.6,
+    "total": 7288.6,
+    "currency": "AUD",
+    "status": "Paid"
+  },
+  {
+    "invoice_no": "INV-NO-202607",
+    "period": "June 2026",
+    "issued_on": "2026-07-04",
+    "due_on": "2026-08-03",
+    "amount": 11094,
+    "gst": 1109.4,
+    "total": 12203.4,
+    "currency": "AUD",
+    "status": "Overdue"
+  },
+  {
+    "invoice_no": "INV-NO-202606",
+    "period": "May 2026",
+    "issued_on": "2026-06-04",
+    "due_on": "2026-07-04",
+    "amount": 7931,
+    "gst": 793.1,
+    "total": 8724.1,
+    "currency": "AUD",
+    "status": "Paid"
+  },
+  {
+    "invoice_no": "INV-NO-202605",
+    "period": "April 2026",
+    "issued_on": "2026-05-05",
+    "due_on": "2026-06-04",
+    "amount": 13275,
+    "gst": 1327.5,
+    "total": 14602.5,
+    "currency": "AUD",
+    "status": "Paid"
+  },
+  {
+    "invoice_no": "INV-NO-202604",
+    "period": "March 2026",
+    "issued_on": "2026-04-05",
+    "due_on": "2026-05-05",
+    "amount": 5580,
+    "gst": 558.0,
+    "total": 6138.0,
+    "currency": "AUD",
+    "status": "Paid"
+  },
+  {
+    "invoice_no": "INV-NO-202603",
+    "period": "February 2026",
+    "issued_on": "2026-03-06",
+    "due_on": "2026-04-05",
+    "amount": 15856,
+    "gst": 1585.6,
+    "total": 17441.6,
+    "currency": "AUD",
+    "status": "Paid"
+  },
+  {
+    "invoice_no": "INV-NO-202602",
+    "period": "January 2026",
+    "issued_on": "2026-02-04",
+    "due_on": "2026-03-06",
+    "amount": 7047,
+    "gst": 704.7,
+    "total": 7751.7,
+    "currency": "AUD",
+    "status": "Paid"
+  },
+  {
+    "invoice_no": "INV-NO-202601",
+    "period": "December 2025",
+    "issued_on": "2026-01-05",
+    "due_on": "2026-02-04",
+    "amount": 18373,
+    "gst": 1837.3,
+    "total": 20210.3,
+    "currency": "AUD",
+    "status": "Paid"
+  },
+  {
+    "invoice_no": "INV-NO-202600",
+    "period": "November 2025",
+    "issued_on": "2025-12-06",
+    "due_on": "2026-01-05",
+    "amount": 6746,
+    "gst": 674.6,
+    "total": 7420.6,
+    "currency": "AUD",
+    "status": "Paid"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Marcus Doyle",
+    "role": "Account Manager",
+    "group": "Leadership",
+    "email": "marcus@carisma.example"
+  },
+  {
+    "name": "Helen Carmichael",
+    "role": "Delivery Partner",
+    "group": "Leadership",
+    "email": "helen@carisma.example"
+  },
+  {
+    "name": "Priya Nair",
+    "role": "Associate",
+    "group": "Bookkeeping",
+    "email": "priya@carisma.example"
+  },
+  {
+    "name": "Rahul Menon",
+    "role": "Senior Associate",
+    "group": "Financial Planning",
+    "email": "rahul@carisma.example"
+  },
+  {
+    "name": "Ananya Iyer",
+    "role": "Associate",
+    "group": "Financial Planning",
+    "email": "ananya@carisma.example"
+  },
+  {
+    "name": "Karthik Rao",
+    "role": "Senior Associate",
+    "group": "Bookkeeping",
+    "email": "karthik@carisma.example"
+  },
+  {
+    "name": "Sneha Kulkarni",
+    "role": "Associate",
+    "group": "Financial Planning",
+    "email": "sneha@carisma.example"
+  },
+  {
+    "name": "Arjun Pillai",
+    "role": "Team Lead",
+    "group": "Financial Planning",
+    "email": "arjun@carisma.example"
+  },
+  {
+    "name": "Divya Shetty",
+    "role": "Senior Associate",
+    "group": "Bookkeeping",
+    "email": "divya@carisma.example"
+  },
+  {
+    "name": "Vikram Hegde",
+    "role": "Team Lead",
+    "group": "Financial Planning",
+    "email": "vikram@carisma.example"
+  }
+]

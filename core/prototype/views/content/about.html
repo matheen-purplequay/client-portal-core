@@ -1,0 +1,6 @@
+<div x-data="content('shared', 'about')" class="mx-auto max-w-[1100px]"><template x-if="data"><div>
+<div class="rounded-3xl bg-gradient-to-r from-brand to-brand-dark p-8 text-white"><h1 class="text-3xl font-semibold" x-text="data.name"></h1><p class="mt-1 opacity-90" x-text="data.tagline"></p></div>
+<p class="my-5 max-w-3xl text-slate-600" x-text="data.description"></p>
+<div class="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4"><template x-for="s in data.stats"><div class="card p-4"><div class="text-sm text-slate-500" x-text="s.label"></div><div class="text-3xl font-semibold text-brand" x-text="s.value"></div></div></template></div>
+<section class="card p-5"><h3 class="mb-3 font-semibold">Our values</h3><div class="flex flex-wrap gap-2"><template x-for="v in data.values"><span class="chip !shadow-none bg-brand-light text-brand" x-text="v"></span></template></div></section>
+</div></template></div>

@@ -1,0 +1,11 @@
+<div x-data="content('client', 'invoices')" class="mx-auto max-w-[1100px]"><template x-if="data"><div>
+<h1 class="mb-1 flex items-center gap-2 text-2xl font-semibold text-brand"><span class="msym !text-[28px]">folder_open</span>Reports</h1><p class="mb-5 text-sm text-slate-500">Download your monthly, weekly and billing documents.</p>
+<div class="mb-4 flex gap-2"><a href="#/reports/connect" class="pill-tab" :class="$store.app.route === '/reports/connect' && 'active'">Monthly Connect</a><a href="#/reports/weekly" class="pill-tab" :class="$store.app.route === '/reports/weekly' && 'active'">Weekly Report</a><a href="#/reports/invoices" class="pill-tab" :class="$store.app.route === '/reports/invoices' && 'active'">Invoices</a></div>
+<div class="mb-4 grid gap-3 sm:grid-cols-3">
+  <div class="card p-4"><div class="text-sm text-slate-500">Outstanding (due)</div><div class="text-2xl font-semibold text-amber-600" x-text="fmt.money(sum(data, 'Due'))"></div></div>
+  <div class="card p-4"><div class="text-sm text-slate-500">Overdue</div><div class="text-2xl font-semibold text-red-700" x-text="fmt.money(sum(data, 'Overdue'))"></div></div>
+  <div class="card p-4"><div class="text-sm text-slate-500">Paid (last 10 invoices)</div><div class="text-2xl font-semibold text-green-700" x-text="fmt.money(sum(data, 'Paid'))"></div></div></div>
+<div class="card overflow-hidden"><table class="tbl w-full"><thead class="bg-slate-50"><tr><th>Invoice</th><th>Period</th><th>Issued</th><th>Due</th><th>Total (incl. GST)</th><th>Status</th><th></th></tr></thead>
+  <tbody><template x-for="i in data" :key="i.invoice_no"><tr><td class="font-semibold" x-text="i.invoice_no"></td><td x-text="i.period"></td><td x-text="fmt.dmy(i.issued_on)"></td><td x-text="fmt.dmy(i.due_on)"></td><td x-text="fmt.money(i.total, i.currency)"></td>
+    <td><span class="chip !shadow-none" :class="tone(i.status)" x-text="i.status"></span></td><td><button class="btn-soft border border-brand-light" @click="CP.download(i.invoice_no)">PDF</button></td></tr></template></tbody></table></div>
+</div></template></div>

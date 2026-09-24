@@ -1,0 +1,13 @@
+<div x-data="content('client', 'profile')" class="mx-auto max-w-[1100px]"><template x-if="data"><div>
+<h1 class="mb-1 flex items-center gap-2 text-2xl font-semibold text-brand"><span class="msym !text-[28px]">account_circle</span>My Profile</h1><p class="mb-5 text-sm text-slate-500">Your account and company details.</p>
+<div class="grid gap-4 lg:grid-cols-3">
+  <div class="card p-6 text-center"><span class="mx-auto grid h-20 w-20 place-items-center rounded-full bg-brand text-2xl font-semibold text-white" x-text="user.first_name[0] + user.last_name[0]"></span>
+    <div class="mt-3 text-lg font-semibold" x-text="user.first_name + ' ' + user.last_name"></div><div class="text-sm text-slate-500" x-text="user.designation"></div></div>
+  <div class="space-y-4 lg:col-span-2">
+    <section class="card p-5"><h3 class="mb-2 font-semibold">Account</h3>
+      <template x-for="r in [['Email', user.email], ['Phone', user.phone], ['Password', '••••••••']]"><div class="flex justify-between border-b py-2 text-sm last:border-0"><span class="text-slate-500" x-text="r[0]"></span><span class="font-semibold" x-text="r[1]"></span></div></template></section>
+    <section class="card p-5"><h3 class="mb-2 font-semibold">Company</h3>
+      <template x-for="r in [['Company', data.company], ['ABN', data.abn], ['Location', data.city], ['Engagement since', fmt.dmy(data.engagement_start)], ['Contract type', data.contracts.join(', ')], ['Verticals', data.verticals.map((v) => v.title).join(', ')], ['Account manager', data.account_manager]]"><div class="flex justify-between border-b py-2 text-sm last:border-0"><span class="text-slate-500" x-text="r[0]"></span><span class="font-semibold" x-text="r[1]"></span></div></template></section>
+  </div>
+</div>
+</div></template></div>

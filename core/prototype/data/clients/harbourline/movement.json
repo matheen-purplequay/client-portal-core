@@ -1,0 +1,2471 @@
+{
+ "updated_at": "2026-09-24T16:41:36",
+ "days": [
+  {
+   "date": "2026-09-24",
+   "target": 23,
+   "actual": 26,
+   "dwp_target": 10,
+   "dwp_actual": 3,
+   "touchpoints": [
+    {
+     "job_id": 333035,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T10:21:00"
+    },
+    {
+     "job_id": 333034,
+     "job_name": "Foxley Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-24T12:45:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Vance Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T09:21:00"
+    },
+    {
+     "job_id": 332773,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-24T12:47:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-24T14:39:00"
+    },
+    {
+     "job_id": 333670,
+     "job_name": "Hartwell Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T17:28:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-24T16:48:00"
+    },
+    {
+     "job_id": 331935,
+     "job_name": "Vance Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T17:41:00"
+    },
+    {
+     "job_id": 333476,
+     "job_name": "Abbott Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-24T15:49:00"
+    },
+    {
+     "job_id": 333620,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Karthik Rao",
+     "at": "2026-09-24T14:57:00"
+    },
+    {
+     "job_id": 331989,
+     "job_name": "Beaumont Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T17:41:00"
+    },
+    {
+     "job_id": 333573,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T11:15:00"
+    },
+    {
+     "job_id": 331999,
+     "job_name": "Hartwell Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T17:10:00"
+    },
+    {
+     "job_id": 333132,
+     "job_name": "Jasper Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T17:33:00"
+    },
+    {
+     "job_id": 333466,
+     "job_name": "Vance Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-24T15:29:00"
+    },
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-24T11:09:00"
+    },
+    {
+     "job_id": 333637,
+     "job_name": "Devlin Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-24T17:59:00"
+    },
+    {
+     "job_id": 331542,
+     "job_name": "Everhart Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-24T18:57:00"
+    },
+    {
+     "job_id": 331756,
+     "job_name": "Everhart Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T09:29:00"
+    },
+    {
+     "job_id": 333170,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-24T12:27:00"
+    },
+    {
+     "job_id": 332106,
+     "job_name": "Whitcombe & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T09:24:00"
+    },
+    {
+     "job_id": 331546,
+     "job_name": "Rathbone Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-24T17:41:00"
+    },
+    {
+     "job_id": 331708,
+     "job_name": "Gresham & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-24T15:39:00"
+    },
+    {
+     "job_id": 332141,
+     "job_name": "Dunmore & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-24T16:32:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T10:40:00"
+    },
+    {
+     "job_id": 332053,
+     "job_name": "Dunmore Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T13:56:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 332823,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-24T15:04:00"
+    },
+    {
+     "job_id": 332367,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-24T09:32:00"
+    },
+    {
+     "job_id": 333466,
+     "job_name": "Vance Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-24T12:28:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-23",
+   "target": 23,
+   "actual": 28,
+   "dwp_target": 10,
+   "dwp_actual": 3,
+   "touchpoints": [
+    {
+     "job_id": 332958,
+     "job_name": "Brennan Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T11:01:00"
+    },
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T11:01:00"
+    },
+    {
+     "job_id": 333034,
+     "job_name": "Foxley Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-23T09:30:00"
+    },
+    {
+     "job_id": 332053,
+     "job_name": "Dunmore Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T12:26:00"
+    },
+    {
+     "job_id": 333132,
+     "job_name": "Jasper Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-23T17:37:00"
+    },
+    {
+     "job_id": 333670,
+     "job_name": "Hartwell Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T18:57:00"
+    },
+    {
+     "job_id": 331603,
+     "job_name": "Pemberton & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-23T17:46:00"
+    },
+    {
+     "job_id": 332561,
+     "job_name": "Norcross Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Priya Nair",
+     "at": "2026-09-23T09:29:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-23T09:47:00"
+    },
+    {
+     "job_id": 333170,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-23T18:12:00"
+    },
+    {
+     "job_id": 332258,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-23T11:21:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-23T15:01:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T09:51:00"
+    },
+    {
+     "job_id": 331999,
+     "job_name": "Hartwell Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T14:03:00"
+    },
+    {
+     "job_id": 331756,
+     "job_name": "Everhart Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T14:30:00"
+    },
+    {
+     "job_id": 332773,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-23T12:09:00"
+    },
+    {
+     "job_id": 333577,
+     "job_name": "Everhart & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T17:32:00"
+    },
+    {
+     "job_id": 332036,
+     "job_name": "Abbott Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T17:29:00"
+    },
+    {
+     "job_id": 332367,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T14:50:00"
+    },
+    {
+     "job_id": 331989,
+     "job_name": "Beaumont Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-23T15:41:00"
+    },
+    {
+     "job_id": 331708,
+     "job_name": "Gresham & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-23T09:34:00"
+    },
+    {
+     "job_id": 333573,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Arjun Pillai",
+     "at": "2026-09-23T17:53:00"
+    },
+    {
+     "job_id": 331542,
+     "job_name": "Everhart Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T15:02:00"
+    },
+    {
+     "job_id": 333620,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Karthik Rao",
+     "at": "2026-09-23T16:48:00"
+    },
+    {
+     "job_id": 333152,
+     "job_name": "Halden Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-23T15:22:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Vance Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-23T18:24:00"
+    },
+    {
+     "job_id": 332721,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T18:24:00"
+    },
+    {
+     "job_id": 331546,
+     "job_name": "Rathbone Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T14:45:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 333577,
+     "job_name": "Everhart & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-23T17:50:00"
+    },
+    {
+     "job_id": 331756,
+     "job_name": "Everhart Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-23T09:04:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-23T09:30:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-22",
+   "target": 23,
+   "actual": 30,
+   "dwp_target": 10,
+   "dwp_actual": 3,
+   "touchpoints": [
+    {
+     "job_id": 331935,
+     "job_name": "Vance Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T09:10:00"
+    },
+    {
+     "job_id": 332561,
+     "job_name": "Norcross Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Priya Nair",
+     "at": "2026-09-22T12:54:00"
+    },
+    {
+     "job_id": 333670,
+     "job_name": "Hartwell Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T17:03:00"
+    },
+    {
+     "job_id": 332823,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-22T12:52:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Vance Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T13:46:00"
+    },
+    {
+     "job_id": 331999,
+     "job_name": "Hartwell Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T15:56:00"
+    },
+    {
+     "job_id": 331756,
+     "job_name": "Everhart Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T13:00:00"
+    },
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-22T11:22:00"
+    },
+    {
+     "job_id": 333152,
+     "job_name": "Halden Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T10:13:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T14:33:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-22T15:19:00"
+    },
+    {
+     "job_id": 332773,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T17:14:00"
+    },
+    {
+     "job_id": 333476,
+     "job_name": "Abbott Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-22T10:42:00"
+    },
+    {
+     "job_id": 333034,
+     "job_name": "Foxley Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-22T12:17:00"
+    },
+    {
+     "job_id": 333577,
+     "job_name": "Everhart & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-22T14:41:00"
+    },
+    {
+     "job_id": 331542,
+     "job_name": "Everhart Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-22T13:13:00"
+    },
+    {
+     "job_id": 332310,
+     "job_name": "Beaumont Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T16:11:00"
+    },
+    {
+     "job_id": 333170,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-22T16:21:00"
+    },
+    {
+     "job_id": 333573,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T18:31:00"
+    },
+    {
+     "job_id": 333132,
+     "job_name": "Jasper Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T17:12:00"
+    },
+    {
+     "job_id": 332300,
+     "job_name": "Garrick Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T09:07:00"
+    },
+    {
+     "job_id": 332036,
+     "job_name": "Abbott Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-22T12:15:00"
+    },
+    {
+     "job_id": 333466,
+     "job_name": "Vance Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-22T13:47:00"
+    },
+    {
+     "job_id": 332141,
+     "job_name": "Dunmore & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T14:36:00"
+    },
+    {
+     "job_id": 332550,
+     "job_name": "Cortland Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T12:17:00"
+    },
+    {
+     "job_id": 331603,
+     "job_name": "Pemberton & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-22T17:24:00"
+    },
+    {
+     "job_id": 332367,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-22T13:48:00"
+    },
+    {
+     "job_id": 333035,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Arjun Pillai",
+     "at": "2026-09-22T09:39:00"
+    },
+    {
+     "job_id": 332258,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-22T17:58:00"
+    },
+    {
+     "job_id": 331546,
+     "job_name": "Rathbone Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-22T12:23:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 331708,
+     "job_name": "Gresham & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-22T17:18:00"
+    },
+    {
+     "job_id": 332721,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-22T12:39:00"
+    },
+    {
+     "job_id": 333152,
+     "job_name": "Halden Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-22T17:39:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-21",
+   "target": 23,
+   "actual": 29,
+   "dwp_target": 10,
+   "dwp_actual": 7,
+   "touchpoints": [
+    {
+     "job_id": 333035,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T09:31:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T17:07:00"
+    },
+    {
+     "job_id": 333670,
+     "job_name": "Hartwell Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T10:02:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-21T12:13:00"
+    },
+    {
+     "job_id": 333170,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-21T18:20:00"
+    },
+    {
+     "job_id": 331883,
+     "job_name": "Quinlan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-21T10:55:00"
+    },
+    {
+     "job_id": 331999,
+     "job_name": "Hartwell Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T18:41:00"
+    },
+    {
+     "job_id": 332310,
+     "job_name": "Beaumont Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-21T17:48:00"
+    },
+    {
+     "job_id": 333152,
+     "job_name": "Halden Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-21T09:26:00"
+    },
+    {
+     "job_id": 332550,
+     "job_name": "Cortland Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-21T10:44:00"
+    },
+    {
+     "job_id": 333620,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T16:02:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-21T18:39:00"
+    },
+    {
+     "job_id": 331989,
+     "job_name": "Beaumont Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T15:16:00"
+    },
+    {
+     "job_id": 333476,
+     "job_name": "Abbott Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-21T18:08:00"
+    },
+    {
+     "job_id": 332036,
+     "job_name": "Abbott Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-21T15:48:00"
+    },
+    {
+     "job_id": 333034,
+     "job_name": "Foxley Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T09:06:00"
+    },
+    {
+     "job_id": 332300,
+     "job_name": "Garrick Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T15:30:00"
+    },
+    {
+     "job_id": 332958,
+     "job_name": "Brennan Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T15:59:00"
+    },
+    {
+     "job_id": 331756,
+     "job_name": "Everhart Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T16:00:00"
+    },
+    {
+     "job_id": 333577,
+     "job_name": "Everhart & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-21T12:58:00"
+    },
+    {
+     "job_id": 332141,
+     "job_name": "Dunmore & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T18:30:00"
+    },
+    {
+     "job_id": 333466,
+     "job_name": "Vance Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T12:26:00"
+    },
+    {
+     "job_id": 331542,
+     "job_name": "Everhart Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-21T09:55:00"
+    },
+    {
+     "job_id": 332258,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-21T12:35:00"
+    },
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-21T11:52:00"
+    },
+    {
+     "job_id": 333132,
+     "job_name": "Jasper Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T17:09:00"
+    },
+    {
+     "job_id": 332561,
+     "job_name": "Norcross Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Priya Nair",
+     "at": "2026-09-21T15:32:00"
+    },
+    {
+     "job_id": 331935,
+     "job_name": "Vance Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T10:34:00"
+    },
+    {
+     "job_id": 332773,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-21T18:28:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 332823,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-21T14:12:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-21T10:55:00"
+    },
+    {
+     "job_id": 332036,
+     "job_name": "Abbott Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-21T11:07:00"
+    },
+    {
+     "job_id": 333170,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Divya Shetty",
+     "at": "2026-09-21T09:26:00"
+    },
+    {
+     "job_id": 331883,
+     "job_name": "Quinlan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-21T12:54:00"
+    },
+    {
+     "job_id": 333132,
+     "job_name": "Jasper Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-21T18:29:00"
+    },
+    {
+     "job_id": 333466,
+     "job_name": "Vance Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-21T14:14:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-20",
+   "target": 0,
+   "actual": 0,
+   "dwp_target": 0,
+   "dwp_actual": 0,
+   "touchpoints": [],
+   "dwp": []
+  },
+  {
+   "date": "2026-09-19",
+   "target": 0,
+   "actual": 0,
+   "dwp_target": 0,
+   "dwp_actual": 0,
+   "touchpoints": [],
+   "dwp": []
+  },
+  {
+   "date": "2026-09-18",
+   "target": 23,
+   "actual": 27,
+   "dwp_target": 10,
+   "dwp_actual": 5,
+   "touchpoints": [
+    {
+     "job_id": 332550,
+     "job_name": "Cortland Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-18T17:54:00"
+    },
+    {
+     "job_id": 331935,
+     "job_name": "Vance Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T09:30:00"
+    },
+    {
+     "job_id": 333170,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-18T18:40:00"
+    },
+    {
+     "job_id": 333573,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Arjun Pillai",
+     "at": "2026-09-18T16:10:00"
+    },
+    {
+     "job_id": 331546,
+     "job_name": "Rathbone Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-18T10:07:00"
+    },
+    {
+     "job_id": 332367,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T14:36:00"
+    },
+    {
+     "job_id": 331999,
+     "job_name": "Hartwell Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T16:30:00"
+    },
+    {
+     "job_id": 332721,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-18T17:26:00"
+    },
+    {
+     "job_id": 332258,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-18T12:44:00"
+    },
+    {
+     "job_id": 333152,
+     "job_name": "Halden Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-18T18:29:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-18T10:06:00"
+    },
+    {
+     "job_id": 332310,
+     "job_name": "Beaumont Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-18T12:32:00"
+    },
+    {
+     "job_id": 333577,
+     "job_name": "Everhart & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-18T17:30:00"
+    },
+    {
+     "job_id": 332958,
+     "job_name": "Brennan Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T09:52:00"
+    },
+    {
+     "job_id": 331756,
+     "job_name": "Everhart Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T17:35:00"
+    },
+    {
+     "job_id": 332773,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-18T15:00:00"
+    },
+    {
+     "job_id": 332053,
+     "job_name": "Dunmore Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T16:17:00"
+    },
+    {
+     "job_id": 333034,
+     "job_name": "Foxley Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-18T16:07:00"
+    },
+    {
+     "job_id": 332823,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-18T16:14:00"
+    },
+    {
+     "job_id": 333637,
+     "job_name": "Devlin Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-18T09:00:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-18T12:08:00"
+    },
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-18T13:36:00"
+    },
+    {
+     "job_id": 332106,
+     "job_name": "Whitcombe & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-18T12:33:00"
+    },
+    {
+     "job_id": 333035,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Arjun Pillai",
+     "at": "2026-09-18T16:55:00"
+    },
+    {
+     "job_id": 331603,
+     "job_name": "Pemberton & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-18T12:10:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-18T17:44:00"
+    },
+    {
+     "job_id": 332300,
+     "job_name": "Garrick Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-18T14:34:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 331603,
+     "job_name": "Pemberton & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Divya Shetty",
+     "at": "2026-09-18T17:22:00"
+    },
+    {
+     "job_id": 332550,
+     "job_name": "Cortland Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-18T11:19:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-18T10:29:00"
+    },
+    {
+     "job_id": 333637,
+     "job_name": "Devlin Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-18T12:50:00"
+    },
+    {
+     "job_id": 331542,
+     "job_name": "Everhart Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-18T13:12:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-17",
+   "target": 23,
+   "actual": 27,
+   "dwp_target": 10,
+   "dwp_actual": 8,
+   "touchpoints": [
+    {
+     "job_id": 333620,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T16:49:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-17T13:28:00"
+    },
+    {
+     "job_id": 332773,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-17T16:40:00"
+    },
+    {
+     "job_id": 332823,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-17T18:51:00"
+    },
+    {
+     "job_id": 333573,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Arjun Pillai",
+     "at": "2026-09-17T12:50:00"
+    },
+    {
+     "job_id": 332721,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-17T17:50:00"
+    },
+    {
+     "job_id": 332550,
+     "job_name": "Cortland Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-17T16:32:00"
+    },
+    {
+     "job_id": 331708,
+     "job_name": "Gresham & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-17T10:43:00"
+    },
+    {
+     "job_id": 333670,
+     "job_name": "Hartwell Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T09:54:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-17T10:46:00"
+    },
+    {
+     "job_id": 331989,
+     "job_name": "Beaumont Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-17T15:52:00"
+    },
+    {
+     "job_id": 333035,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Arjun Pillai",
+     "at": "2026-09-17T09:17:00"
+    },
+    {
+     "job_id": 331542,
+     "job_name": "Everhart Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-17T09:38:00"
+    },
+    {
+     "job_id": 333034,
+     "job_name": "Foxley Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T10:35:00"
+    },
+    {
+     "job_id": 332036,
+     "job_name": "Abbott Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-17T15:48:00"
+    },
+    {
+     "job_id": 333170,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-17T17:36:00"
+    },
+    {
+     "job_id": 331999,
+     "job_name": "Hartwell Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T15:47:00"
+    },
+    {
+     "job_id": 332367,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T18:19:00"
+    },
+    {
+     "job_id": 332053,
+     "job_name": "Dunmore Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T13:21:00"
+    },
+    {
+     "job_id": 333466,
+     "job_name": "Vance Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T14:15:00"
+    },
+    {
+     "job_id": 331883,
+     "job_name": "Quinlan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-17T15:21:00"
+    },
+    {
+     "job_id": 331935,
+     "job_name": "Vance Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T18:36:00"
+    },
+    {
+     "job_id": 332106,
+     "job_name": "Whitcombe & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-17T11:51:00"
+    },
+    {
+     "job_id": 332561,
+     "job_name": "Norcross Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Priya Nair",
+     "at": "2026-09-17T12:19:00"
+    },
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-17T12:06:00"
+    },
+    {
+     "job_id": 331603,
+     "job_name": "Pemberton & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-17T16:06:00"
+    },
+    {
+     "job_id": 332258,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-17T10:56:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 332310,
+     "job_name": "Beaumont Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-17T11:23:00"
+    },
+    {
+     "job_id": 333034,
+     "job_name": "Foxley Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-17T14:44:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Vance Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-17T11:50:00"
+    },
+    {
+     "job_id": 331756,
+     "job_name": "Everhart Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T09:02:00"
+    },
+    {
+     "job_id": 333577,
+     "job_name": "Everhart & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-17T16:45:00"
+    },
+    {
+     "job_id": 333670,
+     "job_name": "Hartwell Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-17T15:50:00"
+    },
+    {
+     "job_id": 333132,
+     "job_name": "Jasper Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-17T13:08:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-17T12:11:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-16",
+   "target": 23,
+   "actual": 16,
+   "dwp_target": 10,
+   "dwp_actual": 8,
+   "touchpoints": [
+    {
+     "job_id": 332823,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-16T14:31:00"
+    },
+    {
+     "job_id": 331999,
+     "job_name": "Hartwell Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-16T15:15:00"
+    },
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-16T11:37:00"
+    },
+    {
+     "job_id": 331708,
+     "job_name": "Gresham & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-16T15:52:00"
+    },
+    {
+     "job_id": 333466,
+     "job_name": "Vance Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-16T18:16:00"
+    },
+    {
+     "job_id": 332310,
+     "job_name": "Beaumont Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-16T11:16:00"
+    },
+    {
+     "job_id": 331989,
+     "job_name": "Beaumont Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-16T18:21:00"
+    },
+    {
+     "job_id": 333476,
+     "job_name": "Abbott Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-16T15:15:00"
+    },
+    {
+     "job_id": 333637,
+     "job_name": "Devlin Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-16T15:09:00"
+    },
+    {
+     "job_id": 332300,
+     "job_name": "Garrick Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-16T15:18:00"
+    },
+    {
+     "job_id": 332258,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-16T16:55:00"
+    },
+    {
+     "job_id": 331935,
+     "job_name": "Vance Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-16T17:41:00"
+    },
+    {
+     "job_id": 332773,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-16T13:44:00"
+    },
+    {
+     "job_id": 331546,
+     "job_name": "Rathbone Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-16T09:12:00"
+    },
+    {
+     "job_id": 333170,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-16T18:36:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-16T11:59:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 333152,
+     "job_name": "Halden Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-16T13:26:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Vance Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-16T17:26:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Ananya Iyer",
+     "at": "2026-09-16T09:12:00"
+    },
+    {
+     "job_id": 332053,
+     "job_name": "Dunmore Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-16T12:26:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-16T14:12:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-16T18:12:00"
+    },
+    {
+     "job_id": 331603,
+     "job_name": "Pemberton & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Divya Shetty",
+     "at": "2026-09-16T17:40:00"
+    },
+    {
+     "job_id": 332310,
+     "job_name": "Beaumont Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-16T16:22:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-15",
+   "target": 23,
+   "actual": 16,
+   "dwp_target": 10,
+   "dwp_actual": 6,
+   "touchpoints": [
+    {
+     "job_id": 332036,
+     "job_name": "Abbott Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T13:09:00"
+    },
+    {
+     "job_id": 331546,
+     "job_name": "Rathbone Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T14:49:00"
+    },
+    {
+     "job_id": 331542,
+     "job_name": "Everhart Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T17:29:00"
+    },
+    {
+     "job_id": 331708,
+     "job_name": "Gresham & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Ananya Iyer",
+     "at": "2026-09-15T17:46:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Vance Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-15T17:28:00"
+    },
+    {
+     "job_id": 333476,
+     "job_name": "Abbott Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-15T10:32:00"
+    },
+    {
+     "job_id": 333577,
+     "job_name": "Everhart & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T15:31:00"
+    },
+    {
+     "job_id": 333620,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Karthik Rao",
+     "at": "2026-09-15T10:41:00"
+    },
+    {
+     "job_id": 332721,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T12:35:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-15T16:38:00"
+    },
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T13:12:00"
+    },
+    {
+     "job_id": 332823,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-15T17:38:00"
+    },
+    {
+     "job_id": 333670,
+     "job_name": "Hartwell Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-15T16:54:00"
+    },
+    {
+     "job_id": 332106,
+     "job_name": "Whitcombe & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-15T09:52:00"
+    },
+    {
+     "job_id": 333132,
+     "job_name": "Jasper Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-15T10:56:00"
+    },
+    {
+     "job_id": 332141,
+     "job_name": "Dunmore & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-15T11:32:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T13:15:00"
+    },
+    {
+     "job_id": 332310,
+     "job_name": "Beaumont Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-15T15:08:00"
+    },
+    {
+     "job_id": 332258,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Priya Nair",
+     "at": "2026-09-15T17:08:00"
+    },
+    {
+     "job_id": 332141,
+     "job_name": "Dunmore & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-15T17:50:00"
+    },
+    {
+     "job_id": 333132,
+     "job_name": "Jasper Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-15T09:11:00"
+    },
+    {
+     "job_id": 332721,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-15T09:33:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-14",
+   "target": 23,
+   "actual": 16,
+   "dwp_target": 10,
+   "dwp_actual": 9,
+   "touchpoints": [
+    {
+     "job_id": 333573,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T15:13:00"
+    },
+    {
+     "job_id": 333476,
+     "job_name": "Abbott Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-14T12:04:00"
+    },
+    {
+     "job_id": 333170,
+     "job_name": "Quinlan Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-14T17:58:00"
+    },
+    {
+     "job_id": 331935,
+     "job_name": "Vance Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-14T17:47:00"
+    },
+    {
+     "job_id": 331603,
+     "job_name": "Pemberton & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-14T10:03:00"
+    },
+    {
+     "job_id": 331989,
+     "job_name": "Beaumont Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T13:57:00"
+    },
+    {
+     "job_id": 332258,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-14T18:38:00"
+    },
+    {
+     "job_id": 333620,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Karthik Rao",
+     "at": "2026-09-14T14:26:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-14T17:23:00"
+    },
+    {
+     "job_id": 331999,
+     "job_name": "Hartwell Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-14T12:14:00"
+    },
+    {
+     "job_id": 332367,
+     "job_name": "Lockhart Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Review Replies",
+     "by": "Rahul Menon",
+     "at": "2026-09-14T12:31:00"
+    },
+    {
+     "job_id": 333637,
+     "job_name": "Devlin Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-14T18:16:00"
+    },
+    {
+     "job_id": 332106,
+     "job_name": "Whitcombe & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T11:43:00"
+    },
+    {
+     "job_id": 332958,
+     "job_name": "Brennan Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-14T16:27:00"
+    },
+    {
+     "job_id": 333466,
+     "job_name": "Vance Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Karthik Rao",
+     "at": "2026-09-14T17:28:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-14T11:42:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 332141,
+     "job_name": "Dunmore & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T18:18:00"
+    },
+    {
+     "job_id": 332036,
+     "job_name": "Abbott Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-14T14:58:00"
+    },
+    {
+     "job_id": 333132,
+     "job_name": "Jasper Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T10:05:00"
+    },
+    {
+     "job_id": 332310,
+     "job_name": "Beaumont Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T09:10:00"
+    },
+    {
+     "job_id": 332773,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T14:45:00"
+    },
+    {
+     "job_id": 333466,
+     "job_name": "Vance Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-14T12:06:00"
+    },
+    {
+     "job_id": 333035,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-14T10:41:00"
+    },
+    {
+     "job_id": 333620,
+     "job_name": "Merrick Holdings Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Karthik Rao",
+     "at": "2026-09-14T17:36:00"
+    },
+    {
+     "job_id": 333152,
+     "job_name": "Halden Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-14T17:08:00"
+    }
+   ]
+  },
+  {
+   "date": "2026-09-13",
+   "target": 0,
+   "actual": 0,
+   "dwp_target": 0,
+   "dwp_actual": 0,
+   "touchpoints": [],
+   "dwp": []
+  },
+  {
+   "date": "2026-09-12",
+   "target": 0,
+   "actual": 0,
+   "dwp_target": 0,
+   "dwp_actual": 0,
+   "touchpoints": [],
+   "dwp": []
+  },
+  {
+   "date": "2026-09-11",
+   "target": 23,
+   "actual": 19,
+   "dwp_target": 10,
+   "dwp_actual": 4,
+   "touchpoints": [
+    {
+     "job_id": 332823,
+     "job_name": "Vance Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-11T10:05:00"
+    },
+    {
+     "job_id": 333476,
+     "job_name": "Abbott Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Divya Shetty",
+     "at": "2026-09-11T18:53:00"
+    },
+    {
+     "job_id": 331934,
+     "job_name": "Ashford & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Priya Nair",
+     "at": "2026-09-11T10:28:00"
+    },
+    {
+     "job_id": 331989,
+     "job_name": "Beaumont Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Arjun Pillai",
+     "at": "2026-09-11T16:11:00"
+    },
+    {
+     "job_id": 333573,
+     "job_name": "Ashford Family Trust - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Queries",
+     "by": "Arjun Pillai",
+     "at": "2026-09-11T13:17:00"
+    },
+    {
+     "job_id": 333152,
+     "job_name": "Halden Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Processing",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-11T18:48:00"
+    },
+    {
+     "job_id": 331883,
+     "job_name": "Quinlan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Ananya Iyer",
+     "at": "2026-09-11T17:23:00"
+    },
+    {
+     "job_id": 333406,
+     "job_name": "Hartwell Group - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Ananya Iyer",
+     "at": "2026-09-11T18:32:00"
+    },
+    {
+     "job_id": 331999,
+     "job_name": "Hartwell Family Super Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T10:41:00"
+    },
+    {
+     "job_id": 332773,
+     "job_name": "Brennan Retirement Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Review",
+     "by": "Sneha Kulkarni",
+     "at": "2026-09-11T14:50:00"
+    },
+    {
+     "job_id": 333577,
+     "job_name": "Everhart & Associates Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T11:57:00"
+    },
+    {
+     "job_id": 332258,
+     "job_name": "Thackray Group - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Priya Nair",
+     "at": "2026-09-11T10:48:00"
+    },
+    {
+     "job_id": 332721,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Query Replies",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T13:34:00"
+    },
+    {
+     "job_id": 331935,
+     "job_name": "Vance Superannuation Fund - 2026",
+     "vertical": "Financial Planning",
+     "status": "WIP - Processing",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T12:46:00"
+    },
+    {
+     "job_id": 332958,
+     "job_name": "Brennan Superannuation Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Final Review",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T15:45:00"
+    },
+    {
+     "job_id": 332621,
+     "job_name": "Zeller & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Final Review",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T15:19:00"
+    },
+    {
+     "job_id": 333035,
+     "job_name": "Kingsley Family Super Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "WIP - Query Replies",
+     "by": "Arjun Pillai",
+     "at": "2026-09-11T09:23:00"
+    },
+    {
+     "job_id": 331546,
+     "job_name": "Rathbone Holdings Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "Sent For Queries",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T15:58:00"
+    },
+    {
+     "job_id": 333015,
+     "job_name": "Vance Investments Pty Ltd - 2026",
+     "vertical": "Bookkeeping",
+     "status": "Sent For Review",
+     "by": "Arjun Pillai",
+     "at": "2026-09-11T10:04:00"
+    }
+   ],
+   "dwp": [
+    {
+     "job_id": 332721,
+     "job_name": "Beaumont Family Trust - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T15:40:00"
+    },
+    {
+     "job_id": 333637,
+     "job_name": "Devlin Retirement Fund - 2026",
+     "vertical": "Bookkeeping",
+     "status": "DWP",
+     "by": "Vikram Hegde",
+     "at": "2026-09-11T13:05:00"
+    },
+    {
+     "job_id": 332106,
+     "job_name": "Whitcombe & Associates Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Arjun Pillai",
+     "at": "2026-09-11T14:39:00"
+    },
+    {
+     "job_id": 332200,
+     "job_name": "Norcross Investments Pty Ltd - 2026",
+     "vertical": "Financial Planning",
+     "status": "DWP",
+     "by": "Rahul Menon",
+     "at": "2026-09-11T12:55:00"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Helen Carmichael",
+    "role": "Account Manager",
+    "group": "Leadership",
+    "email": "helen@carisma.example"
+  },
+  {
+    "name": "Marcus Doyle",
+    "role": "Delivery Partner",
+    "group": "Leadership",
+    "email": "marcus@carisma.example"
+  },
+  {
+    "name": "Priya Nair",
+    "role": "Associate",
+    "group": "Business Services",
+    "email": "priya@carisma.example"
+  },
+  {
+    "name": "Rahul Menon",
+    "role": "Senior Associate",
+    "group": "Business Services",
+    "email": "rahul@carisma.example"
+  },
+  {
+    "name": "Ananya Iyer",
+    "role": "Senior Associate",
+    "group": "Bookkeeping",
+    "email": "ananya@carisma.example"
+  },
+  {
+    "name": "Karthik Rao",
+    "role": "Senior Associate",
+    "group": "Business Services",
+    "email": "karthik@carisma.example"
+  },
+  {
+    "name": "Sneha Kulkarni",
+    "role": "Associate",
+    "group": "Business Services",
+    "email": "sneha@carisma.example"
+  },
+  {
+    "name": "Arjun Pillai",
+    "role": "Team Lead",
+    "group": "Business Services",
+    "email": "arjun@carisma.example"
+  },
+  {
+    "name": "Divya Shetty",
+    "role": "Associate",
+    "group": "SMSF",
+    "email": "divya@carisma.example"
+  },
+  {
+    "name": "Vikram Hegde",
+    "role": "Senior Associate",
+    "group": "SMSF",
+    "email": "vikram@carisma.example"
+  }
+]

@@ -1,0 +1,34 @@
+[
+ {
+  "q": "What do the job stages mean?",
+  "a": "WIP - Processing: being worked on. Sent For Queries: awaiting information from you. Sent For Review / Final Review: with you to review. DWP: Draft Work Paper. RDWP: Revised Draft Work Paper. Job Completed: finished."
+ },
+ {
+  "q": "How often is the dashboard updated?",
+  "a": "Job movement data refreshes every 15 minutes during business hours."
+ },
+ {
+  "q": "How do I respond to a query?",
+  "a": "Open the Queries tab on the Delivery Dashboard, select the query and post your reply."
+ },
+ {
+  "q": "Where can I find previous reports?",
+  "a": "Under Reports in the sidebar: Monthly Connect, Weekly and Invoices."
+ },
+ {
+  "q": "Why can\u2019t I log in from a new network?",
+  "a": "Access is restricted to approved networks. Submit a request from the login screen or use a one-time login."
+ },
+ {
+  "q": "How do I add a colleague?",
+  "a": "Contact your account manager or use the Contact Us page and we will set them up."
+ },
+ {
+  "q": "How is turnaround time measured?",
+  "a": "From the time all required information is received until the job is submitted for your review."
+ },
+ {
+  "q": "Who do I contact about an invoice?",
+  "a": "Use Contact Us and choose \u2018Billing\u2019 as the topic."
+ }
+]

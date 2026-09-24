@@ -1,0 +1,9 @@
+<div x-data="content('shared', 'newsletters')" class="mx-auto max-w-[1100px]"><template x-if="data"><div>
+<h1 class="mb-1 flex items-center gap-2 text-2xl font-semibold text-brand"><span class="msym !text-[28px]">subject</span>Newsletter</h1><p class="mb-5 text-sm text-slate-500">News and updates from Carisma Solutions.</p>
+<div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+  <template x-for="n in data" :key="n.id"><article class="card p-5 transition hover:shadow-md">
+    <div class="mb-2 flex items-center justify-between"><span class="chip !shadow-none bg-brand-light text-brand" x-text="n.category"></span><span class="text-xs text-slate-400" x-text="fmt.dmy(n.published_on)"></span></div>
+    <h3 class="font-semibold" x-text="n.title"></h3><p class="mt-1 text-sm text-slate-500" x-text="n.excerpt"></p>
+    <button class="link mt-3 text-sm font-semibold" @click="CP.toast('Prototype only — article would open here.')">Read more →</button></article></template>
+</div>
+</div></template></div>

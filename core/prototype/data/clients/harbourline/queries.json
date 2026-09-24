@@ -1,0 +1,1574 @@
+[
+ {
+  "id": "Q44512",
+  "title": "Loan Statement",
+  "job_id": 332773,
+  "category": "Liabilities",
+  "sub_category": "Loans",
+  "raised_by": "Carisma Associate",
+  "criticality": "High",
+  "status": "Resolved",
+  "posted_on": "2026-09-12T12:52:00",
+  "description": "The opening balance of $ 6,979.24 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-12T12:52:00",
+    "text": "The opening balance of $ 6,979.24 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Maria Santos",
+    "at": "2026-09-12T12:52:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q44683",
+  "title": "Sundry Debtors",
+  "job_id": 332773,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-24T10:29:00",
+  "description": "We could not locate a statement for Transfer to Fischer McCrae NetBank. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T10:29:00",
+    "text": "We could not locate a statement for Transfer to Fischer McCrae NetBank. Please provide the closing balance as at 30 June and supporting documents."
+   }
+  ]
+ },
+ {
+  "id": "Q44775",
+  "title": "Unknown Transactions",
+  "job_id": 332367,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-24T14:46:00",
+  "description": "We could not locate a statement for BPAY Insurance premium. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T14:46:00",
+    "text": "We could not locate a statement for BPAY Insurance premium. Please provide the closing balance as at 30 June and supporting documents."
+   }
+  ]
+ },
+ {
+  "id": "Q45303",
+  "title": "Loan Statement",
+  "job_id": 331547,
+  "category": "Assets",
+  "sub_category": "Bank",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-24T16:09:00",
+  "description": "Please confirm the nature of the transaction \"Direct credit ATO refund\" for $ 5,904.19 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T16:09:00",
+    "text": "Please confirm the nature of the transaction \"Direct credit ATO refund\" for $ 5,904.19 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Daniel Reyes",
+    "at": "2026-09-24T16:09:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q45902",
+  "title": "Investment Market Value",
+  "job_id": 331547,
+  "category": "Expenses",
+  "sub_category": "Accountancy Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "High",
+  "status": "Resolved",
+  "posted_on": "2026-09-23T11:11:00",
+  "description": "The opening balance of $ 4,236.19 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T11:11:00",
+    "text": "The opening balance of $ 4,236.19 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Chris Wong",
+    "at": "2026-09-23T11:11:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q46722",
+  "title": "Loan Statement",
+  "job_id": 331547,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-21T11:45:00",
+  "description": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 5,172.57 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-21T11:45:00",
+    "text": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 5,172.57 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q47561",
+  "title": "Loan Statement",
+  "job_id": 331547,
+  "category": "Income",
+  "sub_category": "Capital Gains",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-07-26T13:21:00",
+  "description": "Please confirm the nature of the transaction \"Direct credit ATO refund\" for $ 4,938.81 so we can allocate it correctly.",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T13:21:00",
+    "text": "Please confirm the nature of the transaction \"Direct credit ATO refund\" for $ 4,938.81 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Aisha Rahman",
+    "at": "2026-07-26T13:21:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q48251",
+  "title": "Bank",
+  "job_id": 333466,
+  "category": "Expenses",
+  "sub_category": "Accountancy Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-20T11:43:00",
+  "description": "The amount $ 2,043.24 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-20T11:43:00",
+    "text": "The amount $ 2,043.24 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   },
+   {
+    "side": "client",
+    "name": "Maria Santos",
+    "at": "2026-09-20T11:43:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q48485",
+  "title": "Dividend Statement",
+  "job_id": 333466,
+  "category": "Income",
+  "sub_category": "Interest",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-09-22T09:54:00",
+  "description": "The amount $ 2,952.30 with a description of \"Direct credit ATO refund\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-22T09:54:00",
+    "text": "The amount $ 2,952.30 with a description of \"Direct credit ATO refund\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q48770",
+  "title": "Loan Statement",
+  "job_id": 333466,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-23T11:56:00",
+  "description": "The opening balance of $ 2,747.23 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T11:56:00",
+    "text": "The opening balance of $ 2,747.23 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Chris Wong",
+    "at": "2026-09-23T11:56:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q48994",
+  "title": "Accountancy Fees",
+  "job_id": 333466,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Closed",
+  "posted_on": "2026-09-23T11:18:00",
+  "description": "We could not locate a statement for Unknown deposit ref 88231. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T11:18:00",
+    "text": "We could not locate a statement for Unknown deposit ref 88231. Please provide the closing balance as at 30 June and supporting documents."
+   },
+   {
+    "side": "client",
+    "name": "Maria Santos",
+    "at": "2026-09-23T11:18:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q49126",
+  "title": "Investment Market Value",
+  "job_id": 333466,
+  "category": "Income",
+  "sub_category": "Capital Gains",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-20T16:10:00",
+  "description": "We could not locate a statement for Transfer to Fischer McCrae NetBank. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-20T16:10:00",
+    "text": "We could not locate a statement for Transfer to Fischer McCrae NetBank. Please provide the closing balance as at 30 June and supporting documents."
+   }
+  ]
+ },
+ {
+  "id": "Q49635",
+  "title": "Dividend Statement",
+  "job_id": 332561,
+  "category": "Assets",
+  "sub_category": "Bank",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-09-23T13:12:00",
+  "description": "The opening balance of $ 5,086.96 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T13:12:00",
+    "text": "The opening balance of $ 5,086.96 does not agree with last year's file. Could you confirm which is correct?"
+   }
+  ]
+ },
+ {
+  "id": "Q49868",
+  "title": "Accountancy Fees",
+  "job_id": 332561,
+  "category": "Other",
+  "sub_category": "Documents",
+  "raised_by": "Carisma Associate",
+  "criticality": "High",
+  "status": "Open",
+  "posted_on": "2026-08-20T10:35:00",
+  "description": "The amount $ 7,247.10 with a description of \"Payment to Hartley Legal\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-08-20T10:35:00",
+    "text": "The amount $ 7,247.10 with a description of \"Payment to Hartley Legal\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q50386",
+  "title": "Investment Market Value",
+  "job_id": 332561,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-23T17:02:00",
+  "description": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 6,976.45 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T17:02:00",
+    "text": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 6,976.45 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Aisha Rahman",
+    "at": "2026-09-23T17:02:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q50762",
+  "title": "Investment Market Value",
+  "job_id": 332561,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-09-20T09:45:00",
+  "description": "The amount $ 395.24 with a description of \"Unknown deposit ref 88231\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-20T09:45:00",
+    "text": "The amount $ 395.24 with a description of \"Unknown deposit ref 88231\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q51158",
+  "title": "Sundry Debtors",
+  "job_id": 331935,
+  "category": "Expenses",
+  "sub_category": "Accountancy Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-24T12:14:00",
+  "description": "We could not locate a statement for Transfer to Fischer McCrae NetBank. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T12:14:00",
+    "text": "We could not locate a statement for Transfer to Fischer McCrae NetBank. Please provide the closing balance as at 30 June and supporting documents."
+   }
+  ]
+ },
+ {
+  "id": "Q51804",
+  "title": "Accountancy Fees",
+  "job_id": 331935,
+  "category": "Income",
+  "sub_category": "Capital Gains",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-24T17:25:00",
+  "description": "We could not locate a statement for Direct credit ATO refund. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T17:25:00",
+    "text": "We could not locate a statement for Direct credit ATO refund. Please provide the closing balance as at 30 June and supporting documents."
+   }
+  ]
+ },
+ {
+  "id": "Q51959",
+  "title": "Dividend Statement",
+  "job_id": 331935,
+  "category": "Other",
+  "sub_category": "Documents",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-09-04T11:24:00",
+  "description": "Please confirm the nature of the transaction \"Payment to Hartley Legal\" for $ 2,155.90 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-04T11:24:00",
+    "text": "Please confirm the nature of the transaction \"Payment to Hartley Legal\" for $ 2,155.90 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q52592",
+  "title": "Unknown Transactions",
+  "job_id": 331935,
+  "category": "Income",
+  "sub_category": "Capital Gains",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Resolved",
+  "posted_on": "2026-07-26T17:38:00",
+  "description": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 8,532.53 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T17:38:00",
+    "text": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 8,532.53 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Chris Wong",
+    "at": "2026-07-26T17:38:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q53015",
+  "title": "Accountancy Fees",
+  "job_id": 331934,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Medium",
+  "status": "Open",
+  "posted_on": "2026-09-23T13:08:00",
+  "description": "The amount $ 7,239.78 with a description of \"BPAY Insurance premium\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T13:08:00",
+    "text": "The amount $ 7,239.78 with a description of \"BPAY Insurance premium\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q53659",
+  "title": "Sundry Debtors",
+  "job_id": 331934,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-23T14:50:00",
+  "description": "The opening balance of $ 4,094.83 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T14:50:00",
+    "text": "The opening balance of $ 4,094.83 does not agree with last year's file. Could you confirm which is correct?"
+   }
+  ]
+ },
+ {
+  "id": "Q54278",
+  "title": "Bank",
+  "job_id": 331934,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-16T17:05:00",
+  "description": "Please confirm the nature of the transaction \"BPAY Insurance premium\" for $ 8,239.61 so we can allocate it correctly.",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-16T17:05:00",
+    "text": "Please confirm the nature of the transaction \"BPAY Insurance premium\" for $ 8,239.61 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Daniel Reyes",
+    "at": "2026-09-16T17:05:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q54735",
+  "title": "Pension",
+  "job_id": 331934,
+  "category": "Income",
+  "sub_category": "Capital Gains",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-21T09:10:00",
+  "description": "The amount $ 8,266.99 with a description of \"Unknown deposit ref 88231\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-21T09:10:00",
+    "text": "The amount $ 8,266.99 with a description of \"Unknown deposit ref 88231\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q55128",
+  "title": "Loan Statement",
+  "job_id": 331603,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-23T14:46:00",
+  "description": "The amount $ 6,404.27 with a description of \"Unknown deposit ref 88231\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T14:46:00",
+    "text": "The amount $ 6,404.27 with a description of \"Unknown deposit ref 88231\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q55808",
+  "title": "Unknown Transactions",
+  "job_id": 333132,
+  "category": "Liabilities",
+  "sub_category": "Loans",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Resolved",
+  "posted_on": "2026-09-23T10:53:00",
+  "description": "The amount $ 594.68 with a description of \"BPAY Insurance premium\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T10:53:00",
+    "text": "The amount $ 594.68 with a description of \"BPAY Insurance premium\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   },
+   {
+    "side": "client",
+    "name": "Aisha Rahman",
+    "at": "2026-09-23T10:53:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q56370",
+  "title": "Investment Market Value",
+  "job_id": 333620,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-07-26T12:27:00",
+  "description": "The opening balance of $ 8,824.35 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T12:27:00",
+    "text": "The opening balance of $ 8,824.35 does not agree with last year's file. Could you confirm which is correct?"
+   }
+  ]
+ },
+ {
+  "id": "Q56787",
+  "title": "Contribution",
+  "job_id": 333620,
+  "category": "Other",
+  "sub_category": "Documents",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-23T17:43:00",
+  "description": "The opening balance of $ 2,932.74 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T17:43:00",
+    "text": "The opening balance of $ 2,932.74 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Aisha Rahman",
+    "at": "2026-09-23T17:43:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q57619",
+  "title": "Bank",
+  "job_id": 333670,
+  "category": "Liabilities",
+  "sub_category": "Loans",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-20T11:20:00",
+  "description": "The opening balance of $ 5,344.94 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-20T11:20:00",
+    "text": "The opening balance of $ 5,344.94 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Aisha Rahman",
+    "at": "2026-09-20T11:20:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q58057",
+  "title": "Accountancy Fees",
+  "job_id": 333670,
+  "category": "Liabilities",
+  "sub_category": "Loans",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-07-26T13:12:00",
+  "description": "The amount $ 5,550.35 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T13:12:00",
+    "text": "The amount $ 5,550.35 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q58732",
+  "title": "Pension",
+  "job_id": 332036,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-09-24T17:09:00",
+  "description": "The amount $ 7,752.76 with a description of \"Direct credit ATO refund\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T17:09:00",
+    "text": "The amount $ 7,752.76 with a description of \"Direct credit ATO refund\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q59359",
+  "title": "Asic Fee",
+  "job_id": 332036,
+  "category": "Income",
+  "sub_category": "Interest",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-08-20T11:53:00",
+  "description": "Please confirm the nature of the transaction \"BPAY Insurance premium\" for $ 4,112.81 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-08-20T11:53:00",
+    "text": "Please confirm the nature of the transaction \"BPAY Insurance premium\" for $ 4,112.81 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q59729",
+  "title": "Investment Market Value",
+  "job_id": 332036,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "High",
+  "status": "Closed",
+  "posted_on": "2026-07-26T14:52:00",
+  "description": "The opening balance of $ 2,283.53 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T14:52:00",
+    "text": "The opening balance of $ 2,283.53 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Aisha Rahman",
+    "at": "2026-07-26T14:52:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q60546",
+  "title": "Pension",
+  "job_id": 332036,
+  "category": "Other",
+  "sub_category": "Documents",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-07-26T09:21:00",
+  "description": "Please confirm the nature of the transaction \"Payment to Hartley Legal\" for $ 4,376.88 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T09:21:00",
+    "text": "Please confirm the nature of the transaction \"Payment to Hartley Legal\" for $ 4,376.88 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q61126",
+  "title": "Asic Fee",
+  "job_id": 333035,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-08-20T10:52:00",
+  "description": "We could not locate a statement for BPAY Insurance premium. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-08-20T10:52:00",
+    "text": "We could not locate a statement for BPAY Insurance premium. Please provide the closing balance as at 30 June and supporting documents."
+   },
+   {
+    "side": "client",
+    "name": "Maria Santos",
+    "at": "2026-08-20T10:52:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q61970",
+  "title": "Investment Market Value",
+  "job_id": 333035,
+  "category": "Liabilities",
+  "sub_category": "Loans",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-09-23T10:58:00",
+  "description": "We could not locate a statement for Payment to Hartley Legal. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T10:58:00",
+    "text": "We could not locate a statement for Payment to Hartley Legal. Please provide the closing balance as at 30 June and supporting documents."
+   }
+  ]
+ },
+ {
+  "id": "Q62028",
+  "title": "Contribution",
+  "job_id": 333035,
+  "category": "Assets",
+  "sub_category": "Bank",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-07-26T14:13:00",
+  "description": "The opening balance of $ 885.01 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T14:13:00",
+    "text": "The opening balance of $ 885.01 does not agree with last year's file. Could you confirm which is correct?"
+   }
+  ]
+ },
+ {
+  "id": "Q62601",
+  "title": "Investment Market Value",
+  "job_id": 333035,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "High",
+  "status": "Open",
+  "posted_on": "2026-09-16T10:43:00",
+  "description": "We could not locate a statement for BPAY Insurance premium. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-16T10:43:00",
+    "text": "We could not locate a statement for BPAY Insurance premium. Please provide the closing balance as at 30 June and supporting documents."
+   }
+  ]
+ },
+ {
+  "id": "Q62628",
+  "title": "Investment Market Value",
+  "job_id": 331999,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-09-24T16:07:00",
+  "description": "Please confirm the nature of the transaction \"Payment to Hartley Legal\" for $ 2,374.26 so we can allocate it correctly.",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T16:07:00",
+    "text": "Please confirm the nature of the transaction \"Payment to Hartley Legal\" for $ 2,374.26 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q62721",
+  "title": "Investment Market Value",
+  "job_id": 331999,
+  "category": "Assets",
+  "sub_category": "Bank",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Resolved",
+  "posted_on": "2026-09-23T13:49:00",
+  "description": "Please confirm the nature of the transaction \"Direct credit ATO refund\" for $ 1,947.10 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T13:49:00",
+    "text": "Please confirm the nature of the transaction \"Direct credit ATO refund\" for $ 1,947.10 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Daniel Reyes",
+    "at": "2026-09-23T13:49:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q62959",
+  "title": "Loan Statement",
+  "job_id": 331999,
+  "category": "Income",
+  "sub_category": "Interest",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Responded",
+  "posted_on": "2026-09-04T16:33:00",
+  "description": "Please confirm the nature of the transaction \"Direct credit ATO refund\" for $ 1,353.11 so we can allocate it correctly.",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-04T16:33:00",
+    "text": "Please confirm the nature of the transaction \"Direct credit ATO refund\" for $ 1,353.11 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Maria Santos",
+    "at": "2026-09-04T16:33:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q62994",
+  "title": "Unknown Transactions",
+  "job_id": 331999,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-16T16:33:00",
+  "description": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 5,890.17 so we can allocate it correctly.",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-16T16:33:00",
+    "text": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 5,890.17 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q63823",
+  "title": "Accountancy Fees",
+  "job_id": 332141,
+  "category": "Expenses",
+  "sub_category": "Accountancy Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Resolved",
+  "posted_on": "2026-09-22T15:02:00",
+  "description": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 4,969.98 so we can allocate it correctly.",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-22T15:02:00",
+    "text": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 4,969.98 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Daniel Reyes",
+    "at": "2026-09-22T15:02:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q64616",
+  "title": "Asic Fee",
+  "job_id": 332141,
+  "category": "Other",
+  "sub_category": "Documents",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-08-20T09:46:00",
+  "description": "The opening balance of $ 3,884.64 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-08-20T09:46:00",
+    "text": "The opening balance of $ 3,884.64 does not agree with last year's file. Could you confirm which is correct?"
+   }
+  ]
+ },
+ {
+  "id": "Q65031",
+  "title": "Asic Fee",
+  "job_id": 332053,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Medium",
+  "status": "Resolved",
+  "posted_on": "2026-09-24T16:22:00",
+  "description": "Please confirm the nature of the transaction \"Payment to Hartley Legal\" for $ 3,298.28 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T16:22:00",
+    "text": "Please confirm the nature of the transaction \"Payment to Hartley Legal\" for $ 3,298.28 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Chris Wong",
+    "at": "2026-09-24T16:22:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q65551",
+  "title": "Bank",
+  "job_id": 332053,
+  "category": "Income",
+  "sub_category": "Capital Gains",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-16T17:38:00",
+  "description": "We could not locate a statement for Payment to Hartley Legal. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-16T17:38:00",
+    "text": "We could not locate a statement for Payment to Hartley Legal. Please provide the closing balance as at 30 June and supporting documents."
+   }
+  ]
+ },
+ {
+  "id": "Q65776",
+  "title": "Bank",
+  "job_id": 332053,
+  "category": "Other",
+  "sub_category": "Documents",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Resolved",
+  "posted_on": "2026-09-16T10:09:00",
+  "description": "The amount $ 2,371.53 with a description of \"BPAY Insurance premium\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-16T10:09:00",
+    "text": "The amount $ 2,371.53 with a description of \"BPAY Insurance premium\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   },
+   {
+    "side": "client",
+    "name": "Maria Santos",
+    "at": "2026-09-16T10:09:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q66433",
+  "title": "Bank",
+  "job_id": 332958,
+  "category": "Income",
+  "sub_category": "Interest",
+  "raised_by": "Carisma Associate",
+  "criticality": "Medium",
+  "status": "Open",
+  "posted_on": "2026-09-24T14:23:00",
+  "description": "The amount $ 8,466.40 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T14:23:00",
+    "text": "The amount $ 8,466.40 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q67212",
+  "title": "Dividend Statement",
+  "job_id": 332958,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-09-16T13:15:00",
+  "description": "Please confirm the nature of the transaction \"BPAY Insurance premium\" for $ 8,334.65 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-16T13:15:00",
+    "text": "Please confirm the nature of the transaction \"BPAY Insurance premium\" for $ 8,334.65 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q67554",
+  "title": "Sundry Debtors",
+  "job_id": 331546,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Medium",
+  "status": "Open",
+  "posted_on": "2026-09-23T10:28:00",
+  "description": "The amount $ 5,384.94 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T10:28:00",
+    "text": "The amount $ 5,384.94 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q67664",
+  "title": "Bank",
+  "job_id": 333288,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Medium",
+  "status": "Resolved",
+  "posted_on": "2026-09-24T16:31:00",
+  "description": "The opening balance of $ 7,716.85 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-24T16:31:00",
+    "text": "The opening balance of $ 7,716.85 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Chris Wong",
+    "at": "2026-09-24T16:31:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q67867",
+  "title": "Pension",
+  "job_id": 333288,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-09-22T13:59:00",
+  "description": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 5,976.94 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-22T13:59:00",
+    "text": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 5,976.94 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q68707",
+  "title": "Permanent Documents",
+  "job_id": 333288,
+  "category": "Income",
+  "sub_category": "Interest",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Responded",
+  "posted_on": "2026-09-12T11:56:00",
+  "description": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 8,539.67 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-12T11:56:00",
+    "text": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 8,539.67 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Maria Santos",
+    "at": "2026-09-12T11:56:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q69314",
+  "title": "Accountancy Fees",
+  "job_id": 333288,
+  "category": "Other",
+  "sub_category": "Documents",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-21T12:39:00",
+  "description": "The amount $ 1,454.77 with a description of \"Unknown deposit ref 88231\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-21T12:39:00",
+    "text": "The amount $ 1,454.77 with a description of \"Unknown deposit ref 88231\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   },
+   {
+    "side": "client",
+    "name": "Chris Wong",
+    "at": "2026-09-21T12:39:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q70138",
+  "title": "Accountancy Fees",
+  "job_id": 333288,
+  "category": "Liabilities",
+  "sub_category": "Loans",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-08-20T14:12:00",
+  "description": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 3,145.24 so we can allocate it correctly.",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-08-20T14:12:00",
+    "text": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 3,145.24 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q70821",
+  "title": "Investment Market Value",
+  "job_id": 333476,
+  "category": "Other",
+  "sub_category": "Documents",
+  "raised_by": "Carisma Associate",
+  "criticality": "Medium",
+  "status": "Resolved",
+  "posted_on": "2026-08-20T17:54:00",
+  "description": "The opening balance of $ 3,837.87 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-08-20T17:54:00",
+    "text": "The opening balance of $ 3,837.87 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Aisha Rahman",
+    "at": "2026-08-20T17:54:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q71482",
+  "title": "Investment Market Value",
+  "job_id": 333476,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-16T14:40:00",
+  "description": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 1,158.25 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-16T14:40:00",
+    "text": "Please confirm the nature of the transaction \"Transfer to Fischer McCrae NetBank\" for $ 1,158.25 so we can allocate it correctly."
+   },
+   {
+    "side": "client",
+    "name": "Chris Wong",
+    "at": "2026-09-16T14:40:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q72262",
+  "title": "Investment Market Value",
+  "job_id": 333476,
+  "category": "Expenses",
+  "sub_category": "Accountancy Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Open",
+  "posted_on": "2026-09-04T14:21:00",
+  "description": "The opening balance of $ 5,202.01 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-04T14:21:00",
+    "text": "The opening balance of $ 5,202.01 does not agree with last year's file. Could you confirm which is correct?"
+   }
+  ]
+ },
+ {
+  "id": "Q72916",
+  "title": "Investment Market Value",
+  "job_id": 332106,
+  "category": "Liabilities",
+  "sub_category": "Loans",
+  "raised_by": "Carisma Associate",
+  "criticality": "High",
+  "status": "Open",
+  "posted_on": "2026-09-22T15:43:00",
+  "description": "The amount $ 3,619.93 with a description of \"Payment to Hartley Legal\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-22T15:43:00",
+    "text": "The amount $ 3,619.93 with a description of \"Payment to Hartley Legal\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   }
+  ]
+ },
+ {
+  "id": "Q73520",
+  "title": "Pension",
+  "job_id": 332106,
+  "category": "Income",
+  "sub_category": "Interest",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Open",
+  "posted_on": "2026-07-26T11:09:00",
+  "description": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 8,742.54 so we can allocate it correctly.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T11:09:00",
+    "text": "Please confirm the nature of the transaction \"Unknown deposit ref 88231\" for $ 8,742.54 so we can allocate it correctly."
+   }
+  ]
+ },
+ {
+  "id": "Q74332",
+  "title": "Investment Market Value",
+  "job_id": 332106,
+  "category": "Assets",
+  "sub_category": "Investment",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Closed",
+  "posted_on": "2026-09-12T12:39:00",
+  "description": "The amount $ 3,336.65 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-12T12:39:00",
+    "text": "The amount $ 3,336.65 with a description of \"Transfer to Fischer McCrae NetBank\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   },
+   {
+    "side": "client",
+    "name": "Maria Santos",
+    "at": "2026-09-12T12:39:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q74758",
+  "title": "Accountancy Fees",
+  "job_id": 332106,
+  "category": "Expenses",
+  "sub_category": "Bank Fees",
+  "raised_by": "Carisma Associate",
+  "criticality": "Low",
+  "status": "Resolved",
+  "posted_on": "2026-09-23T14:20:00",
+  "description": "The opening balance of $ 1,453.90 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-23T14:20:00",
+    "text": "The opening balance of $ 1,453.90 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Chris Wong",
+    "at": "2026-09-23T14:20:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q75066",
+  "title": "Bank",
+  "job_id": 332106,
+  "category": "Liabilities",
+  "sub_category": "Loans",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-22T16:29:00",
+  "description": "We could not locate a statement for BPAY Insurance premium. Please provide the closing balance as at 30 June and supporting documents.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-22T16:29:00",
+    "text": "We could not locate a statement for BPAY Insurance premium. Please provide the closing balance as at 30 June and supporting documents."
+   },
+   {
+    "side": "client",
+    "name": "Chris Wong",
+    "at": "2026-09-22T16:29:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q75365",
+  "title": "Unknown Transactions",
+  "job_id": 332310,
+  "category": "Income",
+  "sub_category": "Capital Gains",
+  "raised_by": "Carisma Associate",
+  "criticality": "High",
+  "status": "Resolved",
+  "posted_on": "2026-07-26T16:16:00",
+  "description": "The amount $ 392.93 with a description of \"BPAY Insurance premium\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same.",
+  "documents": 0,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T16:16:00",
+    "text": "The amount $ 392.93 with a description of \"BPAY Insurance premium\" has been treated as sundry debtors, please confirm if this needs to be maintained as debtors and if so, provide supporting document for the same."
+   },
+   {
+    "side": "client",
+    "name": "Maria Santos",
+    "at": "2026-07-26T16:16:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q75613",
+  "title": "Loan Statement",
+  "job_id": 332310,
+  "category": "Liabilities",
+  "sub_category": "Loans",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-07-26T16:03:00",
+  "description": "The opening balance of $ 4,848.81 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 1,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-07-26T16:03:00",
+    "text": "The opening balance of $ 4,848.81 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Aisha Rahman",
+    "at": "2026-07-26T16:03:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ },
+ {
+  "id": "Q76206",
+  "title": "Investment Market Value",
+  "job_id": 332550,
+  "category": "Income",
+  "sub_category": "Capital Gains",
+  "raised_by": "Carisma Associate",
+  "criticality": "Normal",
+  "status": "Resolved",
+  "posted_on": "2026-09-16T13:10:00",
+  "description": "The opening balance of $ 2,752.90 does not agree with last year's file. Could you confirm which is correct?",
+  "documents": 2,
+  "thread": [
+   {
+    "side": "carisma",
+    "name": "Carisma Associate",
+    "at": "2026-09-16T13:10:00",
+    "text": "The opening balance of $ 2,752.90 does not agree with last year's file. Could you confirm which is correct?"
+   },
+   {
+    "side": "client",
+    "name": "Daniel Reyes",
+    "at": "2026-09-16T13:10:00",
+    "text": "Thanks \u2014 please find the details attached. Let us know if anything else is needed."
+   }
+  ]
+ }
+]

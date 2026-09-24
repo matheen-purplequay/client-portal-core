@@ -1,0 +1,29 @@
+{
+  "name": "Carisma Solutions",
+  "tagline": "Your extended accounting and advisory team.",
+  "description": "Carisma Solutions delivers offshore accounting, SMSF, bookkeeping and financial planning support to Australian firms, combining skilled associates with partner-level review.",
+  "stats": [
+    {
+      "label": "Associates",
+      "value": "450+"
+    },
+    {
+      "label": "Australian firms",
+      "value": "120+"
+    },
+    {
+      "label": "Years delivering",
+      "value": "12"
+    },
+    {
+      "label": "Jobs per month",
+      "value": "9,000+"
+    }
+  ],
+  "values": [
+    "Accuracy first",
+    "Partner-level review",
+    "Security by design",
+    "Transparent communication"
+  ]
+}

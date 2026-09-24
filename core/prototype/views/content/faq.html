@@ -1,0 +1,5 @@
+<div x-data="content('shared', 'faq')" class="mx-auto max-w-[1100px]"><template x-if="data"><div>
+<h1 class="mb-1 flex items-center gap-2 text-2xl font-semibold text-brand"><span class="msym !text-[28px]">info</span>FAQ</h1><p class="mb-5 text-sm text-slate-500">Quick answers about the portal and your engagement.</p>
+<div class="max-w-3xl space-y-2"><template x-for="f in data" :key="f.q"><details class="card group p-4"><summary class="flex cursor-pointer list-none items-center justify-between font-semibold">
+  <span x-text="f.q"></span><span class="msym transition group-open:rotate-180">expand_more</span></summary><p class="mt-2 text-sm text-slate-600" x-text="f.a"></p></details></template></div>
+</div></template></div>

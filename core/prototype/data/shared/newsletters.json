@@ -1,0 +1,44 @@
+[
+  {
+    "id": 0,
+    "title": "Spring Update: What\u2019s new at Carisma",
+    "published_on": "2026-09-21",
+    "category": "Company",
+    "excerpt": "New delivery centre, refreshed portal and upcoming training sessions."
+  },
+  {
+    "id": 1,
+    "title": "EOFY Lessons Learned",
+    "published_on": "2026-09-12",
+    "category": "Compliance",
+    "excerpt": "Key takeaways from the 2026 financial year-end and how we can prepare earlier."
+  },
+  {
+    "id": 2,
+    "title": "Payday Super: Are You Ready?",
+    "published_on": "2026-09-03",
+    "category": "Regulatory",
+    "excerpt": "A plain-English guide to the incoming payday super changes."
+  },
+  {
+    "id": 3,
+    "title": "Meet the Team: SMSF Desk",
+    "published_on": "2026-08-25",
+    "category": "People",
+    "excerpt": "An introduction to the associates supporting your SMSF engagements."
+  },
+  {
+    "id": 4,
+    "title": "Portal Tips & Tricks",
+    "published_on": "2026-08-16",
+    "category": "Product",
+    "excerpt": "Filters, downloads and notifications you may not have tried yet."
+  },
+  {
+    "id": 5,
+    "title": "Winter Wrap-up",
+    "published_on": "2026-08-07",
+    "category": "Company",
+    "excerpt": "Turnaround stats, client wins and a look ahead to Q2."
+  }
+]

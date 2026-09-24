@@ -1,0 +1,8 @@
+<!-- Needs scope: tbl (numbered pager) -->
+<div class="flex items-center justify-end gap-1 px-4 py-3 text-[13px] text-slate-500">
+  <button class="grid h-8 w-8 place-items-center rounded bg-slate-100 hover:text-brand" @click="tbl.go(1)"><span class="msym !text-[18px]">first_page</span></button>
+  <button class="grid h-8 w-8 place-items-center rounded bg-slate-100 hover:text-brand" @click="tbl.go(tbl.cur - 1)"><span class="msym !text-[18px]">chevron_left</span></button>
+  <template x-for="n in tbl.pageList" :key="n"><button class="grid h-8 w-8 place-items-center rounded font-semibold" :class="n === tbl.cur ? 'bg-brand-light text-brand' : 'hover:bg-slate-100'" @click="tbl.go(n)" x-text="n"></button></template>
+  <button class="grid h-8 w-8 place-items-center rounded hover:bg-slate-100" @click="tbl.go(tbl.cur + 1)"><span class="msym !text-[18px]">chevron_right</span></button>
+  <button class="grid h-8 w-8 place-items-center rounded bg-slate-100 hover:text-brand" @click="tbl.go(tbl.pages)"><span class="msym !text-[18px]">last_page</span></button>
+</div>

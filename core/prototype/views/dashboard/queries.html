@@ -1,0 +1,126 @@
+<div x-data="queriesPage">
+  <div x-show="loading" class="py-24 text-center text-sm text-slate-400">Loading…</div>
+  <template x-if="!loading">
+    <div>
+        <div class="flex items-center justify-center">
+            <!-- KPI tiles -->
+            <div class="mb-4 flex flex-wrap items-start gap-8 pl-2">
+                <div><div class="mb-1 text-[13px] text-slate-500">Query Status</div><div class="flex gap-px">
+                <template x-for="t in statusTiles" :key="t[0]"><button class="kpi" :class="[t[1], isKf('status', t[0]) && 'ring-2 ring-brand']" @click="setKf('status', t[0])"><div class="text-xl" x-text="countStatus(t[0])"></div><div class="text-[11px] font-semibold" x-text="t[0]"></div></button></template></div></div>
+                <div><div class="mb-1 text-[13px] text-slate-500">Query Aging</div><div class="flex gap-px">
+                <template x-for="(t, i) in agingTiles" :key="t[0]"><button class="kpi" :class="[t[1], isKf('aging', t[0]) && 'ring-2 ring-brand']" @click="setKf('aging', t[0])"><div class="text-xl" x-text="countAging(i)"></div><div class="text-[11px] font-semibold" x-text="t[0]"></div></button></template></div></div>
+                <div><div class="mb-1 text-[13px] text-slate-500">Query Criticality</div><div class="flex gap-px">
+                <template x-for="t in critTiles" :key="t[0]"><button class="kpi" :class="[t[1], isKf('crit', t[0]) && 'ring-2 ring-brand']" @click="setKf('crit', t[0])"><div class="text-xl" x-text="countCrit(t[0])"></div><div class="text-[11px] font-semibold" x-text="t[0]"></div></button></template></div></div>
+            </div>
+        </div>
+
+      <!-- breadcrumb + search -->
+      <div class="mb-3 flex items-center justify-between">
+        <div class="flex items-center gap-2 text-[11px] font-bold">
+          <button class="chip" :class="view === 'jobs' ? 'border border-brand' : 'shadow-none'" @click="back()">All Jobs</button>
+          <template x-if="view === 'job'"><span class="flex items-center gap-2"><span class="text-slate-400">/</span><span class="chip border border-brand">Queries for the job</span></span></template>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 shadow-sm"><span class="msym text-slate-400">search</span>
+            <template x-if="view === 'jobs'"><input type="search" placeholder="Search Jobs..." class="w-44 border-0 bg-transparent p-0 text-[13px] focus:ring-0" x-model="tbl.q" @input="tbl.reset()"></template>
+            <template x-if="view === 'job'"><input type="search" placeholder="Search Queries..." class="w-44 border-0 bg-transparent p-0 text-[13px] focus:ring-0" x-model="qq"></template></label>
+          <div class="relative" x-show="view === 'job'">
+            <button class="rounded-full bg-white px-4 py-2 text-xs font-bold text-brand shadow-sm" @click.stop="dlOpen = !dlOpen">Download Queries ▾</button>
+            <div x-show="dlOpen" @click.outside="dlOpen = false" class="absolute right-0 z-20 mt-1 w-40 rounded-lg bg-white py-1 text-sm shadow-xl ring-1 ring-black/5">
+              <button class="block w-full px-4 py-2 text-left hover:bg-slate-50" @click="dlOpen = false; CP.download('Queries (Excel)')">Excel</button>
+              <button class="block w-full px-4 py-2 text-left hover:bg-slate-50" @click="dlOpen = false; CP.download('Queries (PDF)')">PDF</button></div>
+          </div>
+          <button class="grid h-9 w-9 place-items-center rounded-full bg-white text-brand shadow-sm" @click="kf = null; if (tbl) tbl.reset()"><span class="msym">sync</span></button>
+        </div>
+      </div>
+
+      <!-- JOB LIST -->
+      <div x-show="view === 'jobs'" class="overflow-hidden rounded-xl bg-white shadow">
+        <div class="flex items-center gap-2 border-b bg-slate-50 px-4 py-2 text-[13px] text-slate-600"><span class="msym">work_outline</span>Please select a job to begin
+          <span class="ml-auto text-slate-400 blur-soft">Job Priority · Job Status · Sub Client</span><span class="-ml-40 text-slate-600">Job Filters Coming Soon...</span></div>
+        <div class="flex items-center gap-2 border-b bg-slate-50 px-4 py-3 text-[13px] text-slate-600"><span class="msym">fact_check</span>Query Filters
+          <span class="ml-auto text-slate-400 blur-soft">Query Status · Criticality · Category · Apply Filter</span><span class="-ml-52 text-slate-600">Query Filters Coming Soon...</span></div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[13px]">
+            <thead class="bg-brand text-[11px] text-white"><tr>
+              <template x-for="c in cols" :key="c.key"><th class="cursor-pointer px-3 py-2 text-left font-semibold" :class="['total','open','resolved'].includes(c.key) && 'text-center'" @click="tbl.sortBy(c.key)"><span x-text="c.label"></span><span x-show="tbl.sortKey === c.key" x-text="tbl.dir > 0 ? ' ▲' : ' ▼'"></span></th></template></tr></thead>
+            <tbody>
+              <template x-for="r in tbl.slice" :key="r.job_id">
+                <tr class="border-b hover:bg-brand-lighter">
+                  <td class="px-3 py-2.5" x-text="r.job_id"></td>
+                  <td class="max-w-[190px] truncate px-3"><a class="link" @click="openJob(r.job_id)" x-text="r.job_name"></a></td>
+                  <td class="px-3" x-text="r.group_job_name === '-' ? '' : r.group_job_name"></td>
+                  <td class="px-3" x-text="r.vertical"></td>
+                  <td class="px-3" x-text="r.financial_year"></td>
+                  <td class="px-3 leading-tight"><div x-text="r.job_year"></div><div class="text-[11px] text-slate-500" x-text="dm(r.received_date)"></div></td>
+                  <td class="max-w-[210px] px-3 leading-tight"><a class="link block truncate font-semibold" @click="openJob(r.job_id)" x-text="r.last.id + ' - ' + r.last.title"></a><span class="text-[11px] text-slate-500" x-text="dt(r.last_at)"></span></td>
+                  <td class="px-3 text-center"><span class="inline-block min-w-[44px] rounded-lg bg-slate-100 px-2 py-1">Σ <span x-text="r.total"></span></span></td>
+                  <td class="px-3 text-center"><span class="inline-flex min-w-[48px] items-center justify-center gap-1 rounded-full bg-amber-100 px-2 py-1"><span class="msym !text-[15px]">timer</span><span x-text="r.open"></span></span></td>
+                  <td class="px-3 text-center"><span class="inline-flex min-w-[48px] items-center justify-center gap-1 rounded-full bg-green-100 px-2 py-1 text-green-700"><span class="msym !text-[15px]">check</span><span x-text="r.resolved"></span></span></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+          <div x-show="!tbl.total" class="py-10 text-center text-sm text-slate-400">No jobs with queries match this selection.</div>
+        </div>
+        <div x-component="'pager'"></div>
+      </div>
+
+      <!-- QUERIES FOR A JOB -->
+      <template x-if="view === 'job' && job">
+        <div class="fade-in">
+          <div class="flex items-center justify-between rounded-t-xl bg-white px-4 py-3 shadow">
+            <div class="flex items-center gap-3">
+              <button class="text-brand" @click="back()"><span class="msym">arrow_back</span></button>
+              <div><div class="text-[13px] font-semibold" x-text="job.job_name"></div>
+                <div class="mt-1 flex flex-wrap items-center gap-2 text-[10px] font-bold">
+                  <span class="chip !shadow-none bg-slate-100" x-text="'Job ID ' + job.job_id"></span><span class="chip !shadow-none bg-slate-100" x-text="'FY ' + job.financial_year"></span><span class="chip !shadow-none bg-slate-100" x-text="'JY ' + dmy(job.received_date)"></span>
+                  <span class="text-slate-500" x-text="'Σ ' + jobStats.total + ' queries'"></span>
+                  <span class="chip !shadow-none bg-amber-100" x-text="jobStats.open + ' open'"></span><span class="chip !shadow-none bg-green-100 text-green-700" x-text="jobStats.closed + ' closed'"></span></div></div>
+            </div>
+            <select class="field text-[13px]" x-model="layout"><option value="card">Card View</option><option value="table">Table View</option></select>
+          </div>
+          <div class="flex items-center gap-2 border-b bg-white px-4 py-2 text-[13px] text-slate-600"><span class="msym">fact_check</span>Query Filters<span class="ml-auto text-slate-400 blur-soft">Query Status · Criticality · Category · Apply Filter</span></div>
+
+          <!-- card view -->
+          <div x-show="layout === 'card'" class="space-y-3 rounded-b-xl bg-slate-100 p-3">
+            <template x-for="(q, i) in jobQueries" :key="q.id">
+              <article class="rounded-xl bg-white p-4 shadow-sm">
+                <button class="flex w-full items-center gap-2 text-left" @click="toggle(q, i)">
+                  <span class="msym text-slate-500">help_outline</span>
+                  <span class="text-[15px] font-semibold text-navy" x-text="q.id + ' - ' + q.title"></span>
+                  <span x-show="q.status === 'Open'" class="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">● Needs Attention</span>
+                  <span x-show="q.status !== 'Open'" class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-500" x-text="q.status"></span>
+                </button>
+                <div class="mt-2 grid grid-cols-2 gap-3 pl-8 text-[13px] md:grid-cols-[1.4fr_1.2fr_1fr_1fr_1fr_1.2fr]">
+                  <div><div class="text-[11px] font-semibold text-slate-500">Category</div><div x-text="q.category + ' › ' + q.sub_category"></div></div>
+                  <div><div class="text-[11px] font-semibold text-slate-500">Raised By</div><div class="flex items-center gap-1"><span class="msym !text-[16px]">person_outline</span><span x-text="q.raised_by"></span></div></div>
+                  <div><div class="text-[11px] font-semibold text-slate-500">Criticality</div><div x-text="q.criticality"></div></div>
+                  <div><div class="text-[11px] font-semibold text-slate-500">Elapsed</div><div x-text="elapsed(q) + ' days'"></div></div>
+                  <div><div class="text-[11px] font-semibold text-slate-500">Status</div><div class="flex items-center gap-1"><span class="msym !text-[16px]">check</span><span x-text="q.status"></span></div></div>
+                  <div class="text-right"><div class="text-[11px] font-semibold text-slate-500">Posted On</div><div x-text="dt(q.posted_on)"></div></div>
+                </div>
+                <div x-show="isOpen(q, i)" x-transition class="mt-3 pl-8">
+                  <template x-for="m in q.thread"><div class="mb-2 flex items-start gap-3 rounded-md border p-3 text-[13px]" :class="m.side === 'client' ? 'bg-brand-lighter' : 'bg-white'">
+                    <span class="msym text-slate-400">description</span>
+                    <div class="flex-1"><div class="text-[11px] font-bold text-slate-600" x-text="m.side === 'client' ? 'Response · ' + m.name + ' · ' + dt(m.at) : 'Description'"></div><p class="mt-1" x-text="m.text"></p></div>
+                    <button x-show="m.side === 'carisma' && q.documents" class="rounded border bg-slate-50 px-2 py-1 text-[11px] font-semibold text-slate-600" @click="CP.download('Documents')" x-text="'Documents (' + q.documents + ')'"></button></div></template>
+                  <div x-show="!replyOpen[q.id]"><button class="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-[13px] font-medium text-brand shadow" @click="replyOpen[q.id] = true"><span class="msym !text-[18px]">reply</span>Reply back</button></div>
+                  <div x-show="replyOpen[q.id]" class="space-y-2"><textarea rows="3" class="field w-full" placeholder="Write your reply…" x-model="replyText[q.id]"></textarea>
+                    <div class="flex gap-2"><button class="rounded-md bg-brand px-4 py-1.5 text-[13px] font-semibold text-white" @click="sendReply(q)">Send</button><button class="rounded-md px-3 py-1.5 text-[13px] text-slate-500" @click="replyOpen[q.id] = false">Cancel</button></div></div>
+                </div>
+              </article>
+            </template>
+            <div x-show="!jobQueries.length" class="py-10 text-center text-sm text-slate-400">No queries match this selection.</div>
+          </div>
+
+          <!-- table view -->
+          <div x-show="layout === 'table'" class="overflow-x-auto rounded-b-xl bg-white">
+            <table class="w-full text-[13px]"><thead class="bg-brand text-[11px] text-white"><tr><th class="px-3 py-2 text-left">Query</th><th class="text-left">Category</th><th class="text-left">Criticality</th><th class="text-left">Elapsed</th><th class="text-left">Status</th><th class="text-left">Posted On</th></tr></thead>
+              <tbody><template x-for="q in jobQueries" :key="q.id"><tr class="border-b"><td class="px-3 py-2 font-semibold text-navy" x-text="q.id + ' - ' + q.title"></td><td x-text="q.category + ' › ' + q.sub_category"></td><td x-text="q.criticality"></td><td x-text="elapsed(q) + ' days'"></td><td x-text="q.status"></td><td x-text="dt(q.posted_on)"></td></tr></template></tbody></table>
+          </div>
+        </div>
+      </template>
+    </div>
+  </template>
+</div>

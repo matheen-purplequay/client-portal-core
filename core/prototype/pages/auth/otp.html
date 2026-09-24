@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Verify OTP · Client Portal</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="../../assets/js/tailwind-config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/app.css">
+<script src="../../assets/js/core.js"></script>
+</head>
+<body class="min-h-screen bg-panel">
+<div class="grid min-h-screen place-items-center p-4">
+  <div class="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
+    <img src="../../assets/img/cs_logo.png" alt="Carisma Solutions" class="mx-auto mb-6 h-9 w-auto">
+    <h1 class="text-center text-xl font-semibold">Login with OTP</h1>
+    <p id="sub" class="mb-6 text-center text-sm text-slate-500">Please verify OTP to login into your account</p>
+    <form id="form" class="space-y-4">
+      <label class="block text-sm font-semibold">One Time Passcode
+        <input id="otp" type="password" autocomplete="off" maxlength="6" placeholder="Your OTP from email" class="mt-1 w-full rounded-lg border-slate-300 text-center tracking-widest focus:border-brand focus:ring-brand">
+        <span id="helper" class="mt-1 block text-xs font-normal text-slate-400"></span></label>
+      <p class="flex items-center gap-1 text-sm font-semibold text-slate-500"><span class="msym">timer</span>OTP will expire in <span id="secs">120</span> seconds.</p>
+      <p id="error" class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700"></p>
+      <button class="w-full rounded-full bg-brand py-2.5 font-semibold text-white hover:bg-brand-dark">Verify OTP</button>
+      <button type="button" id="fill" class="w-full text-center text-xs text-slate-400 hover:text-brand">Prototype: autofill OTP</button>
+      <a href="login.html" class="block text-center text-sm text-brand hover:underline">Back to login</a>
+    </form>
+  </div>
+</div>
+<script>
+  const pending = JSON.parse(sessionStorage.getItem('cp_pending') || 'null');
+  if (!pending) location.href = 'login.html';
+  helper.textContent = 'OTP is sent to ' + pending.user.email;
+  fill.onclick = () => otp.value = pending.otp;
+  let left = 120;
+  const timer = setInterval(() => {
+    secs.textContent = --left;
+    if (left <= 0) { clearInterval(timer); sub.textContent = 'OTP expired. Please go back to login.'; sub.classList.add('text-red-600'); }
+  }, 1000);
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const r = left > 0 ? await CP.verifyOtp(otp.value) : { ok: false, message: 'OTP expired.' };
+    if (!r.ok) { error.textContent = r.message; error.classList.remove('hidden'); return; }
+    location.href = '../../app.html';
+  };
+</script>
+</body>
+</html>

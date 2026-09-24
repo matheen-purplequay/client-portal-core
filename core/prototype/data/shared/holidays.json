@@ -1,0 +1,57 @@
+[
+  {
+    "date": "2026-09-25",
+    "name": "AFL Grand Final Friday (VIC)",
+    "region": "Australia"
+  },
+  {
+    "date": "2026-10-02",
+    "name": "Gandhi Jayanti",
+    "region": "India"
+  },
+  {
+    "date": "2026-10-05",
+    "name": "Labour Day (NSW/ACT/SA)",
+    "region": "Australia"
+  },
+  {
+    "date": "2026-10-20",
+    "name": "Dussehra",
+    "region": "India"
+  },
+  {
+    "date": "2026-11-03",
+    "name": "Melbourne Cup Day (VIC)",
+    "region": "Australia"
+  },
+  {
+    "date": "2026-11-08",
+    "name": "Diwali",
+    "region": "India"
+  },
+  {
+    "date": "2026-12-25",
+    "name": "Christmas Day",
+    "region": "Both"
+  },
+  {
+    "date": "2026-12-26",
+    "name": "Boxing Day",
+    "region": "Australia"
+  },
+  {
+    "date": "2027-01-01",
+    "name": "New Year\u2019s Day",
+    "region": "Both"
+  },
+  {
+    "date": "2027-01-26",
+    "name": "Australia Day",
+    "region": "Australia"
+  },
+  {
+    "date": "2027-01-26",
+    "name": "Republic Day",
+    "region": "India"
+  }
+]

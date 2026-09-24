@@ -1,0 +1,23 @@
+{
+  "otp": "123456",
+  "users": [
+    {
+      "email": "olivia.bennett@northwind.example",
+      "password": "Client@123",
+      "first_name": "Olivia",
+      "last_name": "Bennett",
+      "designation": "Practice Manager",
+      "client_id": "northwind",
+      "phone": "+61 493 555 591"
+    },
+    {
+      "email": "daniel.reyes@harbourline.example",
+      "password": "Client@123",
+      "first_name": "Daniel",
+      "last_name": "Reyes",
+      "designation": "Head of Advice",
+      "client_id": "harbourline",
+      "phone": "+61 499 555 383"
+    }
+  ]
+}

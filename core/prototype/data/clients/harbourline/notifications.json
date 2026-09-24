@@ -1,0 +1,20 @@
+[
+ {
+  "title": "New query raised",
+  "body": "A query has been raised on BK-26000. Please review and respond.",
+  "action_title": "Open queries",
+  "route": "/dashboard/queries"
+ },
+ {
+  "title": "Monthly Connect report published",
+  "body": "The August 2026 report is ready to download.",
+  "action_title": "View report",
+  "route": "/reports/connect"
+ },
+ {
+  "title": "Invoice due",
+  "body": "Your latest invoice is due within 14 days.",
+  "action_title": "View invoices",
+  "route": "/reports/invoices"
+ }
+]

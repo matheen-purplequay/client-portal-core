@@ -1,0 +1,198 @@
+{
+  "connect": [
+    {
+      "id": "CR-1",
+      "title": "Monthly Connect Report \u2013 August 2026",
+      "month": "2026-08",
+      "published_on": "2026-09-05",
+      "size": "2.2 MB",
+      "type": "PDF",
+      "summary": "Highlights: turnaround improved, two queries outstanding."
+    },
+    {
+      "id": "CR-2",
+      "title": "Monthly Connect Report \u2013 July 2026",
+      "month": "2026-07",
+      "published_on": "2026-08-06",
+      "size": "1.7 MB",
+      "type": "PDF",
+      "summary": "Workload summary with vertical-wise hours and feedback."
+    },
+    {
+      "id": "CR-3",
+      "title": "Monthly Connect Report \u2013 June 2026",
+      "month": "2026-06",
+      "published_on": "2026-07-07",
+      "size": "1.9 MB",
+      "type": "PDF",
+      "summary": "Workload summary with vertical-wise hours and feedback."
+    },
+    {
+      "id": "CR-4",
+      "title": "Monthly Connect Report \u2013 May 2026",
+      "month": "2026-05",
+      "published_on": "2026-06-07",
+      "size": "1.3 MB",
+      "type": "PDF",
+      "summary": "Workload summary with vertical-wise hours and feedback."
+    },
+    {
+      "id": "CR-5",
+      "title": "Monthly Connect Report \u2013 April 2026",
+      "month": "2026-04",
+      "published_on": "2026-05-08",
+      "size": "2.3 MB",
+      "type": "PDF",
+      "summary": "Highlights: turnaround improved, two queries outstanding."
+    },
+    {
+      "id": "CR-6",
+      "title": "Monthly Connect Report \u2013 March 2026",
+      "month": "2026-03",
+      "published_on": "2026-04-08",
+      "size": "2.4 MB",
+      "type": "PDF",
+      "summary": "Workload summary with vertical-wise hours and feedback."
+    },
+    {
+      "id": "CR-7",
+      "title": "Monthly Connect Report \u2013 February 2026",
+      "month": "2026-02",
+      "published_on": "2026-03-09",
+      "size": "0.7 MB",
+      "type": "PDF",
+      "summary": "Highlights: turnaround improved, two queries outstanding."
+    },
+    {
+      "id": "CR-8",
+      "title": "Monthly Connect Report \u2013 January 2026",
+      "month": "2026-01",
+      "published_on": "2026-02-07",
+      "size": "1.0 MB",
+      "type": "PDF",
+      "summary": "Highlights: turnaround improved, two queries outstanding."
+    },
+    {
+      "id": "CR-9",
+      "title": "Monthly Connect Report \u2013 December 2025",
+      "month": "2025-12",
+      "published_on": "2026-01-08",
+      "size": "2.5 MB",
+      "type": "PDF",
+      "summary": "Job throughput, productivity and budget vs actual for the month."
+    },
+    {
+      "id": "CR-10",
+      "title": "Monthly Connect Report \u2013 November 2025",
+      "month": "2025-11",
+      "published_on": "2025-12-09",
+      "size": "1.2 MB",
+      "type": "PDF",
+      "summary": "Workload summary with vertical-wise hours and feedback."
+    },
+    {
+      "id": "CR-11",
+      "title": "Monthly Connect Report \u2013 October 2025",
+      "month": "2025-10",
+      "published_on": "2025-11-09",
+      "size": "2.0 MB",
+      "type": "PDF",
+      "summary": "Workload summary with vertical-wise hours and feedback."
+    },
+    {
+      "id": "CR-12",
+      "title": "Monthly Connect Report \u2013 September 2025",
+      "month": "2025-09",
+      "published_on": "2025-10-10",
+      "size": "2.0 MB",
+      "type": "PDF",
+      "summary": "Workload summary with vertical-wise hours and feedback."
+    }
+  ],
+  "weekly": [
+    {
+      "id": "WR-0",
+      "title": "Weekly Report \u2013 14 Sep to 20 Sep 2026",
+      "week_start": "2026-09-14",
+      "size": "0.5 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-1",
+      "title": "Weekly Report \u2013 07 Sep to 13 Sep 2026",
+      "week_start": "2026-09-07",
+      "size": "0.5 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-2",
+      "title": "Weekly Report \u2013 31 Aug to 06 Sep 2026",
+      "week_start": "2026-08-31",
+      "size": "1.1 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-3",
+      "title": "Weekly Report \u2013 24 Aug to 30 Aug 2026",
+      "week_start": "2026-08-24",
+      "size": "1.0 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-4",
+      "title": "Weekly Report \u2013 17 Aug to 23 Aug 2026",
+      "week_start": "2026-08-17",
+      "size": "0.3 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-5",
+      "title": "Weekly Report \u2013 10 Aug to 16 Aug 2026",
+      "week_start": "2026-08-10",
+      "size": "0.7 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-6",
+      "title": "Weekly Report \u2013 03 Aug to 09 Aug 2026",
+      "week_start": "2026-08-03",
+      "size": "0.8 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-7",
+      "title": "Weekly Report \u2013 27 Jul to 02 Aug 2026",
+      "week_start": "2026-07-27",
+      "size": "0.4 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-8",
+      "title": "Weekly Report \u2013 20 Jul to 26 Jul 2026",
+      "week_start": "2026-07-20",
+      "size": "0.8 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-9",
+      "title": "Weekly Report \u2013 13 Jul to 19 Jul 2026",
+      "week_start": "2026-07-13",
+      "size": "0.5 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-10",
+      "title": "Weekly Report \u2013 06 Jul to 12 Jul 2026",
+      "week_start": "2026-07-06",
+      "size": "0.6 MB",
+      "type": "PDF"
+    },
+    {
+      "id": "WR-11",
+      "title": "Weekly Report \u2013 29 Jun to 05 Jul 2026",
+      "week_start": "2026-06-29",
+      "size": "0.2 MB",
+      "type": "PDF"
+    }
+  ]
+}

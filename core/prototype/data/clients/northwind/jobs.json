@@ -16,11 +16,11 @@
   "commenced_date": "2026-09-24",
   "yet_to_start_date": "2026-10-01",
   "due_date": "2026-10-18",
-  "work_status": "Sent For Final Review",
+  "work_status": "Review Replies Received - Yet To Attend",
   "priority": "Urgent",
   "budget_hours": 32,
   "actual_hours": 4,
-  "last_modified": "2026-09-17",
+  "last_modified": "2026-09-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Brennan Investments Pty Ltd",
@@ -38,7 +38,19 @@
     "on": "2026-09-24"
    },
    {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-24"
+   },
+   {
     "status": "WIP - Query Replies",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
     "on": "2026-09-24"
    },
    {
@@ -46,11 +58,7 @@
     "on": "2026-09-24"
    },
    {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "Sent For Final Review",
+    "status": "Review Replies Received - Yet To Attend",
     "on": "2026-09-24"
    }
   ]
@@ -335,11 +343,11 @@
   "commenced_date": "2026-09-23",
   "yet_to_start_date": "2026-09-30",
   "due_date": "2026-10-12",
-  "work_status": "Sent For Final Review",
+  "work_status": "WIP - Review Replies",
   "priority": "High",
   "budget_hours": 6,
   "actual_hours": 0.6,
-  "last_modified": "2026-09-23",
+  "last_modified": "2026-09-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Abbott Holdings Pty Ltd",
@@ -349,7 +357,27 @@
     "on": "2026-09-23"
    },
    {
+    "status": "WIP - Processing",
+    "on": "2026-09-24"
+   },
+   {
     "status": "Sent For Queries",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
     "on": "2026-09-24"
    },
    {
@@ -357,7 +385,11 @@
     "on": "2026-09-24"
    },
    {
-    "status": "Sent For Final Review",
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "WIP - Review Replies",
     "on": "2026-09-24"
    }
   ]
@@ -416,7 +448,7 @@
   "commenced_date": "2026-09-26",
   "yet_to_start_date": "2026-09-30",
   "due_date": "2026-10-19",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Final Review",
   "priority": "High",
   "budget_hours": 6,
   "actual_hours": 2.9,
@@ -431,6 +463,26 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-09-23"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Sent For Final Review",
     "on": "2026-09-24"
    }
   ]
@@ -602,11 +654,11 @@
   "commenced_date": "2026-09-23",
   "yet_to_start_date": "2026-09-24",
   "due_date": "2026-10-11",
-  "work_status": "Sent For Final Review",
+  "work_status": "Review Replies Received - Yet To Attend",
   "priority": "High",
   "budget_hours": 32,
   "actual_hours": 25.2,
-  "last_modified": "2026-09-22",
+  "last_modified": "2026-09-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Whitcombe Holdings Pty Ltd",
@@ -617,10 +669,26 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-23"
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-24"
    },
    {
     "status": "WIP - Query Replies",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
     "on": "2026-09-24"
    },
    {
@@ -628,11 +696,7 @@
     "on": "2026-09-24"
    },
    {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "Sent For Final Review",
+    "status": "Review Replies Received - Yet To Attend",
     "on": "2026-09-24"
    }
   ]
@@ -654,11 +718,11 @@
   "commenced_date": "2026-09-21",
   "yet_to_start_date": "2026-09-22",
   "due_date": "2026-10-10",
-  "work_status": "Sent For Queries",
+  "work_status": "Query Replies Received - Yet To Attend",
   "priority": "Normal",
   "budget_hours": 12,
   "actual_hours": 2.5,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-09-23",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Pemberton Superannuation Fund",
@@ -669,11 +733,15 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-24"
+    "on": "2026-09-22"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-24"
+    "on": "2026-09-22"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-23"
    }
   ]
  },
@@ -694,11 +762,11 @@
   "commenced_date": "2026-09-21",
   "yet_to_start_date": "2026-09-24",
   "due_date": "2026-10-16",
-  "work_status": "WIP - Query Replies",
+  "work_status": "WIP - Processing",
   "priority": "Urgent",
   "budget_hours": 24,
   "actual_hours": 3,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-09-22",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Gresham & Associates Pty Ltd",
@@ -708,12 +776,8 @@
     "on": "2026-09-21"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-24"
+    "status": "WIP - Processing",
+    "on": "2026-09-22"
    }
   ]
  },
@@ -791,11 +855,11 @@
   "commenced_date": "2026-09-23",
   "yet_to_start_date": "2026-09-24",
   "due_date": "2026-10-18",
-  "work_status": "Sent For Review",
+  "work_status": "Sent For Queries",
   "priority": "High",
   "budget_hours": 12,
   "actual_hours": 4.8,
-  "last_modified": "2026-09-17",
+  "last_modified": "2026-09-24",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Ironside Holdings Pty Ltd",
@@ -806,14 +870,10 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-24"
+    "on": "2026-09-22"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "Sent For Review",
     "on": "2026-09-24"
    }
   ]
@@ -835,11 +895,11 @@
   "commenced_date": "2026-09-24",
   "yet_to_start_date": "2026-09-30",
   "due_date": "2026-10-19",
-  "work_status": "Sent For Final Review",
+  "work_status": "Sent For Review",
   "priority": "Urgent",
   "budget_hours": 32,
   "actual_hours": 16.3,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Everhart Holdings Pty Ltd",
@@ -850,18 +910,30 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-24"
+    "on": "2026-09-22"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-24"
+    "on": "2026-09-22"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-22"
    },
    {
     "status": "WIP - Query Replies",
     "on": "2026-09-24"
    },
    {
-    "status": "Sent For Final Review",
+    "status": "Internal Review",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Sent For Review",
     "on": "2026-09-24"
    }
   ]
@@ -920,11 +992,11 @@
   "commenced_date": "2026-09-21",
   "yet_to_start_date": "2026-09-28",
   "due_date": "2026-10-08",
-  "work_status": "Sent For Final Review",
+  "work_status": "Query Replies Received - Yet To Attend",
   "priority": "Normal",
   "budget_hours": 8,
   "actual_hours": 10,
-  "last_modified": "2026-09-22",
+  "last_modified": "2026-09-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Kestrel Retirement Fund",
@@ -935,26 +1007,14 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-24"
+    "on": "2026-09-22"
    },
    {
     "status": "Sent For Queries",
     "on": "2026-09-24"
    },
    {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "Sent For Final Review",
+    "status": "Query Replies Received - Yet To Attend",
     "on": "2026-09-24"
    }
   ]
@@ -976,11 +1036,11 @@
   "commenced_date": "2026-09-21",
   "yet_to_start_date": "2026-09-23",
   "due_date": "2026-09-28",
-  "work_status": "Sent For Final Review",
+  "work_status": "WIP - Processing",
   "priority": "Urgent",
   "budget_hours": 8,
   "actual_hours": 6.6,
-  "last_modified": "2026-09-19",
+  "last_modified": "2026-09-22",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Holloway & Associates Pty Ltd",
@@ -990,20 +1050,8 @@
     "on": "2026-09-20"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-24"
+    "status": "WIP - Processing",
+    "on": "2026-09-22"
    }
   ]
  },
@@ -1024,11 +1072,11 @@
   "commenced_date": "2026-09-20",
   "yet_to_start_date": "2026-09-27",
   "due_date": "2026-10-19",
-  "work_status": "WIP - Review Replies",
+  "work_status": "Sent For Final Review",
   "priority": "Urgent",
   "budget_hours": 12,
   "actual_hours": 3.5,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-09-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Beaumont Investments Pty Ltd",
@@ -1038,15 +1086,43 @@
     "on": "2026-09-20"
    },
    {
+    "status": "WIP - Processing",
+    "on": "2026-09-22"
+   },
+   {
     "status": "Sent For Queries",
-    "on": "2026-09-20"
+    "on": "2026-09-22"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-23"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-23"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-23"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-23"
    },
    {
     "status": "Sent For Review",
+    "on": "2026-09-23"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
     "on": "2026-09-24"
    },
    {
     "status": "WIP - Review Replies",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Sent For Final Review",
     "on": "2026-09-24"
    }
   ]
@@ -1173,11 +1249,11 @@
   "commenced_date": "2026-09-20",
   "yet_to_start_date": "2026-09-24",
   "due_date": "2026-10-18",
-  "work_status": "WIP - Processing",
+  "work_status": "Job-In Yet To Start",
   "priority": "High",
   "budget_hours": 8,
   "actual_hours": 1.1,
-  "last_modified": "2026-09-22",
+  "last_modified": "2026-09-19",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Beaumont Family Trust",
@@ -1185,10 +1261,6 @@
    {
     "status": "Job-In Yet To Start",
     "on": "2026-09-19"
-   },
-   {
-    "status": "WIP - Processing",
-    "on": "2026-09-21"
    }
   ]
  },
@@ -1209,11 +1281,11 @@
   "commenced_date": "2026-09-19",
   "yet_to_start_date": "2026-09-26",
   "due_date": "2026-10-06",
-  "work_status": "WIP - Processing",
+  "work_status": "Job-In Yet To Start",
   "priority": "High",
   "budget_hours": 16,
   "actual_hours": 2.8,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-09-19",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Holloway Group",
@@ -1221,10 +1293,6 @@
    {
     "status": "Job-In Yet To Start",
     "on": "2026-09-19"
-   },
-   {
-    "status": "WIP - Processing",
-    "on": "2026-09-24"
    }
   ]
  },
@@ -1366,11 +1434,11 @@
   "commenced_date": "2026-09-22",
   "yet_to_start_date": "2026-09-24",
   "due_date": "2026-10-11",
-  "work_status": "Sent For Queries",
+  "work_status": "WIP - Processing",
   "priority": "Urgent",
   "budget_hours": 12,
   "actual_hours": 10.6,
-  "last_modified": "2026-09-23",
+  "last_modified": "2026-09-19",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Abbott Investments Pty Ltd",
@@ -1380,8 +1448,8 @@
     "on": "2026-09-19"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-09-23"
+    "status": "WIP - Processing",
+    "on": "2026-09-19"
    }
   ]
  },
@@ -1690,11 +1758,11 @@
   "commenced_date": "2026-09-19",
   "yet_to_start_date": "2026-09-22",
   "due_date": "2026-10-14",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Final Review",
   "priority": "High",
   "budget_hours": 16,
   "actual_hours": 7.5,
-  "last_modified": "2026-09-17",
+  "last_modified": "2026-09-24",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Ashford Superannuation Fund",
@@ -1705,7 +1773,27 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-09-19"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-19"
+   },
+   {
+    "status": "WIP - Query Replies",
     "on": "2026-09-21"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-09-22"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Sent For Final Review",
+    "on": "2026-09-24"
    }
   ]
  },
@@ -1778,11 +1866,11 @@
   "commenced_date": "2026-09-17",
   "yet_to_start_date": "2026-09-23",
   "due_date": "2026-10-02",
-  "work_status": "Sent For Review",
+  "work_status": "WIP - Processing",
   "priority": "Normal",
   "budget_hours": 12,
   "actual_hours": 1.8,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-18",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Yardley Superannuation Fund",
@@ -1793,19 +1881,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-20"
-   },
-   {
-    "status": "Sent For Queries",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-24"
+    "on": "2026-09-18"
    }
   ]
  },
@@ -1924,11 +2000,11 @@
   "commenced_date": "2026-09-17",
   "yet_to_start_date": "2026-09-24",
   "due_date": "2026-10-18",
-  "work_status": "WIP - Processing",
+  "work_status": "WIP - Query Replies",
   "priority": "Normal",
   "budget_hours": 24,
   "actual_hours": 4.2,
-  "last_modified": "2026-09-20",
+  "last_modified": "2026-09-21",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Brennan Holdings Pty Ltd",
@@ -1939,7 +2015,19 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-09-16"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-18"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
     "on": "2026-09-20"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-21"
    }
   ]
  },
@@ -1960,11 +2048,11 @@
   "commenced_date": "2026-09-19",
   "yet_to_start_date": "2026-09-24",
   "due_date": "2026-10-03",
-  "work_status": "WIP - Query Replies",
+  "work_status": "Sent For Review",
   "priority": "Normal",
   "budget_hours": 6,
   "actual_hours": 3.8,
-  "last_modified": "2026-09-17",
+  "last_modified": "2026-09-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Ellery Investments Pty Ltd",
@@ -1975,14 +2063,30 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-23"
+    "on": "2026-09-18"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-24"
+    "on": "2026-09-19"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-19"
    },
    {
     "status": "WIP - Query Replies",
+    "on": "2026-09-21"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-23"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Sent For Review",
     "on": "2026-09-24"
    }
   ]
@@ -2004,11 +2108,11 @@
   "commenced_date": "2026-09-16",
   "yet_to_start_date": "2026-09-19",
   "due_date": "2026-09-24",
-  "work_status": "Sent For Final Review",
+  "work_status": "Sent For Review",
   "priority": "High",
   "budget_hours": 16,
   "actual_hours": 4.1,
-  "last_modified": "2026-09-17",
+  "last_modified": "2026-09-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Cortland Family Trust",
@@ -2019,18 +2123,30 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-16"
+    "on": "2026-09-17"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-21"
+    "on": "2026-09-18"
    },
    {
-    "status": "Sent For Review",
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-20"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-22"
+   },
+   {
+    "status": "Internal Review",
     "on": "2026-09-24"
    },
    {
-    "status": "Sent For Final Review",
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-24"
+   },
+   {
+    "status": "Sent For Review",
     "on": "2026-09-24"
    }
   ]
@@ -2108,11 +2224,11 @@
   "commenced_date": "2026-09-18",
   "yet_to_start_date": "2026-09-19",
   "due_date": "2026-09-29",
-  "work_status": "Sent For Queries",
+  "work_status": "WIP - Processing",
   "priority": "Urgent",
   "budget_hours": 6,
   "actual_hours": 7.5,
-  "last_modified": "2026-09-17",
+  "last_modified": "2026-09-15",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Zeller Group",
@@ -2122,8 +2238,8 @@
     "on": "2026-09-15"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-09-20"
+    "status": "WIP - Processing",
+    "on": "2026-09-15"
    }
   ]
  },
@@ -2188,11 +2304,11 @@
   "commenced_date": "2026-09-17",
   "yet_to_start_date": "2026-09-22",
   "due_date": "2026-10-12",
-  "work_status": "Sent For Final Review",
+  "work_status": "WIP - Processing",
   "priority": "Normal",
   "budget_hours": 32,
   "actual_hours": 16.6,
-  "last_modified": "2026-09-20",
+  "last_modified": "2026-09-15",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Fairholm & Associates Pty Ltd",
@@ -2202,24 +2318,8 @@
     "on": "2026-09-14"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-09-18"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-19"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-23"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-24"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-24"
+    "status": "WIP - Processing",
+    "on": "2026-09-15"
    }
   ]
  },
@@ -2413,11 +2513,11 @@
   "commenced_date": "2026-09-12",
   "yet_to_start_date": "2026-09-19",
   "due_date": "2026-10-12",
-  "work_status": "Sent For Review",
+  "work_status": "Sent For Final Review",
   "priority": "High",
   "budget_hours": 16,
   "actual_hours": 6.9,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Holloway Retirement Fund",
@@ -2428,19 +2528,43 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-13"
+    "on": "2026-09-14"
    },
    {
     "status": "Sent For Queries",
     "on": "2026-09-15"
    },
    {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-15"
+   },
+   {
     "status": "WIP - Query Replies",
-    "on": "2026-09-16"
+    "on": "2026-09-17"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-18"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-19"
    },
    {
     "status": "Sent For Review",
-    "on": "2026-09-19"
+    "on": "2026-09-21"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-09-23"
+   },
+   {
+    "status": "WIP - Review Replies",
+    "on": "2026-09-23"
+   },
+   {
+    "status": "Sent For Final Review",
+    "on": "2026-09-24"
    }
   ]
  },
@@ -2517,11 +2641,11 @@
   "commenced_date": "2026-09-12",
   "yet_to_start_date": "2026-09-14",
   "due_date": "2026-10-07",
-  "work_status": "Sent For Review",
+  "work_status": "Sent For Final Review",
   "priority": "Urgent",
   "budget_hours": 16,
   "actual_hours": 17.5,
-  "last_modified": "2026-09-20",
+  "last_modified": "2026-09-15",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Lockhart Holdings Pty Ltd",
@@ -2532,19 +2656,27 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-12"
+    "on": "2026-09-14"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-12"
+    "on": "2026-09-14"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-09-12"
+    "on": "2026-09-15"
    },
    {
     "status": "Sent For Review",
-    "on": "2026-09-12"
+    "on": "2026-09-15"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-15"
+   },
+   {
+    "status": "Sent For Final Review",
+    "on": "2026-09-15"
    }
   ]
  },
@@ -2606,11 +2738,11 @@
   "commenced_date": "2026-09-14",
   "yet_to_start_date": "2026-09-20",
   "due_date": "2026-10-14",
-  "work_status": "Sent For Review",
+  "work_status": "On Hold",
   "priority": "High",
   "budget_hours": 12,
   "actual_hours": 4.2,
-  "last_modified": "2026-09-20",
+  "last_modified": "2026-09-14",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Pemberton Holdings Pty Ltd",
@@ -2620,12 +2752,12 @@
     "on": "2026-09-12"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-09-18"
+    "status": "WIP - Processing",
+    "on": "2026-09-14"
    },
    {
-    "status": "Sent For Review",
-    "on": "2026-09-18"
+    "status": "On Hold",
+    "on": "2026-09-14"
    }
   ]
  },
@@ -2650,7 +2782,7 @@
   "priority": "Normal",
   "budget_hours": 8,
   "actual_hours": 5.7,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-12",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Fairholm Group",
@@ -2661,7 +2793,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-15"
+    "on": "2026-09-12"
    }
   ]
  },
@@ -2682,11 +2814,11 @@
   "commenced_date": "2026-09-10",
   "yet_to_start_date": "2026-09-11",
   "due_date": "2026-10-06",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Review",
   "priority": "Urgent",
   "budget_hours": 32,
   "actual_hours": 9.2,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-09-15",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Pemberton Investments Pty Ltd",
@@ -2697,7 +2829,31 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-09-10"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-11"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-13"
+   },
+   {
+    "status": "WIP - Query Replies",
     "on": "2026-09-14"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-14"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-14"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-09-15"
    }
   ]
  },
@@ -2718,11 +2874,11 @@
   "commenced_date": "2026-09-12",
   "yet_to_start_date": "2026-09-17",
   "due_date": "2026-10-04",
-  "work_status": "Sent For Final Review",
+  "work_status": "Internal Review",
   "priority": "Urgent",
   "budget_hours": 24,
   "actual_hours": 15.6,
-  "last_modified": "2026-09-22",
+  "last_modified": "2026-09-14",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Marlow Holdings Pty Ltd",
@@ -2733,23 +2889,23 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-14"
+    "on": "2026-09-12"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-17"
+    "on": "2026-09-13"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-13"
    },
    {
     "status": "Sent For Review",
-    "on": "2026-09-22"
+    "on": "2026-09-14"
    },
    {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-23"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-24"
+    "status": "Internal Review",
+    "on": "2026-09-14"
    }
   ]
  },
@@ -2770,11 +2926,11 @@
   "commenced_date": "2026-09-11",
   "yet_to_start_date": "2026-09-12",
   "due_date": "2026-09-22",
-  "work_status": "WIP - Query Replies",
+  "work_status": "Review Replies Received - Yet To Attend",
   "priority": "Normal",
   "budget_hours": 16,
   "actual_hours": 3.4,
-  "last_modified": "2026-09-17",
+  "last_modified": "2026-09-16",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Ashford Family Super Fund",
@@ -2785,15 +2941,35 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-14"
+    "on": "2026-09-11"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-15"
+    "on": "2026-09-11"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-12"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-09-20"
+    "on": "2026-09-13"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-14"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-14"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-09-16"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-09-16"
    }
   ]
  },
@@ -2814,11 +2990,11 @@
   "commenced_date": "2026-09-10",
   "yet_to_start_date": "2026-09-14",
   "due_date": "2026-10-08",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Final Review",
   "priority": "Normal",
   "budget_hours": 24,
   "actual_hours": 19.2,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-15",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Brennan & Associates Pty Ltd",
@@ -2829,7 +3005,27 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-09-11"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-12"
+   },
+   {
+    "status": "WIP - Query Replies",
     "on": "2026-09-14"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-09-14"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-14"
+   },
+   {
+    "status": "Sent For Final Review",
+    "on": "2026-09-15"
    }
   ]
  },
@@ -2850,11 +3046,11 @@
   "commenced_date": "2026-09-11",
   "yet_to_start_date": "2026-09-18",
   "due_date": "2026-09-24",
-  "work_status": "Sent For Final Review",
+  "work_status": "Internal Review",
   "priority": "High",
   "budget_hours": 32,
   "actual_hours": 44.75,
-  "last_modified": "2026-09-20",
+  "last_modified": "2026-09-12",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Stannard Superannuation Fund",
@@ -2865,15 +3061,23 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-14"
+    "on": "2026-09-08"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-10"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-10"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-09-15"
+    "on": "2026-09-12"
    },
    {
-    "status": "Sent For Final Review",
-    "on": "2026-09-17"
+    "status": "Internal Review",
+    "on": "2026-09-12"
    }
   ]
  },
@@ -2894,11 +3098,11 @@
   "commenced_date": "2026-09-11",
   "yet_to_start_date": "2026-09-18",
   "due_date": "2026-09-24",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Final Review",
   "priority": "High",
   "budget_hours": 16,
   "actual_hours": 3.3,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-11",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Devlin & Associates Pty Ltd",
@@ -2909,7 +3113,27 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-15"
+    "on": "2026-09-09"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-09"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-09"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-09-11"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-11"
+   },
+   {
+    "status": "Sent For Final Review",
+    "on": "2026-09-11"
    }
   ]
  },
@@ -2930,11 +3154,11 @@
   "commenced_date": "2026-09-09",
   "yet_to_start_date": "2026-09-16",
   "due_date": "2026-09-21",
-  "work_status": "Sent For Final Review",
+  "work_status": "Sent For Queries",
   "priority": "Normal",
   "budget_hours": 16,
   "actual_hours": 13.8,
-  "last_modified": "2026-09-22",
+  "last_modified": "2026-09-09",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Hartwell Investments Pty Ltd",
@@ -2945,23 +3169,11 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-09-08"
+   },
+   {
+    "status": "Sent For Queries",
     "on": "2026-09-09"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-10"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-15"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-15"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-16"
    }
   ]
  },
@@ -2982,11 +3194,11 @@
   "commenced_date": "2026-09-10",
   "yet_to_start_date": "2026-09-15",
   "due_date": "2026-10-06",
-  "work_status": "WIP - Review Replies",
+  "work_status": "Sent For Final Review",
   "priority": "Normal",
   "budget_hours": 6,
   "actual_hours": 2.6,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-09-20",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Ashford Family Trust",
@@ -2997,23 +3209,43 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-12"
+    "on": "2026-09-10"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-14"
+    "on": "2026-09-12"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-12"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-09-19"
+    "on": "2026-09-12"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-14"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-16"
    },
    {
     "status": "Sent For Review",
-    "on": "2026-09-19"
+    "on": "2026-09-17"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-09-17"
    },
    {
     "status": "WIP - Review Replies",
-    "on": "2026-09-21"
+    "on": "2026-09-19"
+   },
+   {
+    "status": "Sent For Final Review",
+    "on": "2026-09-20"
    }
   ]
  },
@@ -3181,11 +3413,11 @@
   "commenced_date": "2026-09-09",
   "yet_to_start_date": "2026-09-13",
   "due_date": "2026-09-21",
-  "work_status": "Sent For Review",
+  "work_status": "Internal Review",
   "priority": "Normal",
   "budget_hours": 12,
   "actual_hours": 2.2,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-10",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Brennan Retirement Fund",
@@ -3196,19 +3428,23 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-09"
+    "on": "2026-09-07"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-12"
+    "on": "2026-09-08"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-09-14"
+    "on": "2026-09-09"
    },
    {
     "status": "Sent For Review",
-    "on": "2026-09-18"
+    "on": "2026-09-10"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-10"
    }
   ]
  },
@@ -3560,11 +3796,11 @@
   "commenced_date": "2026-09-07",
   "yet_to_start_date": "2026-09-11",
   "due_date": "2026-09-30",
-  "work_status": "WIP - Query Replies",
+  "work_status": "WIP - Review Replies",
   "priority": "Normal",
   "budget_hours": 12,
   "actual_hours": 6.6,
-  "last_modified": "2026-09-23",
+  "last_modified": "2026-09-12",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Kingsley & Associates Pty Ltd",
@@ -3575,15 +3811,39 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-10"
+    "on": "2026-09-06"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-11"
+    "on": "2026-09-06"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-06"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-09-16"
+    "on": "2026-09-06"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-08"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-10"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-09-10"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-09-12"
+   },
+   {
+    "status": "WIP - Review Replies",
+    "on": "2026-09-12"
    }
   ]
  },
@@ -3738,11 +3998,11 @@
   "commenced_date": "2026-09-04",
   "yet_to_start_date": "2026-09-10",
   "due_date": "2026-09-25",
-  "work_status": "Sent For Final Review",
+  "work_status": "Sent For Review",
   "priority": "Normal",
   "budget_hours": 8,
   "actual_hours": 2.4,
-  "last_modified": "2026-09-20",
+  "last_modified": "2026-09-09",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Yardley Investments Pty Ltd",
@@ -3753,19 +4013,19 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-09-05"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-07"
+   },
+   {
+    "status": "WIP - Query Replies",
     "on": "2026-09-09"
    },
    {
     "status": "Sent For Review",
     "on": "2026-09-09"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-10"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-13"
    }
   ]
  },
@@ -3883,11 +4143,11 @@
   "commenced_date": "2026-09-04",
   "yet_to_start_date": "2026-09-05",
   "due_date": "2026-09-20",
-  "work_status": "WIP - Review Replies",
+  "work_status": "WIP - Processing",
   "priority": "Normal",
   "budget_hours": 6,
   "actual_hours": 3.7,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-06",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Ironside Family Trust",
@@ -3898,23 +4158,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-09"
-   },
-   {
-    "status": "Sent For Queries",
-    "on": "2026-09-12"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-16"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-17"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-17"
+    "on": "2026-09-06"
    }
   ]
  },
@@ -3996,11 +4240,11 @@
   "commenced_date": "2026-09-03",
   "yet_to_start_date": "2026-09-07",
   "due_date": "2026-09-28",
-  "work_status": "Sent For Final Review",
+  "work_status": "WIP - Processing",
   "priority": "Normal",
   "budget_hours": 12,
   "actual_hours": 1.6,
-  "last_modified": "2026-09-19",
+  "last_modified": "2026-09-04",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Foxley Holdings Pty Ltd",
@@ -4011,23 +4255,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-08"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-10"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-10"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-10"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-15"
+    "on": "2026-09-04"
    }
   ]
  },
@@ -4048,11 +4276,11 @@
   "commenced_date": "2026-09-05",
   "yet_to_start_date": "2026-09-11",
   "due_date": "2026-09-25",
-  "work_status": "Sent For Final Review",
+  "work_status": "WIP - Query Replies",
   "priority": "Urgent",
   "budget_hours": 24,
   "actual_hours": 33.5,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-06",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Kingsley Family Super Fund",
@@ -4063,19 +4291,19 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-09"
+    "on": "2026-09-03"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-13"
+    "on": "2026-09-04"
    },
    {
-    "status": "Sent For Review",
-    "on": "2026-09-17"
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-04"
    },
    {
-    "status": "Sent For Final Review",
-    "on": "2026-09-18"
+    "status": "WIP - Query Replies",
+    "on": "2026-09-06"
    }
   ]
  },
@@ -4161,7 +4389,7 @@
   "priority": "Normal",
   "budget_hours": 32,
   "actual_hours": 7.5,
-  "last_modified": "2026-09-20",
+  "last_modified": "2026-09-06",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Ellery Family Trust",
@@ -4171,8 +4399,12 @@
     "on": "2026-09-03"
    },
    {
+    "status": "WIP - Processing",
+    "on": "2026-09-05"
+   },
+   {
     "status": "Sent For Queries",
-    "on": "2026-09-11"
+    "on": "2026-09-06"
    }
   ]
  },
@@ -4285,11 +4517,11 @@
   "commenced_date": "2026-09-05",
   "yet_to_start_date": "2026-09-12",
   "due_date": "2026-10-02",
-  "work_status": "Sent For Queries",
+  "work_status": "WIP - Query Replies",
   "priority": "High",
   "budget_hours": 32,
   "actual_hours": 23.9,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-09-04",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Pemberton Family Super Fund",
@@ -4300,11 +4532,19 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-09"
+    "on": "2026-09-02"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-11"
+    "on": "2026-09-02"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-04"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-04"
    }
   ]
  },
@@ -4386,11 +4626,11 @@
   "commenced_date": "2026-09-02",
   "yet_to_start_date": "2026-09-08",
   "due_date": "2026-09-26",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Queries",
   "priority": "High",
   "budget_hours": 16,
   "actual_hours": 11.9,
-  "last_modified": "2026-09-24",
+  "last_modified": "2026-09-05",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Yardley Retirement Fund",
@@ -4401,7 +4641,11 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-02"
+    "on": "2026-09-03"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-05"
    }
   ]
  },
@@ -4515,11 +4759,11 @@
   "commenced_date": "2026-09-05",
   "yet_to_start_date": "2026-09-06",
   "due_date": "2026-09-28",
-  "work_status": "Sent For Queries",
+  "work_status": "Internal Review",
   "priority": "Normal",
   "budget_hours": 16,
   "actual_hours": 8.3,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-09-05",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Hartwell Retirement Fund",
@@ -4529,8 +4773,24 @@
     "on": "2026-09-02"
    },
    {
+    "status": "WIP - Processing",
+    "on": "2026-09-02"
+   },
+   {
     "status": "Sent For Queries",
-    "on": "2026-09-09"
+    "on": "2026-09-03"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-04"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-05"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-05"
    }
   ]
  },
@@ -4697,11 +4957,11 @@
   "commenced_date": "2026-09-02",
   "yet_to_start_date": "2026-09-03",
   "due_date": "2026-09-11",
-  "work_status": "Sent For Final Review",
+  "work_status": "WIP - Processing",
   "priority": "Urgent",
   "budget_hours": 8,
   "actual_hours": 3.9,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-03",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Zeller Retirement Fund",
@@ -4711,24 +4971,8 @@
     "on": "2026-09-02"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-09-06"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-06"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-08"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-11"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-16"
+    "status": "WIP - Processing",
+    "on": "2026-09-03"
    }
   ]
  },
@@ -4951,11 +5195,11 @@
   "commenced_date": "2026-09-01",
   "yet_to_start_date": "2026-09-07",
   "due_date": "2026-09-28",
-  "work_status": "Sent For Review",
+  "work_status": "Job-In Yet To Start",
   "priority": "Urgent",
   "budget_hours": 32,
   "actual_hours": 13.9,
-  "last_modified": "2026-09-23",
+  "last_modified": "2026-09-01",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Gresham Superannuation Fund",
@@ -4963,18 +5207,6 @@
    {
     "status": "Job-In Yet To Start",
     "on": "2026-09-01"
-   },
-   {
-    "status": "Sent For Queries",
-    "on": "2026-09-01"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-04"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-05"
    }
   ]
  },
@@ -4995,11 +5227,11 @@
   "commenced_date": "2026-09-04",
   "yet_to_start_date": "2026-09-09",
   "due_date": "2026-09-22",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Queries",
   "priority": "Normal",
   "budget_hours": 16,
   "actual_hours": 11.6,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-09-04",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Underhill Group",
@@ -5010,7 +5242,11 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-07"
+    "on": "2026-09-02"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-04"
    }
   ]
  },
@@ -5092,11 +5328,11 @@
   "commenced_date": "2026-09-03",
   "yet_to_start_date": "2026-09-04",
   "due_date": "2026-09-18",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Queries",
   "priority": "Normal",
   "budget_hours": 12,
   "actual_hours": 9.8,
-  "last_modified": "2026-09-24",
+  "last_modified": "2026-09-01",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Fairholm Superannuation Fund",
@@ -5107,7 +5343,11 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-08"
+    "on": "2026-09-01"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-01"
    }
   ]
  },
@@ -5128,11 +5368,11 @@
   "commenced_date": "2026-09-02",
   "yet_to_start_date": "2026-09-03",
   "due_date": "2026-09-14",
-  "work_status": "Sent For Final Review",
+  "work_status": "Sent For Review",
   "priority": "High",
   "budget_hours": 12,
   "actual_hours": 1.4,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-09-09",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Vance Family Super Fund",
@@ -5143,27 +5383,31 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-03"
+    "on": "2026-09-02"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-07"
+    "on": "2026-09-03"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-03"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-09-08"
+    "on": "2026-09-04"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-05"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-07"
    },
    {
     "status": "Sent For Review",
-    "on": "2026-09-13"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-16"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-16"
+    "on": "2026-09-09"
    }
   ]
  },
@@ -5184,11 +5428,11 @@
   "commenced_date": "2026-09-03",
   "yet_to_start_date": "2026-09-10",
   "due_date": "2026-09-26",
-  "work_status": "Sent For Review",
+  "work_status": "Sent For Final Review",
   "priority": "Normal",
   "budget_hours": 32,
   "actual_hours": 44.75,
-  "last_modified": "2026-09-23",
+  "last_modified": "2026-09-12",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Ironside Retirement Fund",
@@ -5199,19 +5443,43 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-03"
+    "on": "2026-09-02"
    },
    {
     "status": "Sent For Queries",
     "on": "2026-09-04"
    },
    {
-    "status": "WIP - Query Replies",
+    "status": "Query Replies Received - Yet To Attend",
     "on": "2026-09-06"
    },
    {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-08"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-08"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-10"
+   },
+   {
     "status": "Sent For Review",
-    "on": "2026-09-09"
+    "on": "2026-09-10"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-09-11"
+   },
+   {
+    "status": "WIP - Review Replies",
+    "on": "2026-09-11"
+   },
+   {
+    "status": "Sent For Final Review",
+    "on": "2026-09-12"
    }
   ]
  },
@@ -5232,11 +5500,11 @@
   "commenced_date": "2026-08-31",
   "yet_to_start_date": "2026-09-06",
   "due_date": "2026-09-23",
-  "work_status": "WIP - Processing",
+  "work_status": "Review Replies Received - Yet To Attend",
   "priority": "High",
   "budget_hours": 6,
   "actual_hours": 4.8,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-09-09",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Oakes & Associates Pty Ltd",
@@ -5247,7 +5515,35 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-09-01"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-09-01"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-01"
+   },
+   {
+    "status": "WIP - Query Replies",
     "on": "2026-09-03"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-05"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-06"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-09-08"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-09-09"
    }
   ]
  },
@@ -5321,11 +5617,11 @@
   "commenced_date": "2026-08-30",
   "yet_to_start_date": "2026-08-31",
   "due_date": "2026-09-10",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Review",
   "priority": "High",
   "budget_hours": 8,
   "actual_hours": 6.5,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-09-06",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Brennan Group",
@@ -5336,7 +5632,31 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-08-31"
+   },
+   {
+    "status": "Sent For Queries",
     "on": "2026-09-01"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-02"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-09-02"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-09-02"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-09-04"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-09-06"
    }
   ]
  },
@@ -5361,7 +5681,7 @@
   "priority": "Urgent",
   "budget_hours": 32,
   "actual_hours": 7.8,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-08-31",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Halden Family Trust",
@@ -5372,7 +5692,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-04"
+    "on": "2026-08-31"
    }
   ]
  },
@@ -5546,11 +5866,11 @@
   "commenced_date": "2026-08-31",
   "yet_to_start_date": "2026-09-07",
   "due_date": "2026-09-12",
-  "work_status": "WIP - Query Replies",
+  "work_status": "Sent For Queries",
   "priority": "High",
   "budget_hours": 24,
   "actual_hours": 30,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-08-29",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Everhart Superannuation Fund",
@@ -5561,11 +5881,11 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-03"
+    "on": "2026-08-29"
    },
    {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-07"
+    "status": "Sent For Queries",
+    "on": "2026-08-29"
    }
   ]
  },
@@ -5639,11 +5959,11 @@
   "commenced_date": "2026-08-29",
   "yet_to_start_date": "2026-08-30",
   "due_date": "2026-09-10",
-  "work_status": "Sent For Final Review",
+  "work_status": "Internal Review",
   "priority": "High",
   "budget_hours": 16,
   "actual_hours": 10.2,
-  "last_modified": "2026-09-20",
+  "last_modified": "2026-09-04",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Garrick Family Super Fund",
@@ -5653,20 +5973,24 @@
     "on": "2026-08-28"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-08-30"
+    "status": "WIP - Processing",
+    "on": "2026-08-29"
    },
    {
-    "status": "WIP - Query Replies",
+    "status": "Sent For Queries",
+    "on": "2026-08-31"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
     "on": "2026-09-02"
    },
    {
-    "status": "Sent For Review",
-    "on": "2026-09-06"
+    "status": "WIP - Query Replies",
+    "on": "2026-09-03"
    },
    {
-    "status": "Sent For Final Review",
-    "on": "2026-09-10"
+    "status": "Internal Review",
+    "on": "2026-09-04"
    }
   ]
  },
@@ -5687,11 +6011,11 @@
   "commenced_date": "2026-08-28",
   "yet_to_start_date": "2026-08-31",
   "due_date": "2026-09-10",
-  "work_status": "Sent For Final Review",
+  "work_status": "WIP - Query Replies",
   "priority": "Urgent",
   "budget_hours": 32,
   "actual_hours": 21.8,
-  "last_modified": "2026-09-24",
+  "last_modified": "2026-09-03",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Lockhart Retirement Fund",
@@ -5702,23 +6026,19 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-02"
+    "on": "2026-08-29"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-03"
+    "on": "2026-08-31"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-09-01"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-09-08"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-11"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-15"
+    "on": "2026-09-03"
    }
   ]
  },
@@ -5795,11 +6115,11 @@
   "commenced_date": "2026-08-30",
   "yet_to_start_date": "2026-08-31",
   "due_date": "2026-09-14",
-  "work_status": "Sent For Review",
+  "work_status": "Sent For Queries",
   "priority": "Normal",
   "budget_hours": 6,
   "actual_hours": 5,
-  "last_modified": "2026-09-23",
+  "last_modified": "2026-08-28",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Rathbone Retirement Fund",
@@ -5810,19 +6130,11 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-04"
+    "on": "2026-08-28"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-07"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-10"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-11"
+    "on": "2026-08-28"
    }
   ]
  },
@@ -5843,11 +6155,11 @@
   "commenced_date": "2026-08-28",
   "yet_to_start_date": "2026-09-02",
   "due_date": "2026-09-11",
-  "work_status": "Sent For Queries",
+  "work_status": "WIP - Query Replies",
   "priority": "High",
   "budget_hours": 6,
   "actual_hours": 3.2,
-  "last_modified": "2026-09-22",
+  "last_modified": "2026-08-31",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Oakes Holdings Pty Ltd",
@@ -5857,8 +6169,20 @@
     "on": "2026-08-28"
    },
    {
+    "status": "WIP - Processing",
+    "on": "2026-08-29"
+   },
+   {
     "status": "Sent For Queries",
     "on": "2026-08-30"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-30"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-08-31"
    }
   ]
  },
@@ -5879,11 +6203,11 @@
   "commenced_date": "2026-08-29",
   "yet_to_start_date": "2026-09-01",
   "due_date": "2026-09-21",
-  "work_status": "WIP - Processing",
+  "work_status": "WIP - Query Replies",
   "priority": "Urgent",
   "budget_hours": 32,
   "actual_hours": 9.3,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-08-31",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Kestrel Superannuation Fund",
@@ -5894,7 +6218,15 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-03"
+    "on": "2026-08-27"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-08-29"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-08-31"
    }
   ]
  },
@@ -5964,11 +6296,11 @@
   "commenced_date": "2026-08-28",
   "yet_to_start_date": "2026-09-04",
   "due_date": "2026-09-23",
-  "work_status": "Sent For Review",
+  "work_status": "WIP - Processing",
   "priority": "High",
   "budget_hours": 16,
   "actual_hours": 2.8,
-  "last_modified": "2026-09-24",
+  "last_modified": "2026-08-28",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Dunmore Family Super Fund",
@@ -5979,19 +6311,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-30"
-   },
-   {
-    "status": "Sent For Queries",
-    "on": "2026-08-30"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-08-31"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-03"
+    "on": "2026-08-28"
    }
   ]
  },
@@ -6012,11 +6332,11 @@
   "commenced_date": "2026-08-27",
   "yet_to_start_date": "2026-08-31",
   "due_date": "2026-09-08",
-  "work_status": "Sent For Review",
+  "work_status": "Job-In Yet To Start",
   "priority": "Urgent",
   "budget_hours": 24,
   "actual_hours": 19.8,
-  "last_modified": "2026-09-24",
+  "last_modified": "2026-08-27",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Thackray Holdings Pty Ltd",
@@ -6024,14 +6344,6 @@
    {
     "status": "Job-In Yet To Start",
     "on": "2026-08-27"
-   },
-   {
-    "status": "WIP - Processing",
-    "on": "2026-08-27"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-01"
    }
   ]
  },
@@ -6101,11 +6413,11 @@
   "commenced_date": "2026-08-26",
   "yet_to_start_date": "2026-08-31",
   "due_date": "2026-09-10",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Final Review",
   "priority": "Normal",
   "budget_hours": 6,
   "actual_hours": 4.5,
-  "last_modified": "2026-09-22",
+  "last_modified": "2026-09-01",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Merrick Group",
@@ -6116,7 +6428,27 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-27"
+    "on": "2026-08-28"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-08-30"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-08-30"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-08-30"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-08-30"
+   },
+   {
+    "status": "Sent For Final Review",
+    "on": "2026-09-01"
    }
   ]
  },
@@ -6137,11 +6469,11 @@
   "commenced_date": "2026-08-27",
   "yet_to_start_date": "2026-09-01",
   "due_date": "2026-09-17",
-  "work_status": "Sent For Final Review",
+  "work_status": "Sent For Review",
   "priority": "High",
   "budget_hours": 32,
   "actual_hours": 14.8,
-  "last_modified": "2026-09-20",
+  "last_modified": "2026-09-02",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Halden Family Super Fund",
@@ -6152,23 +6484,31 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-29"
+    "on": "2026-08-26"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-08-30"
+    "on": "2026-08-27"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-28"
    },
    {
     "status": "WIP - Query Replies",
+    "on": "2026-08-28"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-08-30"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
     "on": "2026-09-01"
    },
    {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-04"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-06"
+    "status": "Sent For Review",
+    "on": "2026-09-02"
    }
   ]
  },
@@ -6189,11 +6529,11 @@
   "commenced_date": "2026-08-26",
   "yet_to_start_date": "2026-08-28",
   "due_date": "2026-09-19",
-  "work_status": "Sent For Review",
+  "work_status": "WIP - Query Replies",
   "priority": "High",
   "budget_hours": 12,
   "actual_hours": 1.7,
-  "last_modified": "2026-09-17",
+  "last_modified": "2026-08-30",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Jasper Investments Pty Ltd",
@@ -6204,19 +6544,15 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-31"
+    "on": "2026-08-28"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-09-04"
+    "on": "2026-08-30"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-09-05"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-09"
+    "on": "2026-08-30"
    }
   ]
  },
@@ -6343,11 +6679,11 @@
   "commenced_date": "2026-08-25",
   "yet_to_start_date": "2026-09-01",
   "due_date": "2026-09-25",
-  "work_status": "Sent For Final Review",
+  "work_status": "On Hold",
   "priority": "Urgent",
   "budget_hours": 6,
   "actual_hours": 2.2,
-  "last_modified": "2026-09-19",
+  "last_modified": "2026-08-28",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Marlow Family Super Fund",
@@ -6358,23 +6694,11 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-29"
+    "on": "2026-08-26"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-09-03"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-04"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-05"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-07"
+    "status": "On Hold",
+    "on": "2026-08-28"
    }
   ]
  },
@@ -6395,11 +6719,11 @@
   "commenced_date": "2026-08-25",
   "yet_to_start_date": "2026-08-31",
   "due_date": "2026-09-18",
-  "work_status": "WIP - Processing",
+  "work_status": "On Hold",
   "priority": "Urgent",
   "budget_hours": 24,
   "actual_hours": 16.7,
-  "last_modified": "2026-09-19",
+  "last_modified": "2026-08-27",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Underhill Family Trust",
@@ -6410,7 +6734,11 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-30"
+    "on": "2026-08-27"
+   },
+   {
+    "status": "On Hold",
+    "on": "2026-08-27"
    }
   ]
  },
@@ -6480,11 +6808,11 @@
   "commenced_date": "2026-08-28",
   "yet_to_start_date": "2026-08-29",
   "due_date": "2026-09-03",
-  "work_status": "Sent For Final Review",
+  "work_status": "WIP - Processing",
   "priority": "Normal",
   "budget_hours": 8,
   "actual_hours": 1.3,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-08-26",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Whitcombe Investments Pty Ltd",
@@ -6495,23 +6823,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-09-01"
-   },
-   {
-    "status": "Sent For Queries",
-    "on": "2026-09-05"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-09"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-10"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-15"
+    "on": "2026-08-26"
    }
   ]
  },
@@ -6532,11 +6844,11 @@
   "commenced_date": "2026-08-25",
   "yet_to_start_date": "2026-08-31",
   "due_date": "2026-09-16",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Queries",
   "priority": "Urgent",
   "budget_hours": 24,
   "actual_hours": 6.9,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-08-28",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Ellery Holdings Pty Ltd",
@@ -6547,7 +6859,11 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-26"
+    "on": "2026-08-27"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-08-28"
    }
   ]
  },
@@ -6568,11 +6884,11 @@
   "commenced_date": "2026-08-26",
   "yet_to_start_date": "2026-08-28",
   "due_date": "2026-09-21",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Review",
   "priority": "Normal",
   "budget_hours": 6,
   "actual_hours": 4.8,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-08-27",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Rathbone Group",
@@ -6583,7 +6899,19 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-29"
+    "on": "2026-08-25"
+   },
+   {
+    "status": "Sent For Queries",
+    "on": "2026-08-25"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-08-26"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-08-27"
    }
   ]
  },
@@ -6604,11 +6932,11 @@
   "commenced_date": "2026-08-24",
   "yet_to_start_date": "2026-08-29",
   "due_date": "2026-09-11",
-  "work_status": "WIP - Processing",
+  "work_status": "Sent For Queries",
   "priority": "Normal",
   "budget_hours": 32,
   "actual_hours": 13.4,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-08-26",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Cortland Family Super Fund",
@@ -6619,6 +6947,10 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-08-26"
+   },
+   {
+    "status": "Sent For Queries",
     "on": "2026-08-26"
    }
   ]
@@ -6701,11 +7033,11 @@
   "commenced_date": "2026-08-26",
   "yet_to_start_date": "2026-09-02",
   "due_date": "2026-09-16",
-  "work_status": "WIP - Processing",
+  "work_status": "Job-In Yet To Start",
   "priority": "Urgent",
   "budget_hours": 12,
   "actual_hours": 1.9,
-  "last_modified": "2026-09-23",
+  "last_modified": "2026-08-23",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Cortland & Associates Pty Ltd",
@@ -6713,10 +7045,6 @@
    {
     "status": "Job-In Yet To Start",
     "on": "2026-08-23"
-   },
-   {
-    "status": "WIP - Processing",
-    "on": "2026-08-29"
    }
   ]
  },
@@ -6737,11 +7065,11 @@
   "commenced_date": "2026-08-26",
   "yet_to_start_date": "2026-09-01",
   "due_date": "2026-09-23",
-  "work_status": "Sent For Final Review",
+  "work_status": "WIP - Processing",
   "priority": "Normal",
   "budget_hours": 8,
   "actual_hours": 2.5,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-08-25",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Norcross Investments Pty Ltd",
@@ -6751,20 +7079,8 @@
     "on": "2026-08-23"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-08-31"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-02"
-   },
-   {
-    "status": "WIP - Review Replies",
-    "on": "2026-09-04"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-09-06"
+    "status": "WIP - Processing",
+    "on": "2026-08-25"
    }
   ]
  },
@@ -6842,7 +7158,7 @@
   "priority": "Normal",
   "budget_hours": 6,
   "actual_hours": 2.1,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-08-23",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Jasper Retirement Fund",
@@ -6853,7 +7169,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-24"
+    "on": "2026-08-23"
    }
   ]
  },
@@ -6911,11 +7227,11 @@
   "commenced_date": "2026-08-24",
   "yet_to_start_date": "2026-08-26",
   "due_date": "2026-09-07",
-  "work_status": "Sent For Review",
+  "work_status": "On Hold",
   "priority": "High",
   "budget_hours": 16,
   "actual_hours": 3.9,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-08-23",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Quinlan Family Super Fund",
@@ -6926,19 +7242,11 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-28"
+    "on": "2026-08-23"
    },
    {
-    "status": "Sent For Queries",
-    "on": "2026-09-02"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-09-03"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-09-07"
+    "status": "On Hold",
+    "on": "2026-08-23"
    }
   ]
  },
@@ -7133,7 +7441,7 @@
   "priority": "Normal",
   "budget_hours": 8,
   "actual_hours": 2.6,
-  "last_modified": "2026-09-19",
+  "last_modified": "2026-08-24",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Devlin Investments Pty Ltd",
@@ -7144,7 +7452,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-30"
+    "on": "2026-08-24"
    }
   ]
  },
@@ -7165,11 +7473,11 @@
   "commenced_date": "2026-08-22",
   "yet_to_start_date": "2026-08-26",
   "due_date": "2026-09-09",
-  "work_status": "Sent For Final Review",
+  "work_status": "Sent For Queries",
   "priority": "Urgent",
   "budget_hours": 12,
   "actual_hours": 3.8,
-  "last_modified": "2026-09-19",
+  "last_modified": "2026-08-24",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Ellery & Associates Pty Ltd",
@@ -7183,12 +7491,8 @@
     "on": "2026-08-22"
    },
    {
-    "status": "WIP - Query Replies",
+    "status": "Sent For Queries",
     "on": "2026-08-24"
-   },
-   {
-    "status": "Sent For Final Review",
-    "on": "2026-08-26"
    }
   ]
  },
@@ -7369,11 +7673,11 @@
   "commenced_date": "2026-08-21",
   "yet_to_start_date": "2026-08-25",
   "due_date": "2026-09-03",
-  "work_status": "Sent For Queries",
+  "work_status": "Review Replies Received - Yet To Attend",
   "priority": "High",
   "budget_hours": 32,
   "actual_hours": 17.7,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-08-26",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Lockhart Superannuation Fund",
@@ -7384,10 +7688,34 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-23"
+    "on": "2026-08-21"
    },
    {
     "status": "Sent For Queries",
+    "on": "2026-08-21"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-23"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-08-24"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-08-25"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-08-25"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-08-26"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
     "on": "2026-08-26"
    }
   ]
@@ -7409,11 +7737,11 @@
   "commenced_date": "2026-08-20",
   "yet_to_start_date": "2026-08-26",
   "due_date": "2026-09-11",
-  "work_status": "WIP - Query Replies",
+  "work_status": "Sent For Review",
   "priority": "Normal",
   "budget_hours": 6,
   "actual_hours": 8.5,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-08-25",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Zeller & Associates Pty Ltd",
@@ -7423,11 +7751,31 @@
     "on": "2026-08-20"
    },
    {
+    "status": "WIP - Processing",
+    "on": "2026-08-22"
+   },
+   {
     "status": "Sent For Queries",
     "on": "2026-08-22"
    },
    {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-22"
+   },
+   {
     "status": "WIP - Query Replies",
+    "on": "2026-08-24"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-08-24"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-08-25"
+   },
+   {
+    "status": "Sent For Review",
     "on": "2026-08-25"
    }
   ]
@@ -7486,11 +7834,11 @@
   "commenced_date": "2026-08-23",
   "yet_to_start_date": "2026-08-29",
   "due_date": "2026-09-06",
-  "work_status": "Sent For Queries",
+  "work_status": "WIP - Review Replies",
   "priority": "Urgent",
   "budget_hours": 12,
   "actual_hours": 3.9,
-  "last_modified": "2026-09-23",
+  "last_modified": "2026-08-30",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Thackray Group",
@@ -7501,11 +7849,39 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-25"
+    "on": "2026-08-21"
    },
    {
     "status": "Sent For Queries",
+    "on": "2026-08-22"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-24"
+   },
+   {
+    "status": "WIP - Query Replies",
     "on": "2026-08-25"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-08-26"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-08-28"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-08-28"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-08-29"
+   },
+   {
+    "status": "WIP - Review Replies",
+    "on": "2026-08-30"
    }
   ]
  },
@@ -7526,11 +7902,11 @@
   "commenced_date": "2026-08-22",
   "yet_to_start_date": "2026-08-29",
   "due_date": "2026-09-10",
-  "work_status": "Sent For Queries",
+  "work_status": "WIP - Processing",
   "priority": "Normal",
   "budget_hours": 24,
   "actual_hours": 3.6,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-08-22",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Gresham Family Super Fund",
@@ -7541,11 +7917,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-27"
-   },
-   {
-    "status": "Sent For Queries",
-    "on": "2026-08-27"
+    "on": "2026-08-22"
    }
   ]
  },
@@ -7664,11 +8036,11 @@
   "commenced_date": "2026-08-20",
   "yet_to_start_date": "2026-08-21",
   "due_date": "2026-09-07",
-  "work_status": "Sent For Queries",
+  "work_status": "WIP - Processing",
   "priority": "High",
   "budget_hours": 6,
   "actual_hours": 5,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-08-19",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Underhill Retirement Fund",
@@ -7679,11 +8051,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-20"
-   },
-   {
-    "status": "Sent For Queries",
-    "on": "2026-08-25"
+    "on": "2026-08-19"
    }
   ]
  },
@@ -7704,11 +8072,11 @@
   "commenced_date": "2026-08-20",
   "yet_to_start_date": "2026-08-25",
   "due_date": "2026-09-03",
-  "work_status": "WIP - Processing",
+  "work_status": "Internal Review",
   "priority": "Urgent",
   "budget_hours": 16,
   "actual_hours": 6.2,
-  "last_modified": "2026-09-22",
+  "last_modified": "2026-08-22",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Quinlan Holdings Pty Ltd",
@@ -7719,7 +8087,23 @@
    },
    {
     "status": "WIP - Processing",
+    "on": "2026-08-19"
+   },
+   {
+    "status": "Sent For Queries",
     "on": "2026-08-20"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-20"
+   },
+   {
+    "status": "WIP - Query Replies",
+    "on": "2026-08-21"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-08-22"
    }
   ]
  },
@@ -7744,7 +8128,7 @@
   "priority": "Normal",
   "budget_hours": 16,
   "actual_hours": 20,
-  "last_modified": "2026-09-19",
+  "last_modified": "2026-08-28",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Ashford Retirement Fund",
@@ -7755,19 +8139,39 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-23"
+    "on": "2026-08-20"
    },
    {
     "status": "Sent For Queries",
-    "on": "2026-08-24"
+    "on": "2026-08-20"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-22"
    },
    {
     "status": "WIP - Query Replies",
-    "on": "2026-08-28"
+    "on": "2026-08-23"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-08-25"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-08-26"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-08-26"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-08-27"
    },
    {
     "status": "WIP - Review Replies",
-    "on": "2026-08-29"
+    "on": "2026-08-28"
    }
   ]
  },
@@ -7873,11 +8277,11 @@
   "commenced_date": "2026-08-19",
   "yet_to_start_date": "2026-08-23",
   "due_date": "2026-08-28",
-  "work_status": "WIP - Processing",
+  "work_status": "Job-In Yet To Start",
   "priority": "High",
   "budget_hours": 8,
   "actual_hours": 4.8,
-  "last_modified": "2026-09-24",
+  "last_modified": "2026-08-19",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Oakes Superannuation Fund",
@@ -7885,10 +8289,6 @@
    {
     "status": "Job-In Yet To Start",
     "on": "2026-08-19"
-   },
-   {
-    "status": "WIP - Processing",
-    "on": "2026-08-22"
    }
   ]
  },
@@ -7909,11 +8309,11 @@
   "commenced_date": "2026-08-20",
   "yet_to_start_date": "2026-08-27",
   "due_date": "2026-09-21",
-  "work_status": "Sent For Queries",
+  "work_status": "WIP - Processing",
   "priority": "Normal",
   "budget_hours": 32,
   "actual_hours": 5,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-08-18",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Calloway Family Super Fund",
@@ -7924,11 +8324,7 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-21"
-   },
-   {
-    "status": "Sent For Queries",
-    "on": "2026-08-26"
+    "on": "2026-08-18"
    }
   ]
  },
@@ -8181,11 +8577,11 @@
   "commenced_date": "2026-08-18",
   "yet_to_start_date": "2026-08-19",
   "due_date": "2026-09-11",
-  "work_status": "Sent For Queries",
+  "work_status": "WIP - Review Replies",
   "priority": "Normal",
   "budget_hours": 12,
   "actual_hours": 10,
-  "last_modified": "2026-09-18",
+  "last_modified": "2026-08-26",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Brennan Family Super Fund",
@@ -8196,11 +8592,39 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-19"
+    "on": "2026-08-18"
    },
    {
     "status": "Sent For Queries",
+    "on": "2026-08-18"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-19"
+   },
+   {
+    "status": "WIP - Query Replies",
     "on": "2026-08-20"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-08-22"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-08-23"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-08-24"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-08-24"
+   },
+   {
+    "status": "WIP - Review Replies",
+    "on": "2026-08-26"
    }
   ]
  },
@@ -8221,11 +8645,11 @@
   "commenced_date": "2026-08-16",
   "yet_to_start_date": "2026-08-21",
   "due_date": "2026-09-10",
-  "work_status": "Sent For Queries",
+  "work_status": "Job-In Yet To Start",
   "priority": "Normal",
   "budget_hours": 6,
   "actual_hours": 5.4,
-  "last_modified": "2026-09-24",
+  "last_modified": "2026-08-16",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Lockhart Family Super Fund",
@@ -8233,10 +8657,6 @@
    {
     "status": "Job-In Yet To Start",
     "on": "2026-08-16"
-   },
-   {
-    "status": "Sent For Queries",
-    "on": "2026-08-18"
    }
   ]
  },
@@ -8257,11 +8677,11 @@
   "commenced_date": "2026-08-17",
   "yet_to_start_date": "2026-08-22",
   "due_date": "2026-08-27",
-  "work_status": "Sent For Review",
+  "work_status": "Job-In Yet To Start",
   "priority": "Normal",
   "budget_hours": 24,
   "actual_hours": 4.8,
-  "last_modified": "2026-09-16",
+  "last_modified": "2026-08-16",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Devlin Superannuation Fund",
@@ -8269,14 +8689,6 @@
    {
     "status": "Job-In Yet To Start",
     "on": "2026-08-16"
-   },
-   {
-    "status": "WIP - Processing",
-    "on": "2026-08-19"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-08-24"
    }
   ]
  },
@@ -8350,11 +8762,11 @@
   "commenced_date": "2026-08-15",
   "yet_to_start_date": "2026-08-21",
   "due_date": "2026-08-29",
-  "work_status": "WIP - Review Replies",
+  "work_status": "Query Replies Received - Yet To Attend",
   "priority": "Normal",
   "budget_hours": 8,
   "actual_hours": 3.5,
-  "last_modified": "2026-09-21",
+  "last_modified": "2026-08-16",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Holloway Family Trust",
@@ -8365,15 +8777,15 @@
    },
    {
     "status": "WIP - Processing",
-    "on": "2026-08-19"
+    "on": "2026-08-15"
    },
    {
-    "status": "Sent For Review",
-    "on": "2026-08-20"
+    "status": "Sent For Queries",
+    "on": "2026-08-16"
    },
    {
-    "status": "WIP - Review Replies",
-    "on": "2026-08-20"
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-16"
    }
   ]
  },
@@ -8446,11 +8858,11 @@
   "commenced_date": "2026-08-15",
   "yet_to_start_date": "2026-08-19",
   "due_date": "2026-09-02",
-  "work_status": "Sent For Review",
+  "work_status": "Sent For Queries",
   "priority": "Normal",
   "budget_hours": 12,
   "actual_hours": 1.7,
-  "last_modified": "2026-09-23",
+  "last_modified": "2026-08-17",
   "vertical": "Bookkeeping",
   "vertical_code": "BK",
   "sub_client": "Yardley Family Trust",
@@ -8460,16 +8872,12 @@
     "on": "2026-08-15"
    },
    {
+    "status": "WIP - Processing",
+    "on": "2026-08-16"
+   },
+   {
     "status": "Sent For Queries",
-    "on": "2026-08-18"
-   },
-   {
-    "status": "WIP - Query Replies",
-    "on": "2026-08-20"
-   },
-   {
-    "status": "Sent For Review",
-    "on": "2026-08-24"
+    "on": "2026-08-17"
    }
   ]
  },
@@ -8554,7 +8962,7 @@
   "priority": "High",
   "budget_hours": 12,
   "actual_hours": 6.8,
-  "last_modified": "2026-09-17",
+  "last_modified": "2026-08-27",
   "vertical": "Business Services",
   "vertical_code": "BS",
   "sub_client": "Halden Superannuation Fund",
@@ -8564,20 +8972,44 @@
     "on": "2026-08-15"
    },
    {
-    "status": "Sent For Queries",
+    "status": "WIP - Processing",
     "on": "2026-08-15"
    },
    {
+    "status": "Sent For Queries",
+    "on": "2026-08-17"
+   },
+   {
+    "status": "Query Replies Received - Yet To Attend",
+    "on": "2026-08-19"
+   },
+   {
     "status": "WIP - Query Replies",
-    "on": "2026-08-16"
+    "on": "2026-08-19"
+   },
+   {
+    "status": "Internal Review",
+    "on": "2026-08-21"
+   },
+   {
+    "status": "WIP - Internal Review Replies",
+    "on": "2026-08-23"
+   },
+   {
+    "status": "Sent For Review",
+    "on": "2026-08-24"
+   },
+   {
+    "status": "Review Replies Received - Yet To Attend",
+    "on": "2026-08-25"
    },
    {
     "status": "WIP - Review Replies",
-    "on": "2026-08-20"
+    "on": "2026-08-25"
    },
    {
     "status": "Sent For Final Review",
-    "on": "2026-08-22"
+    "on": "2026-08-27"
    }
   ]
  }

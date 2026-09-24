@@ -9,3 +9,5 @@ publish
 .idea
 .scribe
 .well-known
+
+*.zip

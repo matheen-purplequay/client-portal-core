@@ -1,0 +1,132 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center">
+                <div class="h4 mb-0">Production Report</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="productivity-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="productivity-header d-flex align-items-center justify-content-between px-4 py-3 flex-wrap gap-2">
+            <div class="fw-bold text-white">Associate Productivity - Month on Month</div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <select class="header-select" [(ngModel)]="monthYear" (ngModelChange)="onMonthChange()">
+                    <option *ngFor="let m of monthOptions" [value]="m.value">{{ m.label }}</option>
+                </select>
+                <select class="header-select" [(ngModel)]="selectedServiceId" (ngModelChange)="onVerticalChange()">
+                    <option [ngValue]="0">All Verticals</option>
+                    <option *ngFor="let v of verticals" [ngValue]="v.id">{{ v.title }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="isLoading" class="p-5 text-center opacity-75">
+            Loading productivity data...
+        </div>
+
+        <div *ngIf="!isLoading" class="table-responsive">
+            <table class="productivity-table w-100">
+                <thead>
+                    <tr class="group-row">
+                        <th rowspan="2" class="sno-col">S.No</th>
+                        <th rowspan="2" class="name-col">Associate Name</th>
+                        <th colspan="3" class="month-group current-month">{{ currentMonthLabel }}</th>
+                        <th rowspan="2">Job Trend</th>
+                        <th rowspan="2">Time Trend</th>
+                        <th colspan="3" class="month-group prev-month">{{ previousMonthLabel }}</th>
+                    </tr>
+                    <tr class="sub-row">
+                        <th>Total Jobs Worked</th>
+                        <th>Total Hours</th>
+                        <th>Productive Hours</th>
+                        <th>Total Jobs Worked</th>
+                        <th>Total Hours</th>
+                        <th>Productive Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="rows.length === 0">
+                        <td colspan="10" class="text-center py-4 opacity-75">No productivity data found for {{ currentMonthLabel }}.</td>
+                    </tr>
+                    <tr *ngFor="let row of rows; let i = index">
+                        <td class="text-center">{{ i + 1 }}</td>
+                        <td class="fw-medium">{{ row.name }}</td>
+                        <td class="text-center">{{ row.total_jobs }}</td>
+                        <td class="text-center">{{ row.total_hours.toFixed(2) }}</td>
+                        <td class="text-center">{{ row.productive_hours.toFixed(2) }}</td>
+                        <td class="text-center" [ngClass]="row.job_trend > 0 ? 'trend-up' : row.job_trend < 0 ? 'trend-down' : 'trend-flat'">
+                            <span *ngIf="row.job_trend !== 0" class="material-symbols-rounded trend-icon">{{ row.job_trend > 0 ? 'arrow_upward' : 'arrow_downward' }}</span>
+                            {{ row.job_trend > 0 ? '+' : '' }}{{ row.job_trend }}
+                        </td>
+                        <td class="text-center" [ngClass]="row.time_trend > 0 ? 'trend-up' : row.time_trend < 0 ? 'trend-down' : 'trend-flat'">
+                            <span *ngIf="row.time_trend !== 0" class="material-symbols-rounded trend-icon">{{ row.time_trend > 0 ? 'arrow_upward' : 'arrow_downward' }}</span>
+                            {{ row.time_trend > 0 ? '+' : '' }}{{ row.time_trend.toFixed(1) }}
+                        </td>
+                        <td class="text-center">{{ row.prev_total_jobs }}</td>
+                        <td class="text-center">{{ row.prev_total_hours.toFixed(2) }}</td>
+                        <td class="text-center">{{ row.prev_productive_hours.toFixed(2) }}</td>
+                    </tr>
+                </tbody>
+                <tfoot *ngIf="rows.length > 0">
+                    <tr class="total-row fw-bold">
+                        <td></td>
+                        <td>Total</td>
+                        <td class="text-center">{{ totals.total_jobs }}</td>
+                        <td class="text-center">{{ totals.total_hours.toFixed(2) }}</td>
+                        <td class="text-center">{{ totals.productive_hours.toFixed(2) }}</td>
+                        <td class="text-center" [ngClass]="totals.job_trend > 0 ? 'trend-up' : totals.job_trend < 0 ? 'trend-down' : 'trend-flat'">
+                            <span *ngIf="totals.job_trend !== 0" class="material-symbols-rounded trend-icon">{{ totals.job_trend > 0 ? 'arrow_upward' : 'arrow_downward' }}</span>
+                            {{ totals.job_trend > 0 ? '+' : '' }}{{ totals.job_trend }}
+                        </td>
+                        <td class="text-center" [ngClass]="totals.time_trend > 0 ? 'trend-up' : totals.time_trend < 0 ? 'trend-down' : 'trend-flat'">
+                            <span *ngIf="totals.time_trend !== 0" class="material-symbols-rounded trend-icon">{{ totals.time_trend > 0 ? 'arrow_upward' : 'arrow_downward' }}</span>
+                            {{ totals.time_trend > 0 ? '+' : '' }}{{ totals.time_trend.toFixed(1) }}
+                        </td>
+                        <td class="text-center">{{ totals.prev_total_jobs }}</td>
+                        <td class="text-center">{{ totals.prev_total_hours.toFixed(2) }}</td>
+                        <td class="text-center">{{ totals.prev_productive_hours.toFixed(2) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="productivity-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="productivity-header d-flex align-items-center justify-content-between px-4 py-3 flex-wrap gap-2">
+            <div class="fw-bold text-white">Associate Time Utilisation - Current Month ({{ currentMonthLabel }})</div>
+        </div>
+
+        <div *ngIf="isLoadingTimeUtilisation" class="p-5 text-center opacity-75">
+            Loading time utilisation data...
+        </div>
+
+        <div *ngIf="!isLoadingTimeUtilisation" class="table-responsive">
+            <table class="productivity-table w-100">
+                <thead>
+                    <tr class="group-row">
+                        <th class="name-col">Metric</th>
+                        <th *ngFor="let name of associateNames">{{ name }}</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="timeUtilisationRows.length === 0">
+                        <td [attr.colspan]="associateNames.length + 2" class="text-center py-4 opacity-75">No time utilisation data found for {{ currentMonthLabel }}.</td>
+                    </tr>
+                    <tr *ngFor="let row of timeUtilisationRows" [class.total-row]="row.metric === 'Total Time'" [class.fw-bold]="row.metric === 'Total Time'">
+                        <td class="fw-medium">{{ row.metric }}</td>
+                        <td class="text-center" *ngFor="let value of row.values">{{ value }}</td>
+                        <td class="text-center">{{ row.total }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

@@ -65,13 +65,14 @@
   <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
   <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
 
-  <script src="https://deliveryportal-tools.purplequay.com/dp-dashboard/assets/widget.js" type="module"></script>
+  <!-- Local dev: load dash-movement from the local build instead of the deployed CDN copy -->
+  <!-- <script src="https://deliveryportal-tools.purplequay.com/dp-dashboard/assets/widget.js" type="module"></script> -->
 
   <script src="https://deliveryportal-tools.purplequay.com/dp-insights/assets/widget.js" type="module"></script>
 
   <!-- <script src="assets/widgets/dashboards/assets/widget.js" crossorigin="anonymous" type="module"></script> -->
 
-  <!-- <script>
+  <script>
     (function () {
       const script = document.createElement('script');
       script.src = 'assets/widgets/dashboards/assets/widget.js?v=' + Date.now();
@@ -79,7 +80,7 @@
       script.type = 'module';
       document.head.appendChild(script);
     })();
-  </script> -->
+  </script>
 
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>

@@ -1,0 +1,194 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="h3 fw-bold mb-1">Budget Overview - Open Jobs</div>
+            <div class="text-slate-600">
+                Budget time against time booked to date for every open job. Jobs past their budget are highlighted. Select a card to filter the list.
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vertical-tabs hstack gap-3 flex-wrap mt-3">
+                <div class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</div>
+                <div class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="row g-3">
+        <div class="col-6 col-sm-3">
+            <div class="budget-stat-card budget-stat-card--blue rounded-4 p-3 text-center cursor-pointer h-100"
+                [class.is-selected]="selection === 'all'" (click)="selectCard('all')">
+                <div class="text-uppercase small fw-semibold budget-stat-label mb-2">Open Jobs</div>
+                <div class="budget-stat-value" [class.opacity-50]="isLoading">{{ rows.length }}</div>
+                <div class="text-uppercase small budget-stat-unit mt-1">Jobs</div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-3">
+            <div class="budget-stat-card budget-stat-card--green rounded-4 p-3 text-center cursor-pointer h-100"
+                [class.is-selected]="selection === 'within'" (click)="selectCard('within')">
+                <div class="text-uppercase small fw-semibold budget-stat-label mb-2">Within Budget</div>
+                <div class="budget-stat-value" [class.opacity-50]="isLoading">{{ withinBudgetRows.length }}</div>
+                <div class="text-uppercase small budget-stat-unit mt-1">Jobs</div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-3">
+            <div class="budget-stat-card budget-stat-card--maroon rounded-4 p-3 text-center cursor-pointer h-100"
+                [class.is-selected]="selection === 'over'" (click)="selectCard('over')">
+                <div class="text-uppercase small fw-semibold budget-stat-label mb-2">Over Budget</div>
+                <div class="budget-stat-value" [class.opacity-50]="isLoading">{{ overBudgetRows.length }}</div>
+                <div class="text-uppercase small budget-stat-unit mt-1">Jobs</div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-3">
+            <div class="budget-stat-card budget-stat-card--teal rounded-4 p-3 text-center h-100">
+                <div class="text-uppercase small fw-semibold budget-stat-label mb-2">Budget vs Booked</div>
+                <div class="budget-stat-value budget-stat-value--sm" [class.opacity-50]="isLoading">{{ formatSigned(totalBudgetSeconds) }}</div>
+                <div class="text-uppercase small budget-stat-unit mt-1">{{ formatSigned(totalTimeTakenSeconds) }} Booked</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="budget-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="budget-header d-flex align-items-center justify-content-between px-4 py-3 flex-wrap gap-2">
+            <div class="fw-bold text-white">{{ tableTitle }}</div>
+            <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="isExporting || isLoading">
+                <span class="material-symbols-rounded" style="font-size: 16px;">file_export</span>
+                {{ isExporting ? 'Exporting...' : 'Export To Excel' }}
+            </button>
+        </div>
+
+        <div *ngIf="isLoading" class="p-5 text-center opacity-75">
+            Loading budget overview data...
+        </div>
+
+        <div *ngIf="!isLoading" class="table-responsive">
+            <table class="budget-table w-100">
+                <thead>
+                    <tr>
+                        <th>Received From</th>
+                        <th>Job Name</th>
+                        <th>Nature of Job</th>
+                        <th>Accountant</th>
+                        <th>Job Status</th>
+                        <th>Budget Time</th>
+                        <th>Time Taken</th>
+                        <th>Variance</th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('receivedFrom')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('receivedFrom') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.receivedFrom" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.receivedFrom && receivedFromOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('receivedFrom')" (change)="toggleSelectAll('receivedFrom')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('receivedFrom')">
+                                    <input type="checkbox" [checked]="isOptionSelected('receivedFrom', opt)" (change)="toggleFilterOption('receivedFrom', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('receivedFrom').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th><input type="text" [(ngModel)]="filters.jobName" placeholder=""></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('natureOfJob')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('natureOfJob') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.natureOfJob" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.natureOfJob && natureOfJobOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('natureOfJob')" (change)="toggleSelectAll('natureOfJob')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('natureOfJob')">
+                                    <input type="checkbox" [checked]="isOptionSelected('natureOfJob', opt)" (change)="toggleFilterOption('natureOfJob', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('natureOfJob').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('accountant')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('accountant') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'accountant'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.accountant" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.accountant && accountantOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('accountant')" (change)="toggleSelectAll('accountant')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('accountant')">
+                                    <input type="checkbox" [checked]="isOptionSelected('accountant', opt)" (change)="toggleFilterOption('accountant', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('accountant').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('jobStatus')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('jobStatus') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'jobStatus'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.jobStatus" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.jobStatus && jobStatusOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('jobStatus')" (change)="toggleSelectAll('jobStatus')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('jobStatus')">
+                                    <input type="checkbox" [checked]="isOptionSelected('jobStatus', opt)" (change)="toggleFilterOption('jobStatus', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('jobStatus').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th><input type="text" [(ngModel)]="filters.budgetTime" placeholder=""></th>
+                        <th><input type="text" [(ngModel)]="filters.timeTaken" placeholder=""></th>
+                        <th><input type="text" [(ngModel)]="filters.variance" placeholder=""></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredRows.length === 0">
+                        <td colspan="8" class="text-center py-4 opacity-75">No open jobs found.</td>
+                    </tr>
+                    <tr *ngFor="let row of filteredRows">
+                        <td>{{ row.receivedFrom }}</td>
+                        <td class="fw-medium job-name-cell">{{ row.jobName }}</td>
+                        <td>{{ row.natureOfJob }}</td>
+                        <td>{{ row.accountant }}</td>
+                        <td>{{ row.jobStatus }}</td>
+                        <td class="text-center">{{ formatSigned(row.budgetSeconds) }}</td>
+                        <td class="text-center">{{ formatSigned(row.timeTakenSeconds) }}</td>
+                        <td class="text-center fw-semibold" [ngClass]="row.varianceSeconds > 0 ? 'variance-over' : 'variance-under'">
+                            {{ formatSigned(row.varianceSeconds, true) }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

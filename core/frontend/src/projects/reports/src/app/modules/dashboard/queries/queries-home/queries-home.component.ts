@@ -15,6 +15,11 @@ import html2canvas from 'html2canvas';
 })
 export class QueriesHomeComponent implements OnInit, OnDestroy {
 
+  // Set by the parent (dashboard-home, from ?jobId=... on the Queries tab
+  // route) when the user should land directly on a specific job's queries
+  // instead of the jobs list — e.g. the movement widget's "View Queries" link.
+  @Input() jobId: number | null = null;
+
   refreshQueries: BehaviorSubject<QueryFilters> = new BehaviorSubject<QueryFilters>(QueryFilters.defaultQueryFilters());
   maxAttachments = 3;
 
@@ -215,6 +220,11 @@ export class QueriesHomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Only auto-select the requested job once — after that, the user is free
+  // to navigate back to "All Jobs" without being bounced back into it every
+  // time the job list happens to reload.
+  private hasAppliedRequestedJob: boolean = false;
+
   getJobsWithQueries(user_id: number, client_id: number) {
     this.queriesService.getJobsWithQueries(user_id, client_id).subscribe({
       next: (res: any) => {
@@ -222,6 +232,12 @@ export class QueriesHomeComponent implements OnInit, OnDestroy {
         this.jobQueries = res.queries;
         this.originalJobQueries = res.queries;
         console.log('selected activity in get jobs ', this.activities.selectedActivity);
+
+        if (this.jobId && !this.hasAppliedRequestedJob) {
+          this.hasAppliedRequestedJob = true;
+          const requestedJob = this.jobQueries.find(job => job.job_id === this.jobId);
+          if (requestedJob) this.getQueries(requestedJob);
+        }
       },
       error: (err: any) => {
         this.isGettingJobs = false;

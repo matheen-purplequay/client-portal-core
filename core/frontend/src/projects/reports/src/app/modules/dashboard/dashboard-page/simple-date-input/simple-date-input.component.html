@@ -1,0 +1,25 @@
+<div class="simple-date-input position-relative">
+    <div class="simple-date-input-field" (click)="toggle()">
+        <span [class.opacity-50]="!displayValue">{{ displayValue || 'dd-mm-yyyy' }}</span>
+        <span class="material-symbols-rounded simple-date-input-icon">calendar_month</span>
+    </div>
+    <div class="simple-date-input-panel" *ngIf="isOpen">
+        <div class="simple-date-input-nav">
+            <button type="button" (click)="prevMonth()">&lsaquo;</button>
+            <div class="fw-semibold small">{{ monthLabel }}</div>
+            <button type="button" (click)="nextMonth()">&rsaquo;</button>
+        </div>
+        <div class="simple-date-input-weekdays">
+            <span *ngFor="let d of weekdayLabels">{{ d }}</span>
+        </div>
+        <div class="simple-date-input-grid">
+            <div *ngFor="let day of dayCells"
+                class="simple-date-input-cell"
+                [class.is-empty]="!day"
+                [class.is-selected]="day && isSelected(day)"
+                (click)="day && selectDay(day)">
+                {{ day || '' }}
+            </div>
+        </div>
+    </div>
+</div>

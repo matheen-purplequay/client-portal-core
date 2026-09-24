@@ -347,30 +347,15 @@ body {
   }
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  background: transparent;
-  bottom: 0;
-  color: transparent;
-  cursor: pointer;
-  height: auto;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: auto;
-}
-
+// Previously stretched to cover the entire input (position:absolute,
+// inset 0, color/background transparent) so the whole field acted as an
+// "open calendar" button. That swallowed every click meant for the
+// actual day/month/year segments underneath it, making it impossible to
+// click into a segment and type or otherwise interact with the native
+// picker's text portion — left as a normal-sized icon instead.
+input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-  background: transparent;
-  bottom: 0;
-  color: transparent;
   cursor: pointer;
-  height: auto;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: auto;
 }
 
 textarea {

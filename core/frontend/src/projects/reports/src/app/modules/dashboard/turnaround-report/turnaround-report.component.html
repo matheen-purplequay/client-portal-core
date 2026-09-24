@@ -1,0 +1,193 @@
+<section class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vstack justify-content-center align-items-center text-center">
+                <div class="h4 mb-1">Turnaround by Bucket</div>
+                <div class="text-slate-600 small">
+                    Closed jobs grouped by elapsed time against the agreed turnaround standard.
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="vertical-tabs hstack gap-3 flex-wrap mt-3">
+                <div class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</div>
+                <div class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="row g-3">
+        <div class="col-6 col-sm-6">
+            <div class="turnaround-toggle-card rounded-4 p-2 text-center cursor-pointer h-100"
+                [class.is-selected]="jobStatus === 'open'" (click)="selectStatus('open')">
+                <div class="text-uppercase small fw-semibold turnaround-stat-label mb-1">Open Jobs</div>
+                <div class="turnaround-stat-value">{{ openJobsCount }}</div>
+                <div class="text-uppercase turnaround-stat-unit">Jobs</div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-6">
+            <div class="turnaround-toggle-card rounded-4 p-2 text-center cursor-pointer h-100"
+                [class.is-selected]="jobStatus === 'closed'" (click)="selectStatus('closed')">
+                <div class="text-uppercase small fw-semibold turnaround-stat-label mb-1">Closed Jobs</div>
+                <div class="turnaround-stat-value">{{ closedJobsCount }}</div>
+                <div class="text-uppercase turnaround-stat-unit">Jobs</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-3">
+    <div class="row g-2">
+        <div class="col-6 col-sm-4 col-lg-2" *ngFor="let bucket of buckets">
+            <div class="turnaround-stat-card turnaround-stat-card--{{ bucket.variant }} rounded-4 p-2 text-center h-100">
+                <div class="text-uppercase small fw-semibold turnaround-stat-label mb-1">{{ bucket.label }}</div>
+                <div class="turnaround-stat-value" [class.opacity-50]="isLoading">{{ bucket.value }}</div>
+                <div class="text-uppercase turnaround-stat-unit">Jobs</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="turnaround-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="turnaround-header d-flex align-items-center justify-content-between px-4 py-3 flex-wrap gap-2">
+            <div class="fw-bold text-white">{{ jobsTableTitle }}</div>
+        </div>
+
+        <div *ngIf="isLoadingJobs" class="p-5 text-center opacity-75">
+            Loading {{ jobStatus }} jobs...
+        </div>
+
+        <div *ngIf="!isLoadingJobs" class="table-responsive">
+            <table class="turnaround-table">
+                <thead>
+                    <tr>
+                        <th style="width: 160px;">Received From</th>
+                        <th style="width: 200px;">Job Name</th>
+                        <th style="width: 160px;">Nature of Job</th>
+                        <th style="width: 160px;">Accountant</th>
+                        <th style="width: 130px;">Job Status</th>
+                        <th style="width: 80px;">Turnaround (Days)</th>
+                        <th style="width: 95px;">Turnaround<br>in Carisma</th>
+                        <th style="width: 90px;">Turnaround<br>in Client</th>
+                        <th style="width: 80px;">Budget Hrs<br>(hh:mm)</th>
+                        <th style="width: 80px;">Time Taken<br>(hh:mm)</th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('receivedFrom')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('receivedFrom') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.receivedFrom" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.receivedFrom && receivedFromOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('receivedFrom')" (change)="toggleSelectAll('receivedFrom')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('receivedFrom')">
+                                    <input type="checkbox" [checked]="isOptionSelected('receivedFrom', opt)" (change)="toggleFilterOption('receivedFrom', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('receivedFrom').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th><input type="text" [(ngModel)]="filters.jobName" placeholder=""></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('natureOfJob')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('natureOfJob') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.natureOfJob" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.natureOfJob && natureOfJobOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('natureOfJob')" (change)="toggleSelectAll('natureOfJob')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('natureOfJob')">
+                                    <input type="checkbox" [checked]="isOptionSelected('natureOfJob', opt)" (change)="toggleFilterOption('natureOfJob', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('natureOfJob').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('accountant')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('accountant') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'accountant'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.accountant" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.accountant && accountantOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('accountant')" (change)="toggleSelectAll('accountant')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('accountant')">
+                                    <input type="checkbox" [checked]="isOptionSelected('accountant', opt)" (change)="toggleFilterOption('accountant', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('accountant').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('jobStatus')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('jobStatus') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'jobStatus'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.jobStatus" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.jobStatus && jobStatusOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('jobStatus')" (change)="toggleSelectAll('jobStatus')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('jobStatus')">
+                                    <input type="checkbox" [checked]="isOptionSelected('jobStatus', opt)" (change)="toggleFilterOption('jobStatus', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('jobStatus').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredJobRows.length === 0">
+                        <td colspan="9" class="text-center py-4 opacity-75">No {{ jobStatus }} jobs found.</td>
+                    </tr>
+                    <tr *ngFor="let row of filteredJobRows">
+                        <td>{{ row.receivedFrom }}</td>
+                        <td class="fw-medium job-name-cell" [title]="row.jobName">{{ row.jobName }}</td>
+                        <td>{{ row.natureOfJob }}</td>
+                        <td>{{ row.accountant }}</td>
+                        <td>{{ row.jobStatus }}</td>
+                        <td class="text-center fw-semibold">{{ row.turnaroundDays }}</td>
+                        <td class="text-center">{{ row.turnaroundInCarisma }}</td>
+                        <td class="text-center">{{ row.turnaroundInClient }}</td>
+                        <td class="text-center">{{ row.budgetTime }}</td>
+                        <td class="text-center">{{ row.timeTaken }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

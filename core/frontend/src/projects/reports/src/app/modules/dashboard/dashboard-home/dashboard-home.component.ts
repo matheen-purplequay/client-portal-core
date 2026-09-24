@@ -21,7 +21,7 @@ import { ReportService } from '../../../services/reports/report.service';
 import { Job, JobData } from '../../../models/jobs';
 import { RulesService } from '../../../services/app/base/rules.service';
 import { SystemService } from '../../../services/app/system/system.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PortalService } from '../../../services/app/base/portal.service';
 import { CloudMessagingService } from '../../../services/app/notifications/cloud-messaging.service';
 
@@ -381,13 +381,28 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
     private systemService: SystemService,
     private router: Router,
     private portalService: PortalService,
-    private cloudMessagingService: CloudMessagingService
+    private cloudMessagingService: CloudMessagingService,
+    private activatedRoute: ActivatedRoute
   ) {
   }
+
+  // Set from ?tab=queries (sidebar's "Queries" link) so setupAmbience() can
+  // select that tab once filterDashboardType.tabs is loaded/filtered —
+  // reading it any earlier is pointless, since that method resets
+  // selectedTab to tabs[0] synchronously as part of its own setup.
+  private requestedTab: string | null = null;
+
+  // Set from ?jobId=... (the movement widget's "View Queries" link) and
+  // passed straight through to app-queries-home, which auto-selects that
+  // job once its job list has loaded.
+  requestedJobId: number | null = null;
 
   ngOnInit(): void {
     this.user = this.localStorageService.getItem('userdata');
     this.masterCompany = this.localStorageService.getItem('userdata').master_company || undefined;
+    this.requestedTab = this.activatedRoute.snapshot.queryParamMap.get('tab');
+    const jobId = this.activatedRoute.snapshot.queryParamMap.get('jobId');
+    this.requestedJobId = jobId ? Number(jobId) : null;
     this.getLastReportMonth();
   }
 
@@ -539,6 +554,13 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
 
     if (this.filterDashboardType.tabs.length > 0) {
       this.filterDashboardType.selectedTab = this.filterDashboardType.tabs[0];
+    }
+
+    // ?tab=queries (sidebar's "Queries" link) selects that tab directly,
+    // if this user's dashboards actually include it.
+    if (this.requestedTab === 'queries') {
+      const queriesTab = this.filterDashboardType.tabs.find((tab: any) => tab.index === this.filterDashboardType.legends.QUERIES);
+      if (queriesTab) this.filterDashboardType.selectedTab = queriesTab;
     }
 
     this.checkIfNeedsToBeUpdated();

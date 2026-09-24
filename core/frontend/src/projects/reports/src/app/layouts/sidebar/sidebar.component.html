@@ -39,9 +39,9 @@
                                 <button type="button"
                                     class="list-group-item list-group-item-action sidebar-link small rounded-end-pill position-relative overflow-hidden"
                                     [attr.data-link]="currentURL"
-                                    [ngClass]="(currentURL.includes(pl.link))? 'active' : ''" [attr.data-link]="pl.link"
+                                    [ngClass]="isLinkActive(pl)? 'active' : ''" [attr.data-link]="pl.link"
                                     [attr.current-link]="currentURL" [attr.data-include]="currentURL.includes(pl.link)"
-                                    (click)="openPage(pl.link)">
+                                    (click)="openPage(pl.link, pl.queryParams)">
                                     <span class="material-symbols-rounded pe-2 mt--2">{{ pl.material_icon }}</span>
                                     <div>{{ pl.title }}</div>
                                 </button>

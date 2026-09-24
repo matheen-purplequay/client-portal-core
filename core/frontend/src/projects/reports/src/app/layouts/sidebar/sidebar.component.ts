@@ -5,7 +5,6 @@ import { filter } from 'rxjs';
 import { LocalStorageService } from '../../services/app/storage/local-storage.service';
 import { ChartDataService } from '../../services/dashboard/chart-data.service';
 import { Location } from '@angular/common';
-import { SystemService } from '../../services/app/system/system.service';
 import { config } from 'projects/reports/src/environments/config';
 
 @Component({
@@ -50,8 +49,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     private activatedRoute: ActivatedRoute,
     private chartDataService: ChartDataService,
     private localStorageService: LocalStorageService,
-    private systemService: SystemService,
-  ) { 
+  ) {
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.currentURL = e.url;
@@ -98,8 +96,10 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     if(master_company.includes('purplequay.com.au')) {
       this.master_company_short_name = 'pq';
     }
+    // app.component.ts already fetches app status on every route change and
+    // keeps 'portaldetails' in localStorage current — reading it here avoids
+    // a second, redundant get-app-status request on every page load.
     this.appStatus = this.localStorageService.getItem('portaldetails');
-    this.getAppStatus();
     if(config.seasonalConfig.christmas.christmasGreeting) this.activeLinkClass = `${this.activeLinkClass} ${this.animatedActiveLinkClass}`;
   }
 
@@ -115,20 +115,23 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-  openPage(page: string) {
-    this.router.navigate([page]);
+  openPage(page: string, queryParams?: Record<string, any>) {
+    this.router.navigate([page], queryParams ? { queryParams } : {});
   }
 
-  async getAppStatus() {
-    this.systemService.getAppStatus().subscribe({
-      next: (res: any) => {
-        if(res.status && res.data) {
-          this.appStatus = res.data;
-          this.localStorageService.setItem('portaldetails', res.data);
-        }
-      },
-      error: (err: any) => {}
-    });
+  // "Delivery Dashboard" and "Queries" both point at /dashboard/home, only
+  // distinguished by ?tab=queries, so a plain currentURL.includes(pl.link)
+  // would mark both active at once. A link with its own queryParams is only
+  // active when the current URL actually carries that exact query string; a
+  // plain link (no queryParams) is active on that path only when no such
+  // query string is present, so it doesn't stay lit while a sibling tab link
+  // is actually selected.
+  isLinkActive(pl: { link: string; queryParams?: Record<string, any> }): boolean {
+    if (!this.currentURL.includes(pl.link)) return false;
+    if (pl.queryParams) {
+      return Object.entries(pl.queryParams).every(([key, value]) => this.currentURL.includes(`${key}=${value}`));
+    }
+    return !this.currentURL.includes('?');
   }
 
 }

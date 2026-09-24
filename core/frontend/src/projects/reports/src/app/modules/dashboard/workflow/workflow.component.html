@@ -1,0 +1,83 @@
+<section class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="h3 fw-bold mb-0">Workflow</div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="workflow-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="workflow-header px-4 py-3 d-flex align-items-center justify-content-between">
+            <div class="fw-bold text-white">Today's Stand-Up</div>
+            <button type="button" class="refresh-btn" (click)="fetchWorkflowStandUp()" title="Refresh">
+                <span class="material-symbols-rounded">refresh</span>
+            </button>
+        </div>
+
+        <div class="px-3 pt-3 d-flex justify-content-end" *ngIf="hasActiveFilters">
+            <button type="button" class="clear-filters-btn" (click)="clearFilters()">
+                Clear Filters
+            </button>
+        </div>
+
+        <div *ngIf="isLoading" class="p-5 text-center opacity-75">
+            Loading workflow...
+        </div>
+
+        <div *ngIf="!isLoading" class="table-responsive">
+            <table class="workflow-table w-100">
+                <thead>
+                    <tr>
+                        <th>Job Description</th>
+                        <th>Team Name</th>
+                        <th>Associate</th>
+                        <th>Work Status</th>
+                        <th>Est.Time</th>
+                        <th>Est. Delivery</th>
+                    </tr>
+                    <tr class="workflow-filter-row">
+                        <th>
+                            <input type="text" class="workflow-input" placeholder="Search..." [(ngModel)]="searchTerm">
+                        </th>
+                        <th>
+                            <select class="workflow-input" [(ngModel)]="selectedTeam">
+                                <option value="">All Teams</option>
+                                <option *ngFor="let team of teamOptions" [value]="team">{{ team }}</option>
+                            </select>
+                        </th>
+                        <th>
+                            <select class="workflow-input" [(ngModel)]="selectedAssociate">
+                                <option value="">All Associates</option>
+                                <option *ngFor="let associate of associateOptions" [value]="associate">{{ associate }}</option>
+                            </select>
+                        </th>
+                        <th>
+                            <select class="workflow-input" [(ngModel)]="selectedStatus">
+                                <option value="">All Statuses</option>
+                                <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+                            </select>
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredRows.length === 0">
+                        <td colspan="6" class="text-center py-4 opacity-75">
+                            {{ hasActiveFilters ? 'No rows match the selected filters.' : 'No stand-up logged for today.' }}
+                        </td>
+                    </tr>
+                    <tr *ngFor="let row of filteredRows">
+                        <td class="fw-medium">{{ row.jobDescription || '-' }}</td>
+                        <td>{{ row.teamName || '-' }}</td>
+                        <td>{{ row.nameA || '-' }}</td>
+                        <td>{{ row.workstatus || '-' }}</td>
+                        <td>{{ row.timeWillTake || '-' }}</td>
+                        <td>{{ row.expectedFinishDate || '-' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

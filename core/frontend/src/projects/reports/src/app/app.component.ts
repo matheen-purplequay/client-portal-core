@@ -75,7 +75,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // this.getRegion();
-    this.checkForPortalLatestVersion();
+    // "Portal Updated" modal disabled from showing on load — see
+    // checkForPortalLatestVersion()/getPortalLatestVersion() below.
     this.user = this.localStorageService.getItem('userdata');
     if(this.user && this.user.role != 'admin') {
       if(!this.isStatusLoaded) {

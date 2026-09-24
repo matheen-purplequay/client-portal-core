@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import type { JobHeader, FPJobRowData, JobTitle, FPDashboardFilter, StatusCount } from '../../../../../core/models/movement';
 import ProgressPanel from '../../../../components/statistics-panel-home/panels/progress-panel';
+import LegendButtons from '../../../../components/statistics-panel-home/panels/components/legend-buttons';
+import ManagerViewToggle, { type JobStatusViewMode } from '../../../../components/statistics-panel-home/components/manager-view-toggle';
+import PartnerWiseGrid, { type PartnerWisePartner, type PartnerWiseRow } from '../../../../components/statistics-panel-home/components/partner-wise-grid';
 import Toast from '../../../../../shell/components/collections/toast';
 import { apiRoutes } from '../../../../../config/api-routes';
 import { DashboardTable } from '../../../../components/collections/dashboard-table';
@@ -9,6 +12,7 @@ import { JobDetails } from '../../details/job-details/job-details';
 import { JobTabBar } from '../components/job-tab-bar';
 import { useEngagementVerticalContext } from '../../../../../core/utils/stores/EngagementVerticalContext';
 import { transformStatusCounts } from '../../../helpers/transform-status-counts';
+import { filterRowsByLegend, type LegendFilter } from '../../../helpers/legend-filter';
 import { verticals } from '../../../../../core/seeds/verticals';
 import { decryptData } from '../../../../../core/utils/helpers/localStorage';
 import { FilterSidebar } from '../components/sidebarfilters';
@@ -57,7 +61,106 @@ export const FPJobTable = () => {
     const [statusCount, setStatusCount] = useState<StatusCount[]>([]);
 
     const [isFirstTimeLoaded, setIsFirstTimeLoaded] = useState(false);
+    const [legendFilter, setLegendFilter] = useState<LegendFilter>(null);
 
+    const [viewMode, setViewMode] = useState<JobStatusViewMode>('status');
+    const [isManager, setIsManager] = useState(false);
+    const [partnerWisePartners, setPartnerWisePartners] = useState<PartnerWisePartner[]>([]);
+    const [partnerWiseRows, setPartnerWiseRows] = useState<PartnerWiseRow[]>([]);
+    const [partnerWiseTotals, setPartnerWiseTotals] = useState<Record<string, number>>({});
+    const [isLoadingPartnerWise, setIsLoadingPartnerWise] = useState(false);
+    const [hasLoadedPartnerWise, setHasLoadedPartnerWise] = useState(false);
+
+    // Switching legends can hide the currently selected status card (it may
+    // not belong to the newly chosen legend), so drop back to the default
+    // "Live Jobs" selection instead of leaving a stale/hidden card selected.
+    const handleLegendFilterChange = (legend: LegendFilter) => {
+        setLegendFilter(legend);
+        handleJobFilterByTitle(null);
+    };
+
+    // The Legends row/filter is Status View-only — Manager View's partner
+    // breakdown isn't scoped by legend, so switching views clears it.
+    const handleViewModeChange = (mode: JobStatusViewMode) => {
+        setViewMode(mode);
+        if (mode === 'manager' && legendFilter) {
+            handleLegendFilterChange(null);
+        }
+    };
+
+    const getManagerContactId = () =>
+        JSON.parse(decryptData(localStorage.getItem('wm_user')))?.wm_client_id ?? JSON.parse(decryptData(localStorage.getItem('userdata')))?.client_id ?? 0;
+
+    // Cheap check on load — just decides whether the Manager View toggle
+    // should show at all. Fired in parallel with fetchFPJobs, not awaited —
+    // it must never delay the job list itself. The actual per-partner job
+    // counts are only fetched lazily, the first time the toggle is clicked.
+    const fetchManagerStatus = async () => {
+        try {
+            const response = await fetch(apiRoutes.movement.getManagerStatus, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id: getManagerContactId() }),
+            });
+
+            if (!response.ok) throw new Error("Network response was not ok");
+
+            const data = await response.json();
+            if (data.status && data.data) {
+                setIsManager(!!data.data.is_manager);
+            }
+        } catch (error) {
+            console.log("Error checking manager status:", error);
+        }
+    };
+
+    const fetchPartnerWiseJobs = async () => {
+        setIsLoadingPartnerWise(true);
+        try {
+            const response = await fetch(apiRoutes.movement.getPartnerWiseJobs, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    service_id: verticals.fp,
+                    project_id: context?.userData?.project_id,
+                    user_id: getManagerContactId(),
+                }),
+            });
+
+            if (!response.ok) throw new Error("Network response was not ok");
+
+            const data = await response.json();
+            if (data.status && data.data) {
+                setIsManager(!!data.data.is_manager);
+                setPartnerWisePartners(data.data.partners ?? []);
+                setPartnerWiseRows(data.data.rows ?? []);
+                setPartnerWiseTotals(data.data.totals ?? {});
+            }
+        } catch (error) {
+            console.log("Error fetching partner-wise jobs:", error);
+        } finally {
+            setIsLoadingPartnerWise(false);
+        }
+    };
+
+    // Load the full partner-wise breakdown lazily, only the first time
+    // Manager View is actually opened.
+    useEffect(() => {
+        if (viewMode === 'manager' && !hasLoadedPartnerWise) {
+            setHasLoadedPartnerWise(true);
+            fetchPartnerWiseJobs();
+        }
+    }, [viewMode]);
+
+    // A Partner Wise Jobs cell click filters the job grid below to that
+    // exact partner (by name, via the existing received_from filter) and
+    // that exact status — same filter fields the stat cards already use.
+    const handlePartnerCellClick = (partnerName: string, wsid: number) => {
+        const newFilters = { ...filters, received_from: partnerName, status_id: wsid };
+        setFilters(newFilters);
+        setSelectedTitle(null);
+        fetchFPJobsWith(newFilters);
+    };
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -74,6 +177,7 @@ export const FPJobTable = () => {
             setIsFirstTimeLoaded(true);
             calculateMaxTabs();
             fetchFPJobs();
+            fetchManagerStatus();
         }
 
         return () => {
@@ -374,8 +478,21 @@ export const FPJobTable = () => {
 
     return (
         <div className="w-full">
-            <div className="space-y-6">
-                <ProgressPanel statusCount={statusCount} setSelectedTitle={handleJobFilterByTitle} selectedTitle={selectedTitle} isRefreshing={isRefreshing} containerClassName={`${isRefreshing && 'opacity-50 pointer-events-none'}`} hideIfNoValue={true} />
+            <div className="space-y-3">
+                <div className="text-lg font-semibold text-slate-800 text-center leading-none">Job Details</div>
+                {isManager && <ManagerViewToggle viewMode={viewMode} setViewMode={handleViewModeChange} />}
+                <LegendButtons legendFilter={legendFilter} setLegendFilter={handleLegendFilterChange} showPills={viewMode === 'status'} />
+                {viewMode === 'manager' ? (
+                    <PartnerWiseGrid
+                        partners={partnerWisePartners}
+                        rows={partnerWiseRows}
+                        totals={partnerWiseTotals}
+                        isLoading={isLoadingPartnerWise}
+                        onCellClick={handlePartnerCellClick}
+                    />
+                ) : (
+                    <ProgressPanel statusCount={statusCount} setSelectedTitle={handleJobFilterByTitle} selectedTitle={selectedTitle} isRefreshing={isRefreshing} containerClassName={`${isRefreshing && 'opacity-50 pointer-events-none'}`} hideIfNoValue={true} legendFilter={legendFilter} />
+                )}
 
                 <div className="flex flex-col gap-4 space-y-4">
                     <div className="flex-1">
@@ -383,16 +500,14 @@ export const FPJobTable = () => {
                         <div className="z-10 relative">
                             <div className={`${selectedFPJob === null ? "block" : "hidden"}`}>
                                 <DashboardTable
-                                    rows={fpJobs}
+                                    rows={filterRowsByLegend(fpJobs, statusCount, legendFilter)}
                                     headers={fpHeaders}
                                     jobSelected={handleJobSelected}
                                     isRefreshing={isRefreshing}
                                     toolbarContent={
                                         <div className="flex items-center">
-                                            <FilterSummary 
-                                                filters={filters} 
-                                                jobTitles={jobTitles} 
-                                                statusLookup={statusLookup} 
+                                            <FilterSummary
+                                                filters={filters}
                                                 onRemove={handleRemoveFilter}
                                                 onValueClick={() => setIsFilterOpen(true)}
                                             />

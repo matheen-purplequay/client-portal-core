@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect, useState } from 'react';
-import { ChevronDown, ChevronUp, LoaderCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp, LoaderCircle, MessageSquarePlus } from 'lucide-react';
 import { Toolbar } from '../../../shell/components/collections/toolbar';
+import { QuickInstructionDialog } from './quick-instruction-dialog';
 
 import { MultiSelectDropdown } from '../../../shell/components/atoms/dropdowns';
 import { isDateValue, isNumericValue, isStringNegativeValue } from '../../../core/utils/helpers/validations';
@@ -39,6 +40,7 @@ export const DashboardTable = <T extends Record<string, any>>({
     const [sortedRows, setSortedRows] = useState<T[]>([]);
     const [paginatedRows, setPaginatedRows] = useState<T[]>([]);
     const [selectedHeaders, setSelectedHeaders] = useState<JobHeader[]>(headers);
+    const [instructionJob, setInstructionJob] = useState<T | null>(null);
 
     useEffect(() => {
         setSelectedHeaders(headers);
@@ -46,62 +48,58 @@ export const DashboardTable = <T extends Record<string, any>>({
 
     // 1. Filtering
     useEffect(() => {
-        if (rows.length > 0) {
-            const result = rows.filter(row =>
-                Object.values(row).some(val =>
-                    String(val).toLowerCase().includes(searchTerm.toLowerCase())
-                )
-            );
-            setFilteredRows(result);
-        }
+        const result = rows.filter(row =>
+            Object.values(row).some(val =>
+                String(val).toLowerCase().includes(searchTerm.toLowerCase())
+            )
+        );
+        setFilteredRows(result);
     }, [rows, searchTerm]);
 
     // 2. Sorting
     useEffect(() => {
-        if (filteredRows.length > 0) {
-            const sorted = [...filteredRows].sort((a, b) => {
-                const aValue = a[orderBy];
-                const bValue = b[orderBy];
+        const sorted = [...filteredRows].sort((a, b) => {
+            const aValue = a[orderBy];
+            const bValue = b[orderBy];
 
-                // Handle empty values (null, undefined, empty string)
-                const isAEmpty = aValue === null || aValue === undefined || aValue === '';
-                const isBEmpty = bValue === null || bValue === undefined || bValue === '';
+            // Handle empty values (null, undefined, empty string)
+            const isAEmpty = aValue === null || aValue === undefined || aValue === '';
+            const isBEmpty = bValue === null || bValue === undefined || bValue === '';
 
-                if (isAEmpty && isBEmpty) return 0;
-                if (isAEmpty) return 1;
-                if (isBEmpty) return -1;
+            if (isAEmpty && isBEmpty) return 0;
+            if (isAEmpty) return 1;
+            if (isBEmpty) return -1;
 
-                const isADate = typeof aValue === 'string' && isDateValue(aValue);
-                const isBDate = typeof bValue === 'string' && isDateValue(bValue);
+            const isADate = typeof aValue === 'string' && isDateValue(aValue);
+            const isBDate = typeof bValue === 'string' && isDateValue(bValue);
 
-                const parseCustomDate = (val: any) => {
-                    if (typeof val !== 'string') return new Date(val).getTime();
-                    const trimmed = val.trim();
-                    const parts = trimmed.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
-                    if (parts) {
-                        return new Date(`${parts[3]}-${parts[2]}-${parts[1]}`).getTime();
-                    }
-                    return new Date(trimmed).getTime();
-                };
-
-                if (orderBy.toString().toLowerCase().includes("date") || isADate || isBDate) {
-                    // Try parsing as date first
-                    const dateA = parseCustomDate(aValue);
-                    const dateB = parseCustomDate(bValue);
-                    
-                    if (!isNaN(dateA) && !isNaN(dateB)) {
-                        if (dateA < dateB) return order === 'asc' ? -1 : 1;
-                        if (dateA > dateB) return order === 'asc' ? 1 : -1;
-                        return 0;
-                    }
+            const parseCustomDate = (val: any) => {
+                if (typeof val !== 'string') return new Date(val).getTime();
+                const trimmed = val.trim();
+                const parts = trimmed.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
+                if (parts) {
+                    return new Date(`${parts[3]}-${parts[2]}-${parts[1]}`).getTime();
                 }
+                return new Date(trimmed).getTime();
+            };
 
-                if (aValue < bValue) return order === 'asc' ? -1 : 1;
-                if (aValue > bValue) return order === 'asc' ? 1 : -1;
-                return 0;
-            });
-            setSortedRows(sorted);
-        }
+            if (orderBy.toString().toLowerCase().includes("date") || isADate || isBDate) {
+                // Try parsing as date first
+                const dateA = parseCustomDate(aValue);
+                const dateB = parseCustomDate(bValue);
+
+                if (!isNaN(dateA) && !isNaN(dateB)) {
+                    if (dateA < dateB) return order === 'asc' ? -1 : 1;
+                    if (dateA > dateB) return order === 'asc' ? 1 : -1;
+                    return 0;
+                }
+            }
+
+            if (aValue < bValue) return order === 'asc' ? -1 : 1;
+            if (aValue > bValue) return order === 'asc' ? 1 : -1;
+            return 0;
+        });
+        setSortedRows(sorted);
     }, [filteredRows, order, orderBy]);
 
     // 3. Pagination
@@ -164,14 +162,15 @@ export const DashboardTable = <T extends Record<string, any>>({
                 {!isRefreshing && 
                     <table className={`min-w-full border-t border-gray-300 text-sm select-none ${isRefreshing && 'pointer-events-none opacity-50'}`}>
                         {paginatedRows.length > 0 &&
-                            <thead className="bg-slate-100 text-slate-700">
+                            <thead className="bg-primary text-white">
                                 <tr>
-                                    <th className='text-slate-700'>#</th>
+                                    <th className='text-white'>#</th>
+                                    <th className='text-white px-4 py-2 font-semibold whitespace-nowrap'>Instruction</th>
                                     {visibleHeaders.map((header) => (
                                         <th
                                             key={header.id}
                                             onClick={() => toggleSort(header.id as keyof T)}
-                                            className="text-left px-4 py-2 font-semibold cursor-pointer select-none whitespace-nowrap"
+                                            className="text-left px-4 py-2 font-semibold cursor-pointer select-none whitespace-nowrap text-white"
                                         >
                                             <div className='flex items-center gap-2'>
                                                 {header.label}
@@ -184,9 +183,19 @@ export const DashboardTable = <T extends Record<string, any>>({
                         }
                         <tbody>
                             {rows.length > 0 && paginatedRows.length > 0 ? paginatedRows.map((row, idx) => (
-                                <tr key={idx} className={`hover:bg-primary-50 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}>
+                                <tr key={idx} className={`hover:bg-primary-50 ${idx % 2 === 0 ? 'bg-white' : 'bg-rose-50'}`}>
                                     <td className='p-2 text-center text-gray-500'>
                                         {page * rowsPerPage + idx + 1}
+                                    </td>
+                                    <td className="px-4 py-2 text-center">
+                                        <button
+                                            type="button"
+                                            title="Add instruction"
+                                            onClick={(e) => { e.stopPropagation(); setInstructionJob(row); }}
+                                            className="inline-flex items-center justify-center rounded-md border border-slate-300 p-1 text-primary hover:bg-primary-50"
+                                        >
+                                            <MessageSquarePlus size={16} />
+                                        </button>
                                     </td>
                                     {visibleHeaders.map((header) => (
                                         <td
@@ -208,7 +217,7 @@ export const DashboardTable = <T extends Record<string, any>>({
                                 </tr>
                             )) : (
                                 <tr>
-                                    <td colSpan={visibleHeaders.length + 1} className="px-4 py-12 text-center text-slate-500">
+                                    <td colSpan={visibleHeaders.length + 2} className="px-4 py-12 text-center text-slate-500">
                                         No jobs found
                                     </td>
                                 </tr>
@@ -217,6 +226,10 @@ export const DashboardTable = <T extends Record<string, any>>({
                     </table>
                 }
             </div>
+
+            {instructionJob && (
+                <QuickInstructionDialog job={instructionJob} onClose={() => setInstructionJob(null)} />
+            )}
 
             {/* Pagination */}
             {filteredRows && filteredRows.length > 0 &&

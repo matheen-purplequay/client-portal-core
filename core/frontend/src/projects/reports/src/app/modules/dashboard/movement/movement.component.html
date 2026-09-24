@@ -1,0 +1,251 @@
+<section class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="h3 fw-bold mb-0">Movement</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="vertical-tabs hstack gap-3 flex-wrap mt-3">
+                <div class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</div>
+                <div class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="movement-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="movement-header px-3 py-2">
+            <div class="fw-bold text-white">Filters</div>
+        </div>
+        <div class="p-3">
+            <label class="small fw-semibold d-block mb-1">Period</label>
+            <div class="d-flex align-items-end gap-2 flex-wrap">
+                <select class="period-select" [(ngModel)]="period">
+                    <option value="7d">Last 7 days</option>
+                    <option value="14d">Last 14 days</option>
+                    <option value="1m">Last 1 month</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <ng-container *ngIf="isCustomPeriod">
+                    <div>
+                        <label class="small d-block mb-1 opacity-75">From</label>
+                        <input type="date" class="period-date" [(ngModel)]="customFrom">
+                    </div>
+                    <div>
+                        <label class="small d-block mb-1 opacity-75">To</label>
+                        <input type="date" class="period-date" [(ngModel)]="customTo">
+                    </div>
+                </ng-container>
+                <button type="button" class="apply-btn" (click)="applyFilter()" [disabled]="isLoading">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">search</span>
+                    Apply
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="row g-3">
+        <div class="col-6 col-sm-4 col-lg-2">
+            <div class="movement-stat-card movement-stat-card--green rounded-4 p-3 text-center cursor-pointer h-100"
+                [class.is-selected]="selection === 'new'" (click)="selectCard('new')">
+                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">New Jobs Received</div>
+                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rowsFor('new').length }}</div>
+                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-lg-2">
+            <div class="movement-stat-card movement-stat-card--orange rounded-4 p-3 text-center cursor-pointer h-100"
+                [class.is-selected]="selection === 'queries'" (click)="selectCard('queries')">
+                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">Sent for Queries</div>
+                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rowsFor('queries').length }}</div>
+                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-lg-2">
+            <div class="movement-stat-card movement-stat-card--purple rounded-4 p-3 text-center cursor-pointer h-100"
+                [class.is-selected]="selection === 'review'" (click)="selectCard('review')">
+                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">Sent for Review</div>
+                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rowsFor('review').length }}</div>
+                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-lg-2">
+            <div class="movement-stat-card movement-stat-card--teal rounded-4 p-3 text-center cursor-pointer h-100"
+                [class.is-selected]="selection === 'closed'" (click)="selectCard('closed')">
+                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">Closed</div>
+                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rowsFor('closed').length }}</div>
+                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-lg-2" *ngFor="let s of otherStatusBreakdown">
+            <div class="movement-stat-card movement-stat-card--maroon rounded-4 p-3 text-center cursor-pointer h-100"
+                [class.is-selected]="selection === 'otherStatus' && selectedOtherStatus === s.status" (click)="selectOtherStatus(s.status)">
+                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">{{ s.status }}</div>
+                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ s.count }}</div>
+                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-lg-2">
+            <div class="movement-stat-card movement-stat-card--blue rounded-4 p-3 text-center cursor-pointer h-100"
+                [class.is-selected]="selection === 'all'" (click)="selectCard('all')">
+                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">All Movement</div>
+                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rows.length }}</div>
+                <div class="text-uppercase small movement-stat-unit mt-1">Records</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="movement-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="movement-header d-flex align-items-center justify-content-between px-4 py-3 flex-wrap gap-2">
+            <div class="fw-bold text-white">{{ tableTitle }}</div>
+            <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="isExporting || isLoading">
+                <span class="material-symbols-rounded" style="font-size: 16px;">file_export</span>
+                {{ isExporting ? 'Exporting...' : 'Export To Excel' }}
+            </button>
+        </div>
+
+        <div *ngIf="isLoading" class="p-5 text-center opacity-75">
+            Loading movement data...
+        </div>
+
+        <div *ngIf="!isLoading" class="table-responsive">
+            <table class="movement-table w-100">
+                <thead>
+                    <tr>
+                        <th>Received From</th>
+                        <th>Job Name</th>
+                        <th>Nature of Job</th>
+                        <th>Movement</th>
+                        <th>From Status</th>
+                        <th>To Status</th>
+                        <th>Date</th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('receivedFrom')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('receivedFrom') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.receivedFrom" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.receivedFrom && receivedFromOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('receivedFrom')" (change)="toggleSelectAll('receivedFrom')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('receivedFrom')">
+                                    <input type="checkbox" [checked]="isOptionSelected('receivedFrom', opt)" (change)="toggleFilterOption('receivedFrom', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('receivedFrom').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th><input type="text" [(ngModel)]="filters.jobName" placeholder=""></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('natureOfJob')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('natureOfJob') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.natureOfJob" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.natureOfJob && natureOfJobOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('natureOfJob')" (change)="toggleSelectAll('natureOfJob')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('natureOfJob')">
+                                    <input type="checkbox" [checked]="isOptionSelected('natureOfJob', opt)" (change)="toggleFilterOption('natureOfJob', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('natureOfJob').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('movement')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('movement') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'movement'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.movement" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.movement && movementOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('movement')" (change)="toggleSelectAll('movement')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('movement')">
+                                    <input type="checkbox" [checked]="isOptionSelected('movement', opt)" (change)="toggleFilterOption('movement', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('movement').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('fromStatus')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('fromStatus') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'fromStatus'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.fromStatus" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.fromStatus && fromStatusOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('fromStatus')" (change)="toggleSelectAll('fromStatus')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('fromStatus')">
+                                    <input type="checkbox" [checked]="isOptionSelected('fromStatus', opt)" (change)="toggleFilterOption('fromStatus', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('fromStatus').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('toStatus')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('toStatus') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'toStatus'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.toStatus" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.toStatus && toStatusOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('toStatus')" (change)="toggleSelectAll('toStatus')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('toStatus')">
+                                    <input type="checkbox" [checked]="isOptionSelected('toStatus', opt)" (change)="toggleFilterOption('toStatus', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('toStatus').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th><input type="text" [(ngModel)]="filters.date" placeholder=""></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredRows.length === 0">
+                        <td colspan="7" class="text-center py-4 opacity-75">No movement found for this period.</td>
+                    </tr>
+                    <tr *ngFor="let row of filteredRows">
+                        <td>{{ row.receivedFrom }}</td>
+                        <td class="fw-medium job-name-cell">{{ row.jobName }}</td>
+                        <td>{{ row.natureOfJob }}</td>
+                        <td><span class="movement-badge">{{ row.movementBadge }}</span></td>
+                        <td>{{ row.fromStatus }}</td>
+                        <td class="fw-semibold">{{ row.toStatus }}</td>
+                        <td>{{ row.date }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

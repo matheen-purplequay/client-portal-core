@@ -11,6 +11,18 @@ const getFinancialYearStart = (date: Date) => {
   return new Date(year, 3, 1); // 🟢 Apr 1
 };
 
+const startOfDay = (date: Date) => {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
+const endOfDay = (date: Date) => {
+  const d = new Date(date);
+  d.setHours(23, 59, 59, 999);
+  return d;
+};
+
 export const useDateFilters = () => {
   return useMemo(() => {
     const today = new Date();
@@ -58,16 +70,16 @@ export const useDateFilters = () => {
     lastFyEnd.setDate(fyStart.getDate() - 1);
 
     return {
-      today: { from: today, to: today },
-      yesterday: { from: yesterday, to: yesterday },
-      currentWeek: { from: startOfWeek, to: endOfWeek },
-      lastWeek: { from: lastWeekStart, to: lastWeekEnd },
-      currentMonth: { from: startOfMonth, to: endOfMonth },
-      lastMonth: { from: lastMonthStart, to: lastMonthEnd },
-      currentQuarter: { from: quarterStart, to: quarterEnd },
-      lastQuarter: { from: lastQuarterStart, to: lastQuarterEnd },
-      currentFinancialYear: { from: fyStart, to: fyEnd },
-      lastFinancialYear: { from: lastFyStart, to: lastFyEnd },
+      today: { from: startOfDay(today), to: endOfDay(today) },
+      yesterday: { from: startOfDay(yesterday), to: endOfDay(yesterday) },
+      currentWeek: { from: startOfDay(startOfWeek), to: endOfDay(endOfWeek) },
+      lastWeek: { from: startOfDay(lastWeekStart), to: endOfDay(lastWeekEnd) },
+      currentMonth: { from: startOfDay(startOfMonth), to: endOfDay(endOfMonth) },
+      lastMonth: { from: startOfDay(lastMonthStart), to: endOfDay(lastMonthEnd) },
+      currentQuarter: { from: startOfDay(quarterStart), to: endOfDay(quarterEnd) },
+      lastQuarter: { from: startOfDay(lastQuarterStart), to: endOfDay(lastQuarterEnd) },
+      currentFinancialYear: { from: startOfDay(fyStart), to: endOfDay(fyEnd) },
+      lastFinancialYear: { from: startOfDay(lastFyStart), to: endOfDay(lastFyEnd) },
     };
   }, []);
 };

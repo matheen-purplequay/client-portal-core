@@ -1,34 +1,16 @@
 import { X } from "lucide-react";
-import type { JobTitle } from "../../../../../core/models/movement";
 
 interface FilterSummaryProps {
     filters: any;
-    jobTitles: JobTitle[];
-    statusLookup: Record<string, number>;
     onRemove?: (key: string) => void;
     onValueClick?: () => void;
 }
 
-export const FilterSummary = ({ filters, jobTitles, statusLookup, onRemove, onValueClick }: FilterSummaryProps) => {
-    const jobTitleMap = jobTitles.reduce((acc, job) => {
-        acc[job.key] = job.title;
-        return acc;
-    }, {} as Record<string, string>);
-
-    const getStatusLabel = (id: number) => {
-        if (id === 0) return null;
-        if (id === -1) return "Live Jobs";
-        const key = Object.keys(statusLookup).find(k => statusLookup[k] === id);
-        return key ? jobTitleMap[key] || key : null;
-    };
-
+export const FilterSummary = ({ filters, onRemove, onValueClick }: FilterSummaryProps) => {
     const activeFilters: { label: string; value: string; key: string }[] = [];
 
-    // 1. Status
-    const statusLabel = getStatusLabel(filters.status_id);
-    if (statusLabel) {
-        activeFilters.push({ label: "Status", value: statusLabel, key: "status_id" });
-    }
+    // Status is intentionally not shown here — the selected stat card
+    // (colored fill) already indicates the active status filter.
 
     // 2. Financial Year
     if (filters.financial_year && filters.financial_year !== "All") {

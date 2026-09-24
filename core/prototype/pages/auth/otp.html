@@ -5,28 +5,37 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <script src="../../assets/js/tailwind-config.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=EB+Garamond:wght@500;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/css/app.css">
+<script src="https://unpkg.com/htmx.org@2.0.4"></script>
 <script src="../../assets/js/core.js"></script>
 </head>
-<body class="min-h-screen bg-panel">
-<div class="grid min-h-screen place-items-center p-4">
-  <div class="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
-    <img src="../../assets/img/cs_logo.png" alt="Carisma Solutions" class="mx-auto mb-6 h-9 w-auto">
-    <h1 class="text-center text-xl font-semibold">Login with OTP</h1>
-    <p id="sub" class="mb-6 text-center text-sm text-slate-500">Please verify OTP to login into your account</p>
-    <form id="form" class="space-y-4">
-      <label class="block text-sm font-semibold">One Time Passcode
-        <input id="otp" type="password" autocomplete="off" maxlength="6" placeholder="Your OTP from email" class="mt-1 w-full rounded-lg border-slate-300 text-center tracking-widest focus:border-brand focus:ring-brand">
-        <span id="helper" class="mt-1 block text-xs font-normal text-slate-400"></span></label>
-      <p class="flex items-center gap-1 text-sm font-semibold text-slate-500"><span class="msym">timer</span>OTP will expire in <span id="secs">120</span> seconds.</p>
-      <p id="error" class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700"></p>
-      <button class="w-full rounded-full bg-brand py-2.5 font-semibold text-white hover:bg-brand-dark">Verify OTP</button>
-      <button type="button" id="fill" class="w-full text-center text-xs text-slate-400 hover:text-brand">Prototype: autofill OTP</button>
-      <a href="login.html" class="block text-center text-sm text-brand hover:underline">Back to login</a>
-    </form>
+<body class="auth-bg min-h-screen">
+<div class="auth-fade relative flex min-h-screen items-stretch">
+  <div class="flex flex-1 items-center justify-center px-6 py-8">
+    <div class="w-full max-w-[492px]">
+      <img src="../../assets/img/cs_logo.png" alt="Carisma Solutions" class="mx-auto h-8 w-auto">
+      <div class="mb-6 text-center text-[42px] font-light leading-tight text-slate-600">Client Portal</div>
+      <h1 class="text-center text-xl font-semibold text-slate-700">Login with OTP</h1>
+      <p id="sub" class="mb-5 text-center text-xs text-slate-600">Please verify OTP to login into your account</p>
+      <form id="form" class="space-y-4">
+        <label class="block text-[11px] font-semibold text-slate-500">One Time Passcode
+          <span class="relative mt-1 block"><input id="otp" type="password" autocomplete="off" maxlength="6" placeholder="Your OTP from email" class="auth-input"><span class="msym absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">key</span></span>
+          <span id="helper" class="mt-1 block text-[11px] font-normal text-slate-400"></span></label>
+        <p class="flex items-center gap-1 text-[13px] font-bold text-slate-500"><span class="msym">timer</span>OTP will expire in <span id="secs">120</span> seconds.</p>
+        <p id="error" class="hidden rounded bg-red-50 px-3 py-2 text-xs text-red-700"></p>
+        <button class="w-full rounded-[4px] bg-brand py-2.5 text-[13px] font-bold text-white shadow-md hover:bg-brand-dark">Verify OTP</button>
+        <button type="button" id="fill" class="w-full text-center text-[11px] text-slate-400 hover:text-brand">Prototype: autofill OTP</button>
+        <p class="text-center text-[13px]"><a href="login.html" class="font-medium text-brand hover:underline">Back to login</a></p>
+      </form>
+      <div class="mt-8 text-center text-[11px] text-slate-500">
+        <div class="font-semibold">For any enquiries contact<br><a class="border-b border-dashed border-slate-300 text-sky-600" href="mailto:clientportalsupport@carisma-solutions.com.au">clientportalsupport@carisma-solutions.com.au</a></div>
+        <div class="mt-2 flex justify-between"><span>&copy; 2026 Purple Quay.</span><span>All rights reserved.</span></div>
+      </div>
+    </div>
   </div>
+  <div hx-get="../../components/auth-hero.html" hx-trigger="load" hx-swap="outerHTML"></div>
 </div>
 <script>
   const pending = JSON.parse(sessionStorage.getItem('cp_pending') || 'null');

@@ -22,3 +22,11 @@ body { font-family: 'Source Sans 3', 'Source Sans Pro', ui-sans-serif, system-ui
 .fade-in { animation: fade .18s ease-out; }
 @keyframes fade { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
 .blur-soft { filter: blur(1.5px); opacity: .45; }
+
+/* auth pages */
+.auth-bg { background: url('../img/login-banner.jpg') center / cover; }
+.auth-fade { background: linear-gradient(90deg, #fff 0%, #fff 44%, rgba(255,255,255,.9) 52%, rgba(255,255,255,0) 64%); }
+.auth-input { width: 100%; border: 1px solid #d9d9de !important; border-radius: 4px; background: #fff; padding: 9px 38px 9px 6px !important; font-size: 13px !important; color: #333; }
+.auth-input::placeholder { color: #b5b5bd; }
+.auth-input:focus { outline: none; border-color: #811331 !important; box-shadow: 0 0 0 2px rgba(129,19,49,.12); }
+.font-garamond { font-family: 'EB Garamond', serif; }

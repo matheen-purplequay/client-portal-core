@@ -12,5 +12,6 @@
 - [TSK-20260924-08] [no-req] Added `ecosystem.config.js` for pm2 with `.env` port support; replaced Python server with dependency-free Node `server.js` — complete
 - [TSK-20260924-09] [no-req] Redesigned login and OTP pages to match the real split-layout login; shared `auth-hero` component — complete
 - [TSK-20260924-10] [no-req] Created the prototype wiki (index, architecture, screens, data, issues, logs, tasks) — complete
+- [TSK-20260924-11] [no-req] User restyled the OTP page autofill button to a card button; wiki updated — complete
 
 ---

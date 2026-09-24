@@ -11,7 +11,7 @@ Every screen was matched to screenshots of the real portal supplied by the user 
 
 ## Auth (`pages/auth/`)
 
-Split layout copied from the real login: form column on the left over a white-fade background, banner card on the right (`components/auth-hero.html`). Banner image is a copy of `login-banner-1.jpg` from the Angular `reports` assets.
+Split layout copied from the real login: form column on the left over a white-fade background, banner card on the right (`components/auth-hero.html`). Banner image is a copy of `login-banner-1.jpg` from the Angular `reports` assets. Prototype-only helpers: two demo-credential buttons on the login page and an "Autofill OTP" card button on the OTP page (fills the mock OTP `123456`).
 
 ## Dashboard
 

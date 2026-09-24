@@ -73,7 +73,7 @@ Two kinds:
 2. `pages/auth/otp.html` — 120 s countdown; code compared with `otp` from `users.json` (`123456`) via `CP.verifyOtp()`; on success the session (`cp_session` = user + client) is stored.
 3. `app.html` redirects to login if `cp_session` is missing (inline script in `<head>`). Logout clears `sessionStorage`.
 
-Login page has two autofill buttons (one per demo client) and OTP page has an autofill link — prototype-only conveniences.
+Login page has two autofill buttons (one per demo client) and the OTP page has an "Autofill OTP" card button (`#fill`, styled like the login demo buttons) — prototype-only conveniences.
 
 ## Prototype "today"
 

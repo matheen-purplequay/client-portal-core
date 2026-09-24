@@ -1,5 +1,10 @@
 # Logs
 
+## 2026-09-24 — OTP autofill restyled (user change)
+
+- User changed the OTP page's autofill from a small text link to a bordered card button ("Autofill OTP / Fill mock otp to continue login") matching the login page's demo buttons. Behaviour unchanged (`#fill` still fills the mock OTP).
+- Minor: the button carries `w-50`, which is not a default Tailwind spacing class, so it has no effect (button sizes to content).
+
 ## 2026-09-24 — Wiki created
 
 - Created `core/prototype/wiki` (index, architecture, screens, data, issues, logs, tasks) documenting the prototype as built on branch `prototype-v1`.

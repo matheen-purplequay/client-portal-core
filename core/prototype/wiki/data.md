@@ -11,7 +11,7 @@ The JSON was generated once with seeded one-off scripts (not kept in the repo) r
 | Login | olivia.bennett@northwind.example | daniel.reyes@harbourline.example |
 | Password / OTP | `Client@123` / `123456` | `Client@123` / `123456` |
 | Verticals | Business Services, SMSF, Bookkeeping | Financial Planning, Bookkeeping |
-| Jobs | 181 | 70 |
+| Jobs | ~181 | ~70 |
 | Queries | 240 | 66 |
 
 Both clients see the same screens; only verticals and data differ.
@@ -34,7 +34,22 @@ Both clients see the same screens; only verticals and data differ.
 | `profile.json` | `{ company, abn, city, contracts, verticals, engagement_start, account_manager, support_email, support_phone }` | Profile, Contact Us |
 | `notifications.json` | `[{ title, body, route, action_title }]` — `route` is an app route such as `/dashboard/queries` | Bell menu |
 
+### Added for the dev-branch screens (per client)
+
+| File | Shape | Used by |
+|---|---|---|
+| `workflow.json` | `[{ job_id, job_description, team_name, associate, work_status, time_will_take, expected_finish_date }]` (mirrors `Sp_FullJobListingStandUp`; placeholder rows with no job/time are dropped by the UI) | Workflow, Home |
+| `workflow_yesterday.json` | `[{ job_id, job_description, status }]` — yesterday's status, compared with the current status on Home | Home → Yesterday's Workflow |
+| `mom.json` | meeting rows (date, title, attendees, description) | MOM, Overview |
+| `production.json` | per-associate month-on-month jobs/hours | Production Report, Overview |
+| `appreciation.json` | appreciation notes per `job_id` | Job detail |
+| `surveys.json` | closed-job feedback survey answers per `job_id` | Feedback, Job detail (View Feedback), Home |
+
+`jobs.json` gained **`smsf_status`** on SMSF jobs (`tbl_smsfjobstatus` names **without** the "N. " prefix: Not Yet Taken, In Progress, Awaiting Queries, Workpapers Completed, Workpapers Changes Required, Moved to Audit …); live BS/BK/FP jobs are spread over the dev statuses (Internal Review, On Hold, …) with rebuilt `timeline` arrays; about 1 in 8 live jobs is over budget. `timeline[].status` values feed the 14 status-date columns of the Jobs table (SMSF ones through `SMSF_TO_GENERIC` in `job-status.js`). Budget and Turnaround rows carry `job_id` so the popup can open them.
+
 ### Job work statuses
+
+**Dev model (Jobs page):** Business Services shows 14 statuses (hidden when zero); BK/FP the 8-status set with dev labels; SMSF the combined cards described in `screens.md`. Tile colour: yellow = with client, green = completed, navy = with Carisma. The 7-status list below is the base vocabulary of the mock data.
 
 `WIP - Processing`, `Sent For Queries`, `WIP - Query Replies`, `Sent For Review`, `WIP - Review Replies`, `Sent For Final Review`, `Job Completed`. "Live" = everything except `Job Completed`. The client-held statuses (yellow tiles) are `Sent For Queries`, `Sent For Review`, `Sent For Final Review` — this is a hard-coded list in `assets/js/pages/job-status.js` (`STATUS_TILES`), not in the data.
 
@@ -46,4 +61,5 @@ Both clients see the same screens; only verticals and data differ.
 
 - Dates are ISO strings (`YYYY-MM-DD` or `YYYY-MM-DDTHH:MM:SS`), parsed manually in `CP.fmt` to avoid timezone drift. Display formats: `dmy` → 24-09-2026, `dm` → 24-9-2026, `dt` → 24-9-2026 12:31 PM, `long` → September 24, 2026.
 - Keep `queries.job_id` values valid against `jobs.json`; the Queries screen silently drops queries whose job is missing.
+- Turnaround split (Turnaround Report, Job detail, popup — identical formula): total = days received → (last_modified if Job Completed else `CP.TODAY`); client = round(total × [0.15, 0.3, 0.45, 0.2][job_id % 4]); Carisma = total − client. Invented, not real data.
 - Job status names are matched as exact strings in the code — changing one in JSON requires updating `STATUS_TILES` and the KPI logic.

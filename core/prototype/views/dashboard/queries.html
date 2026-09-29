@@ -36,10 +36,6 @@
 
       <!-- JOB LIST -->
       <div x-show="view === 'jobs'" class="overflow-hidden rounded-xl bg-white shadow">
-        <div class="flex items-center gap-2 border-b bg-slate-50 px-4 py-2 text-[13px] text-slate-600"><span class="msym">work_outline</span>Please select a job to begin
-          <span class="ml-auto text-slate-400 blur-soft">Job Priority · Job Status · Sub Client</span><span class="-ml-40 text-slate-600">Job Filters Coming Soon...</span></div>
-        <div class="flex items-center gap-2 border-b bg-slate-50 px-4 py-3 text-[13px] text-slate-600"><span class="msym">fact_check</span>Query Filters
-          <span class="ml-auto text-slate-400 blur-soft">Query Status · Criticality · Category · Apply Filter</span><span class="-ml-52 text-slate-600">Query Filters Coming Soon...</span></div>
         <div class="overflow-x-auto">
           <table class="w-full text-[13px]">
             <thead class="bg-brand text-[11px] text-white"><tr>
@@ -72,7 +68,7 @@
           <div class="flex items-center justify-between rounded-t-xl bg-white px-4 py-3 shadow">
             <div class="flex items-center gap-3">
               <button class="text-brand" @click="back()"><span class="msym">arrow_back</span></button>
-              <div><div class="text-[13px] font-semibold" x-text="job.job_name"></div>
+              <div><div class="text-[13px] font-semibold"><a class="link" title="Open job details" @click="CP.showJob(job.job_id)" x-text="job.job_name"></a></div>
                 <div class="mt-1 flex flex-wrap items-center gap-2 text-[10px] font-bold">
                   <span class="chip !shadow-none bg-slate-100" x-text="'Job ID ' + job.job_id"></span><span class="chip !shadow-none bg-slate-100" x-text="'FY ' + job.financial_year"></span><span class="chip !shadow-none bg-slate-100" x-text="'JY ' + dmy(job.received_date)"></span>
                   <span class="text-slate-500" x-text="'Σ ' + jobStats.total + ' queries'"></span>

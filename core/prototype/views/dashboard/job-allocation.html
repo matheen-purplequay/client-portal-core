@@ -3,18 +3,26 @@
   <template x-if="!loading">
     <div>
       <h1 class="mb-1 text-2xl font-bold text-slate-800">Job Allocation</h1>
-      <p class="mb-4 text-sm text-slate-500">Type the job name and job no, choose an associate and add with +, then take each one its own way: <b>Stage 1</b> right away, or <b>Allocate</b> once the 3-point checklist is confirmed.</p>
+      <p class="mb-4 text-sm text-slate-500">Type the job name and job no, choose an associate and add with +, then take each one its own way: <b>Stage 1</b> right away, or <b>Allocate</b> once its checklist is done (client notes are optional).</p>
 
       <!-- provision to add jobs -->
       <div class="card mb-4 overflow-hidden">
-        <div class="bg-brand px-4 py-2.5 text-sm font-bold text-white">Add Job</div>
+        <div class="bg-brand px-3 py-1.5 text-xs font-bold text-white">Add Job</div>
         <div class="flex flex-wrap items-end gap-3 p-4">
           <div class="min-w-[280px] flex-1"><label class="mb-1 block text-xs font-semibold text-slate-500">Job Name</label>
             <input class="field w-full" placeholder="Enter job name" x-model="sel.job_name" @keydown.enter="add()"></div>
           <div class="w-44"><label class="mb-1 block text-xs font-semibold text-slate-500">Job No</label>
             <input class="field w-full" placeholder="Enter job no" x-model="sel.job_no" @change="lookupNo()" @keydown.enter="add()"></div>
-          <div class="min-w-[200px] flex-1"><label class="mb-1 block text-xs font-semibold text-slate-500">Associate Name</label>
+          <div class="min-w-[200px] flex-1"><label class="mb-1 block text-xs font-semibold text-slate-500">Associate Name <span class="font-normal text-slate-400">(optional)</span></label>
             <select class="field w-full" x-model="sel.associate"><option value="">Select associate…</option><template x-for="a in associates" :key="a"><option :value="a" x-text="a"></option></template></select></div>
+          <div class="w-32"><label class="mb-1 block text-xs font-semibold text-slate-500">Financial Year</label>
+            <select class="field w-full" x-model="sel.financial_year"><template x-for="y in fyOptions" :key="y"><option :value="y" x-text="y"></option></template></select></div>
+          <div class="w-32"><label class="mb-1 block text-xs font-semibold text-slate-500">Budget (hrs)</label>
+            <input type="number" min="0" step="0.5" class="field w-full" placeholder="0" x-model="sel.budget" @keydown.enter="add()"></div>
+          <div class="w-40"><label class="mb-1 block text-xs font-semibold text-slate-500">Deadline</label>
+            <input type="date" class="field w-full" x-model="sel.deadline" @keydown.enter="add()"></div>
+          <div class="min-w-[220px] flex-1"><label class="mb-1 block text-xs font-semibold text-slate-500">Comments</label>
+            <input class="field w-full" placeholder="Add a comment (optional)" x-model="sel.comments" @keydown.enter="add()"></div>
           <button class="grid h-[38px] w-[38px] place-items-center rounded-lg bg-brand text-white shadow hover:opacity-90" title="Add to grid" @click="add()"><span class="msym">add</span></button>
         </div>
         <div x-show="error" class="px-4 pb-3 text-sm text-red-600" x-text="error"></div>
@@ -22,26 +30,28 @@
 
       <!-- grid + actions -->
       <div class="overflow-hidden rounded-2xl border border-brand bg-white shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-2 bg-brand px-4 py-2.5 text-white">
-          <div class="font-bold">Jobs to Allocate <span class="ml-1 rounded-full bg-white/20 px-2 py-0.5 text-xs" x-text="rows.length"></span></div>
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-brand px-3 py-1.5 text-white">
+          <div class="text-xs font-bold">Jobs to Allocate <span class="ml-1 rounded-full bg-white/20 px-1.5 py-0.5 text-[10px]" x-text="rows.length"></span></div>
           <div class="flex items-center gap-2">
-            <span class="text-xs opacity-80" x-show="picks.length" x-text="picks.length + ' selected'"></span>
-            <button class="rounded-md border border-white/50 px-4 py-1 text-[13px] font-semibold hover:bg-white/10 disabled:opacity-40" :disabled="!picks.length" @click="stage1()">Stage 1</button>
-            <button class="rounded-md bg-white px-4 py-1 text-[13px] font-semibold text-brand hover:bg-slate-100 disabled:opacity-40" :disabled="!picks.length" @click="openAllocate()">Allocate</button>
+            <span class="text-[11px] opacity-80" x-show="picks.length" x-text="picks.length + ' selected'"></span>
+            <button class="rounded-md border border-white/50 px-3 py-1 text-[11px] font-semibold hover:bg-white/10 disabled:opacity-40" :disabled="!picks.length" @click="stage1()">Stage 1</button>
+            <button class="rounded-md bg-white px-3 py-1 text-[11px] font-semibold text-brand hover:bg-slate-100 disabled:opacity-40" :disabled="!picks.length" @click="openAllocate()">Allocate</button>
           </div>
         </div>
         <div class="overflow-x-auto">
           <table class="tbl min-w-full">
             <thead><tr>
               <th class="!cursor-default"><input type="checkbox" class="rounded" :checked="allPicked" @change="togglePickAll()" title="Select all"></th>
-              <th class="!cursor-default">#</th><th class="!cursor-default">Job Name</th><th class="!cursor-default">Job No</th><th class="!cursor-default">Associate Name</th><th class="!cursor-default">Status</th><th class="!cursor-default text-right">Action</th></tr></thead>
+              <th class="!cursor-default">#</th><th class="!cursor-default">Job Name</th><th class="!cursor-default">Job No</th><th class="!cursor-default">Associate Name</th><th class="!cursor-default">FY</th><th class="!cursor-default">Budget (hrs)</th><th class="!cursor-default">Deadline</th><th class="!cursor-default">Comments</th><th class="!cursor-default">Status</th><th class="!cursor-default text-right">Action</th></tr></thead>
             <tbody>
               <template x-for="(r, i) in rows" :key="r.job_id">
                 <tr>
                   <td><input type="checkbox" class="rounded" x-model="r.pick" :disabled="r.stage === 'Allocated'"></td>
-                  <td x-text="i + 1"></td><td class="font-medium" x-text="r.job_name"></td><td x-text="r.job_id"></td><td x-text="r.associate"></td>
+                  <td x-text="i + 1"></td><td class="font-medium"><a class="link" @click="CP.showJob(r.job_id)" x-text="r.job_name"></a></td><td x-text="r.job_id"></td><td x-text="r.associate || '-'"></td>
+                  <td x-text="r.financial_year"></td><td x-text="r.budget || '-'"></td><td x-text="r.deadline ? CP.fmt.dmy(r.deadline) : '-'"></td>
+                  <td class="max-w-[160px] truncate" :title="r.comments" x-text="r.comments || '-'"></td>
                   <td><span class="chip" :class="tone(r.stage)" x-text="r.stage"></span>
-                    <span x-show="r.stage === 'Allocated'" class="ml-1 text-[11px] text-green-700" title="Checklist confirmed: software access, OneDrive documents, client notes">✔ 3/3 checks</span></td>
+                    <span x-show="r.stage === 'Allocated'" class="ml-1 text-[11px] text-green-700" title="Checklist confirmed: software access and sharedrive documents (client notes optional)">✔ Checks done</span></td>
                   <td class="text-right">
                     <template x-if="r.stage !== 'Allocated'"><span class="inline-flex gap-1.5">
                       <button x-show="r.stage === 'Pending'" class="rounded-md border border-brand px-3 py-0.5 text-xs font-semibold text-brand hover:bg-brand-lighter" @click="stage1([r])">Stage 1</button>
@@ -62,10 +72,10 @@
           <div class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-xl bg-white shadow-xl">
             <div class="flex items-center justify-between bg-brand px-5 py-3 text-white"><div class="font-bold">Before you allocate</div><button @click="alloc = null"><span class="msym">close</span></button></div>
             <div class="p-5 text-sm">
-              <p class="mb-3 text-slate-600">Confirm all three points for each job. A job can only be allocated when every box is ticked — anything else can be saved as Stage 1 instead.</p>
+              <p class="mb-3 text-slate-600">Tick the respective box to allocate.</p>
               <table class="tbl w-full">
                 <thead><tr><th class="!cursor-default">Job</th>
-                  <template x-for="q in questions" :key="q.key"><th class="!cursor-default !whitespace-normal text-center !text-xs"><div x-text="q.label"></div><button class="mt-0.5 text-[11px] font-normal text-brand underline" @click="setAll(q.key)" x-show="alloc.rows.length > 1">Tick / clear all</button></th></template></tr></thead>
+                  <template x-for="q in questions" :key="q.key"><th class="!cursor-default !whitespace-normal text-center !text-xs"><div><span x-text="q.label"></span><span x-show="q.optional" class="block text-[10px] font-normal text-slate-400">(optional)</span></div><button class="mt-0.5 text-[11px] font-normal text-brand underline" @click="setAll(q.key)" x-show="alloc.rows.length > 1">Tick / clear all</button></th></template></tr></thead>
                 <tbody>
                   <template x-for="r in alloc.rows" :key="r.job_id">
                     <tr><td><div class="font-medium" x-text="r.job_name"></div><div class="text-[11px] text-slate-500" x-text="'Job ' + r.job_id + ' · ' + r.associate"></div></td>

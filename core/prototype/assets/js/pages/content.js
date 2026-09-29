@@ -13,6 +13,6 @@ document.addEventListener('alpine:init', () => {
     pageItems(items) { return this.list(items).slice((this.page - 1) * this.size, this.page * this.size); },
     pages(items) { return Math.max(1, Math.ceil(this.list(items).length / this.size)); },
     send() { this.sent = true; CP.toast('Message sent (prototype)'); },
-    tone(s) { return { Paid: 'bg-green-100 text-green-700', Due: 'bg-amber-100 text-amber-800', Overdue: 'bg-red-100 text-red-700', Australia: 'bg-blue-100 text-blue-800', India: 'bg-amber-100 text-amber-800', Both: 'bg-brand-light text-brand' }[s] || 'bg-slate-100'; },
+    tone(s) { return { Paid: 'bg-green-100 text-green-700', Due: 'bg-amber-100 text-amber-800', Overdue: 'bg-red-100 text-red-700', Australia: 'bg-[#e8ebf5] text-navy', India: 'bg-amber-100 text-amber-800', Both: 'bg-brand-light text-brand' }[s] || 'bg-slate-100'; },
   }));
 });

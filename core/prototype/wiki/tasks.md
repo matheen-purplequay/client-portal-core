@@ -14,4 +14,14 @@
 - [TSK-20260924-10] [no-req] Created the prototype wiki (index, architecture, screens, data, issues, logs, tasks) — complete
 - [TSK-20260924-11] [no-req] User restyled the OTP page autofill button to a card button; wiki updated — complete
 
+## 2026-09-25
+
+- [TSK-20260925-01] [no-req] Brought dev-branch screens into the prototype (Workflow, Movement report, Budget Overview, Turnaround, Feedback, MOM, Production, Overview) with generated mock data — complete
+- [TSK-20260925-02] [no-req] Added SMSF status model and rebuilt Jobs page on the dev model (status tiles, 26 columns, Filters drawer, Manager View) — complete
+- [TSK-20260925-03] [no-req] Job detail as accordions incl. Turnaround, Queries link and Appreciation/Feedback; reusable job popup from every job name — complete
+- [TSK-20260925-04] [no-req] Added Job Allocation (Stage 1 / Allocate, checklist with optional client notes) — complete
+- [TSK-20260925-05] [no-req] Added Home landing page (default route) with Workflow, Jobs, Movement, Budget, Holidays, Feedback and Yesterday's Workflow sections — complete
+- [TSK-20260925-06] [no-req] Responsive shell (drawer sidebar), navy theme, sidebar reorder, compact layouts — complete
+- [TSK-20260925-07] [no-req] Updated wiki (screens, architecture, data, issues, logs, tasks) — complete
+
 ---

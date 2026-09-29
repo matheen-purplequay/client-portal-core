@@ -3,6 +3,7 @@
   "client_name": "Hartwell Holdings Pty Ltd",
   "date": "2026-09-23",
   "client_present": "Olivia Bennett, Tom Harris",
+  "attendees": "Olivia Bennett, Tom Harris, Marcus Doyle",
   "purpose": "Query Discussion",
   "description": "<p>Planned year-end deliverables and turnaround expectations. Budgets to be reconfirmed next month.</p>",
   "vertical": "Financial Planning"
@@ -11,6 +12,7 @@
   "client_name": "Cortland Holdings Pty Ltd",
   "date": "2026-09-21",
   "client_present": "Jack Morrison",
+  "attendees": "Jack Morrison, Marcus Doyle",
   "purpose": "Query Discussion",
   "description": "<p>Planned year-end deliverables and turnaround expectations. Budgets to be reconfirmed next month.</p>",
   "vertical": "Financial Planning"
@@ -19,6 +21,7 @@
   "client_name": "Vance Superannuation Fund",
   "date": "2026-09-20",
   "client_present": "Jack Morrison",
+  "attendees": "Jack Morrison, Marcus Doyle",
   "purpose": "Year-end Planning",
   "description": "<p>Agreed the escalation path for delayed responses and confirmed the account manager as first contact.</p>",
   "vertical": "Financial Planning"
@@ -27,6 +30,7 @@
   "client_name": "Vance Investments Pty Ltd",
   "date": "2026-09-16",
   "client_present": "Olivia Bennett, Tom Harris",
+  "attendees": "Olivia Bennett, Tom Harris, Marcus Doyle",
   "purpose": "Escalation Call",
   "description": "<p>Reviewed the open job list and agreed priorities for the coming fortnight.</p><ul><li>Two jobs flagged as urgent</li><li>Outstanding queries to be closed by Friday</li></ul>",
   "vertical": "Bookkeeping"
@@ -35,6 +39,7 @@
   "client_name": "Norcross Investments Pty Ltd",
   "date": "2026-09-14",
   "client_present": "Priya Shah",
+  "attendees": "Priya Shah, Marcus Doyle",
   "purpose": "Onboarding",
   "description": "<p>Planned year-end deliverables and turnaround expectations. Budgets to be reconfirmed next month.</p>",
   "vertical": "Bookkeeping"
@@ -43,6 +48,7 @@
   "client_name": "Hartwell Group",
   "date": "2026-09-11",
   "client_present": "Olivia Bennett, Tom Harris",
+  "attendees": "Olivia Bennett, Tom Harris, Marcus Doyle",
   "purpose": "Monthly Review",
   "description": "<p>Agreed the escalation path for delayed responses and confirmed the account manager as first contact.</p>",
   "vertical": "Financial Planning"
@@ -51,6 +57,7 @@
   "client_name": "Thackray Group",
   "date": "2026-09-08",
   "client_present": "Olivia Bennett, Tom Harris",
+  "attendees": "Olivia Bennett, Tom Harris, Marcus Doyle",
   "purpose": "Query Discussion",
   "description": "<p>Agreed the escalation path for delayed responses and confirmed the account manager as first contact.</p>",
   "vertical": "Financial Planning"
@@ -59,6 +66,7 @@
   "client_name": "Thackray Group",
   "date": "2026-09-07",
   "client_present": "Olivia Bennett",
+  "attendees": "Olivia Bennett, Marcus Doyle",
   "purpose": "Query Discussion",
   "description": "<p>Discussed pending queries on bank reconciliations. Client to provide statements by end of week.</p>",
   "vertical": "Financial Planning"
@@ -67,6 +75,7 @@
   "client_name": "Oakes & Associates Pty Ltd",
   "date": "2026-09-04",
   "client_present": "Priya Shah",
+  "attendees": "Priya Shah, Marcus Doyle",
   "purpose": "Year-end Planning",
   "description": "<p>Discussed pending queries on bank reconciliations. Client to provide statements by end of week.</p>",
   "vertical": "Financial Planning"
@@ -75,6 +84,7 @@
   "client_name": "Norcross Investments Pty Ltd",
   "date": "2026-09-01",
   "client_present": "Olivia Bennett",
+  "attendees": "Olivia Bennett, Marcus Doyle",
   "purpose": "Escalation Call",
   "description": "<p>Planned year-end deliverables and turnaround expectations. Budgets to be reconfirmed next month.</p>",
   "vertical": "Financial Planning"
@@ -83,6 +93,7 @@
   "client_name": "Everhart & Associates Pty Ltd",
   "date": "2026-08-30",
   "client_present": "Olivia Bennett",
+  "attendees": "Olivia Bennett, Marcus Doyle",
   "purpose": "Monthly Review",
   "description": "<p>Planned year-end deliverables and turnaround expectations. Budgets to be reconfirmed next month.</p>",
   "vertical": "Financial Planning"
@@ -91,6 +102,7 @@
   "client_name": "Calloway Holdings Pty Ltd",
   "date": "2026-08-27",
   "client_present": "Priya Shah",
+  "attendees": "Priya Shah, Marcus Doyle",
   "purpose": "Monthly Review",
   "description": "<p>Agreed the escalation path for delayed responses and confirmed the account manager as first contact.</p>",
   "vertical": "Financial Planning"

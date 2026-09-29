@@ -1,5 +1,17 @@
 # Logs
 
+## 2026-09-25 — Wiki brought up to date with dev-branch screens
+
+- Documented everything added since the first iteration: Home landing page, dev-style Jobs page + job popup, Workflow / Movement report / Budget / Turnaround / Feedback / MOM / Production / Overview screens, Job Allocation, responsive shell, navy theme, new mock data files. See `screens.md`, `architecture.md`, `data.md`, `issues.md` (ISS-010..019).
+- Nothing committed to git yet.
+
+## 2026-09-24/25 — Dev-branch alignment and Home (many user-driven iterations)
+
+- Brought the dev branch screens in (all screens; kept touch-point Movement/Jobs/Queries and added SMSF + job-detail updates). Added Workflow (stand-up), Job Allocation (Stage 1 / Allocate with checklist), Home landing page (default route) with Workflow, Jobs, Movement, Budget, Holidays, Feedback and Yesterday's Workflow.
+- Jobs page rebuilt on the dev model (14 BS statuses, BK/FP set, SMSF combined cards, 26 columns, Filters drawer, Manager View); job detail became accordions (Timeline, Budget, Turnaround, Instructions, Queries, Appreciation/Feedback) and opens as a popup from every job name.
+- UI passes: compact grids, two-colour Home, equal-size cards, responsive drawer sidebar, navy theme, sidebar reorder, Jobs top-bar/tiles redesign, default legend "Jobs with <client>".
+- Testing: headless Chrome (playwright-core) — no page errors, no horizontal overflow at 390/768/1024/1500 px.
+
 ## 2026-09-24 — OTP autofill restyled (user change)
 
 - User changed the OTP page's autofill from a small text link to a bordered card button ("Autofill OTP / Fill mock otp to continue login") matching the login page's demo buttons. Behaviour unchanged (`#fill` still fills the mock OTP).

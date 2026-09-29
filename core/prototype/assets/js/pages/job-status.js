@@ -55,7 +55,7 @@ document.addEventListener('alpine:init', () => {
   const isDone = (j) => j.work_status === 'Job Completed' || j.work_status === 'Cancelled';      // Live Jobs = everything else
 
   /* status card colours = the Legends pill colours (yellow client, green completed, blue Carisma) */
-  const COLOR = { y: { bg: 'bg-yellow-50', accent: 'bg-yellow-400', text: 'text-yellow-800' }, g: { bg: 'bg-green-50', accent: 'bg-green-500', text: 'text-green-700' }, '': { bg: 'bg-blue-50', accent: 'bg-blue-400', text: 'text-blue-800' } };
+  const COLOR = { y: { bg: 'bg-yellow-50', accent: 'bg-yellow-400', text: 'text-yellow-800' }, g: { bg: 'bg-green-50', accent: 'bg-green-500', text: 'text-green-700' }, '': { bg: 'bg-[#e8ebf5]', accent: 'bg-navy', text: 'text-navy' } };
 
   /* filter-drawer period options → [from, to] relative to the prototype's "today" */
   const PERIODS = [['today', 'Today'], ['yesterday', 'Yesterday'], ['currentWeek', 'Current Week'], ['lastWeek', 'Last Week'], ['currentMonth', 'Current Month'], ['lastMonth', 'Last Month'],
@@ -73,9 +73,9 @@ document.addEventListener('alpine:init', () => {
   const FILTER_DEFAULTS = () => ({ financial_year: String(dayOf(CP.TODAY).getUTCFullYear()), nature_of_job: 'All', received_from: 'All', accountant: 'All', received_range: '', commenced_range: '' });
 
   Alpine.data('jobStatusPage', () => ({
-    loading: true, jobs: [], vertical: '', mode: 'live', status: 'live', legend: null, viewMode: 'status', isManager: true,
+    loading: true, jobs: [], vertical: '', mode: 'live', status: 'live', legend: 'client',   /* opens on "Jobs with <client>" */ viewMode: 'status', isManager: true, openBreakdown: false, view: 'summary',
     open: [], active: 'list', instr: {}, newInstr: '', refreshing: false,
-    filters: FILTER_DEFAULTS(), draft: null, drawer: false, periods: PERIODS,
+    filters: FILTER_DEFAULTS(), draft: null, drawer: false, periods: PERIODS, closedFrom: '', closedTo: '',
     tbl: null, appr: [], surveys: [], queries: [], feedbackOpen: false,
 
     async init() {
@@ -103,8 +103,19 @@ document.addEventListener('alpine:init', () => {
     get shownTiles() { return this.tiles.filter((t) => this.count(t) > 0); },                   // hideIfNoValue
     get liveCount() { return this.allTiles.filter((t) => t.tone !== 'g' && t.key !== 'Cancelled').reduce((a, t) => a + this.count(t), 0); },
     get allCount() { return this.allTiles.reduce((a, t) => a + this.count(t), 0); },
+    /* Open/Closed summary cards (Job Status intro): open jobs split by who is holding them, closed jobs split by month completed */
+    get withClientCount() { return this.allTiles.filter((t) => t.tone === 'y').reduce((a, t) => a + this.count(t), 0); },
+    get withCarismaCount() { return this.liveCount - this.withClientCount; },
+    get closedJobs() { return this.baseJobs.filter(isDone); },
+    get closedCount() { return this.closedJobs.length; },
+    completedOn(j) { return j.timeline[j.timeline.length - 1].on; },
+    get closedThisMonth() { const cur = CP.TODAY.slice(0, 7); return this.closedJobs.filter((j) => this.completedOn(j).slice(0, 7) === cur).length; },
+    get closedLastMonth() { const t = dayOf(CP.TODAY), d = new Date(Date.UTC(t.getUTCFullYear(), t.getUTCMonth() - 1, 1)), last = `${d.getUTCFullYear()}-${p2(d.getUTCMonth() + 1)}`; return this.closedJobs.filter((j) => this.completedOn(j).slice(0, 7) === last).length; },
     color(t) { return COLOR[t.tone]; },
     setLegend(l) { this.legend = l; this.tbl.reset(); },
+    /* Job Status summary → detail navigation */
+    openOpenJobs() { this.view = 'detail'; this.openBreakdown = true; this.viewMode = 'status'; this.setLegend('client'); this.setStatus('live'); },
+    openClosedJobs() { this.view = 'detail'; this.openBreakdown = false; this.viewMode = 'status'; this.closedFrom = ''; this.closedTo = ''; this.setLegend(null); this.setStatus('closed'); },
     statusOf,
 
     /* ---------- rows ---------- */
@@ -114,13 +125,14 @@ document.addEventListener('alpine:init', () => {
         if (legendKeys && !legendKeys.has(statusOf(j))) return false;
         if (this.status === 'all') return true;
         if (this.status === 'live') return !isDone(j);
+        if (this.status === 'closed') return isDone(j) && (!this.closedFrom || this.completedOn(j) >= this.closedFrom) && (!this.closedTo || this.completedOn(j) <= this.closedTo);
         return (tiles.find((t) => t.key === this.status) || { members: [] }).members.includes(statusOf(j));
       });
     },
-    get statusLabel() { return this.status === 'live' ? 'Live Jobs' : this.status === 'all' ? 'All Jobs' : (this.allTiles.find((t) => t.key === this.status) || {}).label || this.status; },
+    get statusLabel() { return this.status === 'live' ? 'Live Jobs' : this.status === 'all' ? 'All Jobs' : this.status === 'closed' ? 'Closed Jobs' : (this.allTiles.find((t) => t.key === this.status) || {}).label || this.status; },
     setStatus(s) { this.status = s; this.tbl.reset(); },
     clearStatus() { this.status = 'live'; this.tbl.reset(); },
-    setVertical(v) { this.vertical = v; this.status = 'live'; this.legend = null; this.filters = { ...FILTER_DEFAULTS(), financial_year: this.filters.financial_year }; this.tbl.reset(); this.open = []; this.active = 'list'; this.viewMode = 'status'; },
+    setVertical(v) { this.vertical = v; this.status = 'live'; this.legend = 'client'; this.filters = { ...FILTER_DEFAULTS(), financial_year: this.filters.financial_year }; this.tbl.reset(); this.open = []; this.active = 'list'; this.viewMode = 'status'; },
     refresh() { this.refreshing = true; setTimeout(() => (this.refreshing = false), 700); },
     statusDate(j, status) {
       const hit = j.timeline.find((t) => (j.smsf_status ? SMSF_TO_GENERIC[t.status] : t.status) === status);
@@ -175,6 +187,11 @@ document.addEventListener('alpine:init', () => {
       const j = this.job, n = j.timeline.length, last = n > 1 ? n - 1 : -1;   // the current step has no time booked yet
       const w = j.timeline.map((_, i) => (i === last ? 0 : ((j.job_id + i * 7) % 5) + 1)), t = w.reduce((a, b) => a + b, 0) || 1;
       return w.map((x) => (j.actual_hours * x) / t);
+    },
+    /* turnaround days, same split as the Turnaround Report screen: received date -> today (open) or last change (completed); part of it sat with the client */
+    get turnaround() {
+      const j = this.job, total = Math.max(0, CP.daysBetween(j.received_date, j.work_status === 'Job Completed' ? j.last_modified : CP.TODAY)), client = Math.round(total * [0.15, 0.3, 0.45, 0.2][j.job_id % 4]);
+      return { total, client, carisma: total - client };
     },
     get jobQueryCount() { return this.queries.filter((q) => q.job_id === this.active).length; },
     get jobAppreciation() { return this.appr.filter((a) => a.job_id === this.active); },

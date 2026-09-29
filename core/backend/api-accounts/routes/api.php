@@ -357,7 +357,14 @@ Route::middleware('guest')->post('/get-token', function (Request $request) {
         $user->save();
 
         $name = $user->first_name . ' ' . $user->last_name;
-        Mail::to($email)->send(new SendOtpMail($otp, $name, $host));
+
+        if (app()->environment('local')) {
+            // Skip sending the OTP email locally — log it instead so it doesn't
+            // require a working mail setup to test the login flow.
+            Log::info("OTP for {$email}: {$otp}");
+        } else {
+            Mail::to($email)->send(new SendOtpMail($otp, $name, $host));
+        }
 
         return response()->json([
             'token' => $token,
@@ -467,7 +474,11 @@ Route::middleware('guest')->post('/verify-otp', function(Request $request) {
     if(isset($user)) {        
         try {
             $ip_address = $request->getClientIp();
-            $position = Location::get($ip_address);
+            // Location::get() hits an external geolocation API and hangs (past the
+            // 60s execution limit, as a fatal error the surrounding try/catch can't
+            // catch) when testing against a local/loopback IP. Skip it locally —
+            // it's only used for login-activity logging, not the OTP check itself.
+            $position = app()->environment('local') ? null : Location::get($ip_address);
             $existing_ips = [];
             // $existing_ips = WhitelistIPs::where('user_id', $user->id)->where('status', 1)->get();
             $max_limit_reached = false;

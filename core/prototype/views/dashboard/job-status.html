@@ -2,56 +2,135 @@
   <div x-show="loading" class="py-24 text-center text-sm text-slate-400">Loading…</div>
   <template x-if="!loading">
     <div>
-      <!-- Job Details (dev: heading, Status/Manager view, legends + vertical, status cards) -->
-      <div class="space-y-3">
-        <div class="text-center text-lg font-semibold leading-none text-slate-800">Job Details</div>
+      <!-- Job Status summary: landing view, replaced by the detail view below once a card is clicked -->
+      <div x-show="view === 'summary'">
+        <div class="mb-4">
+          <h1 class="text-2xl font-bold text-slate-800">Job Status</h1>
+          <p class="text-sm text-slate-500">Select a status to view the jobs within it.</p>
+        </div>
+        <div class="mb-4 grid gap-4 sm:grid-cols-2">
+          <button type="button" class="rounded-xl border-t-4 border-brand bg-white p-5 text-left shadow-sm transition hover:shadow-md" @click="openOpenJobs()">
+            <div class="mb-3 flex items-start justify-between">
+              <span class="grid h-11 w-11 place-items-center rounded-lg bg-rose-50 text-brand"><span class="msym !text-2xl">folder_open</span></span>
+              <div class="text-right">
+                <div class="ml-auto mb-1 h-0.5 w-6 bg-brand"></div>
+                <div class="text-2xl font-bold text-slate-800" x-text="liveCount"></div>
+                <div class="text-[10px] font-semibold uppercase text-slate-400">Open</div>
+              </div>
+            </div>
+            <div class="text-base font-bold text-brand">Open Jobs</div>
+            <p class="mt-1 text-xs text-slate-500">Jobs still in progress, split by the party currently holding the job.</p>
+            <div class="my-3 border-t border-slate-100"></div>
+            <div class="flex gap-8">
+              <div><div class="text-[10px] font-semibold uppercase text-slate-400">With Carisma</div><div class="text-lg font-bold text-brand" x-text="withCarismaCount"></div></div>
+              <div><div class="text-[10px] font-semibold uppercase text-slate-400">With Client</div><div class="text-lg font-bold text-brand" x-text="withClientCount"></div></div>
+            </div>
+          </button>
+          <button type="button" class="rounded-xl border-t-4 border-green-600 bg-white p-5 text-left shadow-sm transition hover:shadow-md" @click="openClosedJobs()">
+            <div class="mb-3 flex items-start justify-between">
+              <span class="grid h-11 w-11 place-items-center rounded-lg bg-green-50 text-green-600"><span class="msym !text-2xl">check_circle</span></span>
+              <div class="text-right">
+                <div class="ml-auto mb-1 h-0.5 w-6 bg-green-600"></div>
+                <div class="text-2xl font-bold text-slate-800" x-text="closedCount"></div>
+                <div class="text-[10px] font-semibold uppercase text-slate-400">Closed</div>
+              </div>
+            </div>
+            <div class="text-base font-bold text-green-700">Closed Jobs</div>
+            <p class="mt-1 text-xs text-slate-500">Completed and delivered jobs, searchable by a date range.</p>
+            <div class="my-3 border-t border-slate-100"></div>
+            <div class="flex gap-8">
+              <div><div class="text-[10px] font-semibold uppercase text-slate-400">This Month</div><div class="text-lg font-bold text-green-700" x-text="closedThisMonth"></div></div>
+              <div><div class="text-[10px] font-semibold uppercase text-slate-400">Last Month</div><div class="text-lg font-bold text-green-700" x-text="closedLastMonth"></div></div>
+            </div>
+          </button>
+        </div>
+      </div>
 
-        <div x-show="isManager" class="flex items-center justify-center">
-          <div class="inline-flex rounded-full border border-slate-200 bg-white p-1 shadow-sm">
-            <button type="button" class="rounded-full px-4 py-1 text-sm font-semibold transition" :class="viewMode === 'status' ? 'bg-brand text-white shadow' : 'text-slate-600 hover:text-brand'" @click="viewMode = 'status'">Status View</button>
-            <button type="button" class="rounded-full px-4 py-1 text-sm font-semibold transition" :class="viewMode === 'manager' ? 'bg-brand text-white shadow' : 'text-slate-600 hover:text-brand'" @click="viewMode = 'manager'">Manager View</button>
+      <!-- Job Status detail: shown after a summary card is clicked -->
+      <div x-show="view === 'detail'" x-cloak>
+        <button type="button" class="mb-3 flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-brand" @click="view = 'summary'"><span class="msym !text-[16px]">arrow_back</span>Back to Job Status</button>
+
+        <!-- Open Jobs by Holder: drill-down shown when arriving via the Open Jobs card; each card also filters the list below via the existing legend toggle -->
+        <div x-show="openBreakdown" class="mb-4">
+          <div class="mb-3 flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-bold text-slate-800">Open Jobs by Holder</h2>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <div x-show="isManager" class="inline-flex rounded-full border border-slate-200 bg-white p-0.5 shadow-sm">
+                <button type="button" class="rounded-full px-3 py-0.5 text-xs font-semibold transition" :class="viewMode === 'status' ? 'bg-brand text-white shadow' : 'text-slate-600 hover:text-brand'" @click="viewMode = 'status'">Status View</button>
+                <button type="button" class="rounded-full px-3 py-0.5 text-xs font-semibold transition" :class="viewMode === 'manager' ? 'bg-brand text-white shadow' : 'text-slate-600 hover:text-brand'" @click="viewMode = 'manager'">Manager View</button>
+              </div>
+              <div class="inline-flex shrink-0 overflow-hidden rounded-md border border-slate-300 bg-white shadow-sm">
+                <template x-for="v in verticals" :key="v.code">
+                  <button class="border-r border-slate-200 px-3 py-1 text-xs font-medium last:border-0" :class="vertical === v.title ? 'bg-[#e8ebf5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="setVertical(v.title)" x-text="v.title"></button>
+                </template>
+              </div>
+            </div>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <button type="button" class="rounded-xl border-t-4 bg-white p-5 text-left shadow-sm transition hover:shadow-md" :class="legend === 'carisma' ? 'border-navy ring-1 ring-navy' : 'border-navy'" @click="setLegend(legend === 'carisma' ? null : 'carisma')">
+              <div class="mb-3 flex items-start justify-between">
+                <span class="grid h-11 w-11 place-items-center rounded-lg bg-[#e8ebf5] text-navy"><span class="msym !text-2xl">settings</span></span>
+                <div class="text-right">
+                  <div class="text-2xl font-bold text-navy" x-text="withCarismaCount"></div>
+                  <div class="text-[10px] font-semibold uppercase text-slate-400">Jobs</div>
+                </div>
+              </div>
+              <div class="text-base font-bold text-navy">With Carisma</div>
+            </button>
+            <button type="button" class="rounded-xl border-t-4 bg-white p-5 text-left shadow-sm transition hover:shadow-md" :class="legend === 'client' ? 'border-brand ring-1 ring-brand' : 'border-brand'" @click="setLegend(legend === 'client' ? null : 'client')">
+              <div class="mb-3 flex items-start justify-between">
+                <span class="grid h-11 w-11 place-items-center rounded-lg bg-rose-50 text-brand"><span class="msym !text-2xl">send</span></span>
+                <div class="text-right">
+                  <div class="text-2xl font-bold text-brand" x-text="withClientCount"></div>
+                  <div class="text-[10px] font-semibold uppercase text-slate-400">Jobs</div>
+                </div>
+              </div>
+              <div class="text-base font-bold text-brand">With Client</div>
+            </button>
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center justify-between gap-4 py-1">
-          <div x-show="viewMode === 'status'" class="flex items-center gap-2 font-medium">
-            <span class="text-xs opacity-80">Legends</span>
-            <button class="rounded-full bg-stone-50 px-4 py-1 text-sm shadow" :class="legend === null ? 'text-brand ring-2 ring-brand' : 'text-slate-700'" @click="setLegend(null)">All Jobs</button>
-            <button class="rounded-full bg-yellow-100 px-4 py-1 text-sm font-semibold shadow" :class="legend === 'client' ? 'text-brand ring-2 ring-brand' : 'text-yellow-700'" @click="setLegend(legend === 'client' ? null : 'client')" x-text="'Jobs with ' + $store.app.client.name.replace(' Pty Ltd', '')"></button>
-            <button class="rounded-full bg-blue-50 px-4 py-1 text-sm font-semibold shadow" :class="legend === 'carisma' ? 'text-brand ring-2 ring-brand' : 'text-blue-800'" @click="setLegend(legend === 'carisma' ? null : 'carisma')">Jobs with Carisma</button>
+      <!-- Job Details (dev: status/manager view cards); the Status/Manager toggle, legends and vertical control now live in the Open Jobs by Holder header above -->
+      <div class="space-y-2">
+        <!-- Closed Jobs: Status/Manager toggle + verticals, and (in Status View) a date-range filter instead of the status tiles -->
+        <div x-show="status === 'closed'" class="mb-2 flex flex-wrap items-center justify-end gap-2">
+          <div x-show="isManager" class="inline-flex rounded-full border border-slate-200 bg-white p-0.5 shadow-sm">
+            <button type="button" class="rounded-full px-3 py-0.5 text-xs font-semibold transition" :class="viewMode === 'status' ? 'bg-brand text-white shadow' : 'text-slate-600 hover:text-brand'" @click="viewMode = 'status'">Status View</button>
+            <button type="button" class="rounded-full px-3 py-0.5 text-xs font-semibold transition" :class="viewMode === 'manager' ? 'bg-brand text-white shadow' : 'text-slate-600 hover:text-brand'" @click="viewMode = 'manager'">Manager View</button>
           </div>
-          <div x-show="viewMode !== 'status'"></div>
-          <div class="inline-flex overflow-hidden rounded-md border border-slate-300 bg-white shadow">
+          <div class="inline-flex shrink-0 overflow-hidden rounded-md border border-slate-300 bg-white shadow-sm">
             <template x-for="v in verticals" :key="v.code">
-              <button class="border-r border-slate-200 px-3 py-1.5 text-[13px] font-medium last:border-0" :class="vertical === v.title ? 'bg-[#dbe6f5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="setVertical(v.title)" x-text="v.title"></button>
+              <button class="border-r border-slate-200 px-3 py-1 text-xs font-medium last:border-0" :class="vertical === v.title ? 'bg-[#e8ebf5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="setVertical(v.title)" x-text="v.title"></button>
             </template>
           </div>
         </div>
+        <div x-show="viewMode === 'status' && status === 'closed'" class="flex flex-wrap items-end gap-3 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
+          <label class="block text-xs"><span class="font-medium text-slate-600">From</span><input type="date" class="field mt-1 block" x-model="closedFrom" @change="tbl.reset()"></label>
+          <label class="block text-xs"><span class="font-medium text-slate-600">To</span><input type="date" class="field mt-1 block" x-model="closedTo" @change="tbl.reset()"></label>
+          <button type="button" class="rounded-md border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50" @click="closedFrom = ''; closedTo = ''; tbl.reset()">Clear</button>
+          <span class="text-xs text-slate-500"><span class="font-semibold text-slate-700" x-text="rows.length"></span> closed jobs</span>
+        </div>
 
-        <!-- status cards: tinted, left accent bar, zero-count cards hidden -->
-        <div x-show="viewMode === 'status'" class="flex flex-wrap items-stretch gap-3">
+        <!-- status tiles: one even grid (equal widths, rows line up); side bar = who holds the job -->
+        <div x-show="viewMode === 'status' && status !== 'closed'" class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(146px, 1fr));">
           <template x-for="t in shownTiles" :key="t.key">
-            <button type="button" class="group relative h-full w-[210px] flex-none overflow-hidden rounded-xl border py-3 pl-4 pr-3 text-left shadow transition hover:shadow-lg active:scale-[0.97]" :class="status === t.key ? 'border-brand bg-[#ddc7cf] shadow-md' : 'border-black/5 ' + color(t).bg" @click="setStatus(status === t.key ? 'live' : t.key)">
-              <div class="absolute bottom-0 left-0 top-0 w-1.5" :class="status === t.key ? 'bg-brand' : color(t).accent"></div>
-              <span class="msym absolute right-2 top-2 !text-[14px] opacity-30 transition group-hover:opacity-70">chevron_right</span>
-              <div class="mb-1 overflow-hidden text-ellipsis whitespace-nowrap text-[11px] font-semibold uppercase tracking-wide" :class="status === t.key ? 'text-brand/80' : 'text-slate-500'" x-text="t.label"></div>
-              <div class="text-2xl font-bold" :class="status === t.key ? 'text-brand' : color(t).text" x-text="count(t)"></div>
+            <button type="button" class="relative flex min-h-[52px] items-center justify-between gap-2 overflow-hidden rounded-lg border-l-4 bg-white py-2 pl-3 pr-2.5 text-left shadow-sm transition hover:shadow active:scale-[0.99]" :class="[t.tone === 'y' ? 'border-brand' : t.tone === 'g' ? 'border-green-500' : 'border-navy', status === t.key ? 'ring-1 ring-brand bg-brand/5' : '']" @click="setStatus(status === t.key ? 'live' : t.key)">
+              <span class="text-[10px] font-semibold uppercase leading-tight tracking-wide" :class="status === t.key ? 'text-brand' : 'text-slate-600'" x-text="t.label"></span>
+              <span class="text-lg font-bold leading-none" :class="status === t.key ? 'text-brand' : 'text-slate-800'" x-text="count(t)"></span>
             </button>
           </template>
           <template x-if="legend === null && liveCount > 0">
-            <button type="button" class="group relative h-full w-[210px] flex-none overflow-hidden rounded-xl border py-3 pl-4 pr-3 text-left shadow transition hover:shadow-lg active:scale-[0.97]" :class="status === 'live' ? 'border-brand bg-[#ddc7cf] shadow-md' : 'border-black/5 bg-cyan-50'" @click="setStatus('live')">
-              <div class="absolute bottom-0 left-0 top-0 w-1.5" :class="status === 'live' ? 'bg-brand' : 'bg-teal-600'"></div>
-              <span class="msym absolute right-2 top-2 !text-[14px] opacity-30 group-hover:opacity-70">chevron_right</span>
-              <div class="mb-1 text-[11px] font-semibold uppercase tracking-wide" :class="status === 'live' ? 'text-brand/80' : 'text-teal-700'">Total Live Jobs</div>
-              <div class="text-2xl font-bold" :class="status === 'live' ? 'text-brand' : 'text-teal-700'" x-text="liveCount"></div>
+            <button type="button" class="relative flex min-h-[52px] items-center justify-between gap-2 overflow-hidden rounded-lg border-l-4 border-brand bg-white py-2 pl-3 pr-2.5 text-left shadow-sm transition hover:shadow active:scale-[0.99]" :class="status === 'live' ? 'ring-1 ring-brand bg-brand/5' : ''" @click="setStatus('live')">
+              <span class="text-[10px] font-semibold uppercase leading-tight tracking-wide" :class="status === 'live' ? 'text-brand' : 'text-navy'" x-text="'Total Live Jobs'"></span>
+              <span class="text-lg font-bold leading-none" :class="status === 'live' ? 'text-brand' : 'text-navy'" x-text="liveCount"></span>
             </button>
           </template>
           <template x-if="legend === null && allCount > 0">
-            <button type="button" class="group relative h-full w-[210px] flex-none overflow-hidden rounded-xl border py-3 pl-4 pr-3 text-left shadow transition hover:shadow-lg active:scale-[0.97]" :class="status === 'all' ? 'border-brand bg-[#ddc7cf] shadow-md' : 'border-black/5 bg-cyan-50'" @click="setStatus('all')">
-              <div class="absolute bottom-0 left-0 top-0 w-1.5" :class="status === 'all' ? 'bg-brand' : 'bg-teal-600'"></div>
-              <span class="msym absolute right-2 top-2 !text-[14px] opacity-30 group-hover:opacity-70">chevron_right</span>
-              <div class="mb-1 text-[11px] font-semibold uppercase tracking-wide" :class="status === 'all' ? 'text-brand/80' : 'text-teal-700'">Total All Jobs</div>
-              <div class="text-2xl font-bold" :class="status === 'all' ? 'text-brand' : 'text-teal-700'" x-text="allCount"></div>
+            <button type="button" class="relative flex min-h-[52px] items-center justify-between gap-2 overflow-hidden rounded-lg border-l-4 border-brand bg-white py-2 pl-3 pr-2.5 text-left shadow-sm transition hover:shadow active:scale-[0.99]" :class="status === 'all' ? 'ring-1 ring-brand bg-brand/5' : ''" @click="setStatus('all')">
+              <span class="text-[10px] font-semibold uppercase leading-tight tracking-wide" :class="status === 'all' ? 'text-brand' : 'text-navy'" x-text="'Total All Jobs'"></span>
+              <span class="text-lg font-bold leading-none" :class="status === 'all' ? 'text-brand' : 'text-navy'" x-text="allCount"></span>
             </button>
           </template>
         </div>
@@ -68,7 +147,7 @@
                   <template x-for="p in partners" :key="p"><td class="px-4 py-2 text-center text-brand" x-text="partnerTotal(p)"></td></template><td class="px-4 py-2 text-center" x-text="allCount"></td></tr>
                 <template x-for="r in gridRows" :key="r.t.key">
                   <tr class="border-b border-slate-100 hover:bg-slate-50"><td class="border-l-2 border-brand/60 px-2 py-2 pl-3 font-medium text-brand" x-text="r.t.label"></td>
-                    <template x-for="p in partners" :key="p"><td class="px-4 py-2 text-center" :class="r.counts[p] > 0 ? 'cursor-pointer font-medium text-blue-700 hover:underline' : 'text-slate-400'" @click="r.counts[p] > 0 && cellClick(p, r.t)" x-text="r.counts[p]"></td></template>
+                    <template x-for="p in partners" :key="p"><td class="px-4 py-2 text-center" :class="r.counts[p] > 0 ? 'cursor-pointer font-medium text-navy hover:underline' : 'text-slate-400'" @click="r.counts[p] > 0 && cellClick(p, r.t)" x-text="r.counts[p]"></td></template>
                     <td class="px-4 py-2 text-center font-medium text-slate-700" x-text="r.total"></td></tr>
                 </template>
                 <tr class="bg-rose-50 font-bold"><td class="px-4 py-2 text-brand">Total Jobs</td>
@@ -121,31 +200,28 @@
               </template>
             </div>
 
-            <div class="grid gap-4 bg-[#dfe5ef] lg:grid-cols-2">
-              <!-- vertical job timeline -->
-              <div>
-                <h3 class="px-6 pt-3 text-lg font-semibold text-slate-600">Job Timeline</h3>
-                <ol class="px-6 py-4">
-                  <template x-for="(t, i) in job.timeline" :key="i">
-                    <li class="flex gap-4">
-                      <div class="w-24 shrink-0 pt-0.5 text-right text-xs font-semibold text-slate-500" x-text="D(t.on)"></div>
-                      <div class="flex flex-col items-center">
-                        <span class="relative mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 border-brand" :class="i === job.timeline.length - 1 ? 'bg-white' : 'bg-brand'"><span x-show="i === job.timeline.length - 1" class="h-2 w-2 animate-pulse rounded-full bg-brand"></span></span>
-                        <div x-show="i < job.timeline.length - 1" class="relative min-h-[56px] w-0.5 flex-1 bg-brand/70">
-                          <span class="absolute left-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border px-2 py-0.5 text-[11px] font-semibold" :class="gap(i + 1) > 30 ? 'border-red-300 bg-red-100 text-red-700' : gap(i + 1) > 10 ? 'border-yellow-300 bg-yellow-50 text-yellow-700' : 'border-slate-300 bg-slate-100 text-slate-600'" x-text="gap(i + 1) + (gap(i + 1) === 1 ? ' day' : ' days')"></span>
-                        </div>
-                      </div>
-                      <div class="flex-1 pb-4">
-                        <div class="flex flex-wrap items-center gap-2"><span class="text-sm font-semibold" :class="i === job.timeline.length - 1 ? 'text-brand' : 'text-slate-700'" x-text="t.status"></span><span x-show="i === job.timeline.length - 1" class="rounded-full bg-brand/10 px-2 py-0.5 text-[11px] font-semibold text-brand">Current</span></div>
-                        <div class="mt-0.5 text-xs text-slate-500">Time taken: <strong class="text-slate-700" x-text="hm(stepTimes[i])"></strong> hrs</div>
-                      </div>
-                    </li>
-                  </template>
-                </ol>
+            <div class="flex flex-wrap gap-4 bg-[#dfe5ef] p-4 lg:flex-nowrap">
+              <!-- job timeline: vertical, oldest at top, a day-gap pill under each step except the current one -->
+              <div class="w-full shrink-0 rounded-xl border border-slate-200 bg-white p-4 shadow-sm lg:w-[300px]">
+                <div class="mb-3 flex items-center gap-2 text-sm font-semibold text-brand"><span class="msym !text-[16px]">timeline</span>Job Timeline</div>
+                <template x-for="(t, i) in job.timeline" :key="i">
+                  <div class="flex gap-3">
+                    <div class="flex flex-col items-center">
+                      <span class="relative flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 border-brand" :class="i === job.timeline.length - 1 ? 'bg-white' : 'bg-brand'"><span x-show="i === job.timeline.length - 1" class="h-2 w-2 animate-pulse rounded-full bg-brand"></span></span>
+                      <div x-show="i < job.timeline.length - 1" class="w-0.5 flex-1 bg-brand/30"></div>
+                    </div>
+                    <div class="pb-4">
+                      <div class="text-xs font-semibold text-slate-500" x-text="D(t.on)"></div>
+                      <div class="mt-0.5 flex flex-wrap items-center gap-2"><span class="text-sm font-semibold" :class="i === job.timeline.length - 1 ? 'text-brand' : 'text-slate-700'" x-text="t.status"></span><span x-show="i === job.timeline.length - 1" class="rounded-full bg-brand/10 px-2 py-0.5 text-[11px] font-semibold text-brand">Current</span></div>
+                      <div class="text-xs text-slate-500">Time taken: <strong class="text-slate-700" x-text="hm(stepTimes[i])"></strong> hrs</div>
+                      <span x-show="i < job.timeline.length - 1" class="mt-1 inline-block rounded-full border px-2 py-0.5 text-[11px] font-semibold" :class="gap(i + 1) > 30 ? 'border-red-300 bg-red-100 text-red-700' : gap(i + 1) > 10 ? 'border-yellow-300 bg-yellow-50 text-yellow-700' : 'border-slate-300 bg-slate-100 text-slate-600'" x-text="gap(i + 1) + (gap(i + 1) === 1 ? ' day' : ' days')"></span>
+                    </div>
+                  </div>
+                </template>
               </div>
 
-              <!-- right-hand cards -->
-              <div class="space-y-4 px-6 py-4 lg:pl-0">
+              <!-- always-expanded panels (full width) -->
+              <div class="min-w-0 flex-1 space-y-3">
                 <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
                   <div class="flex items-center gap-2 border-b px-4 py-2 text-sm font-semibold text-brand"><span class="msym !text-[16px]">tune</span>Under / Over Budget</div>
                   <div class="space-y-2 px-4 py-3 text-sm">
@@ -154,6 +230,15 @@
                       <span>Variance <strong :class="job.actual_hours > job.budget_hours ? 'text-red-600' : 'text-green-700'" x-text="hm(Math.abs(job.budget_hours - job.actual_hours))"></strong></span><span>Utilisation <span x-text="pct(job) + '%'"></span></span>
                     </div>
                     <span class="inline-block rounded-full border px-3 py-0.5 text-xs font-semibold" :class="job.actual_hours > job.budget_hours ? 'border-red-300 bg-red-50 text-red-700' : 'border-green-300 bg-green-50 text-green-700'" x-text="job.actual_hours > job.budget_hours ? 'Over budget' : 'Under budget'"></span>
+                  </div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+                  <div class="flex items-center gap-2 border-b px-4 py-2 text-sm font-semibold text-brand"><span class="msym !text-[16px]">schedule</span>Turnaround</div>
+                  <div class="grid grid-cols-3 gap-3 px-4 py-3 text-center">
+                    <div class="rounded-lg bg-[#e8ebf5] py-2"><div class="text-2xl font-bold text-navy" x-text="turnaround.carisma"></div><div class="text-[11px] font-semibold uppercase text-slate-500">With Carisma</div><div class="text-[10px] text-slate-400">days</div></div>
+                    <div class="rounded-lg bg-yellow-50 py-2"><div class="text-2xl font-bold text-yellow-800" x-text="turnaround.client"></div><div class="text-[11px] font-semibold uppercase text-slate-500">With Client</div><div class="text-[10px] text-slate-400">days</div></div>
+                    <div class="rounded-lg bg-slate-100 py-2"><div class="text-2xl font-bold text-slate-800" x-text="turnaround.total"></div><div class="text-[11px] font-semibold uppercase text-slate-500">Total Turnaround</div><div class="text-[10px] text-slate-400">days</div></div>
                   </div>
                 </div>
 
@@ -176,7 +261,7 @@
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
-                  <div class="flex items-center justify-between gap-2 border-b px-4 py-2 text-sm font-semibold text-brand">
+                  <div class="flex items-center justify-between border-b px-4 py-2 text-sm font-semibold text-brand">
                     <span class="flex items-center gap-2"><span class="msym !text-[16px]">favorite_border</span>Appreciation and Feedback</span>
                     <button x-show="jobSurvey" class="text-xs font-semibold underline" @click="feedbackOpen = true">View Feedback</button>
                   </div>
@@ -234,6 +319,7 @@
           </div>
         </div>
       </template>
+      </div>
     </div>
   </template>
 </div>

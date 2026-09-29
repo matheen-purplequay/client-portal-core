@@ -13,6 +13,10 @@ document.addEventListener('alpine:init', () => {
   const clientDays = (j, days) => Math.round(days * [0.15, 0.3, 0.45, 0.2][j.job_id % 4]);   // days the job sat with the client
   const vjobs = (jobs, v) => (v ? jobs.filter((j) => j.vertical === v) : jobs);
   const uniq = (rows, k) => [...new Set(rows.map((r) => r[k]).filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b)));
+  /* with-client statuses (yellow tiles on Job Status) vs with Carisma (everything else) */
+  const isClientStatus = (s) => /Sent For Queries|Awaiting Queries|Sent For (Final )?Review|Workpapers Completed|On Hold/.test(s);
+  const TA_BUCKETS = [[0, 5, '0-5'], [6, 10, '6-10'], [11, 20, '11-20'], [21, 30, '21-30'], [31, 60, '31-60'], [61, Infinity, '61+']];
+  const avgOf = (rows, k) => (rows.length ? Math.round(rows.reduce((a, x) => a + x[k], 0) / rows.length) : 0);
 
   /* movement category for one status change (SP_clientportalMovementReport buckets) */
   const moveCat = (to, first) => {
@@ -28,23 +32,23 @@ document.addEventListener('alpine:init', () => {
   })));
 
   /* ------------------------------------------------------------------ per-screen configs ------------------------------------------------------------------ */
-  const CARD_TONES = { blue: 'border-blue-500 text-blue-700', green: 'border-green-500 text-green-700', maroon: 'border-brand text-brand', teal: 'border-teal-500 text-teal-700',
-    orange: 'border-orange-400 text-orange-600', purple: 'border-purple-500 text-purple-700', red: 'border-red-500 text-red-600', amber: 'border-amber-400 text-amber-700' };
+  const CARD_TONES = { blue: 'border-navy text-navy', green: 'border-green-500 text-green-700', maroon: 'border-brand text-brand', teal: 'border-navy text-navy',
+    orange: 'border-orange-400 text-orange-600', purple: 'border-navy text-navy', red: 'border-red-500 text-red-600', amber: 'border-amber-400 text-amber-700' };
 
   const CONFIGS = {
     workflow: {
-      title: "Workflow", tableTitle: "Today's Stand-Up", tabs: false, refresh: true,
+      title: "Workflow", tableTitle: "Today's Stand-Up", tabs: false, refresh: true, groupCol: 'name_a', pageSize: 200,
       empty: 'No stand-up logged for today.',
       columns: [
-        { key: 'job_description', label: 'Job Description', filter: 'text', bold: true },
-        { key: 'team_name', label: 'Team Name', filter: 'select', all: 'All Teams' },
-        { key: 'name_a', label: 'Associate', filter: 'select', all: 'All Associates' },
-        { key: 'workstatus', label: 'Work Status', filter: 'select', all: 'All Statuses' },
-        { key: 'time_will_take', label: 'Est.Time' },
+        { key: 'name_a', label: 'Accountant Name', bold: true },
+        { key: 'job_description', label: 'Job Name', jobLink: true },
+        { key: 'workstatus', label: 'Activity' },
+        { key: 'time_will_take', label: 'Est. Time' },
         { key: 'expected_finish_date', label: 'Est. Delivery', date: true },
       ],
       async load() { this.raw = await CP.clientData('workflow'); },
-      rows() { return this.raw.filter((r) => r.job_description || r.time_will_take); },   // stand-up placeholder rows dropped, as on the real page
+      // stand-up placeholder rows dropped, as on the real page; sorted by accountant so their jobs group together
+      rows() { return this.raw.filter((r) => r.job_description || r.time_will_take).sort((a, b) => a.name_a.localeCompare(b.name_a)); },
     },
 
     'budget-overview': {
@@ -53,7 +57,7 @@ document.addEventListener('alpine:init', () => {
       tableTitle() { return `Open Jobs · ${this.vertical || 'All Verticals'}`; },
       columns: [
         { key: 'received_from', label: 'Received From', filter: 'select', all: 'All' },
-        { key: 'job_name', label: 'Job Name', filter: 'text', bold: true },
+        { key: 'job_name', label: 'Job Name', filter: 'text', bold: true, jobLink: true },
         { key: 'nature_of_job', label: 'Nature of Job', filter: 'select', all: 'All' },
         { key: 'accountant', label: 'Accountant', filter: 'select', all: 'All' },
         { key: 'job_status', label: 'Job Status', filter: 'select', all: 'All' },
@@ -62,28 +66,26 @@ document.addEventListener('alpine:init', () => {
       async load() { this.raw = await CP.clientData('jobs'); },
       rows() {
         return vjobs(this.raw, this.vertical).filter((j) => !isClosed(j)).map((j) => ({
-          received_from: j.received_from, job_name: j.job_name, nature_of_job: j.nature_of_job, accountant: j.associate, job_status: statusOf(j),
+          job_id: j.job_id, received_from: j.received_from, job_name: j.job_name, nature_of_job: j.nature_of_job, accountant: j.associate, job_status: statusOf(j),
           budget: hhmm(j.budget_hours), taken: hhmm(j.actual_hours), variance: hhmm(j.budget_hours - j.actual_hours), over: j.actual_hours > j.budget_hours,
         }));
       },
       cards() {
-        const r = this.baseRows, sum = (k) => r.reduce((a, x) => a + (k === 'b' ? this.hoursOf(x.budget) : this.hoursOf(x.taken)), 0);
+        const r = this.baseRows, within = r.filter((x) => !x.over).length, over = r.filter((x) => x.over).length, pct = (n) => (r.length ? Math.round((n / r.length) * 100) : 0);
         return [
-          { key: 'all', label: 'Open Jobs', value: r.length, unit: 'Jobs', tone: 'blue', test: () => true },
-          { key: 'within', label: 'Within Budget', value: r.filter((x) => !x.over).length, unit: 'Jobs', tone: 'green', test: (x) => !x.over },
-          { key: 'over', label: 'Over Budget', value: r.filter((x) => x.over).length, unit: 'Jobs', tone: 'maroon', test: (x) => x.over },
-          { key: 'bvb', label: 'Budget vs Booked', value: hhmm(sum('b')), unit: hhmm(sum('t')) + ' Booked', tone: 'teal', static: true },
+          { key: 'all', label: 'Total', value: r.length, unit: 'Open Jobs', tone: 'blue', test: () => true },
+          { key: 'within', label: 'Within Budget', value: pct(within) + '%', unit: within + ' jobs', tone: 'blue', test: (x) => !x.over },
+          { key: 'over', label: 'Over Budget', value: pct(over) + '%', unit: over + ' jobs', tone: 'maroon', test: (x) => x.over },
         ];
       },
     },
 
     'turnaround-report': {
-      title: 'Turnaround by Bucket', tabs: true, export: true, cardsFirst: 'toggle',
-      desc: 'Closed jobs grouped by elapsed time against the agreed turnaround standard.',
+      title: 'Turnaround by Bucket', tabs: true, export: true, cardsFirst: 'toggle', manager: true,
       tableTitle() { return `${this.jobStatus === 'open' ? 'Open' : 'Closed'} Jobs · Turnaround`; },
       columns: [
         { key: 'received_from', label: 'Received From', filter: 'select', all: 'All' },
-        { key: 'job_name', label: 'Job Name', filter: 'text', bold: true },
+        { key: 'job_name', label: 'Job Name', filter: 'text', bold: true, jobLink: true },
         { key: 'nature_of_job', label: 'Nature of Job', filter: 'select', all: 'All' },
         { key: 'accountant', label: 'Accountant', filter: 'select', all: 'All' },
         { key: 'job_status', label: 'Job Status', filter: 'select', all: 'All' },
@@ -94,9 +96,16 @@ document.addEventListener('alpine:init', () => {
       rows() {
         return vjobs(this.raw, this.vertical).filter((j) => (this.jobStatus === 'open' ? !isClosed(j) : isClosed(j))).map((j) => {
           const d = turnaround(j), c = clientDays(j, d);
-          return { received_from: j.received_from, job_name: j.job_name, nature_of_job: j.nature_of_job, accountant: j.associate, job_status: statusOf(j),
+          return { job_id: j.job_id, received_from: j.received_from, job_name: j.job_name, nature_of_job: j.nature_of_job, accountant: j.associate, job_status: statusOf(j),
             days: d, in_carisma: d - c, in_client: c, budget: hhmm(j.budget_hours), taken: hhmm(j.actual_hours) };
         });
+      },
+      /* Manager view: each manager x day-bucket, showing job count + average days spent with Carisma / with the client */
+      taBuckets: TA_BUCKETS,
+      taManagers() { return uniq(this.baseRows, 'accountant'); },
+      taStats(manager, lo, hi) {
+        const jobs = this.baseRows.filter((r) => (manager === null || r.accountant === manager) && r.days >= lo && r.days <= hi);
+        return { count: jobs.length, total: avgOf(jobs, 'days'), carisma: avgOf(jobs, 'in_carisma'), client: avgOf(jobs, 'in_client') };
       },
       buckets() {
         const r = this.baseRows, n = (lo, hi) => r.filter((x) => x.days >= lo && x.days <= hi).length;
@@ -107,11 +116,11 @@ document.addEventListener('alpine:init', () => {
     },
 
     movement: {
-      title: 'Movement', tabs: true, export: true, period: true,
+      title: 'Movement', tabs: true, export: true, period: true, manager: true,
       tableTitle() { return `Job Movement · ${this.vertical || 'All Verticals'}`; },
       columns: [
         { key: 'received_from', label: 'Received From', filter: 'select', all: 'All' },
-        { key: 'job_name', label: 'Job Name', filter: 'text', bold: true },
+        { key: 'job_name', label: 'Job Name', filter: 'text', bold: true, jobLink: true },
         { key: 'nature_of_job', label: 'Nature of Job', filter: 'select', all: 'All' },
         { key: 'movement', label: 'Movement', filter: 'select', all: 'All' },
         { key: 'from_status', label: 'From Status' }, { key: 'to_status', label: 'To Status', filter: 'select', all: 'All' },
@@ -119,17 +128,21 @@ document.addEventListener('alpine:init', () => {
       ],
       async load() { this.raw = await CP.clientData('jobs'); },
       rows() {
-        const from = this.periodFrom;
-        return movements(vjobs(this.raw, this.vertical)).filter((m) => m.date >= from && m.date <= this.periodTo).sort((a, b) => b.date.localeCompare(a.date));
+        const from = this.periodFrom, nonSmsf = this.raw.filter((j) => j.vertical !== 'SMSF');       // SMSF's own status names don't belong in this report
+        return movements(vjobs(nonSmsf, this.vertical)).filter((m) => m.date >= from && m.date <= this.periodTo).sort((a, b) => b.date.localeCompare(a.date));
       },
       cards() {
-        const r = this.baseRows, c = (k) => r.filter((x) => x.movement === k).length;
+        const r = this.baseRows;
+        /* with-client statuses (yellow tiles on Job Status) go brown; everything else (with Carisma) goes blue */
+        const newCount = r.filter((x) => x.movement === 'New Jobs Received').length;
+        const statuses = uniq(r.filter((x) => x.movement !== 'New Jobs Received'), 'to_status');
+        const statusCards = statuses.map((s) => ({
+          key: 'status:' + s, label: s, value: r.filter((x) => x.movement !== 'New Jobs Received' && x.to_status === s).length, unit: 'Jobs',
+          tone: isClientStatus(s) ? 'maroon' : 'blue', test: (x) => x.movement !== 'New Jobs Received' && x.to_status === s,
+        }));
         return [
-          { key: 'new', label: 'New Jobs Received', value: c('New Jobs Received'), unit: 'Jobs', tone: 'green', test: (x) => x.movement === 'New Jobs Received' },
-          { key: 'queries', label: 'Sent for Queries', value: c('Sent for Queries'), unit: 'Jobs', tone: 'orange', test: (x) => x.movement === 'Sent for Queries' },
-          { key: 'review', label: 'Sent for Review', value: c('Sent for Review'), unit: 'Jobs', tone: 'purple', test: (x) => x.movement === 'Sent for Review' },
-          { key: 'closed', label: 'Closed', value: c('Closed'), unit: 'Jobs', tone: 'teal', test: (x) => x.movement === 'Closed' },
-          { key: 'other', label: 'Other Status Changed', value: c('Other Status Changed'), unit: 'Jobs', tone: 'maroon', test: (x) => x.movement === 'Other Status Changed' },
+          { key: 'new', label: 'New Jobs Received', value: newCount, unit: 'Jobs', tone: 'blue', test: (x) => x.movement === 'New Jobs Received' },
+          ...statusCards,
           { key: 'all', label: 'All Movement', value: r.length, unit: 'Records', tone: 'blue', test: () => true },
         ];
       },
@@ -139,7 +152,7 @@ document.addEventListener('alpine:init', () => {
       title: 'Meeting', tableTitle: 'Meetings', tabs: false, dateRange: true,
       empty: 'No meetings found.',
       columns: [
-        { key: 'client_name', label: 'Client', bold: true }, { key: 'date', label: 'Date', date: true }, { key: 'client_present', label: 'Client Present' },
+        { key: 'date', label: 'Date', date: true, bold: true }, { key: 'client_present', label: 'Manager' }, { key: 'attendees', label: 'Attendees' },
         { key: 'purpose', label: 'Purpose' }, { key: 'description', label: 'Description', view: true }, { key: 'vertical', label: 'Vertical' },
       ],
       async load() { this.raw = await CP.clientData('mom'); this.dateTo = CP.TODAY; this.dateFrom = addDays(CP.TODAY, -30); },
@@ -147,22 +160,31 @@ document.addEventListener('alpine:init', () => {
     },
 
     'closed-jobs-feedback': {
-      title: 'Closed Jobs - Feedback', tableTitle: 'Closed Jobs', tabs: true, survey: true,
-      desc: 'All closed jobs for this engagement. Add feedback on service quality for any job.',
+      title: 'Closed Jobs - Feedback', tableTitle: 'Closed Jobs', tabs: true,
+      desc: 'All closed jobs for this engagement. Rate service quality and leave a comment directly in the grid.',
       columns: [
         { key: 'received_from', label: 'Received From', filter: 'select', all: 'All' },
-        { key: 'job_name', label: 'Job Name', filter: 'text', bold: true },
+        { key: 'job_name', label: 'Job Name', filter: 'text', bold: true, jobLink: true },
         { key: 'nature_of_job', label: 'Nature of Job', filter: 'select', all: 'All' },
         { key: 'budget', label: 'Budget' }, { key: 'taken', label: 'Time Taken' }, { key: 'days', label: 'Turnaround (Days)' },
-        { key: 'job_status', label: 'Job Status' }, { key: 'action', label: 'Action', action: true },
+        { key: 'rating', label: 'Feedback', stars: true }, { key: 'comment', label: 'Comments', commentBox: true },
       ],
       async load() {
         [this.raw, this.surveyList] = await Promise.all([CP.clientData('jobs'), CP.clientData('surveys')]);
         this.surveys = Object.fromEntries(this.surveyList.map((s) => [s.job_id, s]));
       },
       rows() {
-        return vjobs(this.raw, this.vertical).filter(isClosed).map((j) => ({ job_id: j.job_id, received_from: j.received_from, job_name: j.job_name, nature_of_job: j.nature_of_job,
-          budget: hhmm(j.budget_hours), taken: hhmm(j.actual_hours), days: turnaround(j), job_status: 'Closed', action: this.surveys[j.job_id] ? 'Edit Feedback' : 'Add Feedback' }));
+        return vjobs(this.raw, this.vertical).filter(isClosed).map((j) => { const s = this.surveys[j.job_id]; return { job_id: j.job_id, received_from: j.received_from, job_name: j.job_name, nature_of_job: j.nature_of_job,
+          budget: hhmm(j.budget_hours), taken: hhmm(j.actual_hours), days: turnaround(j), action: s && s.overall_satisfaction ? 'Edit Feedback' : 'Add Feedback',
+          rating: s ? this.starCount(s.overall_satisfaction) : 0, comment: (s && s.improvements) || '' }; });
+      },
+      cards() {
+        const r = this.baseRows, given = r.filter((x) => x.action === 'Edit Feedback').length;
+        return [
+          { key: 'all', label: 'Total Jobs', value: r.length, unit: 'Closed Jobs', tone: 'blue', test: () => true },
+          { key: 'given', label: 'Feedback Given', value: given, unit: 'Jobs', tone: 'blue', test: (x) => x.action === 'Edit Feedback' },
+          { key: 'not', label: 'Feedback Not Given', value: r.length - given, unit: 'Jobs', tone: 'maroon', test: (x) => x.action === 'Add Feedback' },
+        ];
       },
     },
   };
@@ -170,25 +192,55 @@ document.addEventListener('alpine:init', () => {
   Alpine.data('gridPage', (name) => {
     const cfg = CONFIGS[name];
     return {
-      cfg, name, loading: true, raw: [], vertical: '', card: null, filters: {}, tbl: null, jobStatus: 'closed', refreshing: false,
+      cfg, name, loading: true, raw: [], vertical: '', card: null, filters: {}, tbl: null, jobStatus: 'closed', refreshing: false, viewMode: 'status',
       // movement period / mom date range
       period: '14d', periodFrom: addDays(CP.TODAY, -14), periodTo: CP.TODAY, customFrom: '', customTo: '', dateFrom: '', dateTo: '',
       // modals
-      viewRow: null, surveyRow: null, survey: {}, surveys: {}, surveyList: [], ratings: ['Extremely satisfied', 'Very satisfied', 'Somewhat satisfied', 'Dissatisfied', 'Very dissatisfied'],
-      surveyError: '',
+      viewRow: null, surveys: {}, surveyList: [], ratings: ['Extremely satisfied', 'Very satisfied', 'Somewhat satisfied', 'Dissatisfied', 'Very dissatisfied'],
+      hoverStars: {},
 
       async init() {
         await cfg.load.call(this);
-        this.tbl = CP.makeTable({ rows: () => this.filteredRows, columns: cfg.columns.map((c) => ({ key: c.key, label: c.label })), size: 10 });
+        this.tbl = CP.makeTable({ rows: () => this.filteredRows, columns: cfg.columns.map((c) => ({ key: c.key, label: c.label })), size: cfg.pageSize || 10 });
         this.loading = false;
       },
-      get verticals() { return store().client.verticals; },
+      get verticals() { const v = store().client.verticals; return name === 'movement' ? v.filter((x) => x.code !== 'SMSF') : v; },
       get baseRows() { return cfg.rows.call(this); },                       // rows before card / column filters
+      /* group consecutive rows sharing cfg.groupCol (e.g. one accountant's jobs) under a single merged cell */
+      get displayRows() {
+        const col = cfg.groupCol, rows = this.tbl.slice;
+        if (!col) return rows.map((r) => ({ r, show: true, span: 1 }));
+        const out = [];
+        for (let i = 0; i < rows.length; i++) {
+          if (i > 0 && rows[i][col] === rows[i - 1][col]) { out.push({ r: rows[i], show: false, span: 0 }); continue; }
+          let span = 1; while (i + span < rows.length && rows[i + span][col] === rows[i][col]) span++;
+          out.push({ r: rows[i], show: true, span });
+        }
+        return out;
+      },
       get cards() { return cfg.cards ? cfg.cards.call(this) : []; },
       get buckets() { return cfg.buckets ? cfg.buckets.call(this) : []; },
+      // turnaround manager view: manager x day-bucket, job count + average days with Carisma / with client; a trailing "All Jobs" group totals every bucket for that manager
+      get taBuckets() { return cfg.taBuckets || []; },
+      get taGroups() { return [...this.taBuckets, [0, Infinity, 'All Jobs']]; },
+      // flattened bucket x sub-column list so each <th>/<td> comes from its own x-for iteration (a <template x-for> with several sibling elements only clones the first one correctly)
+      get taCols() { return this.taGroups.flatMap((b) => [{ b, k: 'total', label: 'Total' }, { b, k: 'carisma', label: 'With Carisma' }, { b, k: 'client', label: 'With Client' }]); },
+      get taManagers() { return cfg.taManagers ? cfg.taManagers.call(this) : []; },
+      taStats(manager, lo, hi) { return cfg.taStats.call(this, manager, lo, hi); },
+      taCell(manager, c) { const s = this.taStats(manager, c.b[0], c.b[1]); return s.count ? s[c.k] : '-'; },
+      taExpanded: null,
+      toggleTaExpanded(m) { this.taExpanded = this.taExpanded === m ? null : m; },
+      taJobsFor(m) { return this.taExpanded === m ? this.baseRows.filter((r) => r.accountant === m) : []; },
+      // one job's value under a given bucket column — blank outside that job's own bucket, so it lines up under the matching group; Total = that job's total turnaround days
+      taJobCell(job, c) { if (job.days < c.b[0] || job.days > c.b[1]) return '-'; return c.k === 'total' ? job.days : job[c.k === 'carisma' ? 'in_carisma' : 'in_client']; },
       get openCount() { return vjobs(this.raw, this.vertical).filter((j) => !isClosed(j)).length; },     // turnaround Open/Closed toggle cards
       get closedCount() { return vjobs(this.raw, this.vertical).filter(isClosed).length; },
       get tableTitle() { return typeof cfg.tableTitle === 'function' ? cfg.tableTitle.call(this) : cfg.tableTitle; },
+      /* Manager view (movement only): partner x status/movement-type breakdown, mirrors Job Status' Partner Wise Jobs grid */
+      get partners() { return uniq(this.baseRows, 'received_from'); },
+      get managerCols() { return this.cards.filter((c) => c.key !== 'all'); },
+      get managerRows() { return this.managerCols.map((c) => { const counts = Object.fromEntries(this.partners.map((p) => [p, this.baseRows.filter((r) => r.received_from === p && c.test(r)).length])); return { c, counts, total: Object.values(counts).reduce((a, b) => a + b, 0) }; }); },
+      partnerTotal(p) { return this.baseRows.filter((r) => r.received_from === p).length; },
       hoursOf(s) { const [h, m] = String(s).split(':').map(Number); return h + m / 60; },
       get filteredRows() {
         const card = this.cards.find((c) => c.key === this.card);
@@ -212,15 +264,19 @@ document.addEventListener('alpine:init', () => {
         this.card = null; this.tbl.reset(); this.refresh();
       },
 
-      /* feedback survey (in memory only) */
-      openSurvey(r) {
-        this.surveyRow = r; this.surveyError = '';
-        this.survey = { overall_satisfaction: '', overall_insights: '', responsiveness: '', responsiveness_insights: '', improvements: '', ...(this.surveys[r.job_id] || {}) };
+      /* feedback (in memory only) is set directly in the grid: stars = overall_satisfaction, the comment box = improvements.
+         star 1 = last entry in `ratings`, star 5 = first */
+      starCount(label) { const i = this.ratings.indexOf(label); return i === -1 ? 0 : this.ratings.length - i; },
+      starLabel(n) { return this.ratings[this.ratings.length - n] || 'Not rated'; },
+      surveyFor(r) { return this.surveys[r.job_id] || (this.surveys[r.job_id] = { job_id: r.job_id, overall_satisfaction: '', overall_insights: '', responsiveness: '', responsiveness_insights: '', improvements: '' }); },
+      rate(r, n) {
+        const s = this.surveyFor(r);
+        s.overall_satisfaction = this.starCount(s.overall_satisfaction) === n ? '' : this.starLabel(n);
+        r.rating = this.starCount(s.overall_satisfaction); r.action = s.overall_satisfaction ? 'Edit Feedback' : 'Add Feedback';
       },
-      submitSurvey() {
-        if (!this.survey.overall_satisfaction || !this.survey.responsiveness) { this.surveyError = 'Please answer questions 1 and 3 before submitting.'; return; }
-        this.surveys[this.surveyRow.job_id] = { job_id: this.surveyRow.job_id, ...this.survey };
-        this.surveyRow.action = 'Edit Feedback'; this.surveyRow = null; CP.toast('Feedback submitted (prototype)');
+      setComment(r, val) {
+        this.surveyFor(r).improvements = val; r.comment = val;
+        r.action = this.surveys[r.job_id].overall_satisfaction ? 'Edit Feedback' : 'Add Feedback';
       },
       D: CP.fmt.dmy, tones: CARD_TONES,
     };
@@ -270,10 +326,13 @@ document.addEventListener('alpine:init', () => {
   const IN_QUERIES = (s) => /Sent For Queries|Awaiting Queries/.test(s);
   const IN_REVIEW = (s) => s === 'Sent For Review' || s === 'Workpapers Completed Initial';
   const IN_FINAL = (s) => s === 'Sent For Final Review' || s === 'Workpapers Completed Final';
+  const IN_WIP_REVIEW = (s) => s === 'WIP - Review Replies';
   Alpine.data('landingPage', () => ({
-    loading: true, jobs: [], flow: [], queries: [],
-    async init() { [this.jobs, this.flow, this.queries] = await Promise.all([CP.clientData('jobs'), CP.clientData('workflow'), CP.clientData('queries')]); this.loading = false; },
+    loading: true, jobs: [], flow: [], queries: [], surveys: [], appr: [], mom: [], prod: { rows: [] }, holidays: [], flowYest: [], vertical: '',
+    async init() { [this.jobs, this.flow, this.queries, this.surveys, this.appr, this.mom, this.prod, this.holidays, this.flowYest] = await Promise.all([CP.clientData('jobs'), CP.clientData('workflow'), CP.clientData('queries'), CP.clientData('surveys'), CP.clientData('appreciation'), CP.clientData('mom'), CP.clientData('production'), CP.sharedData('holidays'), CP.clientData('workflow_yesterday')]); this.vertical = this.verticals[0].title; this.loading = false; },
     get user() { return store().user; },
+    get verticals() { return store().client.verticals; },
+    setVertical(v) { this.vertical = v; },
     get live() { return this.jobs.filter((j) => !isClosed(j)); },
     /* the jobs currently in a bucket, oldest-in-status first, with how long they've been there */
     bucket(test) {
@@ -283,6 +342,7 @@ document.addEventListener('alpine:init', () => {
     get inQueries() { return this.bucket(IN_QUERIES); },
     get inReview() { return this.bucket(IN_REVIEW); },
     get inFinal() { return this.bucket(IN_FINAL); },
+    get inWipReview() { return this.bucket(IN_WIP_REVIEW); },
     /* open queries, longest-waiting first (query cards live on the Queries screen) */
     get openQueries() {
       return this.queries.filter((q) => q.status === 'Open').map((q) => ({ ...q, job_name: (this.jobs.find((x) => x.job_id === q.job_id) || {}).job_name || '-', days: Math.max(0, CP.daysBetween(q.posted_on.slice(0, 10), CP.TODAY)) })).sort((a, b) => b.days - a.days);
@@ -295,6 +355,65 @@ document.addEventListener('alpine:init', () => {
       return days.map((d) => { const n = this.moves.filter((m) => m.date === d).length; return { d, n, h: Math.round((n / max) * 100) }; });
     },
     cat(k) { return this.moves.filter((m) => m.movement === k).length; },
+    /* the next holiday in each region (Australia / India), from the shared calendar */
+    get nextHolidays() {
+      const tone = { Australia: 'border-slate-300 text-slate-800', India: 'border-slate-300 text-slate-800' };
+      return ['Australia', 'India'].map((region) => {
+        const h = this.holidays.filter((x) => x.date >= CP.TODAY && (x.region === region || x.region === 'Both')).sort((a, b) => a.date.localeCompare(b.date))[0];
+        if (!h) return null;
+        const d = CP.daysBetween(CP.TODAY, h.date);
+        return { l: region + ' holiday', v: h.name, u: h.date.slice(8) + '-' + h.date.slice(5, 7) + ' · ' + (d === 0 ? 'today' : d === 1 ? 'tomorrow' : 'in ' + d + 'd'), tone: tone[region], small: true };
+      }).filter(Boolean);
+    },
+    /* feedback received, if any: the client's submitted surveys with the job they belong to */
+    get feedbackList() { return this.surveys.map((s) => ({ ...s, job_name: (this.jobs.find((x) => x.job_id === s.job_id) || {}).job_name || '-' })); },
+    /* yesterday's stand-up, each job with the status it had then and its current status */
+    /* section order chosen so rows pack to 7 cards each: Daily Planner | Jobs(3) + Movement(1) + Budget(3) = 7 | Holidays(2) + Feedback(3) */
+    get layout() { const o = ['Daily Planner', 'Jobs', 'Movement', 'Budget', 'Holidays', 'Feedback']; return [...this.sections].sort((a, b) => o.findIndex((n) => a.t.startsWith(n)) - o.findIndex((n) => b.t.startsWith(n))); },
+    /* 12-column grid: Daily Planner 5 | Jobs 5 + Movement 2 + Budget 5 | Holidays 4 + Feedback 3 */
+    span(s) { return ({ Daily: 5, Jobs: 5, Movement: 2, Budget: 5, Holidays: 4, Feedback: 3 })[s.t.split(' ')[0]] || 6; },
+    /* rows: 1 Daily Planner (+ Yesterday's Workflow) | 2 Jobs + Movement + Budget (7 cards) | 3 Holidays + Feedback */
+    get layoutRows() { const l = this.layout; return [[l[0]], [l[1], l[2], l[3]], [l[4], l[5]]]; },
+    get addYesterday() { return addDays(CP.TODAY, -1); },
+    get yesterdayRows() {
+      return this.flowYest.map((r) => { const j = this.jobs.find((x) => x.job_id === r.job_id); const cur = j ? statusOf(j) : r.workstatus; return { ...r, current: cur, moved: cur !== r.workstatus }; });
+    },
+    /* Home cards, grouped by the screen they summarise (Jobs, Movement, Budget, Turnaround, Feedback, Daily Planner, Overview); each opens that screen */
+    /* two colours only (blue for everything else); only the manager-side cards in Jobs (not WIP Review Replies, which is with Carisma) and Over Budget keep the brand maroon */
+    get sections() {
+      const M = 'border-brand text-brand', BLUE = 'border-navy text-navy';
+      const SEC = { Jobs: BLUE, Movement: BLUE, Budget: BLUE, Daily: BLUE, Holidays: BLUE, Feedback: BLUE };   // just two colours on Home: maroon (manager side) and blue (the rest)
+      return this.rawSections.map((sec) => { const acc = SEC[sec.t.split(' ')[0]] || M; return { ...sec, cards: sec.cards.map((c) => ((sec.t === 'Jobs' && c.tone === M && !c.l.startsWith('WIP Review Replies')) || c.l === 'Over Budget' ? { ...c, tone: M } : { ...c, tone: acc })) }; });
+    },
+    get rawSections() {
+      const live = this.live, closed = this.jobs.filter(isClosed), sum = (a, k) => a.reduce((t, x) => t + x[k], 0);
+      const over = live.filter((j) => j.actual_hours > j.budget_hours), tat = closed.map(turnaround);
+      const surveyed = new Set(this.surveys.map((s) => s.job_id)), mins = (t) => { const [h, m] = String(t || '0:0').split(':').map(Number); return h + m / 60; };
+      const flow = this.workflowRows, monthAgo = addDays(CP.TODAY, -30);
+      /* two-tone palette: brand maroon = manager-action cards, neutral slate = the rest */
+      const N = 'border-slate-300 text-slate-800', M = 'border-brand text-brand';
+      const B = N, G = N, C = N, O = N, R = N, I = M, A = M, P = M, T = M;
+      return [
+        { t: 'Jobs', icon: 'work_outline', r: '/dashboard/job-status', cards: (() => { const withClient = this.inQueries.length + this.inReview.length + this.inFinal.length; return [
+          { l: 'Total Live Jobs', v: live.length, u: 'jobs', tone: B, strong: true },
+          { l: 'With Carisma', v: live.length - withClient, u: 'jobs', tone: N, strong: true },
+          { l: 'With Client', v: withClient, u: 'jobs', tone: A, strong: true }]; })() },
+        { t: 'Movement', icon: 'swap_horiz', r: '/dashboard/movement', cards: [
+          { l: 'All Movement', v: this.moves.length, u: 'last 7 days', tone: C, strong: true }] },
+        { t: 'Budget', icon: 'account_balance_wallet', r: '/dashboard/budget-overview', cards: (() => { const within = live.length - over.length, pct = (n) => (live.length ? Math.round((n / live.length) * 100) : 0); return [
+          { l: 'Total', v: live.length, u: 'open jobs', tone: B, strong: true },
+          { l: 'Within Budget', v: pct(within) + '%', u: within + ' jobs', tone: G, strong: true },
+          { l: 'Over Budget', v: pct(over.length) + '%', u: over.length + ' jobs', tone: M, strong: true }]; })() },
+        { t: 'Feedback', icon: 'feedback', r: '/dashboard/closed-jobs-feedback', cards: [
+          { l: 'Feedback Received', v: closed.filter((x) => surveyed.has(x.job_id)).length, u: 'closed jobs', tone: G },
+          { l: 'Improvement', v: this.surveys.filter((s) => s.improvements).length, u: 'suggestions', tone: G },
+          { l: 'Appreciation', v: this.appr.length, u: 'received', tone: G }] },
+        { t: 'Daily Planner', icon: 'view_kanban', r: '/dashboard/workflow', cards: [
+          { l: 'Stand-Up Jobs Today', v: flow.length, u: 'jobs', tone: M }, { l: 'Est. Time Today', v: hhmm(flow.reduce((a, r) => a + mins(r.time_will_take), 0)), u: 'hh:mm', tone: I },
+          { l: 'Finishing Today', v: flow.filter((r) => r.expected_finish_date === CP.TODAY).length, u: 'jobs', tone: T }] },
+        { t: 'Holidays', icon: 'event_available', r: '/calendar', cards: this.nextHolidays },
+      ];
+    },
     dow(iso) { return CP.fmt.weekday(iso).slice(0, 3); },
     go(route) { location.hash = '#' + route; }, D: CP.fmt.dmy,
   }));
@@ -303,9 +422,10 @@ document.addEventListener('alpine:init', () => {
   /* Pick a job (name or number — they stay linked) and an associate, "+" adds it to the grid; the two buttons then
      save the rows as Stage 1 or allocate them. Prototype only: state lives in memory. */
   Alpine.data('allocationPage', () => ({
-    loading: true, jobs: [], sel: { job_name: '', job_no: '', associate: '' }, rows: [], error: '',
+    loading: true, jobs: [], sel: { job_name: '', job_no: '', associate: '', financial_year: CP.TODAY.slice(0, 4), budget: '', deadline: '', comments: '' }, rows: [], error: '',
     async init() { this.jobs = (await CP.clientData('jobs')).filter((j) => !isClosed(j)); this.loading = false; },
     get associates() { return uniq(this.jobs, 'associate'); },
+    get fyOptions() { const y = Number(CP.TODAY.slice(0, 4)); return Array.from({ length: y - 2021 }, (_, i) => String(2022 + i)); },
     /* Job Name and Job No are free-text boxes; a Job No that matches an open job fills in a blank name as a convenience */
     lookupNo() {
       const j = this.jobs.find((x) => String(x.job_id) === this.sel.job_no.trim());
@@ -314,10 +434,10 @@ document.addEventListener('alpine:init', () => {
     add() {
       this.error = '';
       const name = this.sel.job_name.trim(), no = this.sel.job_no.trim();
-      if (!name || !no || !this.sel.associate) { this.error = 'Enter the job name and job no, choose an associate, then click +.'; return; }
+      if (!name || !no) { this.error = 'Enter the job name and job no, then click +.'; return; }                    // associate is optional
       if (this.rows.some((r) => String(r.job_id).toLowerCase() === no.toLowerCase())) { this.error = 'This job no is already in the grid.'; return; }
-      this.rows.push({ job_id: no, job_name: name, associate: this.sel.associate, stage: 'Pending', pick: false });
-      this.sel = { job_name: '', job_no: '', associate: '' };
+      this.rows.push({ job_id: no, job_name: name, associate: this.sel.associate, financial_year: this.sel.financial_year, budget: this.sel.budget, deadline: this.sel.deadline, comments: this.sel.comments.trim(), stage: 'Pending', pick: false });
+      this.sel = { job_name: '', job_no: '', associate: '', financial_year: this.sel.financial_year, budget: '', deadline: '', comments: '' };
     },
     remove(i) { this.rows.splice(i, 1); },
 
@@ -325,8 +445,8 @@ document.addEventListener('alpine:init', () => {
        Allocating is only allowed once every answer is Yes; jobs that aren't ready can drop to Stage 1 instead. */
     questions: [
       { key: 'access', label: 'Access to accounting software given' },
-      { key: 'docs', label: 'Documents loaded to OneDrive' },
-      { key: 'notes', label: 'Client notes added' },
+      { key: 'docs', label: 'Documents loaded to sharedrive' },
+      { key: 'notes', label: 'Client notes added', optional: true },   // not needed to allocate
     ],
     alloc: null,                                              // { rows, answers: { [job_id]: { access, docs, notes } } }
     get open() { return this.rows.filter((r) => r.stage !== 'Allocated'); },
@@ -342,7 +462,7 @@ document.addEventListener('alpine:init', () => {
       const t = list || this.picks; if (!t.length) { CP.toast('Tick the jobs to allocate'); return; }
       this.alloc = { rows: t, answers: Object.fromEntries(t.map((r) => [r.job_id, { access: false, docs: false, notes: false }])) };
     },
-    ready(r) { return this.questions.every((q) => this.alloc.answers[r.job_id][q.key]); },
+    ready(r) { return this.questions.filter((q) => !q.optional).every((q) => this.alloc.answers[r.job_id][q.key]); },   // optional points (client notes) never block allocation
     get allReady() { return this.alloc && this.alloc.rows.every((r) => this.ready(r)); },
     get readyCount() { return this.alloc ? this.alloc.rows.filter((r) => this.ready(r)).length : 0; },
     setAll(key) { const v = !this.alloc.rows.every((r) => this.alloc.answers[r.job_id][key]); this.alloc.rows.forEach((r) => (this.alloc.answers[r.job_id][key] = v)); },

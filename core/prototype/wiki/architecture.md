@@ -23,12 +23,12 @@ prototype/
 ├── app.html              MASTER PAGE (header, sidebar, dashboard tab bar, #content)
 ├── pages/auth/           login.html, otp.html — standalone, no shell
 ├── views/
-│   ├── dashboard/        movement, job-status, queries
+│   ├── dashboard/        landing (Home), movement (touch points), job-status (Jobs), queries, grid (generic), production, overview, job-allocation
 │   ├── reports/          connect, weekly, invoices
 │   └── content/          newsletters, knowledge-center, it-guidelines, team, calendar, faq, about, profile, contact
-├── components/           htmx fragments: legends, table-toolbar, pagination-status, pager, auth-hero
+├── components/           htmx fragments: legends, table-toolbar, pagination-status, pager, auth-hero, job-detail
 ├── assets/
-│   ├── js/               core.js, tailwind-config.js, pages/{movement,job-status,queries,content}.js
+│   ├── js/               core.js, tailwind-config.js, pages/{movement,job-status,queries,dev-screens,job-popup,content}.js
 │   ├── css/app.css
 │   └── img/              cs_logo.png, login-banner.jpg
 ├── data/                 mock JSON (see data.md)
@@ -45,7 +45,8 @@ prototype/
 - **Routes** are declared in the `ROUTES` object in `assets/js/core.js` (path → view file, group, title). Hash based: `app.html#/dashboard/job-status`.
 - On load and on `hashchange`, `route()` sets `Alpine.store('app').route/group` and calls `htmx.ajax('GET', <view>, { target: '#content' })`. Hash routing means deep links and refresh work on any static server.
 - Sidebar/tab active state is driven by `$store.app.route` (`isActive(prefix)`), not by htmx.
-- The default route is `/dashboard/movement`.
+- The default route is `/dashboard/landing` (Home). Routes have a `group`: `dashboard` shows the pill-tab bar (touch-point Movement `/dashboard/home`, Queries), `screen` shows none. Screens added from the dev branch: `/dashboard/landing|workflow|movement|budget-overview|turnaround-report|closed-jobs-feedback|mom|production-report|job-allocation|overview`; `job-status` (Jobs) also hides the tab bar.
+- **Responsive shell:** below `lg` the sidebar is an off-canvas drawer (hamburger, overlay, closes on click); from `lg` it is a fixed column.
 
 ## Components
 
@@ -57,13 +58,16 @@ Two kinds:
    - `pagination-status` — page-size pills, "Showing x–y of n", bookmark, first/prev/next/last (needs `tbl`)
    - `pager` — numbered pager used on Queries (needs `tbl`)
    - `auth-hero` — right-hand banner card on login/OTP (loaded with plain `hx-get`, no Alpine)
-2. **Alpine components** (`Alpine.data`) in `assets/js/pages/` hold page state/logic: `jobStatusPage`, `queriesPage`, `movementPage`, `content(kind, name)`.
+   - `job-detail` — Jobs-page job detail (header facts + accordions), shared by the Jobs page and the job popup (needs `sel`, `turnaround`, `stepTimes`, `jobQueryCount`, `jobAppreciation`, `jobSurvey`, `acc/isOpen` from `jobStatusPage` or `jobPopup`)
+2. **Alpine components** (`Alpine.data`) in `assets/js/pages/` hold page state/logic: `jobStatusPage`, `queriesPage`, `movementPage`, `content(kind, name)`, and in `dev-screens.js` `gridPage(name)` (config-driven `CONFIGS` for Workflow, Budget Overview, Turnaround, Movement report, MOM, Feedback — rendered by `views/dashboard/grid.html`), `productionPage`, `overviewPage`, `landingPage`, `allocationPage`. `job-popup.js` holds `Alpine.store('jobpop')`, the global `CP.showJob(idOrName)` and the `jobPopup` component (markup at the end of `app.html`).
+
+Theme: brand maroon + navy only; blue/indigo/teal/purple Tailwind classes are not used (navy tints via `bg-[#e8ebf5]`, `bg-navy`, `text-navy`). Keep yellow/green/amber/red only where they carry status meaning.
 
 `CP.makeTable({ rows, columns, size, searchKeys })` (in `core.js`) is the shared table state: search, sort, paging, column visibility. Pages create it in `init()` with `rows: () => this.<getter>`; templates read `tbl.slice`, `tbl.cols`, `tbl.from/to/total`, etc.
 
 ## Script load order (`app.html`)
 
-`htmx` → `core.js` (defines global `CP`, registers `alpine:init` handlers) → `pages/*.js` (register `Alpine.data`) → Alpine (`defer`, starts last). `Alpine.data` must be registered before Alpine starts, which is why page scripts are loaded up-front instead of inside fragments.
+`htmx` → `core.js` (defines global `CP`, registers `alpine:init` handlers) → `pages/*.js` (`movement, job-status, queries, dev-screens, job-popup, content`; register `Alpine.data`) → Alpine (`defer`, starts last). `Alpine.data` must be registered before Alpine starts, which is why page scripts are loaded up-front instead of inside fragments.
 
 `core.js` registers on `alpine:init`: the `app` store (`user`, `client`, `route`, `group`, `today`), the `x-component` directive, and the `shell` component (bell, logout). On `alpine:initialized` it runs the first `route()`.
 

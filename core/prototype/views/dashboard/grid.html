@@ -4,74 +4,86 @@
   <div x-show="loading" class="py-24 text-center text-sm text-slate-400">Loading…</div>
   <template x-if="!loading">
     <div>
-      <!-- title -->
-      <div class="mb-4" :class="name === 'turnaround-report' && 'text-center'">
-        <h1 class="text-2xl font-bold leading-tight text-slate-800" x-text="cfg.title"></h1>
-        <p x-show="cfg.desc" class="mt-1 text-sm text-slate-500" x-text="cfg.desc"></p>
-      </div>
+      <!-- title + vertical tabs (+ Status/Manager toggle for Movement), same row -->
+      <div class="mb-2 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 class="text-xl font-bold leading-tight text-slate-800" x-text="cfg.title"></h1>
+          <p x-show="cfg.desc" class="mt-0.5 text-xs text-slate-500" x-text="cfg.desc"></p>
+        </div>
 
-      <!-- vertical tabs -->
-      <div x-show="cfg.tabs" class="mb-4 inline-flex flex-wrap overflow-hidden rounded-md border border-slate-300 bg-white shadow">
-        <button class="border-r border-slate-200 px-4 py-1.5 text-[13px] font-medium" :class="vertical === '' ? 'bg-[#dbe6f5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="setVertical('')">All</button>
-        <template x-for="v in verticals" :key="v.code">
-          <button class="border-r border-slate-200 px-4 py-1.5 text-[13px] font-medium last:border-0" :class="vertical === v.title ? 'bg-[#dbe6f5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="setVertical(v.title)" x-text="v.title"></button>
-        </template>
-      </div>
-
-      <!-- movement: period filter -->
-      <div x-show="cfg.period" class="card mb-4 overflow-hidden">
-        <div class="bg-brand px-4 py-2 text-sm font-bold text-white">Filters</div>
-        <div class="p-4">
-          <label class="mb-1 block text-xs font-semibold">Period</label>
-          <div class="flex flex-wrap items-end gap-2">
-            <select class="field" x-model="period"><option value="7d">Last 7 days</option><option value="14d">Last 14 days</option><option value="1m">Last 1 month</option><option value="custom">Custom</option></select>
-            <template x-if="period === 'custom'"><div class="flex items-end gap-2">
-              <div><label class="mb-1 block text-xs text-slate-500">From</label><input type="date" class="field" x-model="customFrom"></div>
-              <div><label class="mb-1 block text-xs text-slate-500">To</label><input type="date" class="field" x-model="customTo"></div></div></template>
-            <button class="inline-flex items-center gap-1 rounded-md bg-brand px-4 py-2 text-[13px] font-semibold text-white" @click="applyPeriod()"><span class="msym !text-[16px]">search</span>Apply</button>
+        <div x-show="cfg.tabs" class="flex items-center gap-2">
+          <div x-show="cfg.manager" class="inline-flex rounded-full border border-slate-200 bg-white p-0.5 shadow-sm">
+            <button type="button" class="rounded-full px-3 py-0.5 text-xs font-semibold transition" :class="viewMode === 'status' ? 'bg-brand text-white shadow' : 'text-slate-600 hover:text-brand'" @click="viewMode = 'status'">Status View</button>
+            <button type="button" class="rounded-full px-3 py-0.5 text-xs font-semibold transition" :class="viewMode === 'manager' ? 'bg-brand text-white shadow' : 'text-slate-600 hover:text-brand'" @click="viewMode = 'manager'">Manager View</button>
+          </div>
+          <div class="inline-flex flex-wrap overflow-hidden rounded-md border border-slate-300 bg-white shadow-sm">
+            <button class="border-r border-slate-200 px-3 py-1 text-xs font-medium" :class="vertical === '' ? 'bg-[#e8ebf5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="setVertical('')">All</button>
+            <template x-for="v in verticals" :key="v.code">
+              <button class="border-r border-slate-200 px-3 py-1 text-xs font-medium last:border-0" :class="vertical === v.title ? 'bg-[#e8ebf5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="setVertical(v.title)" x-text="v.title"></button>
+            </template>
           </div>
         </div>
       </div>
 
+      <!-- movement: period filter (one slim row) -->
+      <div x-show="cfg.period && viewMode === 'status'" class="mb-2 flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm">
+        <span class="text-xs font-bold text-brand">Filters</span>
+        <label class="text-xs font-semibold text-slate-600">Period</label>
+        <select class="field !py-1 text-xs" x-model="period"><option value="7d">Last 7 days</option><option value="14d">Last 14 days</option><option value="1m">Last 1 month</option><option value="custom">Custom</option></select>
+        <template x-if="period === 'custom'"><div class="flex items-center gap-2">
+          <input type="date" class="field !py-1 text-xs" title="From" x-model="customFrom"><input type="date" class="field !py-1 text-xs" title="To" x-model="customTo"></div></template>
+        <button class="inline-flex items-center gap-1 rounded-md bg-brand px-3 py-1 text-xs font-semibold text-white" @click="applyPeriod()"><span class="msym !text-[14px]">search</span>Apply</button>
+      </div>
+
       <!-- mom: date range -->
-      <div x-show="cfg.dateRange" class="mb-4 flex flex-wrap items-end gap-2">
+      <div x-show="cfg.dateRange" class="mb-2 flex flex-wrap items-end gap-2">
         <div><label class="mb-1 block text-xs text-slate-500">From</label><input type="date" class="field" x-model="dateFrom" @input="tbl.reset()"></div>
         <div><label class="mb-1 block text-xs text-slate-500">To</label><input type="date" class="field" x-model="dateTo" @input="tbl.reset()"></div>
         <button class="rounded-md border border-slate-300 bg-white px-4 py-2 text-[13px] text-slate-500 hover:text-brand" x-show="dateFrom || dateTo" @click="dateFrom = ''; dateTo = ''; tbl.reset()">Clear</button>
       </div>
 
       <!-- turnaround: open / closed toggle + bucket cards -->
-      <template x-if="cfg.cardsFirst === 'toggle'">
-        <div class="mb-3">
-          <div class="mb-3 grid grid-cols-2 gap-3">
-            <button class="rounded-xl bg-white p-3 text-center shadow" :class="jobStatus === 'open' && 'ring-2 ring-brand'" @click="setJobStatus('open')">
-              <div class="text-[11px] font-semibold uppercase text-slate-500">Open Jobs</div><div class="text-3xl font-bold text-slate-800" x-text="openCount"></div><div class="text-[10px] uppercase text-slate-400">Jobs</div></button>
-            <button class="rounded-xl bg-white p-3 text-center shadow" :class="jobStatus === 'closed' && 'ring-2 ring-brand'" @click="setJobStatus('closed')">
-              <div class="text-[11px] font-semibold uppercase text-slate-500">Closed Jobs</div><div class="text-3xl font-bold text-slate-800" x-text="closedCount"></div><div class="text-[10px] uppercase text-slate-400">Jobs</div></button>
+      <template x-if="cfg.cardsFirst === 'toggle' && viewMode === 'status'">
+        <div class="mb-2">
+          <div class="mb-2 grid grid-cols-2 gap-2">
+            <button class="rounded-lg bg-white px-2 py-1.5 text-center shadow-sm" :class="jobStatus === 'open' && 'ring-2 ring-brand'" @click="setJobStatus('open')">
+              <div class="text-[10px] font-semibold uppercase text-slate-500">Open Jobs</div><div class="text-xl font-bold leading-tight text-slate-800" x-text="openCount"></div><div class="text-[9px] uppercase text-slate-400">Jobs</div></button>
+            <button class="rounded-lg bg-white px-2 py-1.5 text-center shadow-sm" :class="jobStatus === 'closed' && 'ring-2 ring-brand'" @click="setJobStatus('closed')">
+              <div class="text-[10px] font-semibold uppercase text-slate-500">Closed Jobs</div><div class="text-xl font-bold leading-tight text-slate-800" x-text="closedCount"></div><div class="text-[9px] uppercase text-slate-400">Jobs</div></button>
           </div>
-          <div class="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+          <div class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(146px, 1fr));">
             <template x-for="b in buckets" :key="b.label">
-              <div class="rounded-xl border-b-4 bg-white p-2 text-center shadow" :class="tones[b.tone]">
-                <div class="text-[10px] font-semibold uppercase" x-text="b.label"></div><div class="text-2xl font-bold" x-text="b.value"></div><div class="text-[10px] uppercase opacity-60">Jobs</div></div>
+              <div class="relative flex min-h-[52px] items-center justify-between gap-2 overflow-hidden rounded-lg border-l-4 bg-white py-2 pl-2.5 pr-2 text-left shadow-sm" :class="tones[b.tone]">
+                <span class="text-[9px] font-semibold uppercase leading-tight tracking-wide" x-text="b.label"></span>
+                <span class="text-sm font-bold leading-none" x-text="b.value"></span>
+              </div>
             </template>
           </div>
         </div>
       </template>
 
-      <!-- stat cards (click to filter the table) -->
-      <div x-show="cards.length" class="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <!-- stat cards (click to filter the table); same tile design as the Home page cards; a fixed-column grid keeps every card the same width across rows -->
+      <div x-show="cards.length && viewMode === 'status'" class="mb-2 grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(146px, 1fr));">
         <template x-for="c in cards" :key="c.key">
-          <button class="rounded-xl border-b-4 bg-white p-3 text-center shadow" :class="[tones[c.tone], card === c.key && 'ring-2 ring-brand', c.static && 'cursor-default']" @click="selectCard(c)">
-            <div class="text-[11px] font-semibold uppercase" x-text="c.label"></div>
-            <div class="mt-1 font-bold" :class="c.static ? 'text-2xl' : 'text-3xl'" x-text="c.value"></div>
-            <div class="mt-0.5 text-[10px] uppercase opacity-60" x-text="c.unit"></div>
+          <button class="relative flex min-h-[52px] items-center justify-between gap-2 overflow-hidden rounded-lg border-l-4 bg-white py-2 pl-2.5 pr-2 text-left shadow-sm transition hover:shadow" :class="[tones[c.tone], card === c.key && 'ring-2 ring-brand', c.static && 'cursor-default']" @click="selectCard(c)">
+            <span class="text-[9px] font-semibold uppercase leading-tight tracking-wide" x-text="c.label"></span>
+            <span class="text-right leading-none">
+              <span class="block text-sm font-bold" x-text="c.value"></span>
+              <span x-show="c.unit" class="block text-[8px] font-medium uppercase leading-tight text-slate-400" x-text="c.unit"></span>
+            </span>
           </button>
         </template>
       </div>
 
+      <!-- star rating legend (feedback grid) -->
+      <div x-show="name === 'closed-jobs-feedback'" class="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-md bg-slate-50 px-3 py-2 text-[11px] text-slate-600">
+        <span class="font-semibold text-slate-700">Legend:</span>
+        <template x-for="n in 5" :key="n"><span class="inline-flex items-center gap-1"><span class="msym !text-[13px] text-amber-400">star</span><span x-text="n + ' = ' + starLabel(n)"></span></span></template>
+      </div>
+
       <!-- table card -->
-      <div class="overflow-hidden rounded-2xl border border-brand bg-white shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-2 bg-brand px-4 py-2.5 text-white">
+      <div x-show="viewMode === 'status'" class="overflow-hidden rounded-2xl border border-brand bg-white shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-brand px-4 py-1.5 text-white">
           <div class="font-bold" x-text="tableTitle"></div>
           <div class="flex items-center gap-2">
             <button x-show="hasFilters" class="rounded-md border border-white/40 px-3 py-1 text-xs font-semibold hover:bg-white/10" @click="clearFilters()">Clear Filters</button>
@@ -80,12 +92,12 @@
           </div>
         </div>
         <div class="overflow-x-auto">
-          <table class="tbl min-w-full">
+          <table class="tbl min-w-full" :class="cfg.groupCol && 'tbl-bordered'">
             <thead>
               <tr><template x-for="c in cfg.columns" :key="c.key">
-                <th :class="c.action && 'text-center'" @click="!c.action && !c.view && tbl.sortBy(c.key)"><span x-text="c.label"></span><span x-show="tbl.sortKey === c.key" class="text-[9px]" x-text="tbl.dir > 0 ? ' ▲' : ' ▼'"></span></th>
+                <th :class="(c.action || c.stars) && 'text-center'" @click="!c.action && !c.view && !c.stars && tbl.sortBy(c.key)"><span x-text="c.label"></span><span x-show="tbl.sortKey === c.key" class="text-[9px]" x-text="tbl.dir > 0 ? ' ▲' : ' ▼'"></span></th>
               </template></tr>
-              <tr class="bg-white"><template x-for="c in cfg.columns" :key="c.key">
+              <tr x-show="cfg.columns.some((c) => c.filter)" class="bg-white"><template x-for="c in cfg.columns" :key="c.key">
                 <th class="!cursor-default !py-1.5 font-normal">
                   <template x-if="c.filter === 'text'"><input class="field w-full !py-1 text-xs" placeholder="Search..." x-model="filters[c.key]" @input="tbl.reset()"></template>
                   <template x-if="c.filter === 'select'"><select class="field w-full !py-1 text-xs" x-model="filters[c.key]" @change="tbl.reset()"><option value="" x-text="c.all"></option><template x-for="o in opts(c.key)" :key="o"><option :value="o" x-text="o"></option></template></select></template>
@@ -93,13 +105,24 @@
               </template></tr>
             </thead>
             <tbody>
-              <template x-for="(r, i) in tbl.slice" :key="i">
-                <tr :class="r.over && '!bg-red-50'"><template x-for="c in cfg.columns" :key="c.key">
-                  <td :class="[c.bold && 'font-medium', c.variance && r.over && 'font-semibold text-red-600', c.variance && !r.over && 'text-green-700', c.action && 'text-center']">
-                    <template x-if="c.view"><button class="rounded-md border border-slate-300 px-2 py-0.5 text-brand hover:bg-brand-lighter" title="View description" @click="viewRow = r"><span class="msym !text-[18px]">visibility</span></button></template>
-                    <template x-if="c.action"><button class="rounded-md border border-brand px-3 py-0.5 text-xs font-semibold text-brand hover:bg-brand hover:text-white" @click="openSurvey(r)" x-text="r[c.key]"></button></template>
-                    <template x-if="!c.view && !c.action"><span x-text="cell(r, c)"></span></template>
+              <template x-for="(g, i) in displayRows" :key="i">
+                <tr :class="g.r.over && '!bg-red-50'"><template x-for="c in cfg.columns" :key="c.key">
+                  <template x-if="c.key !== cfg.groupCol || g.show">
+                  <td :rowspan="c.key === cfg.groupCol && g.span > 1 ? g.span : null" :class="[c.bold && 'font-medium', c.variance && g.r.over && 'font-semibold text-red-600', c.variance && !g.r.over && 'text-green-700', (c.action || c.stars) && 'text-center']">
+                    <template x-if="c.view"><button class="rounded-md border border-slate-300 px-2 py-0.5 text-brand hover:bg-brand-lighter" title="View description" @click="viewRow = g.r"><span class="msym !text-[18px]">visibility</span></button></template>
+                    <template x-if="c.jobLink"><a class="link font-medium" title="Open job details" @click.stop="CP.showJob(g.r.job_id ?? g.r[c.key])" x-text="cell(g.r, c)"></a></template>
+                    <!-- inline rating: click a star to set it directly, no popup -->
+                    <template x-if="c.stars"><span class="inline-flex items-center gap-0.5" @mouseleave="delete hoverStars[g.r.job_id]">
+                      <template x-for="n in 5" :key="n">
+                        <button type="button" class="msym !text-[16px]" :class="(hoverStars[g.r.job_id] || g.r[c.key]) >= n ? 'text-amber-400' : 'text-slate-300'"
+                          :title="starLabel(n)" @mouseenter="hoverStars[g.r.job_id] = n" @click="rate(g.r, n)">star</button>
+                      </template>
+                    </span></template>
+                    <!-- inline comment box, no popup -->
+                    <template x-if="c.commentBox"><input class="field w-full !py-1 text-xs" placeholder="Add a comment…" :value="g.r[c.key]" @change="setComment(g.r, $event.target.value)"></template>
+                    <template x-if="!c.view && !c.action && !c.jobLink && !c.stars && !c.commentBox"><span x-text="cell(g.r, c)"></span></template>
                   </td>
+                  </template>
                 </template></tr>
               </template>
             </tbody>
@@ -107,6 +130,77 @@
           <div x-show="!tbl.total" class="py-10 text-center text-sm text-slate-400" x-text="hasFilters ? 'No rows match the selected filters.' : (cfg.empty || 'No records found.')"></div>
         </div>
         <div x-component="'pagination-status'"></div>
+      </div>
+
+      <!-- Manager view: partner x status breakdown (movement only) -->
+      <div x-show="cfg.manager && viewMode === 'manager' && name === 'movement'" class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div class="bg-brand px-4 py-1.5 text-sm font-bold text-white">Partner Wise Movement</div>
+        <div class="overflow-x-auto">
+          <table class="tbl w-full">
+            <thead><tr class="bg-rose-50"><th class="px-4 py-2 text-left font-semibold text-brand">Status</th>
+              <template x-for="p in partners" :key="p"><th class="whitespace-nowrap px-4 py-2 text-center font-semibold text-brand" x-text="p"></th></template><th class="px-4 py-2 text-center font-semibold text-brand">Total</th></tr></thead>
+            <tbody>
+              <template x-for="r in managerRows" :key="r.c.key">
+                <tr class="border-b border-slate-100 hover:bg-slate-50"><td class="border-l-2 border-brand/60 px-2 py-2 pl-3 font-medium text-brand" x-text="r.c.label"></td>
+                  <template x-for="p in partners" :key="p"><td class="px-4 py-2 text-center" x-text="r.counts[p]"></td></template>
+                  <td class="px-4 py-2 text-center font-medium text-slate-700" x-text="r.total"></td></tr>
+              </template>
+              <tr class="bg-rose-50 font-bold"><td class="px-4 py-2 text-brand">Total</td>
+                <template x-for="p in partners" :key="p"><td class="px-4 py-2 text-center text-brand" x-text="partnerTotal(p)"></td></template><td class="px-4 py-2 text-center text-brand" x-text="baseRows.length"></td></tr>
+            </tbody>
+          </table>
+          <div x-show="!partners.length" class="py-10 text-center text-sm text-slate-400">No records found.</div>
+        </div>
+      </div>
+
+      <!-- Manager view: manager x day-bucket, each split into Total / With Carisma (avg days) / With Client (avg days) (turnaround only) -->
+      <div x-show="cfg.manager && viewMode === 'manager' && name === 'turnaround-report'" class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div class="bg-brand px-4 py-1.5 text-sm font-bold text-white">Manager Wise Turnaround</div>
+        <p class="border-b bg-rose-50/50 px-4 py-1.5 text-[11px] text-slate-500">For jobs in that bucket: Total = average turnaround days, With Carisma / With Client = average days spent on each side.</p>
+        <div class="overflow-x-auto">
+          <table class="tbl w-full">
+            <thead>
+              <tr class="bg-rose-50">
+                <th rowspan="2" class="px-4 py-2 text-left align-bottom font-semibold text-brand">Manager</th>
+                <template x-for="b in taGroups" :key="b[2]"><th colspan="3" class="border-l border-white px-4 py-2 text-center font-semibold text-brand" x-text="b[2] === 'All Jobs' ? b[2] : b[2] + ' Days'"></th></template>
+              </tr>
+              <tr class="bg-rose-50">
+                <template x-for="c in taCols" :key="c.b[2] + c.k">
+                  <th class="px-4 py-1 text-center text-[11px] font-semibold text-brand" :class="c.k === 'total' && 'border-l border-white'" x-text="c.label"></th>
+                </template>
+              </tr>
+            </thead>
+            <!-- one <tbody> per manager (valid HTML, and gives the row + its conditional expanded detail row a single root for x-for) -->
+            <template x-for="m in taManagers" :key="m">
+              <tbody>
+                <tr class="cursor-pointer border-b border-slate-100 hover:bg-slate-50" @click="toggleTaExpanded(m)">
+                  <td class="border-l-2 border-brand/60 px-2 py-2 pl-3 font-medium text-brand"><span class="msym align-middle !text-[16px]" x-text="taExpanded === m ? 'expand_more' : 'chevron_right'"></span><span x-text="m"></span></td>
+                  <template x-for="c in taCols" :key="m + c.b[2] + c.k">
+                    <td class="px-4 py-2 text-center" :class="c.k === 'total' && 'border-l border-slate-100'" x-text="taCell(m, c)"></td>
+                  </template>
+                </tr>
+                <!-- per-job detail: each job's own row, its days/counts landing under its own bucket's columns so it lines up with the header above -->
+                <template x-for="j in taJobsFor(m)" :key="j.job_id">
+                  <tr class="border-b border-slate-100 bg-slate-50/60">
+                    <td class="max-w-[220px] truncate px-2 py-1.5 pl-8 font-normal"><a class="link" @click.stop="CP.showJob(j.job_id)" x-text="j.job_name"></a></td>
+                    <template x-for="c in taCols" :key="j.job_id + c.b[2] + c.k">
+                      <td class="px-4 py-1.5 text-center text-slate-600" :class="c.k === 'total' && 'border-l border-slate-100'" x-text="taJobCell(j, c)"></td>
+                    </template>
+                  </tr>
+                </template>
+              </tbody>
+            </template>
+            <tbody>
+              <tr class="bg-rose-50 font-bold">
+                <td class="px-4 py-2 text-brand">Total</td>
+                <template x-for="c in taCols" :key="'t' + c.b[2] + c.k">
+                  <td class="px-4 py-2 text-center text-brand" :class="c.k === 'total' && 'border-l border-white'" x-text="taCell(null, c)"></td>
+                </template>
+              </tr>
+            </tbody>
+          </table>
+          <div x-show="!taManagers.length" class="py-10 text-center text-sm text-slate-400">No records found.</div>
+        </div>
       </div>
 
       <!-- MOM description viewer -->
@@ -119,26 +213,6 @@
         </div>
       </template>
 
-      <!-- feedback survey -->
-      <template x-if="surveyRow">
-        <div class="fixed inset-0 z-[80] grid place-items-center bg-black/50 p-4" @click.self="surveyRow = null">
-          <div class="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-xl bg-white shadow-xl">
-            <div class="flex items-center justify-between bg-brand px-5 py-3 text-white"><div class="font-bold" x-text="surveys[surveyRow?.job_id] ? 'Edit Feedback' : 'Add Feedback'"></div><button @click="surveyRow = null"><span class="msym">close</span></button></div>
-            <div class="space-y-4 p-5 text-sm">
-              <div class="text-slate-500" x-text="(surveyRow?.job_name || '') + ' — ' + (surveyRow?.received_from || '')"></div>
-              <div><div class="mb-1 font-semibold">1. Overall, how satisfied are you with the job completed?</div>
-                <template x-for="o in ratings"><label class="block"><input type="radio" class="mr-2" name="q1" :value="o" x-model="survey.overall_satisfaction"><span x-text="o"></span></label></template></div>
-              <div><div class="mb-1 font-semibold">2. Please share any additional insights on the above question.</div><textarea rows="3" class="field w-full" x-model="survey.overall_insights"></textarea></div>
-              <div><div class="mb-1 font-semibold">3. How responsive have we been to your queries about the job?</div>
-                <template x-for="o in ratings"><label class="block"><input type="radio" class="mr-2" name="q3" :value="o" x-model="survey.responsiveness"><span x-text="o"></span></label></template></div>
-              <div><div class="mb-1 font-semibold">4. Please share any additional insights on the above question.</div><textarea rows="3" class="field w-full" x-model="survey.responsiveness_insights"></textarea></div>
-              <div><div class="mb-1 font-semibold">5. What can be improved or enhanced in the job delivery?</div><textarea rows="3" class="field w-full" x-model="survey.improvements"></textarea></div>
-              <div x-show="surveyError" class="text-red-600" x-text="surveyError"></div>
-              <div class="flex justify-end gap-2"><button class="rounded-md border border-slate-300 px-4 py-1.5" @click="surveyRow = null">Cancel</button><button class="rounded-md bg-brand px-4 py-1.5 font-semibold text-white" @click="submitSurvey()">Submit</button></div>
-            </div>
-          </div>
-        </div>
-      </template>
     </div>
   </template>
 </div>

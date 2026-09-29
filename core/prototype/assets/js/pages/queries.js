@@ -5,9 +5,9 @@ document.addEventListener('alpine:init', () => {
     { key: 'vertical', label: 'Vertical' }, { key: 'financial_year', label: 'FY' }, { key: 'received_date', label: 'JY' },
     { key: 'last_at', label: 'Last Query' }, { key: 'total', label: 'Total Queries' }, { key: 'open', label: 'Open' }, { key: 'resolved', label: 'Resolved' },
   ];
-  const STATUS_TILES = [['Open', 'border-amber-400'], ['Responded', 'border-blue-500'], ['Resolved', 'border-green-500'], ['Closed', 'border-emerald-700']];
+  const STATUS_TILES = [['Open', 'border-amber-400'], ['Responded', 'border-navy'], ['Resolved', 'border-green-500'], ['Closed', 'border-emerald-700']];
   const AGING_TILES = [['0 - 5 days', 'border-amber-300', (e) => e <= 5], ['5 - 10 days', 'border-orange-400', (e) => e > 5 && e <= 10], ['> 10 days', 'border-red-500', (e) => e > 10]];
-  const CRIT_TILES = [['Low', 'border-yellow-400'], ['Normal', 'border-cyan-400'], ['Medium', 'border-orange-400'], ['High', 'border-red-500']];
+  const CRIT_TILES = [['Low', 'border-yellow-400'], ['Normal', 'border-navy'], ['Medium', 'border-orange-400'], ['High', 'border-red-500']];
 
   Alpine.data('queriesPage', () => ({
     loading: true, jobs: [], queries: [], view: 'jobs', jobId: null, kf: null, qq: '', layout: 'card', dlOpen: false,

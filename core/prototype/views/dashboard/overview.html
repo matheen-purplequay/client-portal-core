@@ -5,8 +5,8 @@
       <h1 class="mb-4 text-center text-2xl font-bold text-slate-800">Dashboard</h1>
       <div class="mb-5 flex justify-center">
         <div class="inline-flex flex-wrap overflow-hidden rounded-md border border-slate-300 bg-white shadow">
-          <button class="border-r border-slate-200 px-4 py-1.5 text-[13px] font-medium" :class="vertical === '' ? 'bg-[#dbe6f5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="vertical = ''">All</button>
-          <template x-for="v in verticals" :key="v.code"><button class="border-r border-slate-200 px-4 py-1.5 text-[13px] font-medium last:border-0" :class="vertical === v.title ? 'bg-[#dbe6f5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="vertical = v.title" x-text="v.title"></button></template>
+          <button class="border-r border-slate-200 px-4 py-1.5 text-[13px] font-medium" :class="vertical === '' ? 'bg-[#e8ebf5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="vertical = ''">All</button>
+          <template x-for="v in verticals" :key="v.code"><button class="border-r border-slate-200 px-4 py-1.5 text-[13px] font-medium last:border-0" :class="vertical === v.title ? 'bg-[#e8ebf5] text-navy' : 'text-slate-700 hover:bg-slate-50'" @click="vertical = v.title" x-text="v.title"></button></template>
         </div>
       </div>
 
@@ -14,10 +14,10 @@
         <template x-for="c in [
           { t: 'Jobs', icon: 'work_outline', route: '/dashboard/job-status', tone: 'text-brand', a: ['Open', s.open], b: ['Closed', s.closed] },
           { t: 'Production Report', icon: 'insights', route: '/dashboard/production-report', tone: 'text-green-700', a: ['Jobs This Month', s.prodJobs], b: ['Productive Hours', s.prodHours] },
-          { t: 'Turnaround Report', icon: 'schedule', route: '/dashboard/turnaround-report', tone: 'text-indigo-700', a: ['Average TAT (Days)', s.avgTat], b: ['Total Closed Jobs', s.closed] },
+          { t: 'Turnaround Report', icon: 'schedule', route: '/dashboard/turnaround-report', tone: 'text-navy', a: ['Average TAT (Days)', s.avgTat], b: ['Total Closed Jobs', s.closed] },
           { t: 'Budget Overview', icon: 'account_balance_wallet', route: '/dashboard/budget-overview', tone: 'text-amber-700', a: ['Within Budget', s.within], b: ['Over Budget', s.over] },
-          { t: 'Feedback', icon: 'feedback', route: '/dashboard/closed-jobs-feedback', tone: 'text-purple-700', a: ['Closed Jobs', s.fbClosed], b: ['Pending Feedback', s.fbPending] },
-          { t: 'Movement', icon: 'swap_horiz', route: '/dashboard/movement', tone: 'text-cyan-700', a: ['New Jobs', s.newJobs], b: ['All Movement', s.allMoves] },
+          { t: 'Feedback', icon: 'feedback', route: '/dashboard/closed-jobs-feedback', tone: 'text-navy', a: ['Closed Jobs', s.fbClosed], b: ['Pending Feedback', s.fbPending] },
+          { t: 'Movement', icon: 'swap_horiz', route: '/dashboard/movement', tone: 'text-navy', a: ['New Jobs', s.newJobs], b: ['All Movement', s.allMoves] },
           { t: 'MOM', icon: 'event_note', route: '/dashboard/mom', tone: 'text-rose-700', a: ['Meetings This Month', s.meetings], b: null },
         ]" :key="c.t">
           <button class="card p-5 text-left transition hover:shadow-lg" @click="go(c.route)">

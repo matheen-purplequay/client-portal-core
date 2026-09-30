@@ -6,6 +6,7 @@
 3. Read `screens.md` before touching UI — it maps each screen to the real portal screen it copies.
 4. Read `data.md` before changing mock JSON.
 5. Check `issues.md` for open assumptions and past bugs.
+6. Check `feature-updates/` for the active plan and its open questions before starting new work.
 
 ## What this project is
 
@@ -19,6 +20,8 @@
 - [issues.md](issues.md) — open assumptions/limitations and resolved bugs
 - [logs.md](logs.md) — session history and decision trail (newest first)
 - [tasks.md](tasks.md) — task list by date
+- [feature-updates/](feature-updates/) — phase-organised plans (goal, scope, tasks by stage, open questions)
+- [docs/](docs/) — reference material dropped in by the team (not authored here); check what a file is before assuming it's part of this prototype
 
 ## Update Rules
 
@@ -27,6 +30,7 @@
 - Update `data.md` when a JSON file or field is added or changed.
 - Update `issues.md` when a bug is found or resolved, or an assumption is confirmed/rejected by the user.
 - Append to `logs.md` at the end of a session or after a significant change; add matching entries to `tasks.md`.
+- Update `feature-updates/<phase>/plan-*.md` as tasks complete or open questions get answered.
 - Only update the wiki after the user confirms the work is done.
 
 ## Ground rules for this project

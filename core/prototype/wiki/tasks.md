@@ -25,3 +25,8 @@
 - [TSK-20260925-07] [no-req] Updated wiki (screens, architecture, data, issues, logs, tasks) — complete
 
 ---
+
+## 2026-09-30
+
+- [TSK-20260930-01] [no-req] Investigated "DevBranch" per user request; found teammate's actual changes were pushed to `prototype-v1` instead; rebased local branch onto origin and pushed (clean, no conflicts) — complete
+- [TSK-20260930-02] [no-req] Smoke-tested the merged `prototype-v1` (both demo clients, all sidebar routes); found and documented a reproducible console error on the MOM page (`taStats`/`taCell`, ungarded in `grid.html`) — complete (fix pending)

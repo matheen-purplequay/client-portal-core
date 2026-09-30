@@ -68,14 +68,19 @@ See [[architecture]] for the technical design, [[screens]] for what each screen 
 - [ ] **Decide on the orphaned `DevBranch`** (local + origin) — one commit behind, unrelated to `prototype-v1`'s real history now. Delete it, or keep it?
 - [ ] **ITR Workflow v8 prototype** (`wiki/docs/ITR-Workflow-v8-Prototype.html`) — separate discussion: whether/how to bring any of its ideas (its Jobs page, step/stage model, lane badges) into this prototype. See Stage 7 below — now in progress.
 
-### Stage 7 — Bring the ITR Workflow v8 prototype's Jobs page into this prototype (in discussion)
+### Stage 7 — "Job Intake" page, adapted from the ITR Workflow v8 prototype (agreed scope, not yet built)
 
-- [ ] Read and understood `wiki/docs/ITR-Workflow-v8-Prototype.html`'s Jobs page (review logged in [[logs]]): 40-step, 3-stage internal workflow (Intake & collection / Processing & workpaper / Agent review), lanes (client, firm, Carisma, Cluster Head, platform/AI, mail), weighted document checklist, Stage/Waiting-on/Complete/Days-in-stage/Loops columns.
-- [ ] **Naming clash:** this prototype already has a "Jobs" page (client-facing, ex-Job Status). Need a distinct name for the incoming internal-workflow view before building anything — candidates to weigh in discussion.
-- [ ] Decide scope: bring in the whole Jobs page (filters, table, New ITR job flow), just the table, or just specific concepts (e.g. stage/lane model, loop counters)?
-- [ ] Decide audience/placement: is this an internal-only view (new sidebar item, maybe role-gated) or does it feed into the existing client-facing Jobs/Job Status page?
-- [ ] Decide data approach: reuse `jobs.json` extended with workflow fields, or a separate dataset (the ITR prototype's own 40-step model, personas and checklist data are unrelated to our current jobs shape).
-- [ ] Once agreed, implement, document in [[screens]]/[[architecture]]/[[data]], and update this stage.
+- [x] Read and understood `wiki/docs/ITR-Workflow-v8-Prototype.html`'s Jobs page: 40-step, 3-stage internal workflow (Intake & collection / Processing & workpaper / Agent review), lanes (client, firm, Carisma, Cluster Head, platform/AI, mail), weighted document checklist, Stage/Waiting-on/Complete/Days-in-stage/Loops columns.
+- [x] **Naming clash resolved:** new page is called **Job Intake**, distinct from the existing client-facing **Jobs** page and from the unrelated **Workflow** (daily stand-up) sidebar item.
+- [x] **Purpose confirmed:** solves "how we get jobs from our client" — document/checklist collection before a job is ready for delivery. Not the full internal production pipeline.
+- [x] **Scope agreed: Stage 1 (Intake & collection) only, and only the slice visible to the firm/client persona** — i.e. what an accounting firm (our logged-in client, e.g. Northwind Advisory — equivalent to the ITR prototype's firm-admin persona "Megan Clarke") would see of their own jobs:
+  - Visible/actionable steps: **Initiate job** (step 1, via a **New Job** button/form — named "New Job", not "New ITR job", since Carisma handles more than ITR work), **Upload profession, PY, CY & docs** (step 2), **Admin collects & adds files** (step 8), **Prioritisation queue** (step 12), **Allocate job to Carisma** (step 13).
+  - Carisma-internal steps (auto-fill, weighted checklist generation, gap analysis, Carisma's data review, reminder/notification emails — steps 3-7, 9-11) are **not shown as steps**; their outcome surfaces the same way the ITR prototype's own Jobs table does it: a weighted checklist-completion % and a missing-Mandatory-document count per job.
+- [x] **Handoff confirmed:** once a job is allocated to Carisma (step 13 / "Move to Stage 2"), it **drops off Job Intake and appears on the existing Jobs page** instead — mirrors the real intake → delivery handoff. No dual-listing.
+- [x] **Data confirmed:** a new `data/clients/<id>/intake.json` per client (not an extension of `jobs.json`) — one entry per job-in-intake, with its checklist items (doc name, category, weight M/E/I, received/missing), computed completion %, current intake step/status, and creation metadata (client name, profession, submitted via the New Job form). Jobs created via New Job live only here until allocated; on allocation they'd need a matching entry added to `jobs.json` (simulated — no real handoff logic, this is a prototype).
+- [ ] Still to decide before building: sidebar placement/icon/route (proposed: `Job Intake`, positioned **before** Jobs in the sidebar since it's the earlier stage, route `#/dashboard/job-intake`); whether verticals apply the same way as Jobs; exact checklist item set per profession (reuse the ITR prototype's `PROFESSIONS`/`ITEMS` catalogue, translated to our mock sub-clients).
+- [ ] Build: `views/dashboard/job-intake.html` + `assets/js/pages/job-intake.js` (list + New Job form + checklist/gap view), `intake.json` mock data, sidebar/router entry, [[screens]]/[[architecture]]/[[data]] updates.
+- [ ] Smoke-test and update this stage to ✅ once built.
 
 ---
 

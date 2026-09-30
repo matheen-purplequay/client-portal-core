@@ -68,7 +68,7 @@ See [[architecture]] for the technical design, [[screens]] for what each screen 
 - [ ] **Decide on the orphaned `DevBranch`** (local + origin) — one commit behind, unrelated to `prototype-v1`'s real history now. Delete it, or keep it?
 - [ ] **ITR Workflow v8 prototype** (`wiki/docs/ITR-Workflow-v8-Prototype.html`) — separate discussion: whether/how to bring any of its ideas (its Jobs page, step/stage model, lane badges) into this prototype. See Stage 7 below — now in progress.
 
-### Stage 7 — "Job Intake" page, adapted from the ITR Workflow v8 prototype (agreed scope, not yet built)
+### Stage 7 — "Job Intake" page, adapted from the ITR Workflow v8 prototype ✅
 
 - [x] Read and understood `wiki/docs/ITR-Workflow-v8-Prototype.html`'s Jobs page: 40-step, 3-stage internal workflow (Intake & collection / Processing & workpaper / Agent review), lanes (client, firm, Carisma, Cluster Head, platform/AI, mail), weighted document checklist, Stage/Waiting-on/Complete/Days-in-stage/Loops columns.
 - [x] **Naming clash resolved:** new page is called **Job Intake**, distinct from the existing client-facing **Jobs** page and from the unrelated **Workflow** (daily stand-up) sidebar item.
@@ -78,9 +78,12 @@ See [[architecture]] for the technical design, [[screens]] for what each screen 
   - Carisma-internal steps (auto-fill, weighted checklist generation, gap analysis, Carisma's data review, reminder/notification emails — steps 3-7, 9-11) are **not shown as steps**; their outcome surfaces the same way the ITR prototype's own Jobs table does it: a weighted checklist-completion % and a missing-Mandatory-document count per job.
 - [x] **Handoff confirmed:** once a job is allocated to Carisma (step 13 / "Move to Stage 2"), it **drops off Job Intake and appears on the existing Jobs page** instead — mirrors the real intake → delivery handoff. No dual-listing.
 - [x] **Data confirmed:** a new `data/clients/<id>/intake.json` per client (not an extension of `jobs.json`) — one entry per job-in-intake, with its checklist items (doc name, category, weight M/E/I, received/missing), computed completion %, current intake step/status, and creation metadata (client name, profession, submitted via the New Job form). Jobs created via New Job live only here until allocated; on allocation they'd need a matching entry added to `jobs.json` (simulated — no real handoff logic, this is a prototype).
-- [ ] Still to decide before building: sidebar placement/icon/route (proposed: `Job Intake`, positioned **before** Jobs in the sidebar since it's the earlier stage, route `#/dashboard/job-intake`); whether verticals apply the same way as Jobs; exact checklist item set per profession (reuse the ITR prototype's `PROFESSIONS`/`ITEMS` catalogue, translated to our mock sub-clients).
-- [ ] Build: `views/dashboard/job-intake.html` + `assets/js/pages/job-intake.js` (list + New Job form + checklist/gap view), `intake.json` mock data, sidebar/router entry, [[screens]]/[[architecture]]/[[data]] updates.
-- [ ] Smoke-test and update this stage to ✅ once built.
+- [x] Sidebar placement/icon/route confirmed and built: `Job Intake` before `Jobs`, route `#/dashboard/job-intake`, icon `upload_file`. No verticals filter (intake predates vertical/Carisma allocation).
+- [x] Built `views/dashboard/job-intake.html` + `assets/js/pages/job-intake.js`: KPI tiles (Collecting/Needs attention/Queued/Ready), searchable card list, expandable per-job checklist with live-recomputed completion %, Send reminder / Move to queue / Allocate to Carisma actions, queue reordering, New Job modal. Checklist catalogue (8 professions, ~20 documents, M=3/E=2/I=1 weighting, 85% ready threshold / 90% urgent threshold) ported from the ITR prototype's `PROFESSIONS`/`ITEMS`/`W`/`DEFAULT_SETTINGS`.
+- [x] `data/clients/<id>/intake.json` generated for both demo clients (9 for Northwind, 6 for Harbourline; a mix of collecting/urgent/queued/ready).
+- [x] Fixed a bug found during smoke-testing: `scoreOf()` returned `pct`/`mMissing` but the template read `j.completion_pct` (the JSON's static field), so document-checkbox toggles never visibly updated the completion bar — renamed the computed fields to match.
+- [x] Smoke-tested both demo clients: KPI filters, checklist toggle (completion % updates live), New Job creation, queue reordering, and Allocate to Carisma (removes the card) all verified with a headless browser.
+- [x] Documented in [[screens]] and [[data]].
 
 ---
 
@@ -90,7 +93,7 @@ See [[architecture]] for the technical design, [[screens]] for what each screen 
 2. **Movement "Balance"** — implemented as `actual − target` (negative shown red). Not confirmed against the real portal's definition. ([[issues]] ISS-009)
 3. **Job Status: 24-column set and "Report" toggle** — only ~12 of the 24 columns and no "Report" view were visible in the supplied screenshots; the rest were invented to fill the UI. Needs confirmation against the real table. ([[issues]] ISS-008) — note: the teammate's merged Jobs table now uses a different, dev-branch-sourced 26-column set (ISS-010); re-check whether this question is still live or superseded.
 4. **Yellow status tiles = client-held job** — inferred from the legend chips and the user's description ("chip tells which side holds the job"); the exact set of client-held statuses was read from screenshot colouring, not confirmed explicitly. ([[issues]] ISS-007)
-5. **Relationship to the ITR Workflow v8 prototype** — now being actively discussed (Stage 7): the prototype's "Jobs" page (internal operations view: firm/Carisma/AI workflow steps, 40 steps) overlaps by name and by subject with our own Jobs page. Naming and scope to be settled in that discussion.
+5. ~~Relationship to the ITR Workflow v8 prototype~~ — resolved: built as the **Job Intake** page (Stage 7), scoped to the firm-visible slice of Stage 1 only.
 6. **Production readiness of the stack** — htmx/Alpine/Tailwind are all loaded from CDN (Tailwind via the Play CDN, not meant for production). Fine for a review prototype; would need vendoring or a real build step if this code is ever reused beyond the demo.
 7. **MOM page bug** — see Stage 6; root cause partly understood (unguarded `cfg.taStats`), not yet fixed or fully explained.
 8. **Teammate's ISS-010–ISS-019 assumptions** — a batch of open assumptions from the Stage 5 merge, not yet reviewed with the user or teammate (Stage 6).

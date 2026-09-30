@@ -52,6 +52,8 @@ const CP = (() => {
   const ROUTES = {
     /* Delivery Dashboard widget screens (keep the pill-tab bar): touch-point Movement, Job Status (Jobs), Queries */
     '/dashboard/home': { view: 'views/dashboard/movement.html', group: 'dashboard', title: 'Delivery Dashboard' },
+    /* Job Intake: firm-facing Stage 1 (document collection) from the ITR Workflow v8 prototype, ahead of Jobs in the sidebar */
+    '/dashboard/job-intake': { view: 'views/dashboard/job-intake.html', group: 'screen', title: 'Job Intake' },
     '/dashboard/job-status': { view: 'views/dashboard/job-status.html', group: 'dashboard', title: 'Jobs' },
     '/dashboard/queries': { view: 'views/dashboard/queries.html', group: 'dashboard', title: 'Queries' },
     /* Screens from the dev branch (config-driven grid = views/dashboard/grid.html, see pages/dev-screens.js) */

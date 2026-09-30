@@ -1,0 +1,816 @@
+[
+ {
+  "intake_id": "NW-5037",
+  "client_name": "Sophie Citizen",
+  "profession": "teacher",
+  "profession_label": "Primary / secondary teacher",
+  "sector": "Education (employee)",
+  "created_on": "2026-09-23",
+  "last_update": "2026-09-23",
+  "status": "urgent",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "supplies",
+    "doc": "Classroom supplies receipts",
+    "category": "Deductions",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "wfh",
+    "doc": "Work-from-home hours log",
+    "category": "Deductions",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pd",
+    "doc": "Professional development / course fees",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "received"
+   },
+   {
+    "key": "wwcc",
+    "doc": "Working with children check renewal",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "received"
+   },
+   {
+    "key": "union",
+    "doc": "Union / professional association fees",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 87,
+  "mandatory_missing": 1
+ },
+ {
+  "intake_id": "NW-5013",
+  "client_name": "Chloe Reyes",
+  "profession": "retiree",
+  "profession_label": "Retiree with investments",
+  "sector": "Retirement",
+  "created_on": "2026-09-20",
+  "last_update": "2026-09-22",
+  "status": "collecting",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "superinc",
+    "doc": "Super income stream statement",
+    "category": "Income",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "dividends",
+    "doc": "Dividend statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "amit",
+    "doc": "Managed fund AMIT statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "cgt",
+    "doc": "Share sale / CGT records",
+    "category": "Capital gains",
+    "weight": "M",
+    "status": "missing"
+   }
+  ],
+  "completion_pct": 8,
+  "mandatory_missing": 5
+ },
+ {
+  "intake_id": "NW-5018",
+  "client_name": "Liam Citizen",
+  "profession": "retail",
+  "profession_label": "Retail or hospitality worker",
+  "sector": "Employee",
+  "created_on": "2026-09-20",
+  "last_update": "2026-09-23",
+  "status": "ready",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "uniform",
+    "doc": "Uniform & laundry records",
+    "category": "Deductions",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "union",
+    "doc": "Union / professional association fees",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "received"
+   },
+   {
+    "key": "shift",
+    "doc": "Shift allowance letter from employer",
+    "category": "Income",
+    "weight": "I",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 100,
+  "mandatory_missing": 0
+ },
+ {
+  "intake_id": "NW-5049",
+  "client_name": "Isabella O'Connor",
+  "profession": "teacher",
+  "profession_label": "Primary / secondary teacher",
+  "sector": "Education (employee)",
+  "created_on": "2026-09-20",
+  "last_update": "2026-09-24",
+  "status": "collecting",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "supplies",
+    "doc": "Classroom supplies receipts",
+    "category": "Deductions",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "wfh",
+    "doc": "Work-from-home hours log",
+    "category": "Deductions",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "pd",
+    "doc": "Professional development / course fees",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "missing"
+   },
+   {
+    "key": "wwcc",
+    "doc": "Working with children check renewal",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "missing"
+   },
+   {
+    "key": "union",
+    "doc": "Union / professional association fees",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "missing"
+   }
+  ],
+  "completion_pct": 13,
+  "mandatory_missing": 3
+ },
+ {
+  "intake_id": "NW-5056",
+  "client_name": "Ruby Bennett",
+  "profession": "ride",
+  "profession_label": "Rideshare / delivery driver",
+  "sector": "Gig economy (business)",
+  "created_on": "2026-09-20",
+  "last_update": "2026-09-22",
+  "status": "collecting",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "uber",
+    "doc": "Rideshare annual tax summary (Uber / DiDi)",
+    "category": "Business",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "mvlog",
+    "doc": "Motor vehicle logbook (12 weeks)",
+    "category": "Business",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "abn",
+    "doc": "ABN & GST registration",
+    "category": "Business",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "carexp",
+    "doc": "Car running expenses (fuel, rego, service)",
+    "category": "Business",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phoneinet",
+    "doc": "Phone & internet bills with work-use %",
+    "category": "Deductions",
+    "weight": "E",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 70,
+  "mandatory_missing": 2
+ },
+ {
+  "intake_id": "NW-5041",
+  "client_name": "Mason Citizen",
+  "profession": "investor",
+  "profession_label": "Property investor (employee)",
+  "sector": "Investors",
+  "created_on": "2026-09-19",
+  "last_update": "2026-09-21",
+  "status": "queued",
+  "priority": 7,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "rental",
+    "doc": "Rental property annual statement (agent)",
+    "category": "Rental property",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "loanint",
+    "doc": "Investment loan interest statement",
+    "category": "Rental property",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "rates",
+    "doc": "Council & water rates",
+    "category": "Rental property",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "depn",
+    "doc": "Depreciation schedule",
+    "category": "Rental property",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "repairs",
+    "doc": "Repairs & maintenance receipts",
+    "category": "Rental property",
+    "weight": "I",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 100,
+  "mandatory_missing": 0
+ },
+ {
+  "intake_id": "NW-5009",
+  "client_name": "Noah Reyes",
+  "profession": "elec",
+  "profession_label": "Electrician (sole trader)",
+  "sector": "Trades (business)",
+  "created_on": "2026-09-17",
+  "last_update": "2026-09-23",
+  "status": "collecting",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bizinc",
+    "doc": "Business income records / invoices",
+    "category": "Business",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "bizbank",
+    "doc": "Business bank statements",
+    "category": "Business",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "mvlog",
+    "doc": "Motor vehicle logbook (12 weeks)",
+    "category": "Business",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "tools",
+    "doc": "Tools & equipment receipts",
+    "category": "Business",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bizins",
+    "doc": "Business & public liability insurance",
+    "category": "Business",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "bas",
+    "doc": "BAS lodged for 2025-26",
+    "category": "Business",
+    "weight": "E",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 40,
+  "mandatory_missing": 4
+ },
+ {
+  "intake_id": "NW-5033",
+  "client_name": "Henry Singh",
+  "profession": "elec",
+  "profession_label": "Electrician (sole trader)",
+  "sector": "Trades (business)",
+  "created_on": "2026-09-05",
+  "last_update": "2026-09-06",
+  "status": "collecting",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bizinc",
+    "doc": "Business income records / invoices",
+    "category": "Business",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "bizbank",
+    "doc": "Business bank statements",
+    "category": "Business",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "mvlog",
+    "doc": "Motor vehicle logbook (12 weeks)",
+    "category": "Business",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "tools",
+    "doc": "Tools & equipment receipts",
+    "category": "Business",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "bizins",
+    "doc": "Business & public liability insurance",
+    "category": "Business",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bas",
+    "doc": "BAS lodged for 2025-26",
+    "category": "Business",
+    "weight": "E",
+    "status": "missing"
+   }
+  ],
+  "completion_pct": 60,
+  "mandatory_missing": 2
+ },
+ {
+  "intake_id": "NW-5025",
+  "client_name": "Ella Citizen",
+  "profession": "retiree",
+  "profession_label": "Retiree with investments",
+  "sector": "Retirement",
+  "created_on": "2026-08-30",
+  "last_update": "2026-09-23",
+  "status": "queued",
+  "priority": 4,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "superinc",
+    "doc": "Super income stream statement",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "dividends",
+    "doc": "Dividend statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "amit",
+    "doc": "Managed fund AMIT statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "cgt",
+    "doc": "Share sale / CGT records",
+    "category": "Capital gains",
+    "weight": "M",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 100,
+  "mandatory_missing": 0
+ }
+]

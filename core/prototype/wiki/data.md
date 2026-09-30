@@ -32,6 +32,7 @@ Both clients see the same screens; only verticals and data differ.
 | `invoices.json` | `[{ invoice_no, period, issued_on, due_on, amount, gst, total, currency, status (Paid/Due/Overdue) }]` | Reports → Invoices |
 | `team.json` | `[{ name, role, group, email }]` (group "Leadership" or a vertical) | Team |
 | `profile.json` | `{ company, abn, city, contracts, verticals, engagement_start, account_manager, support_email, support_phone }` | Profile, Contact Us |
+| `intake.json` | `[{ intake_id, client_name, profession, profession_label, sector, created_on, last_update, status (collecting/urgent/queued/ready — recomputed client-side from checklist), priority (queue position, or null), checklist: [{ key, doc, category, weight (M/E/I), status (received/missing) }], completion_pct, mandatory_missing }]` — completion/status are recomputed live from `checklist` by `job-intake.js`; the JSON's own `completion_pct`/`mandatory_missing`/`status` are only the as-generated starting point | Job Intake |
 | `notifications.json` | `[{ title, body, route, action_title }]` — `route` is an app route such as `/dashboard/queries` | Bell menu |
 
 ### Added for the dev-branch screens (per client)

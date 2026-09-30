@@ -15,6 +15,7 @@
 <script src="assets/js/core.js"></script>
 <script src="assets/js/pages/movement.js"></script>
 <script src="assets/js/pages/job-status.js"></script>
+<script src="assets/js/pages/job-intake.js"></script>
 <script src="assets/js/pages/queries.js"></script>
 <script src="assets/js/pages/dev-screens.js"></script>
 <script src="assets/js/pages/job-popup.js"></script>
@@ -57,6 +58,7 @@
     <aside class="fixed inset-y-0 left-0 z-50 flex w-[250px] shrink-0 -translate-x-full flex-col justify-between overflow-y-auto bg-white px-2 pb-3 pt-14 shadow-2xl transition-transform duration-200 lg:static lg:z-auto lg:min-h-[calc(100vh-52px)] lg:translate-x-0 lg:overflow-visible lg:bg-transparent lg:pt-2 lg:shadow-none" :class="menu && '!translate-x-0'" @click="menu = false">
       <nav class="space-y-0.5">
         <a href="#/dashboard/landing" class="side-link" :class="$store.app.route === '/dashboard/landing' && 'active'"><span class="msym">home</span>Home</a>
+        <a href="#/dashboard/job-intake" class="side-link" :class="$store.app.route === '/dashboard/job-intake' && 'active'"><span class="msym">upload_file</span>Job Intake</a>
         <a href="#/dashboard/job-status" class="side-link" :class="$store.app.route === '/dashboard/job-status' && 'active'"><span class="msym">work</span>Jobs</a>
         <a href="#/dashboard/job-allocation" class="side-link" :class="$store.app.route === '/dashboard/job-allocation' && 'active'"><span class="msym">assignment_ind</span>Job Allocation</a>
         <a href="#/dashboard/queries" class="side-link" :class="$store.app.route === '/dashboard/queries' && 'active'"><span class="msym">help</span>Queries</a>

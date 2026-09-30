@@ -30,3 +30,5 @@
 
 - [TSK-20260930-01] [no-req] Investigated "DevBranch" per user request; found teammate's actual changes were pushed to `prototype-v1` instead; rebased local branch onto origin and pushed (clean, no conflicts) — complete
 - [TSK-20260930-02] [no-req] Smoke-tested the merged `prototype-v1` (both demo clients, all sidebar routes); found and documented a reproducible console error on the MOM page (`taStats`/`taCell`, ungarded in `grid.html`) — complete (fix pending)
+- [TSK-20260930-03] [no-req] Discussed and agreed scope for bringing the ITR Workflow v8 prototype's Jobs page into this prototype: named "Job Intake", scoped to firm-visible Stage 1 only, handoff to Jobs page simulated, new intake.json data model — complete
+- [TSK-20260930-04] [no-req] Built and smoke-tested the Job Intake page (view, Alpine page, mock data, sidebar/router wiring); fixed a completion-percent field-name bug found during testing — complete

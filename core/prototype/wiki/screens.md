@@ -26,6 +26,17 @@ Screens were first matched to screenshots of the real portal (Angular shell + `d
 
 Palette: two colours only — **navy** for normal cards, **maroon** for the manager-side cards (Jobs in Manager Queries, Sent for Manager Review, Sent for Manager Final Review) and Over Budget. WIP Review Replies is Carisma-side, so it is navy. Status buckets: queries = Sent For Queries + Awaiting Queries*; review = Sent For Review + Workpapers Completed Initial; final = Sent For Final Review + Workpapers Completed Final.
 
+## Job Intake — `#/dashboard/job-intake` · `views/dashboard/job-intake.html` · `jobIntakePage`
+
+The firm-facing slice of Stage 1 ("Intake & collection") adapted from the ITR Workflow v8 prototype (`wiki/docs/ITR-Workflow-v8-Prototype.html`) — see [[../feature-updates/phase-1/plan-stage-1|plan-stage-1]] Stage 7 for how the scope was agreed. Placed in the sidebar just before Jobs, since it covers the stage before a job reaches the Jobs page.
+
+- Purpose: track document/checklist collection for a job **before** it is allocated to Carisma — "how we get jobs from our client" — not the internal Carisma processing pipeline (auto-fill, gap analysis, reviewer checks), which only surfaces as the checklist completion % and missing-Mandatory count, same as the source prototype's own Jobs table.
+- KPI tiles: Collecting documents, Needs attention (Mandatory missing, ≥90% complete — "urgent" in the source prototype), In prioritisation queue, Ready to allocate (≥85% complete, weighted M=3/E=2/I=1, with zero Mandatory missing). Click a tile to filter the list.
+- Each job is a card: client name, profession, status badge, completion bar (colour follows status), started/updated dates, missing-Mandatory count. Expands to a checklist (document, weight chip, category) — checking an item toggles received/missing and recomputes the completion % live.
+- Actions per card: **Send reminder** (toast, simulates the source prototype's reminder-email step), **Move to prioritisation queue** (once ready), **Allocate to Carisma** (removes the card — the handoff onward is simulated with a toast, *not* wired into `jobs.json`; a real job with this name will not appear on the Jobs page). Queued jobs can be reordered with ▲/▼ (sets `priority`).
+- **New Job** button opens a modal (name, profession, optional notes) — creates a new intake entry with an empty checklist built from the chosen profession's document list (same catalogue as the source prototype, trimmed to 8 professions). Named "New Job", not "New ITR job", since Carisma handles more than ITR work.
+- State is in-memory only (like the rest of the prototype) — reload resets everything to `intake.json`.
+
 ## Jobs — `#/dashboard/job-status` · `views/dashboard/job-status.html` · `jobStatusPage`
 
 Mirrors the dev `/dashboard/job-status` (dash-movement job tables).

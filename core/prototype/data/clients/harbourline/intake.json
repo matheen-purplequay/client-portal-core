@@ -1,0 +1,533 @@
+[
+ {
+  "intake_id": "HB-5009",
+  "client_name": "Lucas Rossi",
+  "profession": "retiree",
+  "profession_label": "Retiree with investments",
+  "sector": "Retirement",
+  "created_on": "2026-09-23",
+  "last_update": "2026-09-23",
+  "status": "ready",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "superinc",
+    "doc": "Super income stream statement",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "dividends",
+    "doc": "Dividend statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "amit",
+    "doc": "Managed fund AMIT statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "cgt",
+    "doc": "Share sale / CGT records",
+    "category": "Capital gains",
+    "weight": "M",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 100,
+  "mandatory_missing": 0
+ },
+ {
+  "intake_id": "HB-5043",
+  "client_name": "Amelia Singh",
+  "profession": "investor",
+  "profession_label": "Property investor (employee)",
+  "sector": "Investors",
+  "created_on": "2026-09-22",
+  "last_update": "2026-09-22",
+  "status": "collecting",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "rental",
+    "doc": "Rental property annual statement (agent)",
+    "category": "Rental property",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "loanint",
+    "doc": "Investment loan interest statement",
+    "category": "Rental property",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "rates",
+    "doc": "Council & water rates",
+    "category": "Rental property",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "depn",
+    "doc": "Depreciation schedule",
+    "category": "Rental property",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "repairs",
+    "doc": "Repairs & maintenance receipts",
+    "category": "Rental property",
+    "weight": "I",
+    "status": "missing"
+   }
+  ],
+  "completion_pct": 8,
+  "mandatory_missing": 5
+ },
+ {
+  "intake_id": "HB-5017",
+  "client_name": "Ethan Whitfield",
+  "profession": "teacher",
+  "profession_label": "Primary / secondary teacher",
+  "sector": "Education (employee)",
+  "created_on": "2026-09-16",
+  "last_update": "2026-09-19",
+  "status": "collecting",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "missing"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "supplies",
+    "doc": "Classroom supplies receipts",
+    "category": "Deductions",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "wfh",
+    "doc": "Work-from-home hours log",
+    "category": "Deductions",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pd",
+    "doc": "Professional development / course fees",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "missing"
+   },
+   {
+    "key": "wwcc",
+    "doc": "Working with children check renewal",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "received"
+   },
+   {
+    "key": "union",
+    "doc": "Union / professional association fees",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 57,
+  "mandatory_missing": 3
+ },
+ {
+  "intake_id": "HB-5031",
+  "client_name": "Jack Okafor",
+  "profession": "investor",
+  "profession_label": "Property investor (employee)",
+  "sector": "Investors",
+  "created_on": "2026-09-14",
+  "last_update": "2026-09-17",
+  "status": "queued",
+  "priority": 4,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "rental",
+    "doc": "Rental property annual statement (agent)",
+    "category": "Rental property",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "loanint",
+    "doc": "Investment loan interest statement",
+    "category": "Rental property",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "rates",
+    "doc": "Council & water rates",
+    "category": "Rental property",
+    "weight": "E",
+    "status": "missing"
+   },
+   {
+    "key": "depn",
+    "doc": "Depreciation schedule",
+    "category": "Rental property",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "repairs",
+    "doc": "Repairs & maintenance receipts",
+    "category": "Rental property",
+    "weight": "I",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 85,
+  "mandatory_missing": 0
+ },
+ {
+  "intake_id": "HB-5037",
+  "client_name": "Ruby Santos",
+  "profession": "nurse",
+  "profession_label": "Registered nurse",
+  "sector": "Health (employee)",
+  "created_on": "2026-09-12",
+  "last_update": "2026-09-21",
+  "status": "ready",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "uniform",
+    "doc": "Uniform & laundry records",
+    "category": "Deductions",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "ahpra",
+    "doc": "AHPRA registration fee receipt",
+    "category": "Deductions",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "union",
+    "doc": "Union / professional association fees",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "received"
+   },
+   {
+    "key": "shift",
+    "doc": "Shift allowance letter from employer",
+    "category": "Income",
+    "weight": "I",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 100,
+  "mandatory_missing": 0
+ },
+ {
+  "intake_id": "HB-5025",
+  "client_name": "Hannah Martin",
+  "profession": "nurse",
+  "profession_label": "Registered nurse",
+  "sector": "Health (employee)",
+  "created_on": "2026-09-07",
+  "last_update": "2026-09-23",
+  "status": "ready",
+  "priority": null,
+  "checklist": [
+   {
+    "key": "prefill",
+    "doc": "ATO Pre-fill report 2025-26",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "pyitr",
+    "doc": "Prior-year tax return & notice of assessment",
+    "category": "Firm inputs",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "incstmt",
+    "doc": "Income statement(s) from employer(s)",
+    "category": "Income",
+    "weight": "M",
+    "status": "received"
+   },
+   {
+    "key": "interest",
+    "doc": "Bank interest statements",
+    "category": "Income",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "phi",
+    "doc": "Private health insurance tax statement",
+    "category": "Offsets & levies",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "bank",
+    "doc": "Refund bank account confirmation",
+    "category": "Identity & contact",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "uniform",
+    "doc": "Uniform & laundry records",
+    "category": "Deductions",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "ahpra",
+    "doc": "AHPRA registration fee receipt",
+    "category": "Deductions",
+    "weight": "E",
+    "status": "received"
+   },
+   {
+    "key": "union",
+    "doc": "Union / professional association fees",
+    "category": "Deductions",
+    "weight": "I",
+    "status": "received"
+   },
+   {
+    "key": "shift",
+    "doc": "Shift allowance letter from employer",
+    "category": "Income",
+    "weight": "I",
+    "status": "received"
+   }
+  ],
+  "completion_pct": 100,
+  "mandatory_missing": 0
+ }
+]

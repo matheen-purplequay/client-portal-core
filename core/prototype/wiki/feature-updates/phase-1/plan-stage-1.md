@@ -51,19 +51,42 @@ See [[architecture]] for the technical design, [[screens]] for what each screen 
 - [x] Drafted an introduction email for the team/managers/bosses, covering purpose, included screens, and a login guide
 - [x] Reviewed a separate ITR Workflow v8 prototype built by the user's manager (`wiki/docs/ITR-Workflow-v8-Prototype.html`) — a different, internal-operations-facing prototype (firm/Carisma/AI workflow steps), not integrated with this one
 
-### Stage 5 — Incorporate teammate's changes (pending — details to follow)
+### Stage 5 — Merge teammate's changes (DevBranch / `prototype-v1`) ✅
 
-- [ ] **Dashboard tabs → separate pages.** The teammate has restructured the client dashboard so Movement, Job Status and Queries are no longer tabs under one Delivery Dashboard page — each is now its own page. Once details arrive: update the sidebar navigation, the router (`ROUTES` in `assets/js/core.js`), `app.html`'s pill-tab bar (currently shown only for `/dashboard/*` routes), and [[screens]] / [[architecture]] to match.
-- [ ] Capture any other significant changes the teammate made (not yet described)
-- [ ] Re-verify the affected screens with a smoke test after the change
+- [x] **Dashboard tabs → separate pages.** Confirmed and merged: Movement, Job Status ("Jobs") and Queries are no longer tabs under one Delivery Dashboard page — the sidebar grew from 3 dashboard links to 11 (Home, Jobs, Job Allocation, Queries, Movement, Budget Overview, MOM, Production Report, Turnaround Report, Feedback, Workflow), each its own route/page; default route is now `/dashboard/landing` (Home)
+- [x] Found the teammate's work was actually pushed to `prototype-v1` (not the literal `DevBranch`, which only held this session's wiki-only commit); reconciled by rebasing local `prototype-v1` onto origin and pushing — clean, no conflicts
+- [x] Reviewed what was added: a shared config-driven `gridPage` component (`assets/js/pages/dev-screens.js` + `views/dashboard/grid.html`) powering most of the new screens, and a reusable job-detail popup (`job-popup.js` + `components/job-detail.html`) opened from any job name
+- [x] Confirmed the teammate already documented the change thoroughly themselves in [[screens]], [[issues]] (ISS-010–ISS-019), [[data]], [[architecture]] and [[tasks]] — no rework needed there
+- [x] Smoke-tested the merged branch (both demo clients, every sidebar route)
+
+### Stage 6 — Follow-up from the Stage 5 merge (pending)
+
+- [ ] **Fix the MOM page bug.** `#/dashboard/mom` throws `Cannot read properties of undefined (reading 'call')` in the console (`dev-screens.js` `taStats`/`taCell`, `views/dashboard/grid.html` ~line 196-198). Page still renders correctly. Fix: guard `cfg.taStats` so grid configs without it (everything except Turnaround Report) don't hit `.call()` on `undefined`.
+- [ ] **Root-cause why only MOM reproduces it.** The same unguarded pattern sits in `grid.html` for every `gridPage` screen; other `tabs:false` screens (e.g. Workflow) didn't throw in testing. Worth confirming MOM is really the only instance before considering it closed.
+- [ ] **Resolve the teammate's open assumptions** (ISS-010–ISS-019 in [[issues]]): sidebar order, Manager View visibility by role, SMSF's "Not Yet Taken" status, derived mock values (turnaround Carisma/client split, production figures), and the rest — needs the user's or teammate's confirmation against the real portal, not something to resolve unilaterally.
+- [ ] **Update this plan's Stage 5/6 record** as each of the above closes.
+- [ ] **Decide on the orphaned `DevBranch`** (local + origin) — one commit behind, unrelated to `prototype-v1`'s real history now. Delete it, or keep it?
+- [ ] **ITR Workflow v8 prototype** (`wiki/docs/ITR-Workflow-v8-Prototype.html`) — separate discussion: whether/how to bring any of its ideas (its Jobs page, step/stage model, lane badges) into this prototype. See Stage 7 below — now in progress.
+
+### Stage 7 — Bring the ITR Workflow v8 prototype's Jobs page into this prototype (in discussion)
+
+- [ ] Read and understood `wiki/docs/ITR-Workflow-v8-Prototype.html`'s Jobs page (review logged in [[logs]]): 40-step, 3-stage internal workflow (Intake & collection / Processing & workpaper / Agent review), lanes (client, firm, Carisma, Cluster Head, platform/AI, mail), weighted document checklist, Stage/Waiting-on/Complete/Days-in-stage/Loops columns.
+- [ ] **Naming clash:** this prototype already has a "Jobs" page (client-facing, ex-Job Status). Need a distinct name for the incoming internal-workflow view before building anything — candidates to weigh in discussion.
+- [ ] Decide scope: bring in the whole Jobs page (filters, table, New ITR job flow), just the table, or just specific concepts (e.g. stage/lane model, loop counters)?
+- [ ] Decide audience/placement: is this an internal-only view (new sidebar item, maybe role-gated) or does it feed into the existing client-facing Jobs/Job Status page?
+- [ ] Decide data approach: reuse `jobs.json` extended with workflow fields, or a separate dataset (the ITR prototype's own 40-step model, personas and checklist data are unrelated to our current jobs shape).
+- [ ] Once agreed, implement, document in [[screens]]/[[architecture]]/[[data]], and update this stage.
 
 ---
 
 ## Open Questions
 
-1. **Dashboard restructure details** — waiting on the user to describe the teammate's separate-pages change fully before implementing (Stage 5).
+1. ~~Dashboard restructure details~~ — resolved: merged in Stage 5.
 2. **Movement "Balance"** — implemented as `actual − target` (negative shown red). Not confirmed against the real portal's definition. ([[issues]] ISS-009)
-3. **Job Status: 24-column set and "Report" toggle** — only ~12 of the 24 columns and no "Report" view were visible in the supplied screenshots; the rest were invented to fill the UI. Needs confirmation against the real table. ([[issues]] ISS-008)
-4. **Yellow status tiles = client-held job** — inferred from the legend chips and the user's description ("chip tells which side holds the job"); the exact set of client-held statuses (Sent For Queries / Review / Final Review) was read from screenshot colouring, not confirmed explicitly. ([[issues]] ISS-007)
-5. **Relationship to the ITR Workflow v8 prototype** — that prototype (internal operations view: firm/Carisma/AI steps, 40-step workflow) overlaps conceptually with our Job Status page but serves a different audience. Not clear yet whether/how the two should align (e.g. shared step/status vocabulary) or stay independent.
+3. **Job Status: 24-column set and "Report" toggle** — only ~12 of the 24 columns and no "Report" view were visible in the supplied screenshots; the rest were invented to fill the UI. Needs confirmation against the real table. ([[issues]] ISS-008) — note: the teammate's merged Jobs table now uses a different, dev-branch-sourced 26-column set (ISS-010); re-check whether this question is still live or superseded.
+4. **Yellow status tiles = client-held job** — inferred from the legend chips and the user's description ("chip tells which side holds the job"); the exact set of client-held statuses was read from screenshot colouring, not confirmed explicitly. ([[issues]] ISS-007)
+5. **Relationship to the ITR Workflow v8 prototype** — now being actively discussed (Stage 7): the prototype's "Jobs" page (internal operations view: firm/Carisma/AI workflow steps, 40 steps) overlaps by name and by subject with our own Jobs page. Naming and scope to be settled in that discussion.
 6. **Production readiness of the stack** — htmx/Alpine/Tailwind are all loaded from CDN (Tailwind via the Play CDN, not meant for production). Fine for a review prototype; would need vendoring or a real build step if this code is ever reused beyond the demo.
+7. **MOM page bug** — see Stage 6; root cause partly understood (unguarded `cfg.taStats`), not yet fixed or fully explained.
+8. **Teammate's ISS-010–ISS-019 assumptions** — a batch of open assumptions from the Stage 5 merge, not yet reviewed with the user or teammate (Stage 6).
+9. **`DevBranch` disposition** — delete or keep the now-orphaned branch (Stage 6).

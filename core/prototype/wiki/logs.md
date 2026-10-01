@@ -1,5 +1,14 @@
 # Logs
 
+## 2026-10-01 — Job Intake: side drawer replaced with folder tabs, two-column detail
+
+- User asked for the Jobs page's own folder-tab pattern (click a row → opens as a tab, "Jobs List"-equivalent tab always present, × to close) instead of a side drawer, pointing at `modules/client-side/dp-dash-movement`'s screenshots. Confirmed in the real source: `JobTabBar`/`JobTabButton` components, shared across all four vertical job tables (`bs/smsf/fp/bk-job-table`) — a permanent "Jobs List" tab + one numbered tab per opened job, selected tab lifted/solid-coloured, Shift+click opens a background tab (confirmed via the seed copy "Use SHIFT + Click to open job details in background tab"). Matches what we'd already built for our own Jobs page from earlier screenshots, so reused that same `open[]`/`active`/`openJob(j, ev)`/`closeJob(id)` pattern directly rather than inventing a new one.
+- Replaced the side drawer with a permanent "Job Intake / All jobs" tab plus per-job tabs (title = client name, subtitle = profession).
+- User specified the tab content layout: **left column** — Received documents, Customer follow-up documents (renamed from "Still needed"), Timeline; **right column** — Basic job details, Document completeness, Reminder details. Built as a two-column grid inside the tab panel, reusing all the gap-resolution content from the former drawer (completeness donut, Still needed/Received/Doesn't-apply, add-a-document form, reminders, queue/allocate actions) rearranged into those two columns.
+- Added a **Timeline** section (not in the drawer before) — a two-point horizontal timeline ("Job started" → current status), in the same dot/gap visual style as the Jobs page's own Job Timeline. We don't keep a full event history for intake jobs, so this is deliberately minimal rather than invented.
+- **Bug found and fixed while smoke-testing:** the timeline's day-gap calculation (`CP.daysBetween(timeline(job)[i-1].on, ...)`) ran for every entry regardless of `x-show="i > 0"` — same class of bug as the earlier MOM page issue (Alpine evaluates `x-text` bindings even when the element is hidden by `x-show`). Fixed with an inline ternary guard instead of relying on `x-show` to prevent evaluation.
+- Verified with a headless browser on both demo clients: opening a tab, Shift+click opening a background tab without switching, multiple tabs open at once, closing a tab, and the two-column content rendering correctly — no console errors.
+
 ## 2026-10-01 — Job Intake: filters moved into the toolbar, "Show Columns"-style
 
 - User asked for Stage/Waiting on/Step to sit inline in the toolbar before Refresh, styled like the "Show Columns" toggle (button + floating panel) instead of native `<select>` dropdowns in their own row above the table.

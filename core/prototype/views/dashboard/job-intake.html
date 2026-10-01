@@ -20,7 +20,19 @@
         </template>
       </div>
 
-      <div class="rounded-2xl border border-brand bg-white">
+      <!-- folder tabs (same pattern as the Jobs page: a permanent list tab + one tab per opened job) -->
+      <div class="ml-4 flex items-end gap-1">
+        <button class="rounded-t-lg px-4 py-2 text-left text-[11px] font-bold leading-tight" :class="active === 'list' ? 'bg-brand text-white' : 'bg-slate-200 text-slate-600'" @click="active = 'list'">Job Intake<br><span>All jobs</span></button>
+        <template x-for="(id, i) in open" :key="id">
+          <div class="flex items-center gap-2 rounded-t-lg px-3 py-2 text-[11px] font-bold leading-tight" :class="active === id ? 'bg-navy text-white' : 'bg-slate-300 text-slate-700'">
+            <button class="max-w-[170px] truncate text-left" @click="active = id"><span x-text="(i + 1) + '. ' + jobOf(id).client_name"></span><br><span class="font-semibold opacity-80" x-text="jobOf(id).profession_label"></span></button>
+            <button @click="closeJob(id)"><span class="msym !text-[16px]">close</span></button>
+          </div>
+        </template>
+      </div>
+
+      <!-- jobs list -->
+      <div x-show="active === 'list'" class="rounded-2xl border border-brand bg-white">
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-3 py-2">
           <div class="relative">
             <div class="text-[11px] font-bold text-slate-600">Show Columns</div>
@@ -66,7 +78,7 @@
             <thead><tr><template x-for="c in tbl.cols" :key="c.key"><th @click="tbl.sortBy(c.key)"><span x-text="c.label"></span><span x-show="tbl.sortKey === c.key" class="text-[9px]" x-text="tbl.dir > 0 ? ' ▲' : ' ▼'"></span></th></template></tr></thead>
             <tbody>
               <template x-for="r in tbl.slice" :key="r.intake_id">
-                <tr class="cursor-pointer" @click="openJob(r)">
+                <tr class="cursor-pointer" @click="openJob(r, $event)">
                   <template x-for="c in tbl.cols" :key="c.key">
                     <td :class="c.bold && 'link font-medium'">
                       <template x-if="c.key === 'status'"><span class="inline-block rounded-full px-2.5 py-0.5 text-xs font-medium" :class="{ amber: 'bg-amber-100 text-amber-800', red: 'bg-red-100 text-red-800', blue: 'bg-blue-100 text-blue-800', green: 'bg-green-100 text-green-800' }[tone(r)]" x-text="label(r.status)"></span></template>
@@ -86,127 +98,161 @@
         <div x-component="'pagination-status'"></div>
       </div>
 
-      <!-- checklist + actions drawer -->
-      <div x-show="view" x-transition.opacity class="fixed inset-0 z-40 flex justify-end bg-black/30" @click.self="closeJob()" @keydown.escape.window="closeJob()">
-        <template x-if="view">
-          <div class="h-full w-full max-w-xl overflow-y-auto bg-white p-5 shadow-xl">
-            <div class="mb-4 flex items-start justify-between">
-              <div>
-                <h3 class="text-lg font-semibold" x-text="view.client_name"></h3>
-                <p class="text-xs text-slate-500" x-text="view.profession_label"></p>
-                <div class="mt-1 flex items-center gap-2">
-                  <span class="inline-block rounded-full px-2.5 py-0.5 text-xs font-medium" :class="{ amber: 'bg-amber-100 text-amber-800', red: 'bg-red-100 text-red-800', blue: 'bg-blue-100 text-blue-800', green: 'bg-green-100 text-green-800' }[tone(view)]" x-text="label(view.status)"></span>
-                  <span x-show="view.priority" class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-500" x-text="'Queue #' + view.priority"></span>
-                </div>
-              </div>
-              <button @click="closeJob()"><span class="msym">close</span></button>
+      <!-- job detail tab: left = documents + timeline, right = job details / completeness / reminders -->
+      <template x-if="active !== 'list' && job">
+        <div class="fade-in overflow-hidden rounded-2xl border border-navy bg-white">
+          <div class="flex flex-wrap items-center gap-3 border-b px-4 py-3">
+            <button class="flex items-center gap-1 rounded-full bg-slate-100 px-4 py-1.5 text-sm font-medium hover:bg-slate-200" @click="closeJob(active)"><span class="msym">close</span>Close</button>
+            <div class="border-l pl-4">
+              <div class="text-lg font-bold text-navy" x-text="job.client_name"></div>
+              <div class="text-[11px] font-bold text-slate-500" x-text="job.job_title"></div>
             </div>
+            <span class="ml-auto inline-block rounded-full px-2.5 py-0.5 text-xs font-medium" :class="{ amber: 'bg-amber-100 text-amber-800', red: 'bg-red-100 text-red-800', blue: 'bg-blue-100 text-blue-800', green: 'bg-green-100 text-green-800' }[tone(job)]" x-text="label(job.status)"></span>
+          </div>
 
-            <!-- Document completeness -->
-            <div class="mb-4 rounded-xl border p-4">
-              <h4 class="mb-3 text-xs font-bold uppercase tracking-wide text-slate-400">Document completeness</h4>
-              <div class="flex items-center gap-5">
-                <div class="gauge shrink-0" :style="'background: conic-gradient(' + toneHex(view) + ' calc(' + view.completion_pct + '*1%), #eef0f4 0)'">
-                  <div><b class="block text-2xl font-semibold leading-none" x-text="view.completion_pct + '%'"></b><span class="mt-1 block text-[10px] leading-none text-slate-400">weighted</span></div>
-                </div>
-                <div class="flex-1">
-                  <p class="mb-2 text-sm font-semibold" :class="readyMsg(view).cls" x-text="readyMsg(view).text"></p>
-                  <div class="space-y-1 text-sm">
-                    <template x-for="w in ['M', 'E', 'I']" :key="w">
-                      <div class="flex items-center justify-between">
-                        <span class="flex items-center gap-2"><span class="w-5 shrink-0 rounded text-center text-[10px] font-bold" :class="{ M: 'bg-red-100 text-red-700', E: 'bg-amber-100 text-amber-800', I: 'bg-blue-100 text-blue-700' }[w]" x-text="w"></span><span x-text="{ M: 'Mandatory', E: 'Essential', I: 'Info' }[w]"></span></span>
-                        <span class="font-medium text-slate-600" x-text="view.counts[w].rec + ' / ' + view.counts[w].tot"></span>
+          <div class="grid gap-4 p-4 lg:grid-cols-[1fr_300px]">
+            <!-- left column -->
+            <div class="min-w-0 space-y-4">
+              <!-- Customer follow-up documents (still needed) -->
+              <div class="rounded-xl border p-4">
+                <h4 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Customer follow-up documents</h4>
+                <template x-if="stillNeeded.length">
+                  <div class="divide-y rounded-xl border">
+                    <template x-for="c in stillNeeded" :key="c.key">
+                      <div class="flex flex-wrap items-center gap-3 px-3 py-2.5">
+                        <span class="w-6 shrink-0 rounded text-center text-[10px] font-bold" :class="{ M: 'bg-red-100 text-red-700', E: 'bg-amber-100 text-amber-800', I: 'bg-blue-100 text-blue-700' }[c.weight]" x-text="c.weight"></span>
+                        <div class="min-w-[160px] flex-1"><div class="text-sm font-medium text-slate-700" x-text="c.doc"></div><div class="text-[11px] text-slate-400" x-text="c.category + ' · ' + c.reason"></div></div>
+                        <div class="flex shrink-0 flex-wrap gap-1.5">
+                          <button class="rounded-md border px-2 py-1 text-[11px] font-semibold text-slate-600 hover:border-brand hover:text-brand" @click="markReceived(job, c, false)">Client sent it</button>
+                          <button class="rounded-md border px-2 py-1 text-[11px] font-semibold text-slate-600 hover:border-brand hover:text-brand" @click="markReceived(job, c, true)">Upload</button>
+                          <button class="rounded-md px-2 py-1 text-[11px] font-semibold text-slate-400 hover:text-brand" @click="markNA(job, c)">Doesn't apply</button>
+                        </div>
                       </div>
                     </template>
                   </div>
+                </template>
+                <p x-show="!stillNeeded.length" class="text-sm text-slate-400">Nothing left to follow up — every document is in or marked not applicable.</p>
+
+                <!-- Add a document to the checklist -->
+                <div class="mt-3 rounded-xl border border-dashed p-3">
+                  <h5 class="mb-2 text-[11px] font-bold uppercase tracking-wide text-slate-400">Add a document to the checklist (optional)</h5>
+                  <div class="flex flex-wrap gap-2">
+                    <input class="min-w-[180px] flex-1 rounded-lg border-slate-300 text-sm focus:border-brand focus:ring-brand" placeholder="e.g. Letter from employer about travel" x-model="newDoc.name" @keydown.enter="addChecklistItem(job)">
+                    <select class="rounded-lg border-slate-300 text-sm focus:border-brand focus:ring-brand" x-model="newDoc.weight"><option value="M">Mandatory</option><option value="E">Essential</option><option value="I">Info</option></select>
+                    <button class="rounded-md bg-slate-800 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-700" @click="addChecklistItem(job)">Add to checklist</button>
+                  </div>
                 </div>
+
+                <!-- Doesn't apply (collapsed into this card so the follow-up/received split stays the headline) -->
+                <template x-if="notApplicable.length">
+                  <div class="mt-3">
+                    <h5 class="mb-1 text-[11px] font-bold uppercase tracking-wide text-slate-400">Doesn't apply</h5>
+                    <div class="divide-y rounded-xl border">
+                      <template x-for="c in notApplicable" :key="c.key">
+                        <div class="flex items-center gap-3 px-3 py-2 text-sm text-slate-400">
+                          <span class="msym !text-[16px]">block</span>
+                          <span class="flex-1 line-through" x-text="c.doc"></span>
+                          <button class="text-slate-300 hover:text-brand" title="Undo" @click="markMissing(job, c)"><span class="msym !text-[16px]">undo</span></button>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </template>
               </div>
-            </div>
 
-            <!-- Reminders & timers -->
-            <div class="mb-4 grid grid-cols-3 gap-2 rounded-xl border p-4 text-center text-sm">
-              <div><div class="text-2xl font-semibold text-slate-700" x-text="view.reminders_sent + ' of 5'"></div><div class="text-[11px] text-slate-400">Reminders sent</div></div>
-              <div><div class="text-2xl font-semibold text-slate-700" x-text="nextReminder(view)"></div><div class="text-[11px] text-slate-400">Next reminder</div></div>
-              <div><div class="text-2xl font-semibold text-slate-700" x-text="daysInStage(view)"></div><div class="text-[11px] text-slate-400">Time in Stage 1</div></div>
-            </div>
-            <div class="mb-4 flex justify-end"><button class="rounded-md border px-3 py-1.5 text-xs font-semibold text-slate-600 hover:border-brand hover:text-brand" @click="remind(view)"><span class="msym !text-[15px] align-middle">mail</span> Send reminder</button></div>
-
-            <!-- Still needed -->
-            <template x-if="stillNeeded.length">
-              <div class="mb-4">
-                <h4 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Still needed</h4>
-                <div class="divide-y rounded-xl border">
-                  <template x-for="c in stillNeeded" :key="c.key">
-                    <div class="flex flex-wrap items-center gap-3 px-3 py-2.5">
-                      <span class="w-6 shrink-0 rounded text-center text-[10px] font-bold" :class="{ M: 'bg-red-100 text-red-700', E: 'bg-amber-100 text-amber-800', I: 'bg-blue-100 text-blue-700' }[c.weight]" x-text="c.weight"></span>
-                      <div class="min-w-[160px] flex-1"><div class="text-sm font-medium text-slate-700" x-text="c.doc"></div><div class="text-[11px] text-slate-400" x-text="c.category + ' · ' + c.reason"></div></div>
-                      <div class="flex shrink-0 flex-wrap gap-1.5">
-                        <button class="rounded-md border px-2 py-1 text-[11px] font-semibold text-slate-600 hover:border-brand hover:text-brand" @click="markReceived(view, c, false)">Client sent it</button>
-                        <button class="rounded-md border px-2 py-1 text-[11px] font-semibold text-slate-600 hover:border-brand hover:text-brand" @click="markReceived(view, c, true)">Upload</button>
-                        <button class="rounded-md px-2 py-1 text-[11px] font-semibold text-slate-400 hover:text-brand" @click="markNA(view, c)">Doesn't apply</button>
+              <!-- Received documents -->
+              <div class="rounded-xl border p-4">
+                <h4 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Received documents</h4>
+                <template x-if="received.length">
+                  <div class="divide-y rounded-xl border">
+                    <template x-for="c in received" :key="c.key">
+                      <div class="flex items-center gap-3 px-3 py-2 text-sm">
+                        <span class="msym !text-[16px] text-green-600">check_circle</span>
+                        <span class="flex-1 text-slate-700" x-text="c.doc"></span>
+                        <span x-show="c.file" class="text-[11px] text-slate-400" x-text="c.file"></span>
+                        <button class="text-slate-300 hover:text-brand" title="Mark as not received" @click="markMissing(job, c)"><span class="msym !text-[16px]">undo</span></button>
                       </div>
+                    </template>
+                  </div>
+                </template>
+                <p x-show="!received.length" class="text-sm text-slate-400">No documents received yet.</p>
+              </div>
+
+              <!-- Timeline -->
+              <div class="rounded-xl border p-4">
+                <h4 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Timeline</h4>
+                <div class="flex flex-nowrap items-center gap-2 overflow-x-auto pb-1">
+                  <template x-for="(t, i) in timeline(job)" :key="i">
+                    <div class="flex shrink-0 items-center gap-2">
+                      <div x-show="i > 0" class="flex shrink-0 items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-sm text-slate-600"><b x-text="i > 0 ? CP.daysBetween(timeline(job)[i - 1].on, t.on) : 0"></b> day<span class="msym !text-[16px]">arrow_forward</span></div>
+                      <div class="min-w-[150px] rounded-md bg-slate-50 px-3 py-2"><div class="text-sm font-semibold text-slate-700" x-text="t.status"></div><div class="mt-1 text-right text-xs text-slate-500" x-text="CP.fmt.dmy(t.on)"></div></div>
                     </div>
                   </template>
                 </div>
-              </div>
-            </template>
-
-            <!-- Add a document to the checklist -->
-            <div class="mb-4 rounded-xl border border-dashed p-3">
-              <h4 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Add a document to the checklist (optional)</h4>
-              <div class="flex flex-wrap gap-2">
-                <input class="min-w-[180px] flex-1 rounded-lg border-slate-300 text-sm focus:border-brand focus:ring-brand" placeholder="e.g. Letter from employer about travel" x-model="newDoc.name" @keydown.enter="addChecklistItem(view)">
-                <select class="rounded-lg border-slate-300 text-sm focus:border-brand focus:ring-brand" x-model="newDoc.weight"><option value="M">Mandatory</option><option value="E">Essential</option><option value="I">Info</option></select>
-                <button class="rounded-md bg-slate-800 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-700" @click="addChecklistItem(view)">Add to checklist</button>
               </div>
             </div>
 
-            <!-- Received -->
-            <template x-if="received.length">
-              <div class="mb-4">
-                <h4 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Received</h4>
-                <div class="divide-y rounded-xl border">
-                  <template x-for="c in received" :key="c.key">
-                    <div class="flex items-center gap-3 px-3 py-2 text-sm">
-                      <span class="msym !text-[16px] text-green-600">check_circle</span>
-                      <span class="flex-1 text-slate-700" x-text="c.doc"></span>
-                      <span x-show="c.file" class="text-[11px] text-slate-400" x-text="c.file"></span>
-                      <button class="text-slate-300 hover:text-brand" title="Mark as not received" @click="markMissing(view, c)"><span class="msym !text-[16px]">undo</span></button>
+            <!-- right column -->
+            <div class="space-y-4">
+              <!-- Basic job details -->
+              <div class="rounded-xl border p-4">
+                <h4 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Job details</h4>
+                <dl class="space-y-2 text-sm">
+                  <div class="flex items-start justify-between gap-2"><dt class="text-slate-500">Job</dt><dd class="text-right font-medium" x-text="job.job_title"></dd></div>
+                  <div class="flex items-start justify-between gap-2"><dt class="text-slate-500">Customer</dt><dd class="text-right font-medium" x-text="job.client_name"></dd></div>
+                  <div class="flex items-start justify-between gap-2"><dt class="text-slate-500">Profession</dt><dd class="text-right font-medium" x-text="job.profession_label"></dd></div>
+                  <div class="flex items-start justify-between gap-2"><dt class="text-slate-500">Intake ID</dt><dd class="text-right font-medium" x-text="job.intake_id"></dd></div>
+                  <div x-show="job.priority" class="flex items-start justify-between gap-2"><dt class="text-slate-500">Queue position</dt><dd class="text-right font-medium" x-text="'#' + job.priority"></dd></div>
+                </dl>
+              </div>
+
+              <!-- Document completeness -->
+              <div class="rounded-xl border p-4">
+                <h4 class="mb-3 text-xs font-bold uppercase tracking-wide text-slate-400">Document completeness</h4>
+                <div class="flex items-center gap-4">
+                  <div class="gauge shrink-0" :style="'background: conic-gradient(' + toneHex(job) + ' calc(' + job.completion_pct + '*1%), #eef0f4 0)'">
+                    <div><b class="block text-2xl font-semibold leading-none" x-text="job.completion_pct + '%'"></b><span class="mt-1 block text-[10px] leading-none text-slate-400">weighted</span></div>
+                  </div>
+                  <div class="flex-1">
+                    <p class="mb-2 text-sm font-semibold" :class="readyMsg(job).cls" x-text="readyMsg(job).text"></p>
+                    <div class="space-y-1 text-sm">
+                      <template x-for="w in ['M', 'E', 'I']" :key="w">
+                        <div class="flex items-center justify-between">
+                          <span class="flex items-center gap-2"><span class="w-5 shrink-0 rounded text-center text-[10px] font-bold" :class="{ M: 'bg-red-100 text-red-700', E: 'bg-amber-100 text-amber-800', I: 'bg-blue-100 text-blue-700' }[w]" x-text="w"></span><span x-text="{ M: 'Mandatory', E: 'Essential', I: 'Info' }[w]"></span></span>
+                          <span class="font-medium text-slate-600" x-text="job.counts[w].rec + ' / ' + job.counts[w].tot"></span>
+                        </div>
+                      </template>
                     </div>
-                  </template>
+                  </div>
                 </div>
               </div>
-            </template>
 
-            <!-- Not applicable -->
-            <template x-if="notApplicable.length">
-              <div class="mb-4">
-                <h4 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Doesn't apply</h4>
-                <div class="divide-y rounded-xl border">
-                  <template x-for="c in notApplicable" :key="c.key">
-                    <div class="flex items-center gap-3 px-3 py-2 text-sm text-slate-400">
-                      <span class="msym !text-[16px]">block</span>
-                      <span class="flex-1 line-through" x-text="c.doc"></span>
-                      <button class="text-slate-300 hover:text-brand" title="Undo" @click="markMissing(view, c)"><span class="msym !text-[16px]">undo</span></button>
-                    </div>
-                  </template>
+              <!-- Reminder details -->
+              <div class="rounded-xl border p-4">
+                <h4 class="mb-3 text-xs font-bold uppercase tracking-wide text-slate-400">Reminder details</h4>
+                <div class="grid grid-cols-3 gap-2 text-center text-sm">
+                  <div><div class="text-xl font-semibold text-slate-700" x-text="job.reminders_sent + ' of 5'"></div><div class="text-[11px] text-slate-400">Sent</div></div>
+                  <div><div class="text-xl font-semibold text-slate-700" x-text="nextReminder(job)"></div><div class="text-[11px] text-slate-400">Next</div></div>
+                  <div><div class="text-xl font-semibold text-slate-700" x-text="daysInStage(job)"></div><div class="text-[11px] text-slate-400">In Stage 1</div></div>
                 </div>
+                <button class="mt-3 w-full rounded-md border px-3 py-1.5 text-xs font-semibold text-slate-600 hover:border-brand hover:text-brand" @click="remind(job)"><span class="msym !text-[15px] align-middle">mail</span> Send reminder</button>
               </div>
-            </template>
 
-            <div class="flex flex-wrap gap-2 border-t pt-4">
-              <template x-if="view.status === 'queued'">
-                <span class="inline-flex items-center gap-1">
-                  <button class="rounded-md border px-2 py-1.5 text-xs font-semibold text-slate-500 hover:border-brand hover:text-brand" @click="move(view, -1)">▲ Move up</button>
-                  <button class="rounded-md border px-2 py-1.5 text-xs font-semibold text-slate-500 hover:border-brand hover:text-brand" @click="move(view, 1)">▼ Move down</button>
-                </span>
-              </template>
-              <button x-show="view.status === 'ready'" class="rounded-md border border-blue-300 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100" @click="queueIt(view)">Move to prioritisation queue</button>
-              <button x-show="view.status === 'queued' || view.status === 'ready'" class="rounded-md bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-dark" @click="allocate(view)">Allocate to Carisma</button>
+              <!-- Actions -->
+              <div class="flex flex-wrap gap-2">
+                <template x-if="job.status === 'queued'">
+                  <span class="inline-flex items-center gap-1">
+                    <button class="rounded-md border px-2 py-1.5 text-xs font-semibold text-slate-500 hover:border-brand hover:text-brand" @click="move(job, -1)">▲ Move up</button>
+                    <button class="rounded-md border px-2 py-1.5 text-xs font-semibold text-slate-500 hover:border-brand hover:text-brand" @click="move(job, 1)">▼ Move down</button>
+                  </span>
+                </template>
+                <button x-show="job.status === 'ready'" class="rounded-md border border-blue-300 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100" @click="queueIt(job)">Move to prioritisation queue</button>
+                <button x-show="job.status === 'queued' || job.status === 'ready'" class="w-full rounded-md bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-dark" @click="allocate(job)">Allocate to Carisma</button>
+              </div>
             </div>
           </div>
-        </template>
-      </div>
+        </div>
+      </template>
 
       <div x-show="showNew" x-transition.opacity class="fixed inset-0 z-40 flex items-center justify-center bg-black/30 p-4" @click.self="showNew = false">
         <div class="w-full max-w-md rounded-xl bg-white p-5 shadow-xl">

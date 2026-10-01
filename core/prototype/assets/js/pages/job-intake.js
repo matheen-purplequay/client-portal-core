@@ -2,9 +2,10 @@
    (renamed wiki/docs/job-intake-reference.html). Tracks document/checklist collection for a job before
    it is allocated to Carisma; once allocated it drops off this list (handoff to the real Jobs page is
    simulated, not wired into jobs.json). List is a table (table-toolbar/pagination-status, CP.makeTable),
-   matching Jobs; the checklist, gap-resolution actions and reminders for one job open in a side drawer —
-   its "Still needed" / "Received" / "Not applicable" layout and completeness gauge mirror the reference's
-   per-step action screen (e.g. "Admin collects & adds files"), scoped to what the firm itself would see. */
+   matching Jobs; clicking a job opens it as a folder tab (same open[]/active pattern as the Jobs page), with a
+   two-column detail: documents + timeline on the left, job details/completeness/reminders on the right — its
+   gap-resolution content mirrors the reference's per-step action screen (e.g. "Admin collects & adds files"),
+   scoped to what the firm itself would see. */
 document.addEventListener('alpine:init', () => {
   const W = { M: 3, E: 2, I: 1 };
   const THRESHOLD = 85, URGENT_AT = 90, MAX_REMINDERS = 5, REMINDER_EVERY_DAYS = 3;
@@ -98,9 +99,9 @@ document.addEventListener('alpine:init', () => {
   const slug = (s) => s.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '');
 
   Alpine.data('jobIntakePage', () => ({
-    /* `status` = active KPI-tile filter; `view` = the job open in the checklist side-drawer.
+    /* `status` = active KPI-tile filter; `open`/`active` = the job-detail folder tabs (same pattern as the Jobs page).
        Stage/Waiting on/Step are plain inline dropdowns (no Filters drawer on this page — see job-intake.js header note). */
-    loading: true, jobs: [], status: '', view: null, showNew: false, newDoc: { name: '', weight: 'E' },
+    loading: true, jobs: [], status: '', open: [], active: 'list', showNew: false, newDoc: { name: '', weight: 'E' },
     stageFilter: '', waitingOnFilter: '', stepFilter: '', filterOpen: null, refreshing: false, tbl: null,
     stageOpts: STAGE_OPTS, waitingOpts: WAITING_OPTS, stepOpts: STEP_OPTS,
     professions: PROFESSIONS.map(([id, label]) => ({ id, label })), form: { name: '', profession: 'nurse', notes: '' }, cols: COLS, meta: STATUS_META,
@@ -143,12 +144,19 @@ document.addEventListener('alpine:init', () => {
     setTile(s) { this.status = this.status === s ? '' : s; this.tbl.reset(); },
     refresh() { this.refreshing = true; setTimeout(() => (this.refreshing = false), 700); },
 
-    /* ---------- checklist side-drawer for one job ---------- */
-    openJob(j) { this.view = j; this.newDoc = { name: '', weight: 'E' }; },
-    closeJob() { this.view = null; },
-    get stillNeeded() { return this.view ? this.view.checklist.filter((c) => c.status === 'missing') : []; },
-    get received() { return this.view ? this.view.checklist.filter((c) => c.status === 'received') : []; },
-    get notApplicable() { return this.view ? this.view.checklist.filter((c) => c.status === 'na') : []; },
+    /* ---------- job-detail folder tabs (open[]/active, same pattern as the Jobs page) ---------- */
+    get job() { return this.jobs.find((j) => j.intake_id === this.active); },
+    jobOf(id) { return this.jobs.find((j) => j.intake_id === id); },
+    openJob(j, ev) {
+      if (!this.open.includes(j.intake_id)) this.open.push(j.intake_id);
+      if (!(ev && ev.shiftKey)) { this.active = j.intake_id; this.newDoc = { name: '', weight: 'E' }; } else CP.toast('Opened in background tab');
+    },
+    closeJob(id) { this.open = this.open.filter((x) => x !== id); if (this.active === id) this.active = 'list'; },
+    /* Two-point timeline (we don't keep a full event history) — "Job started" then its current status */
+    timeline(j) { return [{ status: 'Job started', on: j.created_on }, { status: this.label(j.status), on: j.last_update }]; },
+    get stillNeeded() { return this.job ? this.job.checklist.filter((c) => c.status === 'missing') : []; },
+    get received() { return this.job ? this.job.checklist.filter((c) => c.status === 'received') : []; },
+    get notApplicable() { return this.job ? this.job.checklist.filter((c) => c.status === 'na') : []; },
     markReceived(j, c, uploaded) { c.status = 'received'; c.file = uploaded ? slug(c.doc) + '.pdf' : null; this.recompute(j); },
     markNA(j, c) { c.status = 'na'; c.file = null; this.recompute(j); },
     markMissing(j, c) { c.status = 'missing'; c.file = null; this.recompute(j); },
@@ -170,7 +178,7 @@ document.addEventListener('alpine:init', () => {
     queueIt(j) { j.status = 'queued'; j.priority = this.jobs.filter((x) => x.status === 'queued').length; CP.toast('Moved to the prioritisation queue.'); },
     allocate(j) {
       this.jobs = this.jobs.filter((x) => x.intake_id !== j.intake_id);
-      this.closeJob();
+      this.closeJob(j.intake_id);
       CP.toast(`${j.client_name}'s job allocated to Carisma — it will appear on the Jobs page (prototype: not wired to live data).`);
     },
     move(j, dir) {

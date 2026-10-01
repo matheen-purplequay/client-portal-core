@@ -34,5 +34,5 @@ body { font-family: 'Source Sans 3', 'Source Sans Pro', ui-sans-serif, system-ui
 .font-garamond { font-family: 'EB Garamond', serif; }
 
 /* job intake: document-completeness gauge */
-.gauge { width: 112px; height: 112px; border-radius: 50%; display: grid; place-items: center; }
-.gauge > div { width: 86px; height: 86px; border-radius: 50%; background: #fff; display: grid; place-items: center; text-align: center; }
+.gauge { width: 112px; height: 112px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.gauge > div { width: 86px; height: 86px; border-radius: 50%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }

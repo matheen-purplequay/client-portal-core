@@ -20,8 +20,52 @@
         </template>
       </div>
 
+      <!-- Stage / Waiting on / Step — minimal inline dropdowns, adapted from the reference (Accounting firm dropdown
+           dropped: this page is already scoped to one firm, the logged-in client) -->
+      <div class="mb-3 flex flex-wrap gap-3">
+        <label class="text-[11px] font-semibold text-slate-500">Stage
+          <select class="field mt-1 block w-44" x-model="stageFilter" @change="tbl.reset()">
+            <option value="">All stages</option>
+            <option value="1">Stage 1 — Intake &amp; collection</option>
+          </select></label>
+        <label class="text-[11px] font-semibold text-slate-500">Waiting on
+          <select class="field mt-1 block w-44" x-model="waitingOnFilter" @change="tbl.reset()">
+            <option value="">Anyone</option>
+            <option value="client">Client</option>
+            <option value="firm">Firm (you)</option>
+          </select></label>
+        <label class="text-[11px] font-semibold text-slate-500">Step
+          <select class="field mt-1 block w-56" x-model="stepFilter" @change="tbl.reset()">
+            <option value="">Any step</option>
+            <template x-for="o in stepOpts" :key="o.value"><option :value="o.value" x-text="o.label"></option></template>
+          </select></label>
+      </div>
+
       <div class="rounded-2xl border border-brand bg-white">
-        <div x-component="'table-toolbar'"></div>
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-3 py-2">
+          <div class="relative">
+            <div class="text-[11px] font-bold text-slate-600">Show Columns</div>
+            <button class="flex items-center gap-1 text-[11px] font-semibold" @click.stop="tbl.colsOpen = !tbl.colsOpen">
+              <span x-text="tbl.selectedCount + '/' + tbl.columns.length + ' selected'"></span><span class="msym !text-[16px]">expand_more</span></button>
+            <div x-show="tbl.colsOpen" @click.outside="tbl.colsOpen = false" x-transition class="absolute left-0 z-30 mt-1 max-h-72 w-60 overflow-y-auto rounded-lg bg-white p-2 shadow-xl ring-1 ring-black/5">
+              <template x-for="c in tbl.columns" :key="c.key">
+                <label class="flex items-center gap-2 rounded px-2 py-1 text-[13px] hover:bg-slate-50"><input type="checkbox" class="rounded border-slate-300 text-brand focus:ring-brand" x-model="tbl.visible[c.key]"><span x-text="c.label"></span></label>
+              </template>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <div x-show="statusLabel" class="flex items-center gap-2 rounded-md bg-slate-100 px-2 py-1 text-[11px] leading-tight text-slate-500">
+              <div><div>Status</div><div class="text-[13px] font-semibold text-navy" x-text="statusLabel"></div></div>
+              <button @click="clearStatus()" class="text-slate-400 hover:text-brand"><span class="msym !text-[16px]">close</span></button>
+            </div>
+            <div class="relative flex items-center rounded-full bg-slate-100 px-1">
+              <button class="btn-soft !text-slate-700" @click="refresh()"><span class="msym !text-[16px]" :class="refreshing && 'animate-spin'">sync</span><span x-text="refreshing ? 'Refreshing...' : 'Refresh'"></span></button>
+              <button class="btn-soft !text-slate-700" @click="CP.download('Job Intake list')"><span class="msym !text-[16px]">download</span>Download</button>
+            </div>
+            <label class="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5"><span class="msym text-slate-500">search</span>
+              <input type="search" placeholder="Search..." class="w-44 border-0 bg-transparent p-0 text-[13px] focus:ring-0" x-model="tbl.q" @input="tbl.reset()"></label>
+          </div>
+        </div>
         <div class="overflow-x-auto">
           <table class="tbl min-w-full">
             <thead><tr><template x-for="c in tbl.cols" :key="c.key"><th @click="tbl.sortBy(c.key)"><span x-text="c.label"></span><span x-show="tbl.sortKey === c.key" class="text-[9px]" x-text="tbl.dir > 0 ? ' ▲' : ' ▼'"></span></th></template></tr></thead>
@@ -34,7 +78,8 @@
                       <template x-if="c.key === 'completion_pct'"><div class="flex items-center gap-2"><div class="h-2 w-20 rounded-full bg-slate-100"><div class="h-2 rounded-full" :class="{ amber: 'bg-amber-500', red: 'bg-red-600', blue: 'bg-blue-500', green: 'bg-green-600' }[tone(r)]" :style="'width:' + r.completion_pct + '%'"></div></div><span x-text="r.completion_pct + '%'"></span></div></template>
                       <template x-if="c.key === 'mandatory_missing'"><span :class="r.mandatory_missing ? 'font-semibold text-red-600' : 'text-slate-400'" x-text="r.mandatory_missing || '—'"></span></template>
                       <template x-if="c.key === 'priority'"><span x-text="r.priority ? ('#' + r.priority) : '—'"></span></template>
-                      <template x-if="!['status', 'completion_pct', 'mandatory_missing', 'priority'].includes(c.key)"><span x-text="cell(r, c)"></span></template>
+                      <template x-if="c.truncate"><span class="block max-w-[170px] truncate" :title="cell(r, c)" x-text="cell(r, c)"></span></template>
+                      <template x-if="!c.truncate && !['status', 'completion_pct', 'mandatory_missing', 'priority'].includes(c.key)"><span x-text="cell(r, c)"></span></template>
                     </td>
                   </template>
                 </tr>
@@ -67,7 +112,7 @@
               <h4 class="mb-3 text-xs font-bold uppercase tracking-wide text-slate-400">Document completeness</h4>
               <div class="flex items-center gap-5">
                 <div class="gauge shrink-0" :style="'background: conic-gradient(' + toneHex(view) + ' calc(' + view.completion_pct + '*1%), #eef0f4 0)'">
-                  <div><b class="text-2xl font-semibold" x-text="view.completion_pct + '%'"></b><span class="block text-[10px] text-slate-400">weighted</span></div>
+                  <div><b class="block text-2xl font-semibold leading-none" x-text="view.completion_pct + '%'"></b><span class="mt-1 block text-[10px] leading-none text-slate-400">weighted</span></div>
                 </div>
                 <div class="flex-1">
                   <p class="mb-2 text-sm font-semibold" :class="readyMsg(view).cls" x-text="readyMsg(view).text"></p>

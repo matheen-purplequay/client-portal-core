@@ -77,27 +77,38 @@ document.addEventListener('alpine:init', () => {
   };
   const TONE_HEX = { amber: '#d97706', red: '#dc2626', blue: '#2563eb', green: '#16a34a' };
   const COLS = [
-    { key: 'intake_id', label: 'ID' }, { key: 'client_name', label: 'Client', bold: true }, { key: 'profession_label', label: 'Profession' },
-    { key: 'status', label: 'Status' }, { key: 'completion_pct', label: 'Complete' }, { key: 'mandatory_missing', label: 'Missing (M)' },
-    { key: 'created_on', label: 'Started', date: true }, { key: 'last_update', label: 'Updated', date: true }, { key: 'priority', label: 'Queue #' },
+    { key: 'intake_id', label: 'ID' }, { key: 'client_name', label: 'Client', bold: true }, { key: 'job_title', label: 'Job', truncate: true },
+    { key: 'profession_label', label: 'Profession' }, { key: 'status', label: 'Status' }, { key: 'completion_pct', label: 'Complete' },
+    { key: 'mandatory_missing', label: 'Missing (M)' }, { key: 'created_on', label: 'Started', date: true }, { key: 'last_update', label: 'Updated', date: true },
+    { key: 'priority', label: 'Queue #' },
   ];
+  const JOB_TITLE = 'Individual Tax Return 2025-26';
+  /* Synthetic Stage/Waiting-on/Step, borrowed from the reference's own model, derived from our 4-value status
+     (we don't track per-job steps — this page only covers Stage 1, firm view) */
+  const STEP_MAP = {
+    collecting: { n: 8, label: 'Admin collects & adds files' }, urgent: { n: 8, label: 'Admin collects & adds files' },
+    ready: { n: 11, label: 'Notify firm: file ready' }, queued: { n: 12, label: 'Prioritisation queue' },
+  };
+  const WAITING_MAP = { collecting: 'client', urgent: 'client', ready: 'firm', queued: 'firm' };
+  const STEP_OPTS = [...new Map(Object.values(STEP_MAP).map((s) => [s.n, s])).values()].sort((a, b) => a.n - b.n)
+    .map((s) => ({ value: String(s.n), label: `Step ${String(s.n).padStart(2, '0')} · ${s.label}` }));
   const addDays = (iso, n) => { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
   const slug = (s) => s.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '');
 
   Alpine.data('jobIntakePage', () => ({
-    /* `status` = active KPI-tile filter (table-toolbar reads/clears this); `view` = the job open in the checklist
-       side-drawer; `drawer` = the Filters drawer (table-toolbar's "Filters" button), separate from `view`. */
+    /* `status` = active KPI-tile filter; `view` = the job open in the checklist side-drawer.
+       Stage/Waiting on/Step are plain inline dropdowns (no Filters drawer on this page — see job-intake.js header note). */
     loading: true, jobs: [], status: '', view: null, showNew: false, newDoc: { name: '', weight: 'E' },
-    filters: { profession_label: '' }, draft: null, drawer: false, refreshing: false, tbl: null,
-    professions: PROFESSIONS.map(([id, label]) => ({ id, label })), form: { name: '', profession: 'nurse', notes: '' }, cols: COLS, meta: STATUS_META,
+    stageFilter: '', waitingOnFilter: '', stepFilter: '', refreshing: false, tbl: null,
+    stepOpts: STEP_OPTS, professions: PROFESSIONS.map(([id, label]) => ({ id, label })), form: { name: '', profession: 'nurse', notes: '' }, cols: COLS, meta: STATUS_META,
 
     async init() {
       const raw = await CP.clientData('intake');
       this.jobs = raw.map((j) => {
         j.checklist.forEach((c) => { if (!c.reason) c.reason = reasonFor(c.key, j.profession_label); if (c.file === undefined) c.file = null; });
-        return { ...j, reminders_sent: j.reminders_sent || 0, ...scoreOf(j.checklist) };
+        return { ...j, job_title: JOB_TITLE, reminders_sent: j.reminders_sent || 0, ...scoreOf(j.checklist) };
       });
-      this.tbl = CP.makeTable({ rows: () => this.rows, columns: COLS, size: 10, searchKeys: ['intake_id', 'client_name', 'profession_label'] });
+      this.tbl = CP.makeTable({ rows: () => this.rows, columns: COLS, size: 10, searchKeys: ['intake_id', 'client_name', 'profession_label', 'job_title'] });
       this.loading = false;
     },
 
@@ -111,24 +122,19 @@ document.addEventListener('alpine:init', () => {
       if (j.mMissing.length) return { text: j.mMissing.length + ' Mandatory missing — cannot move on' + (j.urgent ? ' (urgent).' : '.'), cls: 'text-red-600' };
       return { text: 'Needs 85% to move on.', cls: 'text-amber-600' };
     },
+    waitingOn(j) { return WAITING_MAP[j.status]; },
+    stepOf(j) { const s = STEP_MAP[j.status]; return `Step ${String(s.n).padStart(2, '0')} · ${s.label}`; },
 
     count(s) { return this.jobs.filter((j) => j.status === s).length; },
     get rows() {
-      return this.jobs.filter((j) => (!this.status || j.status === this.status) && (!this.filters.profession_label || j.profession_label === this.filters.profession_label))
+      return this.jobs.filter((j) => (!this.status || j.status === this.status) && (!this.waitingOnFilter || this.waitingOn(j) === this.waitingOnFilter)
+        && (!this.stepFilter || String(STEP_MAP[j.status].n) === this.stepFilter))
         .sort((a, b) => (a.priority || 99) - (b.priority || 99) || b.last_update.localeCompare(a.last_update));
     },
     get statusLabel() { return this.status ? this.label(this.status) : ''; },
     clearStatus() { this.status = ''; this.tbl.reset(); },
     setTile(s) { this.status = this.status === s ? '' : s; this.tbl.reset(); },
     refresh() { this.refreshing = true; setTimeout(() => (this.refreshing = false), 700); },
-
-    /* ---------- Filters drawer (table-toolbar contract: chips, removeChip, openDrawer) ---------- */
-    get professionOpts() { return [...new Set(this.jobs.map((j) => j.profession_label))].sort(); },
-    get chips() { return this.filters.profession_label ? [{ key: 'profession_label', label: 'Profession', value: this.filters.profession_label }] : []; },
-    removeChip(k) { this.filters[k] = ''; this.tbl.reset(); },
-    openDrawer() { this.draft = { ...this.filters }; this.drawer = true; },
-    clearDrawer() { this.draft = { profession_label: '' }; },
-    applyDrawer() { this.filters = this.draft; this.drawer = false; this.tbl.reset(); },
 
     /* ---------- checklist side-drawer for one job ---------- */
     openJob(j) { this.view = j; this.newDoc = { name: '', weight: 'E' }; },
@@ -172,7 +178,7 @@ document.addEventListener('alpine:init', () => {
       const prof = this.professions.find((p) => p.id === this.form.profession);
       const job = {
         intake_id: 'NEW-' + Math.floor(Math.random() * 9000 + 1000), client_name: this.form.name.trim(), profession: prof.id, profession_label: prof.label,
-        created_on: CP.TODAY, last_update: CP.TODAY, priority: null, notes: this.form.notes.trim(), reminders_sent: 0,
+        job_title: JOB_TITLE, created_on: CP.TODAY, last_update: CP.TODAY, priority: null, notes: this.form.notes.trim(), reminders_sent: 0,
         checklist: checklistFor(prof.id),
       };
       this.recompute(job);

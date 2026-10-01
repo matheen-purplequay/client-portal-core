@@ -1,5 +1,13 @@
 # Logs
 
+## 2026-10-01 — Job Intake polish: gauge centering, Job column, Stage/Waiting on/Step filters
+
+- **Gauge centering:** the completeness donut's `%`/"weighted" text wasn't pixel-centered — `.gauge > div` used `display:grid;place-items:center` over two sibling elements (`<b>` + `<span>`), each centred independently rather than as one block. Switched both `.gauge` and `.gauge > div` to flex column centering; fixed.
+- **Job column added:** a constant `job_title` ("Individual Tax Return 2025-26") per intake record, shown truncated (ellipsis + tooltip) between Client and Profession — matches the reference's "Client / job" idea without duplicating the client name.
+- **Filters button replaced with three inline dropdowns** (Stage / Waiting on / Step), per the user's request to pull these from the reference, styled with the existing minimal `.field` select look. Since this page only covers Stage 1 (firm view) and doesn't track real per-job steps, all three are synthetic/derived from the existing 4-value status rather than new tracked state: Stage is always "Stage 1" (cosmetic, no-op filter); Waiting on maps to Client (collecting/urgent) or Firm (ready/queued); Step borrows the reference's own step numbers (08 / 11 / 12) for the nearest matching status. Flagged this mapping to the user rather than assuming silently. Dropped the reference's fourth dropdown (Accounting firm) since this page is already scoped to one firm.
+- Since the Filters-drawer/Profession-filter is gone, this page no longer uses the shared `table-toolbar` component — built a bespoke inline toolbar instead (Show Columns, Status chip, Refresh/Download, Search), so the shared component used by Jobs/other pages is untouched.
+- Verified with a headless browser on both demo clients: Job column renders and truncates, all three new dropdowns filter correctly (Waiting on=Client, Step=12 etc.), gauge text is now centred — no console errors.
+
 ## 2026-10-01 — Job Intake drawer: added gap-resolution view, completeness donut, reminders/timers
 
 - User asked where the reference's full job-detail page (stage bar, step banner, "Admin collects & adds files" gap-resolution screen, document-completeness donut, loops/reminders/timers) shows up in our prototype — answer was: the side drawer, but it was much thinner than the reference.

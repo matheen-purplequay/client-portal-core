@@ -90,8 +90,10 @@ document.addEventListener('alpine:init', () => {
     ready: { n: 11, label: 'Notify firm: file ready' }, queued: { n: 12, label: 'Prioritisation queue' },
   };
   const WAITING_MAP = { collecting: 'client', urgent: 'client', ready: 'firm', queued: 'firm' };
-  const STEP_OPTS = [...new Map(Object.values(STEP_MAP).map((s) => [s.n, s])).values()].sort((a, b) => a.n - b.n)
-    .map((s) => ({ value: String(s.n), label: `Step ${String(s.n).padStart(2, '0')} · ${s.label}` }));
+  const STAGE_OPTS = [{ value: '', label: 'All stages' }, { value: '1', label: 'Stage 1 — Intake & collection' }];
+  const WAITING_OPTS = [{ value: '', label: 'Anyone' }, { value: 'client', label: 'Client' }, { value: 'firm', label: 'Firm (you)' }];
+  const STEP_OPTS = [{ value: '', label: 'Any step' }, ...[...new Map(Object.values(STEP_MAP).map((s) => [s.n, s])).values()].sort((a, b) => a.n - b.n)
+    .map((s) => ({ value: String(s.n), label: `Step ${String(s.n).padStart(2, '0')} · ${s.label}` }))];
   const addDays = (iso, n) => { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
   const slug = (s) => s.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '');
 
@@ -99,8 +101,9 @@ document.addEventListener('alpine:init', () => {
     /* `status` = active KPI-tile filter; `view` = the job open in the checklist side-drawer.
        Stage/Waiting on/Step are plain inline dropdowns (no Filters drawer on this page — see job-intake.js header note). */
     loading: true, jobs: [], status: '', view: null, showNew: false, newDoc: { name: '', weight: 'E' },
-    stageFilter: '', waitingOnFilter: '', stepFilter: '', refreshing: false, tbl: null,
-    stepOpts: STEP_OPTS, professions: PROFESSIONS.map(([id, label]) => ({ id, label })), form: { name: '', profession: 'nurse', notes: '' }, cols: COLS, meta: STATUS_META,
+    stageFilter: '', waitingOnFilter: '', stepFilter: '', filterOpen: null, refreshing: false, tbl: null,
+    stageOpts: STAGE_OPTS, waitingOpts: WAITING_OPTS, stepOpts: STEP_OPTS,
+    professions: PROFESSIONS.map(([id, label]) => ({ id, label })), form: { name: '', profession: 'nurse', notes: '' }, cols: COLS, meta: STATUS_META,
 
     async init() {
       const raw = await CP.clientData('intake');
@@ -124,6 +127,10 @@ document.addEventListener('alpine:init', () => {
     },
     waitingOn(j) { return WAITING_MAP[j.status]; },
     stepOf(j) { const s = STEP_MAP[j.status]; return `Step ${String(s.n).padStart(2, '0')} · ${s.label}`; },
+    get stageLabel() { return this.stageOpts.find((o) => o.value === this.stageFilter).label; },
+    get waitingLabel() { return this.waitingOpts.find((o) => o.value === this.waitingOnFilter).label; },
+    get stepLabel() { return this.stepOpts.find((o) => o.value === this.stepFilter).label; },
+    pick(field, value) { this[field] = value; this.filterOpen = null; this.tbl.reset(); },
 
     count(s) { return this.jobs.filter((j) => j.status === s).length; },
     get rows() {

@@ -1,5 +1,11 @@
 # Logs
 
+## 2026-10-01 — Job Intake: filters moved into the toolbar, "Show Columns"-style
+
+- User asked for Stage/Waiting on/Step to sit inline in the toolbar before Refresh, styled like the "Show Columns" toggle (button + floating panel) instead of native `<select>` dropdowns in their own row above the table.
+- Moved the three into the toolbar's right-hand group (Status chip → Stage → Waiting on → Step → Refresh/Download → Search). Replaced the `<select>` elements with the same toggle-button + absolute panel pattern as Show Columns, using radio-style rows (`radio_button_checked`/`_unchecked`) since each is single-select. Added `stageOpts`/`waitingOpts` option arrays alongside the existing `stepOpts`, a shared `filterOpen` state (only one panel open at a time), and a `pick(field, value)` helper.
+- Verified with a headless browser: all three open/close correctly, filtering still works (e.g. Waiting on → Client → 6 rows), no console errors.
+
 ## 2026-10-01 — Job Intake polish: gauge centering, Job column, Stage/Waiting on/Step filters
 
 - **Gauge centering:** the completeness donut's `%`/"weighted" text wasn't pixel-centered — `.gauge > div` used `display:grid;place-items:center` over two sibling elements (`<b>` + `<span>`), each centred independently rather than as one block. Switched both `.gauge` and `.gauge > div` to flex column centering; fixed.

@@ -39,3 +39,4 @@
 - [TSK-20261001-02] [no-req] Matched the table-toolbar component's updated contract (Filters drawer + chips, from the Stage 5 merge) and renamed Job Intake's per-row drawer state to avoid a naming clash — complete
 - [TSK-20261001-03] [no-req] Expanded the Job Intake drawer into a gap-resolution view: completeness donut + M/E/I counts, reminders/timers, Still needed/Received/Doesn't-apply sections with Client sent it / Upload / Doesn't apply actions, add-a-document form; three-state checklist status (received/missing/na) — complete
 - [TSK-20261001-04] [no-req] Fixed completeness-gauge text centering, added a truncated Job column, and replaced the Filters button with Stage/Waiting on/Step inline dropdowns (synthetic, derived from status) — complete
+- [TSK-20261001-05] [no-req] Moved Stage/Waiting on/Step filters into the toolbar before Refresh, restyled as Show-Columns-style toggle buttons instead of native selects — complete

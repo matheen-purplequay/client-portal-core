@@ -20,27 +20,6 @@
         </template>
       </div>
 
-      <!-- Stage / Waiting on / Step — minimal inline dropdowns, adapted from the reference (Accounting firm dropdown
-           dropped: this page is already scoped to one firm, the logged-in client) -->
-      <div class="mb-3 flex flex-wrap gap-3">
-        <label class="text-[11px] font-semibold text-slate-500">Stage
-          <select class="field mt-1 block w-44" x-model="stageFilter" @change="tbl.reset()">
-            <option value="">All stages</option>
-            <option value="1">Stage 1 — Intake &amp; collection</option>
-          </select></label>
-        <label class="text-[11px] font-semibold text-slate-500">Waiting on
-          <select class="field mt-1 block w-44" x-model="waitingOnFilter" @change="tbl.reset()">
-            <option value="">Anyone</option>
-            <option value="client">Client</option>
-            <option value="firm">Firm (you)</option>
-          </select></label>
-        <label class="text-[11px] font-semibold text-slate-500">Step
-          <select class="field mt-1 block w-56" x-model="stepFilter" @change="tbl.reset()">
-            <option value="">Any step</option>
-            <template x-for="o in stepOpts" :key="o.value"><option :value="o.value" x-text="o.label"></option></template>
-          </select></label>
-      </div>
-
       <div class="rounded-2xl border border-brand bg-white">
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-3 py-2">
           <div class="relative">
@@ -53,11 +32,27 @@
               </template>
             </div>
           </div>
-          <div class="flex flex-wrap items-center gap-2">
+          <div class="flex flex-wrap items-center gap-3">
             <div x-show="statusLabel" class="flex items-center gap-2 rounded-md bg-slate-100 px-2 py-1 text-[11px] leading-tight text-slate-500">
               <div><div>Status</div><div class="text-[13px] font-semibold text-navy" x-text="statusLabel"></div></div>
               <button @click="clearStatus()" class="text-slate-400 hover:text-brand"><span class="msym !text-[16px]">close</span></button>
             </div>
+            <!-- Stage / Waiting on / Step — "Show Columns"-style toggle buttons, adapted from the reference
+                 (Accounting firm dropdown dropped: this page is already scoped to one firm, the logged-in client) -->
+            <template x-for="f in [['stage', 'Stage', stageOpts, stageFilter, stageLabel], ['waitingOn', 'Waiting on', waitingOpts, waitingOnFilter, waitingLabel], ['step', 'Step', stepOpts, stepFilter, stepLabel]]" :key="f[0]">
+              <div class="relative">
+                <div class="text-[11px] font-bold text-slate-600" x-text="f[1]"></div>
+                <button class="flex items-center gap-1 text-[11px] font-semibold" @click.stop="filterOpen = filterOpen === f[0] ? null : f[0]">
+                  <span x-text="f[4]"></span><span class="msym !text-[16px]">expand_more</span></button>
+                <div x-show="filterOpen === f[0]" @click.outside="filterOpen = null" x-transition class="absolute left-0 z-30 mt-1 w-56 overflow-y-auto rounded-lg bg-white p-2 shadow-xl ring-1 ring-black/5">
+                  <template x-for="o in f[2]" :key="o.value">
+                    <button type="button" class="flex w-full items-center gap-2 rounded px-2 py-1 text-left text-[13px] hover:bg-slate-50" :class="f[3] === o.value && 'font-semibold text-brand'" @click="pick(f[0] === 'waitingOn' ? 'waitingOnFilter' : f[0] + 'Filter', o.value)">
+                      <span class="msym !text-[16px]" x-text="f[3] === o.value ? 'radio_button_checked' : 'radio_button_unchecked'"></span><span x-text="o.label"></span>
+                    </button>
+                  </template>
+                </div>
+              </div>
+            </template>
             <div class="relative flex items-center rounded-full bg-slate-100 px-1">
               <button class="btn-soft !text-slate-700" @click="refresh()"><span class="msym !text-[16px]" :class="refreshing && 'animate-spin'">sync</span><span x-text="refreshing ? 'Refreshing...' : 'Refresh'"></span></button>
               <button class="btn-soft !text-slate-700" @click="CP.download('Job Intake list')"><span class="msym !text-[16px]">download</span>Download</button>

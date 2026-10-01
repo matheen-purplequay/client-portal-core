@@ -1,5 +1,14 @@
 # Logs
 
+## 2026-10-01 — Job Intake redesigned: cards → table + side drawer
+
+- User renamed `wiki/docs/ITR-Workflow-v8-Prototype.html` to `job-intake-reference.html` and pointed out a structural mismatch: the reference's Jobs list is a table (Job ID, Client/job, Complete, Days in stage, etc.), but Job Intake (built last session) used a stack of expandable cards.
+- Discussed and agreed: rebuild the list as a **table**, reusing the same `table-toolbar`/`pagination-status` components and `CP.makeTable` already used on Jobs — not a 1:1 copy of the reference's columns, since several don't apply to our narrower scope (Firm, Stage, Waiting-on, Loops S1/S2/S3 are all multi-stage/internal-lane concepts; we only cover Stage 1, firm view). Kept: ID, Client, Profession, Status, Complete, Missing (M), Started, Updated, Queue #.
+- Row click opens the checklist + actions in a **side drawer** (matches the Movement page's details drawer pattern), not a popup — the alternative considered was a Jobs-style popup like `job-popup.js`, but a drawer fit better since it's a simpler single-job form, not a multi-field job record.
+- Kept the KPI tiles (reference doesn't have them, but Queries/Job Status already use the same click-to-filter tile pattern — consistency with the rest of this prototype won out).
+- While rebuilding, discovered `table-toolbar.html`'s contract had changed in the Stage 5 merge (now expects `chips`/`removeChip(key)`/`openDrawer()` for a Filters *drawer*, not the old inline `filters`/`filterOpts` dropdown) — matched it, including renaming Job Intake's own per-row drawer state (`drawer` → `view` / `openJob()` / `closeJob()`) to avoid clashing with the toolbar's `openDrawer()` (which now opens a small Filters drawer with a single Profession select, mirroring Jobs' FilterSidebar pattern).
+- Verified with a headless browser: table renders and sorts, Filters drawer + chip + clear, column chooser, row click opens the drawer, checklist toggle updates completion %, New Job still works — no console errors, both demo clients.
+
 ## 2026-09-30 — Built Job Intake, adapted from the ITR Workflow v8 prototype
 
 - Agreed scope with the user through discussion (logged as Stage 7 in [[../feature-updates/phase-1/plan-stage-1|plan-stage-1]]): a new **Job Intake** sidebar page (before Jobs), covering only the firm-visible slice of the ITR prototype's Stage 1 ("Intake & collection") — document/checklist collection before a job is allocated to Carisma. Internal-only steps (auto-fill, checklist generation, gap analysis, Carisma review, reminder emails) are not shown as steps; they surface only as a weighted completion % and missing-Mandatory count, same as the source prototype's own Jobs table (M=3/E=2/I=1, ready at 85% with zero Mandatory missing, urgent at 90% with a Mandatory still missing).

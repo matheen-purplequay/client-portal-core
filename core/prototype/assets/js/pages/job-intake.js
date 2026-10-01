@@ -1,6 +1,8 @@
 /* Job Intake: firm-facing slice of Stage 1 (Intake & collection) from the ITR Workflow v8 prototype.
    Tracks document/checklist collection for a job before it is allocated to Carisma; once allocated it
-   drops off this list (the handoff to the real Jobs page is simulated, not wired into jobs.json). */
+   drops off this list (the handoff to the real Jobs page is simulated, not wired into jobs.json).
+   List is a table (table-toolbar/pagination-status components, CP.makeTable), matching Jobs/Queries;
+   the checklist + actions for one job open in a side drawer. */
 document.addEventListener('alpine:init', () => {
   const W = { M: 3, E: 2, I: 1 };
   const THRESHOLD = 85, URGENT_AT = 90;
@@ -54,35 +56,62 @@ document.addEventListener('alpine:init', () => {
     const s = scoreOf(job.checklist);
     return s.ready ? 'ready' : s.urgent ? 'urgent' : 'collecting';
   };
+  const STATUS_META = {
+    collecting: { label: 'Collecting documents', tone: 'amber' }, urgent: { label: 'Needs attention', tone: 'red' },
+    queued: { label: 'In prioritisation queue', tone: 'blue' }, ready: { label: 'Ready to allocate', tone: 'green' },
+  };
+  const COLS = [
+    { key: 'intake_id', label: 'ID' }, { key: 'client_name', label: 'Client', bold: true }, { key: 'profession_label', label: 'Profession' },
+    { key: 'status', label: 'Status' }, { key: 'completion_pct', label: 'Complete' }, { key: 'mandatory_missing', label: 'Missing (M)' },
+    { key: 'created_on', label: 'Started', date: true }, { key: 'last_update', label: 'Updated', date: true }, { key: 'priority', label: 'Queue #' },
+  ];
 
   Alpine.data('jobIntakePage', () => ({
-    loading: true, jobs: [], q: '', tile: '', open: {}, showNew: false,
-    professions: PROFESSIONS.map(([id, label]) => ({ id, label })), form: { name: '', profession: 'nurse', notes: '' },
+    /* `status` = active KPI-tile filter (table-toolbar reads/clears this); `view` = the job open in the checklist
+       side-drawer; `drawer` = the Filters drawer (table-toolbar's "Filters" button), separate from `view`. */
+    loading: true, jobs: [], status: '', view: null, showNew: false,
+    filters: { profession_label: '' }, draft: null, drawer: false, refreshing: false, tbl: null,
+    professions: PROFESSIONS.map(([id, label]) => ({ id, label })), form: { name: '', profession: 'nurse', notes: '' }, cols: COLS, meta: STATUS_META,
 
     async init() {
       const raw = await CP.clientData('intake');
       this.jobs = raw.map((j) => ({ ...j, ...scoreOf(j.checklist) }));
+      this.tbl = CP.makeTable({ rows: () => this.rows, columns: COLS, size: 10, searchKeys: ['intake_id', 'client_name', 'profession_label'] });
       this.loading = false;
     },
 
     recompute(j) { Object.assign(j, scoreOf(j.checklist), { status: deriveStatus(j) }); },
-    tone(j) { return { urgent: 'red', collecting: 'amber', queued: 'blue', ready: 'green' }[j.status]; },
-    label(s) { return { urgent: 'Needs attention', collecting: 'Collecting documents', queued: 'In prioritisation queue', ready: 'Ready to allocate' }[s]; },
+    tone(j) { return this.meta[j.status].tone; },
+    label(s) { return this.meta[s].label; },
+    cell(r, c) { const v = r[c.key]; return c.date ? CP.fmt.dmy(v) : (v === null || v === undefined || v === '' ? '—' : v); },
 
     count(s) { return this.jobs.filter((j) => j.status === s).length; },
     get rows() {
-      const s = this.q.trim().toLowerCase();
-      return this.jobs.filter((j) => (!this.tile || j.status === this.tile) && (!s || (j.client_name + ' ' + j.profession_label).toLowerCase().includes(s)))
+      return this.jobs.filter((j) => (!this.status || j.status === this.status) && (!this.filters.profession_label || j.profession_label === this.filters.profession_label))
         .sort((a, b) => (a.priority || 99) - (b.priority || 99) || b.last_update.localeCompare(a.last_update));
     },
-    setTile(s) { this.tile = this.tile === s ? '' : s; },
-    toggleOpen(j) { this.open[j.intake_id] = !this.open[j.intake_id]; },
+    get statusLabel() { return this.status ? this.label(this.status) : ''; },
+    clearStatus() { this.status = ''; this.tbl.reset(); },
+    setTile(s) { this.status = this.status === s ? '' : s; this.tbl.reset(); },
+    refresh() { this.refreshing = true; setTimeout(() => (this.refreshing = false), 700); },
 
+    /* ---------- Filters drawer (table-toolbar contract: chips, removeChip, openDrawer) ---------- */
+    get professionOpts() { return [...new Set(this.jobs.map((j) => j.profession_label))].sort(); },
+    get chips() { return this.filters.profession_label ? [{ key: 'profession_label', label: 'Profession', value: this.filters.profession_label }] : []; },
+    removeChip(k) { this.filters[k] = ''; this.tbl.reset(); },
+    openDrawer() { this.draft = { ...this.filters }; this.drawer = true; },
+    clearDrawer() { this.draft = { profession_label: '' }; },
+    applyDrawer() { this.filters = this.draft; this.drawer = false; this.tbl.reset(); },
+
+    /* ---------- checklist side-drawer for one job ---------- */
+    openJob(j) { this.view = j; },
+    closeJob() { this.view = null; },
     toggleDoc(j, c) { c.status = c.status === 'received' ? 'missing' : 'received'; this.recompute(j); },
     remind(j) { CP.toast(`Reminder sent — ${j.client_name} is ${j.completion_pct}% complete.`); j.last_update = CP.TODAY; },
     queueIt(j) { j.status = 'queued'; j.priority = this.jobs.filter((x) => x.status === 'queued').length; CP.toast('Moved to the prioritisation queue.'); },
     allocate(j) {
       this.jobs = this.jobs.filter((x) => x.intake_id !== j.intake_id);
+      this.closeJob();
       CP.toast(`${j.client_name}'s job allocated to Carisma — it will appear on the Jobs page (prototype: not wired to live data).`);
     },
     move(j, dir) {

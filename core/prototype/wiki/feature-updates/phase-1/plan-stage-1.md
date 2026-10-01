@@ -84,6 +84,7 @@ See [[architecture]] for the technical design, [[screens]] for what each screen 
 - [x] Fixed a bug found during smoke-testing: `scoreOf()` returned `pct`/`mMissing` but the template read `j.completion_pct` (the JSON's static field), so document-checkbox toggles never visibly updated the completion bar — renamed the computed fields to match.
 - [x] Smoke-tested both demo clients: KPI filters, checklist toggle (completion % updates live), New Job creation, queue reordering, and Allocate to Carisma (removes the card) all verified with a headless browser.
 - [x] Documented in [[screens]] and [[data]].
+- [x] **Redesigned after user review (2026-10-01):** user renamed the source file to `job-intake-reference.html` and flagged that its Jobs list is a table, not cards. Rebuilt the list as a table (reusing `table-toolbar`/`pagination-status`/`CP.makeTable`, matching Jobs), scoped to columns that apply to Stage 1/firm view (dropped Firm/Stage/Waiting-on/Loops — multi-stage/internal-lane concepts not in our scope). Row click now opens the checklist + actions in a side drawer (Movement-style), not a card expand or popup. KPI tiles kept. Also matched `table-toolbar.html`'s post-Stage-5-merge contract (Filters drawer + chips) and renamed Job Intake's own per-job drawer state to avoid clashing with it. See [[logs]] for the full discussion/decision trail.
 
 ---
 

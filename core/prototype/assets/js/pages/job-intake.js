@@ -1,11 +1,13 @@
-/* Job Intake: firm-facing slice of Stage 1 (Intake & collection) from the ITR Workflow v8 prototype.
-   Tracks document/checklist collection for a job before it is allocated to Carisma; once allocated it
-   drops off this list (the handoff to the real Jobs page is simulated, not wired into jobs.json).
-   List is a table (table-toolbar/pagination-status components, CP.makeTable), matching Jobs/Queries;
-   the checklist + actions for one job open in a side drawer. */
+/* Job Intake: firm-facing slice of Stage 1 (Intake & collection) from the ITR Workflow v8 prototype
+   (renamed wiki/docs/job-intake-reference.html). Tracks document/checklist collection for a job before
+   it is allocated to Carisma; once allocated it drops off this list (handoff to the real Jobs page is
+   simulated, not wired into jobs.json). List is a table (table-toolbar/pagination-status, CP.makeTable),
+   matching Jobs; the checklist, gap-resolution actions and reminders for one job open in a side drawer —
+   its "Still needed" / "Received" / "Not applicable" layout and completeness gauge mirror the reference's
+   per-step action screen (e.g. "Admin collects & adds files"), scoped to what the firm itself would see. */
 document.addEventListener('alpine:init', () => {
   const W = { M: 3, E: 2, I: 1 };
-  const THRESHOLD = 85, URGENT_AT = 90;
+  const THRESHOLD = 85, URGENT_AT = 90, MAX_REMINDERS = 5, REMINDER_EVERY_DAYS = 3;
 
   /* Document catalogue + profession → checklist mapping, adapted from the ITR Workflow v8 prototype */
   const ITEMS = {
@@ -28,6 +30,12 @@ document.addEventListener('alpine:init', () => {
     pd: ['Professional development / course fees', 'Deductions', 'I'], wwcc: ['Working with children check renewal', 'Deductions', 'I'],
     phi: ['Private health insurance tax statement', 'Offsets & levies', 'E'], bank: ['Refund bank account confirmation', 'Identity & contact', 'E'],
   };
+  /* Why a document is on the list — fixed reasons for the common/base documents, profession-driven for the rest */
+  const REASON = {
+    prefill: 'Required for every return', pyitr: 'Required for every return', bank: 'Required for refund processing',
+    incstmt: 'Shown in the ATO pre-fill', interest: 'Shown in the ATO pre-fill', dividends: 'Shown in the ATO pre-fill', phi: 'Shown in the ATO pre-fill',
+  };
+  const reasonFor = (key, professionLabel) => REASON[key] || `Usual for a ${professionLabel}`;
   const COMMON = ['prefill', 'pyitr', 'incstmt', 'interest', 'phi', 'bank'];
   const PROFESSIONS = [
     ['nurse', 'Registered nurse', ['uniform', 'ahpra', 'union', 'shift']],
@@ -42,17 +50,24 @@ document.addEventListener('alpine:init', () => {
   const checklistFor = (profId) => {
     const p = PROFESSIONS.find((x) => x[0] === profId) || PROFESSIONS[0];
     const keys = [...new Set([...COMMON, ...p[2]])];
-    return keys.map((k) => ({ key: k, doc: ITEMS[k][0], category: ITEMS[k][1], weight: ITEMS[k][2], status: 'missing' }));
+    return keys.map((k) => ({ key: k, doc: ITEMS[k][0], category: ITEMS[k][1], weight: ITEMS[k][2], reason: reasonFor(k, p[1]), status: 'missing', file: null }));
   };
+  const byWeight = (its, w) => { const g = its.filter((c) => c.weight === w); return { rec: g.filter((c) => c.status === 'received').length, tot: g.length }; };
+  /* `na` ("Doesn't apply") documents are excluded from both the numerator and denominator, same as the reference's metrics() */
   const scoreOf = (checklist) => {
-    const tot = checklist.reduce((a, c) => a + W[c.weight], 0);
-    const rec = checklist.filter((c) => c.status === 'received').reduce((a, c) => a + W[c.weight], 0);
+    const its = checklist.filter((c) => c.status !== 'na');
+    const tot = its.reduce((a, c) => a + W[c.weight], 0);
+    const rec = its.filter((c) => c.status === 'received').reduce((a, c) => a + W[c.weight], 0);
     const pct = tot ? Math.round((100 * rec) / tot) : 0;
-    const mMissing = checklist.filter((c) => c.weight === 'M' && c.status !== 'received');
-    return { completion_pct: pct, mandatory_missing: mMissing.length, mMissing, ready: pct >= THRESHOLD && mMissing.length === 0, urgent: pct >= URGENT_AT && mMissing.length > 0 };
+    const mMissing = its.filter((c) => c.weight === 'M' && c.status !== 'received');
+    return {
+      completion_pct: pct, mandatory_missing: mMissing.length, mMissing,
+      counts: { M: byWeight(its, 'M'), E: byWeight(its, 'E'), I: byWeight(its, 'I') },
+      ready: pct >= THRESHOLD && mMissing.length === 0, urgent: pct >= URGENT_AT && mMissing.length > 0,
+    };
   };
   const deriveStatus = (job) => {
-    if (job.status === 'queued') return 'queued'; // stays queued once sent, regardless of later edits
+    if (job.status === 'queued') return 'queued'; // stays queued once sent, regardless of later checklist edits
     const s = scoreOf(job.checklist);
     return s.ready ? 'ready' : s.urgent ? 'urgent' : 'collecting';
   };
@@ -60,30 +75,42 @@ document.addEventListener('alpine:init', () => {
     collecting: { label: 'Collecting documents', tone: 'amber' }, urgent: { label: 'Needs attention', tone: 'red' },
     queued: { label: 'In prioritisation queue', tone: 'blue' }, ready: { label: 'Ready to allocate', tone: 'green' },
   };
+  const TONE_HEX = { amber: '#d97706', red: '#dc2626', blue: '#2563eb', green: '#16a34a' };
   const COLS = [
     { key: 'intake_id', label: 'ID' }, { key: 'client_name', label: 'Client', bold: true }, { key: 'profession_label', label: 'Profession' },
     { key: 'status', label: 'Status' }, { key: 'completion_pct', label: 'Complete' }, { key: 'mandatory_missing', label: 'Missing (M)' },
     { key: 'created_on', label: 'Started', date: true }, { key: 'last_update', label: 'Updated', date: true }, { key: 'priority', label: 'Queue #' },
   ];
+  const addDays = (iso, n) => { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+  const slug = (s) => s.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '');
 
   Alpine.data('jobIntakePage', () => ({
     /* `status` = active KPI-tile filter (table-toolbar reads/clears this); `view` = the job open in the checklist
        side-drawer; `drawer` = the Filters drawer (table-toolbar's "Filters" button), separate from `view`. */
-    loading: true, jobs: [], status: '', view: null, showNew: false,
+    loading: true, jobs: [], status: '', view: null, showNew: false, newDoc: { name: '', weight: 'E' },
     filters: { profession_label: '' }, draft: null, drawer: false, refreshing: false, tbl: null,
     professions: PROFESSIONS.map(([id, label]) => ({ id, label })), form: { name: '', profession: 'nurse', notes: '' }, cols: COLS, meta: STATUS_META,
 
     async init() {
       const raw = await CP.clientData('intake');
-      this.jobs = raw.map((j) => ({ ...j, ...scoreOf(j.checklist) }));
+      this.jobs = raw.map((j) => {
+        j.checklist.forEach((c) => { if (!c.reason) c.reason = reasonFor(c.key, j.profession_label); if (c.file === undefined) c.file = null; });
+        return { ...j, reminders_sent: j.reminders_sent || 0, ...scoreOf(j.checklist) };
+      });
       this.tbl = CP.makeTable({ rows: () => this.rows, columns: COLS, size: 10, searchKeys: ['intake_id', 'client_name', 'profession_label'] });
       this.loading = false;
     },
 
     recompute(j) { Object.assign(j, scoreOf(j.checklist), { status: deriveStatus(j) }); },
     tone(j) { return this.meta[j.status].tone; },
+    toneHex(j) { return TONE_HEX[this.tone(j)]; },
     label(s) { return this.meta[s].label; },
     cell(r, c) { const v = r[c.key]; return c.date ? CP.fmt.dmy(v) : (v === null || v === undefined || v === '' ? '—' : v); },
+    readyMsg(j) {
+      if (j.status === 'queued' || j.ready) return { text: 'Ready — threshold 85% met and all Mandatory in.', cls: 'text-green-700' };
+      if (j.mMissing.length) return { text: j.mMissing.length + ' Mandatory missing — cannot move on' + (j.urgent ? ' (urgent).' : '.'), cls: 'text-red-600' };
+      return { text: 'Needs 85% to move on.', cls: 'text-amber-600' };
+    },
 
     count(s) { return this.jobs.filter((j) => j.status === s).length; },
     get rows() {
@@ -104,10 +131,29 @@ document.addEventListener('alpine:init', () => {
     applyDrawer() { this.filters = this.draft; this.drawer = false; this.tbl.reset(); },
 
     /* ---------- checklist side-drawer for one job ---------- */
-    openJob(j) { this.view = j; },
+    openJob(j) { this.view = j; this.newDoc = { name: '', weight: 'E' }; },
     closeJob() { this.view = null; },
-    toggleDoc(j, c) { c.status = c.status === 'received' ? 'missing' : 'received'; this.recompute(j); },
-    remind(j) { CP.toast(`Reminder sent — ${j.client_name} is ${j.completion_pct}% complete.`); j.last_update = CP.TODAY; },
+    get stillNeeded() { return this.view ? this.view.checklist.filter((c) => c.status === 'missing') : []; },
+    get received() { return this.view ? this.view.checklist.filter((c) => c.status === 'received') : []; },
+    get notApplicable() { return this.view ? this.view.checklist.filter((c) => c.status === 'na') : []; },
+    markReceived(j, c, uploaded) { c.status = 'received'; c.file = uploaded ? slug(c.doc) + '.pdf' : null; this.recompute(j); },
+    markNA(j, c) { c.status = 'na'; c.file = null; this.recompute(j); },
+    markMissing(j, c) { c.status = 'missing'; c.file = null; this.recompute(j); },
+    addChecklistItem(j) {
+      if (!this.newDoc.name.trim()) return;
+      j.checklist.push({ key: 'custom-' + Date.now(), doc: this.newDoc.name.trim(), category: 'Other', weight: this.newDoc.weight, reason: 'Added by the firm', status: 'missing', file: null });
+      this.recompute(j);
+      this.newDoc = { name: '', weight: 'E' };
+    },
+
+    remind(j) {
+      j.reminders_sent = Math.min((j.reminders_sent || 0) + 1, MAX_REMINDERS);
+      j.last_update = CP.TODAY;
+      CP.toast(`Reminder sent — ${j.client_name} is ${j.completion_pct}% complete.`);
+    },
+    nextReminder(j) { return j.reminders_sent >= MAX_REMINDERS ? '—' : CP.fmt.dmy(addDays(j.last_update, REMINDER_EVERY_DAYS)); },
+    daysInStage(j) { return CP.daysBetween(j.created_on, CP.TODAY) + ' d'; },
+
     queueIt(j) { j.status = 'queued'; j.priority = this.jobs.filter((x) => x.status === 'queued').length; CP.toast('Moved to the prioritisation queue.'); },
     allocate(j) {
       this.jobs = this.jobs.filter((x) => x.intake_id !== j.intake_id);
@@ -126,7 +172,7 @@ document.addEventListener('alpine:init', () => {
       const prof = this.professions.find((p) => p.id === this.form.profession);
       const job = {
         intake_id: 'NEW-' + Math.floor(Math.random() * 9000 + 1000), client_name: this.form.name.trim(), profession: prof.id, profession_label: prof.label,
-        created_on: CP.TODAY, last_update: CP.TODAY, priority: null, notes: this.form.notes.trim(),
+        created_on: CP.TODAY, last_update: CP.TODAY, priority: null, notes: this.form.notes.trim(), reminders_sent: 0,
         checklist: checklistFor(prof.id),
       };
       this.recompute(job);

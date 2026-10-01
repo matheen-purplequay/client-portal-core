@@ -32,3 +32,7 @@ body { font-family: 'Source Sans 3', 'Source Sans Pro', ui-sans-serif, system-ui
 .auth-input::placeholder { color: #b5b5bd; }
 .auth-input:focus { outline: none; border-color: #811331 !important; box-shadow: 0 0 0 2px rgba(129,19,49,.12); }
 .font-garamond { font-family: 'EB Garamond', serif; }
+
+/* job intake: document-completeness gauge */
+.gauge { width: 112px; height: 112px; border-radius: 50%; display: grid; place-items: center; }
+.gauge > div { width: 86px; height: 86px; border-radius: 50%; background: #fff; display: grid; place-items: center; text-align: center; }

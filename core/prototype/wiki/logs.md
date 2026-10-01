@@ -1,5 +1,13 @@
 # Logs
 
+## 2026-10-01 — Job Intake drawer: added gap-resolution view, completeness donut, reminders/timers
+
+- User asked where the reference's full job-detail page (stage bar, step banner, "Admin collects & adds files" gap-resolution screen, document-completeness donut, loops/reminders/timers) shows up in our prototype — answer was: the side drawer, but it was much thinner than the reference.
+- Agreed scope for what to add: category-aware "Still needed" list (missing documents only) with a **Why** reason column and three actions (Client sent it / Upload / Doesn't apply), a document-completeness donut with Mandatory/Essential/Info breakdown replacing the flat bar, and a reminders/timers strip (reminders sent of 5 — the reference's own cap, next reminder date, time in Stage 1). Left out: stage progress bar, current-step banner, persona switching, XPM link, Auto-filled data/Timeline tabs, Stage 1/2/3 loop counters — all multi-stage/internal-lane concepts outside this page's agreed scope.
+- Decided "Client sent it" and "Upload" should have the same effect (mark received) — Upload additionally attaches a fake filename for visual realism, no real file storage. Decided to skip the reference's drag-and-drop "Other files the client sent" zone and its "Re-run analysis" button — no real file handling or separate analysis step exists to simulate meaningfully in this prototype (completion recomputes live on every action already).
+- Checklist status became three-state: `received` / `missing` / `na` ("Doesn't apply" excludes a document from both sides of the completion % — mirrors the reference's own `metrics()` filtering out `na` items). Added a `reason` field per document ("Required for every return", "Shown in the ATO pre-fill", "Usual for a `<profession>`", etc.), back-filled at load time for existing `intake.json` rows so the JSON files didn't need regenerating. Added an inline "Add a document to the checklist" mini-form (name + M/E/I weight).
+- Verified with a headless browser on both demo clients: completeness gauge/counts update live on Client sent it / Upload / Doesn't apply / undo, custom document add, Send reminder increments the counter — no console errors.
+
 ## 2026-10-01 — Job Intake redesigned: cards → table + side drawer
 
 - User renamed `wiki/docs/ITR-Workflow-v8-Prototype.html` to `job-intake-reference.html` and pointed out a structural mismatch: the reference's Jobs list is a table (Job ID, Client/job, Complete, Days in stage, etc.), but Job Intake (built last session) used a stack of expandable cards.

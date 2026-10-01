@@ -1127,6 +1127,41 @@ Route::prefix('client')->group(function() {
                 }
             });
 
+            // Home page's Turnaround panel - Total Jobs Closed + Average Days
+            // in Carisma. New procedure (Sp_HomeTurnaroundSummary), built off
+            // the same closed-jobs scope as SP_clientportalTurnaroundJobsList
+            // (get-turnaround-jobs-list below) but collapsed to two aggregate
+            // numbers. Normal (non-swapped) param order, like get-turnaround-report.
+            // CALL Sp_HomeTurnaroundSummary(__pid, __Vertical, __Cid);
+            Route::post('get-home-turnaround-summary', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $vertical = (int) $request->input('service_id', 0);
+                    $client_id = (int) $request->input('client_id', 0);
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL Sp_HomeTurnaroundSummary(?, ?, ?)',
+                        [$project_id, $vertical, $client_id]
+                    );
+
+                    $row = $data[0] ?? null;
+
+                    return [
+                        'status' => true,
+                        'data' => [
+                            'total_jobs_closed' => $row ? (int) $row->TotalJobsClosed : 0,
+                            'avg_days_in_carisma' => $row && $row->AvgDaysInCarisma !== null ? (float) $row->AvgDaysInCarisma : 0,
+                        ]
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the turnaround summary'
+                    ];
+                }
+            });
+
             // Turnaround Report - All Jobs (open or closed), split Carisma vs Client time
             // CALL SP_clientportalTurnaroundJobsList / ...ListOpen(__pid, __Vertical, __Cid);
             // One row per job with TurnaroundDays split into
@@ -1147,6 +1182,7 @@ Route::prefix('client')->group(function() {
 
                     $rows = array_map(function ($row) {
                         return [
+                            'aid' => (int) $row->JobAid,
                             'received_from' => $row->ReceivedFrom,
                             'job_name' => $row->JobName,
                             'nature_of_job' => $row->NatureOfJob,
@@ -1158,7 +1194,8 @@ Route::prefix('client')->group(function() {
                             // 'HH:MM' strings — the proc formats these directly so the
                             // frontend doesn't need to convert decimal hours itself.
                             'budget_time' => $row->BudgetTime,
-                            'time_taken' => $row->TimeTaken
+                            'time_taken' => $row->TimeTaken,
+                            'received_date' => $row->Daterecieved
                         ];
                     }, $data);
 
@@ -1171,6 +1208,119 @@ Route::prefix('client')->group(function() {
                         'status' => false,
                         'error' => $e->getMessage(),
                         'message' => 'Something went wrong while fetching the turnaround jobs list'
+                    ];
+                }
+            });
+
+            // Turnaround page's Manager View - one row per manager (ReceivedForm
+            // contact), average turnaround/Carisma-days/Client-days per bucket,
+            // plus a WITH ROLLUP "Total" row (ManagerCid null).
+            // NOTE: param order here is (project_id, client_id, service_id) -
+            // different from get-turnaround-report/-jobs-list's (project_id,
+            // service_id, client_id).
+            // CALL SP_clientportalTurnaroundBucketManagerWise(__Pid, __Cid, __ServiceId);
+            Route::post('get-turnaround-manager-wise', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $vertical = (int) $request->input('service_id', 0);
+                    $client_id = (int) $request->input('client_id', 0);
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL SP_clientportalTurnaroundBucketManagerWise(?, ?, ?)',
+                        [$project_id, $client_id, $vertical]
+                    );
+
+                    $bucket = function ($row, string $prefix) {
+                        return [
+                            'total' => $row->{"{$prefix}_Total"} !== null ? (float) $row->{"{$prefix}_Total"} : null,
+                            'carisma' => $row->{"{$prefix}_Carisma"} !== null ? (float) $row->{"{$prefix}_Carisma"} : null,
+                            'client' => $row->{"{$prefix}_Client"} !== null ? (float) $row->{"{$prefix}_Client"} : null,
+                        ];
+                    };
+
+                    $rows = array_map(function ($row) use ($bucket) {
+                        return [
+                            'manager_cid' => $row->ManagerCid,
+                            'manager' => $row->Manager,
+                            'is_total' => $row->ManagerCid === null,
+                            'b0_5' => $bucket($row, 'B0_5'),
+                            'b6_10' => $bucket($row, 'B6_10'),
+                            'b11_20' => $bucket($row, 'B11_20'),
+                            'b21_30' => $bucket($row, 'B21_30'),
+                            'b31_60' => $bucket($row, 'B31_60'),
+                            'b61' => $bucket($row, 'B61'),
+                        ];
+                    }, $data);
+
+                    return [
+                        'status' => true,
+                        'data' => $rows
+                    ];
+                } catch (Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching manager-wise turnaround'
+                    ];
+                }
+            });
+
+            // Manager View drill-down - jobs for one manager (or all, when
+            // manager_cid = 0), one row per job. Each row's bucket columns are
+            // only populated for the ONE bucket that job's turnaround falls
+            // into, so this flattens them into a single turnaround/carisma/
+            // client trio plus which bucket key it came from, instead of
+            // making the frontend juggle 18 mostly-null columns.
+            // CALL SP_clientportalTurnaroundBucketJobsByManager(__Pid, __Cid, __ServiceId);
+            Route::post('get-turnaround-manager-jobs', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $vertical = (int) $request->input('service_id', 0);
+                    $manager_cid = (int) $request->input('manager_cid', 0);
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL SP_clientportalTurnaroundBucketJobsByManager(?, ?, ?)',
+                        [$project_id, $manager_cid, $vertical]
+                    );
+
+                    $buckets = [
+                        '0_5' => 'B0_5', '6_10' => 'B6_10', '11_20' => 'B11_20',
+                        '21_30' => 'B21_30', '31_60' => 'B31_60', '61' => 'B61'
+                    ];
+
+                    $rows = array_map(function ($row) use ($buckets) {
+                        $mapped = [
+                            'aid' => (int) $row->Aid,
+                            'job_name' => $row->JobName,
+                            'received_from' => $row->ReceivedFrom,
+                            'budget_time' => $row->BudgetTime,
+                            'time_taken' => $row->TimeTaken,
+                            'bucket_key' => null,
+                            'turnaround_days' => null,
+                            'turnaround_in_carisma' => null,
+                            'turnaround_in_client' => null
+                        ];
+                        foreach ($buckets as $key => $prefix) {
+                            if ($row->{"{$prefix}_Total"} !== null) {
+                                $mapped['bucket_key'] = $key;
+                                $mapped['turnaround_days'] = (float) $row->{"{$prefix}_Total"};
+                                $mapped['turnaround_in_carisma'] = (float) $row->{"{$prefix}_Carisma"};
+                                $mapped['turnaround_in_client'] = (float) $row->{"{$prefix}_Client"};
+                                break;
+                            }
+                        }
+                        return $mapped;
+                    }, $data);
+
+                    return [
+                        'status' => true,
+                        'data' => $rows
+                    ];
+                } catch (Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching manager-wise turnaround jobs'
                     ];
                 }
             });
@@ -1205,6 +1355,7 @@ Route::prefix('client')->group(function() {
                     $timeTakenSeconds = timeStringToSeconds($row->TimeTaken);
 
                     return [
+                        'aid' => $row->Aid,
                         'received_from' => $row->ReceivedFrom,
                         'job_name' => $row->JobName,
                         'nature_of_job' => $row->NatureOfJob,
@@ -1212,7 +1363,8 @@ Route::prefix('client')->group(function() {
                         'job_status' => $row->JobStatus,
                         'budget_seconds' => $budgetSeconds,
                         'time_taken_seconds' => $timeTakenSeconds,
-                        'variance_seconds' => $timeTakenSeconds - $budgetSeconds
+                        'variance_seconds' => $timeTakenSeconds - $budgetSeconds,
+                        'received_date' => $row->ReceivedDate
                     ];
                 }, $data);
             }
@@ -1475,10 +1627,9 @@ Route::prefix('client')->group(function() {
             // Movement - Job Status Changes
             // CALL SP_clientportalMovementReport(__pid, __Vertical, __Cid, __FromDate, __ToDate);
             // One row per status-change log entry. NewWsid is bucketed into the
-            // 5 summary categories here (New Jobs Received=1, Sent for
-            // Queries=5, Sent for Review=6, Closed=11, else=Other Status
-            // Changed) — that mapping is application logic, not part of the
-            // proc, since it's just a client-side categorization of NewWsid.
+            // same 13 fixed categories (+ "other" catch-all) that
+            // Sp_WorkStatusMovements uses for its counts — see
+            // movementCategory() below.
             function movementPeriodToDateRange(Request $request) {
                 $period = $request->input('period', '7d');
 
@@ -1492,12 +1643,33 @@ Route::prefix('client')->group(function() {
                 return [Carbon::now()->subDays($days)->format('Y-m-d'), Carbon::now()->format('Y-m-d')];
             }
 
+            // Same NewWsid groupings as Sp_WorkStatusMovements's ELSE branch
+            // (non-SMSF), reused here for the "else" branch too since the
+            // detail proc's UNION already aliases the SMSF branch's Wsid
+            // as NewWsid on the same column.
             function movementCategory($newWsid) {
                 $newWsid = (int) $newWsid;
-                if ($newWsid === 1) return ['key' => 'new', 'label' => 'New Jobs Received', 'badge' => 'New Job'];
-                if ($newWsid === 5) return ['key' => 'queries', 'label' => 'Sent for Queries', 'badge' => 'Sent for Queries'];
-                if ($newWsid === 6) return ['key' => 'review', 'label' => 'Sent for Review', 'badge' => 'Sent for Review'];
-                if ($newWsid === 11) return ['key' => 'closed', 'label' => 'Closed', 'badge' => 'Closed'];
+                $buckets = [
+                    'job_in_yet_to_start' => [[1], 'New Jobs Received'],
+                    'wip_processing' => [[4], 'WIP - Processing'],
+                    'sent_for_queries' => [[5, 26], 'Sent For Queries'],
+                    'query_replies_received_yet_to_attend' => [[30], 'Query Replies Received - Yet To Attend'],
+                    'wip_query_replies' => [[24, 27], 'WIP - Query Replies'],
+                    'internal_review' => [[28, 29], 'Internal Review'],
+                    'wip_internal_review_replies' => [[31], 'WIP - Internal Review Replies'],
+                    'sent_for_review' => [[32], 'Sent For Review'],
+                    'review_replies_received_yet_to_attend' => [[33], 'Review Replies Received - Yet To Attend'],
+                    'wip_review_replies' => [[25], 'WIP - Review Replies'],
+                    'sent_for_final_review' => [[6], 'Sent For Final Review'],
+                    'on_hold' => [[34], 'On Hold'],
+                    'job_completed' => [[11], 'Job Completed'],
+                ];
+
+                foreach ($buckets as $key => [$ids, $label]) {
+                    if (in_array($newWsid, $ids, true)) {
+                        return ['key' => $key, 'label' => $label, 'badge' => $label];
+                    }
+                }
                 return ['key' => 'other', 'label' => 'Other Status Changed', 'badge' => 'Status Changed'];
             }
 
@@ -1526,12 +1698,14 @@ Route::prefix('client')->group(function() {
                         // match the per-status cards on the page.
                         $badge = $category['key'] === 'other' ? ($row->ToStatus ?: $category['badge']) : $category['badge'];
                         return [
+                            'aid' => $row->Aid,
                             'received_from' => $row->ReceivedFrom,
                             'job_name' => $row->JobName,
                             'nature_of_job' => $row->NatureOfJob,
                             'from_status' => $row->FromStatus,
                             'to_status' => $row->ToStatus,
                             'date' => $row->MovementDate,
+                            'received_date' => $row->Daterecieved,
                             'category' => $category['key'],
                             'category_label' => $category['label'],
                             'movement_badge' => $badge
@@ -1616,6 +1790,102 @@ Route::prefix('client')->group(function() {
                         'status' => false,
                         'error' => $e->getMessage(),
                         'message' => 'Something went wrong while fetching the movement summary'
+                    ];
+                }
+            });
+
+            // Movement page's 13-card breakdown (+ All Movement) — the
+            // authoritative bucket counts, straight from Sp_WorkStatusMovements
+            // rather than derived client-side from the detail rows.
+            // CALL Sp_WorkStatusMovements(__FromDate, __ToDate, __Cid, __Pid, __ServiceId);
+            // Note the different param order from the SP_clientportal* procs
+            // (date range first) — this is a separate, pre-existing proc.
+            Route::post('get-movement-workstatus-summary', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $vertical = (int) $request->input('service_id', 0);
+                    $client_id = (int) $request->input('client_id', 0);
+                    [$from_date, $to_date] = movementPeriodToDateRange($request);
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL Sp_WorkStatusMovements(?, ?, ?, ?, ?)',
+                        [$from_date, $to_date, $client_id, $project_id, $vertical]
+                    );
+
+                    $row = count($data) > 0 ? $data[0] : null;
+
+                    $counts = [
+                        'job_in_yet_to_start' => $row ? (int) $row->Job_In_Yet_To_Start : 0,
+                        'wip_processing' => $row ? (int) $row->WIP_Processing : 0,
+                        'sent_for_queries' => $row ? (int) $row->Sent_For_Queries : 0,
+                        'query_replies_received_yet_to_attend' => $row ? (int) $row->Query_Replies_Received_Yet_To_Attend : 0,
+                        'wip_query_replies' => $row ? (int) $row->WIP_Query_Replies : 0,
+                        'internal_review' => $row ? (int) $row->Internal_Review : 0,
+                        'wip_internal_review_replies' => $row ? (int) $row->WIP_Internal_Review_Replies : 0,
+                        'sent_for_review' => $row ? (int) $row->Sent_For_Review : 0,
+                        'review_replies_received_yet_to_attend' => $row ? (int) $row->Review_Replies_Received_Yet_To_Attend : 0,
+                        'wip_review_replies' => $row ? (int) $row->WIP_Review_Replies : 0,
+                        'sent_for_final_review' => $row ? (int) $row->Sent_For_Final_Review : 0,
+                        'on_hold' => $row ? (int) $row->On_Hold : 0,
+                        'job_completed' => $row ? (int) $row->Job_Completed : 0,
+                        'total' => $row ? (int) $row->Total : 0
+                    ];
+
+                    return [
+                        'status' => true,
+                        'data' => $counts,
+                        'from_date' => $from_date,
+                        'to_date' => $to_date
+                    ];
+                } catch (Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the work status summary'
+                    ];
+                }
+            });
+
+            // Movement page's Manager View - Status x Partner matrix.
+            // CALL Sp_WorkStatusMovementsforpartners(__FromDate, __ToDate, __Cid, __Pid, __ServiceId);
+            // One row per (partner, status) combo already counted — the pivot
+            // into a Status x Partner grid happens client-side, same as the
+            // Jobs page's Partner Wise Jobs matrix. WithClient/WithCarisma are
+            // NULL unless that status belongs to that holder (so a row can be
+            // summed toward at most one holder's total).
+            Route::post('get-movement-partners', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $vertical = (int) $request->input('service_id', 0);
+                    $client_id = (int) $request->input('client_id', 0);
+                    [$from_date, $to_date] = movementPeriodToDateRange($request);
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL Sp_WorkStatusMovementsforpartners(?, ?, ?, ?, ?)',
+                        [$from_date, $to_date, $client_id, $project_id, $vertical]
+                    );
+
+                    $rows = array_map(function ($row) {
+                        return [
+                            'received_from' => $row->ReceivedFrom,
+                            'status' => $row->Status,
+                            'count' => (int) $row->Count,
+                            'with_client' => $row->WithClient !== null ? (int) $row->WithClient : null,
+                            'with_carisma' => $row->WithCarisma !== null ? (int) $row->WithCarisma : null
+                        ];
+                    }, $data);
+
+                    return [
+                        'status' => true,
+                        'data' => $rows,
+                        'from_date' => $from_date,
+                        'to_date' => $to_date
+                    ];
+                } catch (Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the manager view'
                     ];
                 }
             });
@@ -1723,7 +1993,12 @@ Route::prefix('client')->group(function() {
                             'name_a' => $row->NameA,
                             'workstatus' => $row->workstatus,
                             'time_will_take' => $row->time_will_take,
-                            'expected_finish_date' => $row->expected_finish_date
+                            'expected_finish_date' => $row->expected_finish_date,
+                            'budget_time' => $row->BudgetTime,
+                            'total_billable' => $row->TotalBillable,
+                            'service_id' => $row->serviceid !== null ? (int) $row->serviceid : null,
+                            'status_colour' => $row->StatusColour,
+                            'status_content' => $row->StatusContent
                         ];
                     }, $data);
 
@@ -1736,6 +2011,246 @@ Route::prefix('client')->group(function() {
                         'status' => false,
                         'error' => $e->getMessage(),
                         'message' => 'Something went wrong while fetching the workflow stand-up'
+                    ];
+                }
+            });
+
+            // Home page's Daily Planner tile counts (stand-up jobs / est. time /
+            // finishing, all "today"). CALL Sp_StandUpDailyPlannerTodayCounts(Cid, Pid, Service);
+            Route::post('get-daily-planner-counts', function(Request $request) {
+                try {
+                    $client_id = (int) $request->input('client_id');
+                    $project_id = (int) $request->input('project_id');
+                    $service_id = (int) $request->input('service_id');
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL Sp_StandUpDailyPlannerTodayCounts(?, ?, ?)',
+                        [$project_id,$client_id, $service_id]
+                    );
+
+                    $row = $data[0] ?? null;
+
+                    return [
+                        'status' => true,
+                        'data' => [
+                            'stand_up_jobs_today' => $row->StandUpJobsToday ?? 0,
+                            'est_time_today' => $row->EstTimeToday ?? '00:00',
+                            'finishing_today' => $row->FinishingToday ?? 0,
+                        ]
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the daily planner counts'
+                    ];
+                }
+            });
+
+            // Home page's Daily Planner — associate count by today's colour group
+            // (1/4 = Sufficient, 2/5 = Insufficient, 3/6 = No Jobs). One row per
+            // associate; counted here rather than trusting the proc's own
+            // GroupCount column, since that's just the same count repeated.
+            // CALL Sp_StandUpDailyPlannerTodaycolour(__Pid, __Cid, __ServiceId);
+            Route::post('get-daily-planner-colour-counts', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $client_id = (int) $request->input('client_id');
+                    $service_id = (int) $request->input('service_id');
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL Sp_StandUpDailyPlannerTodaycolour(?, ?, ?)',
+                        [$project_id, $client_id, $service_id]
+                    );
+
+                    $counts = ['sufficient' => 0, 'insufficient' => 0, 'no_jobs' => 0];
+                    foreach ($data as $row) {
+                        if ((int) $row->StatusGroup === 1) $counts['sufficient']++;
+                        elseif ((int) $row->StatusGroup === 2) $counts['insufficient']++;
+                        elseif ((int) $row->StatusGroup === 3) $counts['no_jobs']++;
+                    }
+
+                    return [
+                        'status' => true,
+                        'data' => $counts
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the daily planner colour counts'
+                    ];
+                }
+            });
+
+            // Home page's "Yesterday's Workflow" table — the per-job rows behind
+            // the Daily Planner counts above.
+            // CALL Sp_StandUpDailyPlannerTodayCountsdetails(Cid, Pid, Service);
+            Route::post('get-daily-planner-details', function(Request $request) {
+                try {
+                    $client_id = (int) $request->input('client_id');
+                    $project_id = (int) $request->input('project_id');
+                    $service_id = (int) $request->input('service_id');
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL Sp_StandUpDailyPlannerTodayCountsdetails(?, ?, ?)',
+                        [$project_id,$client_id,  $service_id]
+                    );
+
+                    $rows = array_map(function ($row) {
+                        return [
+                            'job_id' => $row->Aid,
+                            'job' => $row->Job,
+                            'yesterday' => $row->YesterdayWorkStatus,
+                            'current_status' => $row->CurrentStatus,
+                            'billable' => $row->Billable,
+                        ];
+                    }, $data);
+
+                    return [
+                        'status' => true,
+                        'data' => $rows
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the daily planner details'
+                    ];
+                }
+            });
+
+            // Home page's Jobs panel tile counts (Total Live / With Carisma /
+            // With Client / New Jobs). Same param convention as the Daily
+            // Planner routes above (see comment there) - do not reorder.
+            // CALL Sp_JobListingLiveCounts(Cid, Service, Pid);
+            Route::post('get-jobs-live-counts', function(Request $request) {
+                try {
+                    $client_id = (int) $request->input('client_id');
+                    $project_id = (int) $request->input('project_id');
+                    $service_id = (int) $request->input('service_id');
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL Sp_JobListingLiveCounts(?, ?, ?)',
+                        [$project_id, $service_id, $client_id]
+                    );
+
+                    $row = $data[0] ?? null;
+
+                    return [
+                        'status' => true,
+                        'data' => [
+                            'total_live_jobs' => $row->TotalLiveJobs ?? 0,
+                            'with_carisma' => $row->WithCarisma ?? 0,
+                            'with_client' => $row->WithClient ?? 0,
+                            'new_jobs' => $row->NewJobs ?? 0,
+                        ]
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the jobs live counts'
+                    ];
+                }
+            });
+
+            // Job Status landing page's Closed Jobs card (Closed / This Month /
+            // Last Month). Same SP family/param convention as
+            // get-jobs-live-counts above - do not reorder.
+            // CALL Sp_JobListingClosedCounts(Cid, Service, Pid);
+            Route::post('get-jobs-closed-counts', function(Request $request) {
+                try {
+                    $client_id = (int) $request->input('client_id');
+                    $project_id = (int) $request->input('project_id');
+                    $service_id = (int) $request->input('service_id');
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL Sp_JobListingClosedCounts(?, ?, ?)',
+                        [$project_id, $service_id, $client_id]
+                    );
+
+                    $row = $data[0] ?? null;
+
+                    return [
+                        'status' => true,
+                        'data' => [
+                            'closed' => $row->Closed ?? 0,
+                            'this_month_closed' => $row->ThisMonthClosed ?? 0,
+                            'last_month_closed' => $row->LastMonthClosed ?? 0,
+                        ]
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the jobs closed counts'
+                    ];
+                }
+            });
+
+            // Home page's Feedback panel tile counts. Same param convention as
+            // the Daily Planner counts route above - do not reorder.
+            // CALL SP_GetClientPortalFeedbackJobs(Cid, Pid, Service);
+            Route::post('get-feedback-counts', function(Request $request) {
+                try {
+                    $client_id = (int) $request->input('client_id');
+                    $project_id = (int) $request->input('project_id');
+                    $service_id = (int) $request->input('service_id');
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL SP_GetClientPortalFeedbackJobs(?, ?, ?)',
+                        [$project_id, $client_id, $service_id]
+                    );
+
+                    $row = $data[0] ?? null;
+
+                    return [
+                        'status' => true,
+                        'data' => [
+                            'feedback_received' => $row->feedbackrececiced ?? 0,
+                            'improvements' => $row->improvements ?? 0,
+                            'appreciation' => $row->apprections ?? 0,
+                        ]
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the feedback counts'
+                    ];
+                }
+            });
+
+            // Home page's Yesterday's Workflow header — Sent for Query / Sent
+            // for Review counts. Same param convention as the other
+            // Daily Planner routes above - do not reorder.
+            // CALL Sp_StandUpDailyPlannerYesterdaySentJobs(Cid, Pid, Service);
+            Route::post('get-yesterday-sent-counts', function(Request $request) {
+                try {
+                    $client_id = (int) $request->input('client_id');
+                    $project_id = (int) $request->input('project_id');
+                    $service_id = (int) $request->input('service_id');
+
+                    $data = DB::connection('wm_mysql')->select(
+                        'CALL Sp_StandUpDailyPlannerYesterdaySentJobs(?, ?, ?)',
+                        [$project_id, $client_id, $service_id]
+                    );
+
+                    $row = $data[0] ?? null;
+
+                    return [
+                        'status' => true,
+                        'data' => [
+                            'sent_for_query' => $row->SentForQuery ?? 0,
+                            'sent_for_review' => $row->SentForReview ?? 0,
+                        ]
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the yesterday sent counts'
                     ];
                 }
             });
@@ -1839,7 +2354,150 @@ Route::prefix('client')->group(function() {
                 }
             });
 
+            // Corrected version of the above - counts jobs by their CURRENT
+            // Wsid only (live snapshot, matching Sp_JobListingLiveCounts'
+            // scope), instead of the old procedure's cumulative status-touch
+            // counts. New route (not swapped into total-job-status-count
+            // above) so the live production Jobs widget, which also calls
+            // that route, is unaffected.
+            Route::post('total-job-status-count-new', function(Request $request) {
+                try {
+                    if($request->has('id') && $request->has('service_id') && $request->has('user_id')) {
+                        $project_id = $request->input('id');
+                        $service_id = $request->input('service_id');
+                        $user_id = $request->input('user_id');
+                        $where = $request->input('conditions') ?: '';
 
+                        $rows = DB::connection('wm_mysql')->select('CALL sp_totaljobstatuscountbyclientwiseNew(?, ?, ?, ?)', [$project_id, $service_id, $user_id, $where]);
+                        return [
+                            'status' => true, 'data' => $rows
+                        ];
+                    } else {
+                        return [
+                            'status' => false, 'message' => 'Insufficient parameters'
+                        ];
+                    }
+                } catch(Exception $e) {
+                    return [
+                        'status' => false, 'message' => 'Something went wrong while generating total job status'
+                    ];
+                }
+            });
+
+            // Open Jobs page grid - one row per job with full status-date
+            // history, scoped exactly like Sp_JobListingLiveCounts /
+            // sp_totaljobstatuscountbyclientwiseNew (same tbl_clientcontactmaping
+            // FIND_IN_SET join, same '2026-07-01' cutoff). __status lets the
+            // caller filter server-side to one Wsid (0 = all, still excludes
+            // the Wsid 35-42 overhead/cancelled bucket but NOT Job Completed).
+            // CALL SP_GetJobStatusstatuswise(__pid, __Cid, __Serviceid, __status);
+            Route::post('get-job-status-statuswise', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $client_id = (int) $request->input('client_id');
+                    $service_id = (int) $request->input('service_id');
+                    $status = (int) $request->input('status', 0);
+
+                    $rows = DB::connection('wm_mysql')->select(
+                        'CALL SP_GetJobStatusstatuswise(?, ?, ?, ?)',
+                        [$project_id, $client_id, $service_id, $status]
+                    );
+
+                    return [
+                        'status' => true, 'data' => $rows
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the job status grid'
+                    ];
+                }
+            });
+
+            // Closed Jobs page's grid - same column shape as
+            // get-job-status-statuswise above, scoped server-side to wsid 11
+            // (Job Completed) by the proc itself.
+            // CALL SP_GetJobStatusstatuswiseclosedjob(__pid, __Cid, __Serviceid, __status);
+            Route::post('get-job-status-statuswise-closed', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $client_id = (int) $request->input('client_id');
+                    $service_id = (int) $request->input('service_id');
+                    $status = (int) $request->input('status', 0);
+
+                    $rows = DB::connection('wm_mysql')->select(
+                        'CALL SP_GetJobStatusstatuswiseclosedjob(?, ?, ?, ?)',
+                        [$project_id, $client_id, $service_id, $status]
+                    );
+
+                    return [
+                        'status' => true, 'data' => $rows
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the closed jobs grid'
+                    ];
+                }
+            });
+
+            // Closed Jobs page's Manager View - Partner Wise Jobs matrix.
+            // Same row shape as get-partner-wise-jobs-status below, just
+            // scoped to closed jobs (wsid 11) and a date range.
+            // CALL Sp_PartnerWiseJobsStatusclosedjob(__Pid, __Cid, __ServiceId, __FromDate, __ToDate);
+            Route::post('get-partner-wise-jobs-status-closed', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $client_id = (int) $request->input('client_id');
+                    $service_id = (int) $request->input('service_id');
+                    $from_date = $request->input('from_date');
+                    $to_date = $request->input('to_date');
+
+                    $rows = DB::connection('wm_mysql')->select(
+                        'CALL Sp_PartnerWiseJobsStatusclosedjob(?, ?, ?, ?, ?)',
+                        [$project_id, $client_id, $service_id, $from_date, $to_date]
+                    );
+
+                    return [
+                        'status' => true, 'data' => $rows
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the closed jobs manager view'
+                    ];
+                }
+            });
+
+            // Open Jobs page's Manager View - Partner Wise Jobs matrix.
+            // One row per (partner, status) combo already grouped/counted;
+            // the frontend pivots it into a Job Status x Partner grid.
+            // CALL Sp_PartnerWiseJobsStatus(__Pid, __Cid, __ServiceId);
+            Route::post('get-partner-wise-jobs-status', function(Request $request) {
+                try {
+                    $project_id = (int) $request->input('project_id');
+                    $client_id = (int) $request->input('client_id');
+                    $service_id = (int) $request->input('service_id');
+
+                    $rows = DB::connection('wm_mysql')->select(
+                        'CALL Sp_PartnerWiseJobsStatus(?, ?, ?)',
+                        [$project_id, $client_id, $service_id]
+                    );
+
+                    return [
+                        'status' => true, 'data' => $rows
+                    ];
+                } catch(Exception $e) {
+                    return [
+                        'status' => false,
+                        'error' => $e->getMessage(),
+                        'message' => 'Something went wrong while fetching the partner wise jobs status'
+                    ];
+                }
+            });
 
             // Get day wise job count comparision
             // CALL sp_datewisejobstatuscountcomparison2(278, '2025-09-01', '2025-09-08');

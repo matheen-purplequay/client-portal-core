@@ -1,123 +1,134 @@
 <section class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="h3 fw-bold mb-0">Movement</div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="vertical-tabs hstack gap-3 flex-wrap mt-3">
-                <div class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</div>
-                <div class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</div>
+    <div class="movement-header-row mb-2 mt-2">
+        <a class="back-link" routerLink="/dashboard/overview">
+            <span class="material-symbols-rounded">arrow_back</span>
+            Back to Home
+        </a>
+
+        <div class="movement-page-title fw-bold mb-0">Movement</div>
+
+        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2">
+            <div class="view-tabs">
+                <button type="button" class="view-tab" [class.active]="viewMode === 'status'" (click)="setViewMode('status')">Status View</button>
+                <button type="button" class="view-tab" [class.active]="viewMode === 'manager'" (click)="setViewMode('manager')">Manager View</button>
+            </div>
+            <div class="vertical-tabs">
+                <button type="button" class="vertical-tab" *ngFor="let v of verticals" [class.active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</button>
             </div>
         </div>
     </div>
 </section>
 
-<section class="container mt-4">
-    <div class="movement-card rounded-4 shadow-sm overflow-hidden bg-white">
-        <div class="movement-header px-3 py-2">
-            <div class="fw-bold text-white">Filters</div>
-        </div>
-        <div class="p-3">
-            <label class="small fw-semibold d-block mb-1">Period</label>
-            <div class="d-flex align-items-end gap-2 flex-wrap">
+<section class="container mt-3">
+    <div class="movement-card movement-filters-bar rounded-4 shadow-sm bg-white px-3 py-2">
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+            <div class="fw-bold small">Filters</div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <label class="small opacity-75 mb-0">Period</label>
                 <select class="period-select" [(ngModel)]="period">
                     <option value="7d">Last 7 days</option>
                     <option value="14d">Last 14 days</option>
                     <option value="1m">Last 1 month</option>
                     <option value="custom">Custom</option>
                 </select>
-                <ng-container *ngIf="isCustomPeriod">
-                    <div>
-                        <label class="small d-block mb-1 opacity-75">From</label>
-                        <input type="date" class="period-date" [(ngModel)]="customFrom">
-                    </div>
-                    <div>
-                        <label class="small d-block mb-1 opacity-75">To</label>
-                        <input type="date" class="period-date" [(ngModel)]="customTo">
-                    </div>
-                </ng-container>
-                <button type="button" class="apply-btn" (click)="applyFilter()" [disabled]="isLoading">
-                    <span class="material-symbols-rounded" style="font-size: 16px;">search</span>
-                    Apply
-                </button>
             </div>
+            <ng-container *ngIf="isCustomPeriod">
+                <div class="d-flex align-items-center gap-2">
+                    <label class="small opacity-75 mb-0">From</label>
+                    <input type="date" class="period-date" [(ngModel)]="customFrom">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <label class="small opacity-75 mb-0">To</label>
+                    <input type="date" class="period-date" [(ngModel)]="customTo">
+                </div>
+            </ng-container>
+            <button type="button" class="apply-btn" (click)="applyFilter()" [disabled]="isLoading">
+                <span class="material-symbols-rounded" style="font-size: 16px;">search</span>
+                Apply
+            </button>
         </div>
     </div>
 </section>
 
-<section class="container mt-4">
+<section class="container mt-4" *ngIf="viewMode === 'status'">
     <div class="row g-3">
-        <div class="col-6 col-sm-4 col-lg-2">
-            <div class="movement-stat-card movement-stat-card--green rounded-4 p-3 text-center cursor-pointer h-100"
-                [class.is-selected]="selection === 'new'" (click)="selectCard('new')">
-                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">New Jobs Received</div>
-                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rowsFor('new').length }}</div>
-                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4 col-lg-2">
-            <div class="movement-stat-card movement-stat-card--orange rounded-4 p-3 text-center cursor-pointer h-100"
-                [class.is-selected]="selection === 'queries'" (click)="selectCard('queries')">
-                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">Sent for Queries</div>
-                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rowsFor('queries').length }}</div>
-                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4 col-lg-2">
-            <div class="movement-stat-card movement-stat-card--purple rounded-4 p-3 text-center cursor-pointer h-100"
-                [class.is-selected]="selection === 'review'" (click)="selectCard('review')">
-                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">Sent for Review</div>
-                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rowsFor('review').length }}</div>
-                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4 col-lg-2">
-            <div class="movement-stat-card movement-stat-card--teal rounded-4 p-3 text-center cursor-pointer h-100"
-                [class.is-selected]="selection === 'closed'" (click)="selectCard('closed')">
-                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">Closed</div>
-                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rowsFor('closed').length }}</div>
-                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4 col-lg-2" *ngFor="let s of otherStatusBreakdown">
-            <div class="movement-stat-card movement-stat-card--maroon rounded-4 p-3 text-center cursor-pointer h-100"
-                [class.is-selected]="selection === 'otherStatus' && selectedOtherStatus === s.status" (click)="selectOtherStatus(s.status)">
-                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">{{ s.status }}</div>
-                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ s.count }}</div>
-                <div class="text-uppercase small movement-stat-unit mt-1">Jobs</div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4 col-lg-2">
-            <div class="movement-stat-card movement-stat-card--blue rounded-4 p-3 text-center cursor-pointer h-100"
+        <div class="col-6 col-sm-4">
+            <div class="movement-stat-tile movement-stat-tile--all cursor-pointer h-100"
                 [class.is-selected]="selection === 'all'" (click)="selectCard('all')">
-                <div class="text-uppercase small fw-semibold movement-stat-label mb-2">All Movement</div>
-                <div class="movement-stat-value" [class.opacity-50]="isLoading">{{ rows.length }}</div>
-                <div class="text-uppercase small movement-stat-unit mt-1">Records</div>
+                <div class="movement-stat-tile-label">Total</div>
+                <div class="movement-stat-tile-figure">
+                    <div class="movement-stat-tile-value">
+                        <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
+                        <ng-container *ngIf="!isLoadingSummary">{{ totalMovementCount }}</ng-container>
+                    </div>
+                    <div class="movement-stat-tile-unit">Records</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4">
+            <div class="movement-stat-tile movement-stat-tile--carisma cursor-pointer h-100"
+                [class.is-selected]="selection === 'carisma'" (click)="selectCard('carisma')">
+                <div class="movement-stat-tile-label">With Carisma</div>
+                <div class="movement-stat-tile-figure">
+                    <div class="movement-stat-tile-value">
+                        <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
+                        <ng-container *ngIf="!isLoadingSummary">{{ holderCount('carisma') }}</ng-container>
+                    </div>
+                    <div class="movement-stat-tile-unit">Jobs</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4">
+            <div class="movement-stat-tile movement-stat-tile--client cursor-pointer h-100"
+                [class.is-selected]="selection === 'client'" (click)="selectCard('client')">
+                <div class="movement-stat-tile-label">With Client</div>
+                <div class="movement-stat-tile-figure">
+                    <div class="movement-stat-tile-value">
+                        <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
+                        <ng-container *ngIf="!isLoadingSummary">{{ holderCount('client') }}</ng-container>
+                    </div>
+                    <div class="movement-stat-tile-unit">Jobs</div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="container mt-4">
+<section class="container mt-3" *ngIf="viewMode === 'status'">
+    <div class="row g-3">
+        <div class="col-6 col-sm-4 col-lg-2" *ngFor="let card of visibleMovementCards">
+            <div class="movement-stat-tile movement-stat-tile--{{ card.accent }} cursor-pointer h-100"
+                [class.is-selected]="selection === card.key" (click)="selectCard(card.key)">
+                <div class="movement-stat-tile-label">{{ card.label }}</div>
+                <div class="movement-stat-tile-figure">
+                    <div class="movement-stat-tile-value">
+                        <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
+                        <ng-container *ngIf="!isLoadingSummary">{{ summaryCounts[card.key] }}</ng-container>
+                    </div>
+                    <div class="movement-stat-tile-unit">Jobs</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4" *ngIf="viewMode === 'status'">
     <div class="movement-card rounded-4 shadow-sm overflow-hidden bg-white">
-        <div class="movement-header d-flex align-items-center justify-content-between px-4 py-3 flex-wrap gap-2">
-            <div class="fw-bold text-white">{{ tableTitle }}</div>
+        <div class="movement-toolbar d-flex align-items-center justify-content-end gap-2 px-3 py-2">
+            <button type="button" class="clear-filters-btn" (click)="clearFilters()" [disabled]="!hasActiveFilters">
+                Clear Filters
+            </button>
             <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="isExporting || isLoading">
                 <span class="material-symbols-rounded" style="font-size: 16px;">file_export</span>
                 {{ isExporting ? 'Exporting...' : 'Export To Excel' }}
             </button>
         </div>
 
-        <div *ngIf="isLoading" class="p-5 text-center opacity-75">
-            Loading movement data...
-        </div>
-
-        <div *ngIf="!isLoading" class="table-responsive">
+        <div class="movement-table-wrap">
             <table class="movement-table w-100">
                 <thead>
                     <tr>
+                        <th class="sno-col">S.No</th>
                         <th>Received From</th>
                         <th>Job Name</th>
                         <th>Nature of Job</th>
@@ -127,12 +138,13 @@
                         <th>Date</th>
                     </tr>
                     <tr class="filter-row">
+                        <th class="sno-col"></th>
                         <th class="ms-filter-cell">
                             <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('receivedFrom')">
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('receivedFrom') }}</span>
                                 <span class="material-symbols-rounded">arrow_drop_down</span>
                             </button>
-                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
                                 <div class="ms-filter-search">
                                     <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.receivedFrom" (click)="$event.stopPropagation()">
                                 </div>
@@ -153,7 +165,7 @@
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('natureOfJob') }}</span>
                                 <span class="material-symbols-rounded">arrow_drop_down</span>
                             </button>
-                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
                                 <div class="ms-filter-search">
                                     <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.natureOfJob" (click)="$event.stopPropagation()">
                                 </div>
@@ -173,7 +185,7 @@
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('movement') }}</span>
                                 <span class="material-symbols-rounded">arrow_drop_down</span>
                             </button>
-                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'movement'" (click)="$event.stopPropagation()">
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'movement'" (click)="$event.stopPropagation()">
                                 <div class="ms-filter-search">
                                     <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.movement" (click)="$event.stopPropagation()">
                                 </div>
@@ -193,7 +205,7 @@
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('fromStatus') }}</span>
                                 <span class="material-symbols-rounded">arrow_drop_down</span>
                             </button>
-                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'fromStatus'" (click)="$event.stopPropagation()">
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'fromStatus'" (click)="$event.stopPropagation()">
                                 <div class="ms-filter-search">
                                     <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.fromStatus" (click)="$event.stopPropagation()">
                                 </div>
@@ -213,7 +225,270 @@
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('toStatus') }}</span>
                                 <span class="material-symbols-rounded">arrow_drop_down</span>
                             </button>
-                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'toStatus'" (click)="$event.stopPropagation()">
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'toStatus'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.toStatus" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.toStatus && toStatusOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('toStatus')" (change)="toggleSelectAll('toStatus')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('toStatus')">
+                                    <input type="checkbox" [checked]="isOptionSelected('toStatus', opt)" (change)="toggleFilterOption('toStatus', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('toStatus').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th><input type="text" [(ngModel)]="filters.date" placeholder=""></th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!isLoading">
+                    <tr *ngFor="let row of filteredRows; let i = index">
+                        <td class="sno-col text-center">{{ i + 1 }}</td>
+                        <td>{{ row.receivedFrom }}</td>
+                        <td class="fw-medium job-name-cell job-name-clickable" [title]="row.jobName" data-bs-toggle="modal"
+                            data-bs-target="#movementJobDetailsPopup" (click)="openJobDetails(row)">{{ row.jobName }}</td>
+                        <td>{{ row.natureOfJob }}</td>
+                        <td><span class="movement-badge">{{ row.movementBadge }}</span></td>
+                        <td>{{ row.fromStatus }}</td>
+                        <td class="fw-semibold">{{ row.toStatus }}</td>
+                        <td>{{ row.date }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="movement-table-overlay" *ngIf="isLoading">
+            <span class="grid-spinner"></span>
+        </div>
+        <div class="movement-table-overlay" *ngIf="!isLoading && filteredRows.length === 0">
+            <span class="movement-table-empty-text">No movement found for this period.</span>
+        </div>
+    </div>
+</section>
+
+<!-- Manager View: Status x Partner matrix (Sp_WorkStatusMovementsforpartners) -->
+<section class="container mt-4" *ngIf="viewMode === 'manager'">
+    <div class="row g-3">
+        <div class="col-6 col-sm-4">
+            <div class="movement-stat-tile movement-stat-tile--all cursor-pointer h-100"
+                [class.is-selected]="managerSelection === 'all'" (click)="selectManagerCard('all')">
+                <div class="movement-stat-tile-label">Total</div>
+                <div class="movement-stat-tile-figure">
+                    <div class="movement-stat-tile-value">
+                        <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
+                        <ng-container *ngIf="!isLoadingManager">{{ managerGrandTotal }}</ng-container>
+                    </div>
+                    <div class="movement-stat-tile-unit">Records</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4">
+            <div class="movement-stat-tile movement-stat-tile--carisma cursor-pointer h-100"
+                [class.is-selected]="managerSelection === 'carisma'" (click)="selectManagerCard('carisma')">
+                <div class="movement-stat-tile-label">With Carisma</div>
+                <div class="movement-stat-tile-figure">
+                    <div class="movement-stat-tile-value">
+                        <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
+                        <ng-container *ngIf="!isLoadingManager">{{ managerWithCarisma }}</ng-container>
+                    </div>
+                    <div class="movement-stat-tile-unit">Jobs</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4">
+            <div class="movement-stat-tile movement-stat-tile--client cursor-pointer h-100"
+                [class.is-selected]="managerSelection === 'client'" (click)="selectManagerCard('client')">
+                <div class="movement-stat-tile-label">With Client</div>
+                <div class="movement-stat-tile-figure">
+                    <div class="movement-stat-tile-value">
+                        <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
+                        <ng-container *ngIf="!isLoadingManager">{{ managerWithClient }}</ng-container>
+                    </div>
+                    <div class="movement-stat-tile-unit">Jobs</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-3" *ngIf="viewMode === 'manager'">
+    <div class="row g-3">
+        <div class="col-6 col-sm-4 col-lg-2" *ngFor="let card of visibleManagerCards">
+            <div class="movement-stat-tile movement-stat-tile--{{ card.accent }} cursor-pointer h-100"
+                [class.is-selected]="managerSelection === card.key" (click)="selectManagerCard(card.key)">
+                <div class="movement-stat-tile-label">{{ card.label }}</div>
+                <div class="movement-stat-tile-figure">
+                    <div class="movement-stat-tile-value">
+                        <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
+                        <ng-container *ngIf="!isLoadingManager">
+                            {{ managerTotalForStatus(card.key) }}
+                        </ng-container>
+                    </div>
+                    <div class="movement-stat-tile-unit">Jobs</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4" *ngIf="viewMode === 'manager'">
+    <!-- Pivot matrix — stays visible even after drilling into a cell -->
+    <div class="movement-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="movement-toolbar d-flex align-items-center justify-content-start px-3 py-2">
+            <div class="fw-bold small">Job Movement by Partner <span class="opacity-75">&middot;</span> {{ selectedVerticalLabel }}</div>
+        </div>
+
+        <div class="movement-table-wrap">
+            <table class="movement-table w-100">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th *ngFor="let p of managerPartners" class="text-center">{{ p }}</th>
+                        <th class="text-center">Total</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!isLoadingManager">
+                    <tr *ngFor="let card of visibleManagerCards">
+                        <td class="fw-medium job-name-cell">{{ card.label }}</td>
+                        <td class="text-center" *ngFor="let p of managerPartners" [class.opacity-50]="!managerCount(card.key, p)">
+                            <a class="job-name-cell" style="cursor: pointer;" (click)="showManagerCellJobs(card.key, p)">{{ managerCount(card.key, p) }}</a>
+                        </td>
+                        <td class="text-center fw-semibold">{{ managerTotalForStatus(card.key) }}</td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <td>Total</td>
+                        <td class="text-center" *ngFor="let p of managerPartners">
+                            <a class="job-name-cell" style="cursor: pointer;" (click)="showManagerCellJobs(null, p)">{{ managerTotalForPartner(p) }}</a>
+                        </td>
+                        <td class="text-center">{{ managerGrandTotal }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="movement-table-overlay" *ngIf="isLoadingManager">
+            <span class="grid-spinner"></span>
+        </div>
+        <div class="movement-table-overlay" *ngIf="!isLoadingManager && !managerPartners.length">
+            <span class="movement-table-empty-text">No movement found for this period.</span>
+        </div>
+    </div>
+
+    <!-- Drill-down: same detail rows as Status View, filtered to the clicked status/partner.
+         Appears below the matrix rather than replacing it. -->
+    <div class="movement-card rounded-4 shadow-sm overflow-hidden bg-white mt-4" *ngIf="managerDrillDown">
+        <div class="movement-toolbar d-flex align-items-center justify-content-between px-3 py-2">
+            <div class="fw-bold small">{{ managerDrillDownTitle }}</div>
+            <a class="back-link" (click)="backToPartnerMatrix()">
+                <span class="material-symbols-rounded">close</span>
+                Clear selection
+            </a>
+        </div>
+
+        <div class="movement-table-wrap">
+            <table class="movement-table w-100">
+                <thead>
+                    <tr>
+                        <th class="sno-col">S.No</th>
+                        <th>Received From</th>
+                        <th>Job Name</th>
+                        <th>Nature of Job</th>
+                        <th>Movement</th>
+                        <th>From Status</th>
+                        <th>To Status</th>
+                        <th>Date</th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th class="sno-col"></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('receivedFrom')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('receivedFrom') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.receivedFrom" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.receivedFrom && receivedFromOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('receivedFrom')" (change)="toggleSelectAll('receivedFrom')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('receivedFrom')">
+                                    <input type="checkbox" [checked]="isOptionSelected('receivedFrom', opt)" (change)="toggleFilterOption('receivedFrom', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('receivedFrom').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th><input type="text" [(ngModel)]="filters.jobName" placeholder=""></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('natureOfJob')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('natureOfJob') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.natureOfJob" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.natureOfJob && natureOfJobOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('natureOfJob')" (change)="toggleSelectAll('natureOfJob')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('natureOfJob')">
+                                    <input type="checkbox" [checked]="isOptionSelected('natureOfJob', opt)" (change)="toggleFilterOption('natureOfJob', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('natureOfJob').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('movement')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('movement') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'movement'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.movement" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.movement && movementOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('movement')" (change)="toggleSelectAll('movement')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('movement')">
+                                    <input type="checkbox" [checked]="isOptionSelected('movement', opt)" (change)="toggleFilterOption('movement', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('movement').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('fromStatus')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('fromStatus') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'fromStatus'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.fromStatus" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.fromStatus && fromStatusOptions.length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('fromStatus')" (change)="toggleSelectAll('fromStatus')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('fromStatus')">
+                                    <input type="checkbox" [checked]="isOptionSelected('fromStatus', opt)" (change)="toggleFilterOption('fromStatus', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('fromStatus').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('toStatus')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('toStatus') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'toStatus'" (click)="$event.stopPropagation()">
                                 <div class="ms-filter-search">
                                     <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.toStatus" (click)="$event.stopPropagation()">
                                 </div>
@@ -232,12 +507,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="filteredRows.length === 0">
-                        <td colspan="7" class="text-center py-4 opacity-75">No movement found for this period.</td>
-                    </tr>
-                    <tr *ngFor="let row of filteredRows">
+                    <tr *ngFor="let row of managerDrillDownFilteredRows; let i = index">
+                        <td class="sno-col text-center">{{ i + 1 }}</td>
                         <td>{{ row.receivedFrom }}</td>
-                        <td class="fw-medium job-name-cell">{{ row.jobName }}</td>
+                        <td class="fw-medium job-name-cell job-name-clickable" [title]="row.jobName" data-bs-toggle="modal"
+                            data-bs-target="#movementJobDetailsPopup" (click)="openJobDetails(row)">{{ row.jobName }}</td>
                         <td>{{ row.natureOfJob }}</td>
                         <td><span class="movement-badge">{{ row.movementBadge }}</span></td>
                         <td>{{ row.fromStatus }}</td>
@@ -247,5 +521,27 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="movement-table-overlay" *ngIf="managerDrillDownFilteredRows.length === 0">
+            <span class="movement-table-empty-text">No jobs found.</span>
+        </div>
     </div>
 </section>
+
+<!-- Job Information Modal -->
+<div class="modal" id="movementJobDetailsPopup" tabindex="-1" aria-labelledby="movementJobDetailsPopup"
+    aria-hidden="true" style="z-index: 9999999;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+            <div class="ji-modal-header">
+                <span class="ji-modal-title">{{ job.JobName }}</span>
+                <button type="button" class="ji-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="material-symbols-rounded">close</span> Close
+                </button>
+            </div>
+            <div class="modal-body p-0" style="max-height: calc(100vh - 160px); overflow: auto;">
+                <app-job-information [job]="job"></app-job-information>
+            </div>
+        </div>
+    </div>
+</div>

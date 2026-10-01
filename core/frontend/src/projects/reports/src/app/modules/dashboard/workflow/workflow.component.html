@@ -1,83 +1,125 @@
 <section class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="h3 fw-bold mb-0">Workflow</div>
+    <div class="workflow-header-row mb-2 mt-2">
+        <a class="back-link" routerLink="/dashboard/overview">
+            <span class="material-symbols-rounded">arrow_back</span>
+            Back to Home
+        </a>
+
+        <div class="workflow-page-title fw-bold mb-0">Workflow</div>
+
+        <div class="vertical-tabs">
+            <button type="button" class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</button>
+            <button type="button" class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</button>
         </div>
     </div>
 </section>
 
-<section class="container mt-4">
+<section class="container mt-3">
     <div class="workflow-card rounded-4 shadow-sm overflow-hidden bg-white">
-        <div class="workflow-header px-4 py-3 d-flex align-items-center justify-content-between">
-            <div class="fw-bold text-white">Today's Stand-Up</div>
-            <button type="button" class="refresh-btn" (click)="fetchWorkflowStandUp()" title="Refresh">
-                <span class="material-symbols-rounded">refresh</span>
-            </button>
+        <div class="workflow-toolbar d-flex align-items-center justify-content-between px-3 py-2 flex-wrap gap-2">
+            <div class="fw-bold small">Today's Stand-Up</div>
+            <div class="hstack gap-2">
+                <button type="button" class="clear-filters-btn" (click)="clearFilters()" [disabled]="!hasActiveFilters">
+                    Clear Filters
+                </button>
+                <button type="button" class="refresh-btn" (click)="fetchWorkflowStandUp()" title="Refresh">
+                    <span class="material-symbols-rounded">refresh</span>
+                </button>
+            </div>
         </div>
 
-        <div class="px-3 pt-3 d-flex justify-content-end" *ngIf="hasActiveFilters">
-            <button type="button" class="clear-filters-btn" (click)="clearFilters()">
-                Clear Filters
-            </button>
-        </div>
-
-        <div *ngIf="isLoading" class="p-5 text-center opacity-75">
-            Loading workflow...
-        </div>
-
-        <div *ngIf="!isLoading" class="table-responsive">
+        <div class="workflow-table-wrap">
             <table class="workflow-table w-100">
                 <thead>
                     <tr>
-                        <th>Job Description</th>
-                        <th>Team Name</th>
-                        <th>Associate</th>
-                        <th>Work Status</th>
-                        <th>Est.Time</th>
+                        <th>Accountant Name</th>
+                        <th>Job Name</th>
+                        <th>Activity</th>
+                        <th>Est. Time</th>
+                        <th>Budget Time</th>
+                        <th>Total Billed</th>
+                        <th>Remaining Balance</th>
                         <th>Est. Delivery</th>
                     </tr>
-                    <tr class="workflow-filter-row">
-                        <th>
-                            <input type="text" class="workflow-input" placeholder="Search..." [(ngModel)]="searchTerm">
+                    <tr class="filter-row">
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('nameA')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('nameA') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'nameA'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.nameA" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.nameA && optionsFor('nameA').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('nameA')" (change)="toggleSelectAll('nameA')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('nameA')">
+                                    <input type="checkbox" [checked]="isOptionSelected('nameA', opt)" (change)="toggleFilterOption('nameA', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('nameA').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
                         </th>
-                        <th>
-                            <select class="workflow-input" [(ngModel)]="selectedTeam">
-                                <option value="">All Teams</option>
-                                <option *ngFor="let team of teamOptions" [value]="team">{{ team }}</option>
-                            </select>
+                        <th><input type="text" [(ngModel)]="searchTerm" placeholder="Search..."></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('workstatus')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('workstatus') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'workstatus'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.workstatus" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.workstatus && optionsFor('workstatus').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('workstatus')" (change)="toggleSelectAll('workstatus')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('workstatus')">
+                                    <input type="checkbox" [checked]="isOptionSelected('workstatus', opt)" (change)="toggleFilterOption('workstatus', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('workstatus').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
                         </th>
-                        <th>
-                            <select class="workflow-input" [(ngModel)]="selectedAssociate">
-                                <option value="">All Associates</option>
-                                <option *ngFor="let associate of associateOptions" [value]="associate">{{ associate }}</option>
-                            </select>
-                        </th>
-                        <th>
-                            <select class="workflow-input" [(ngModel)]="selectedStatus">
-                                <option value="">All Statuses</option>
-                                <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
-                            </select>
-                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr *ngIf="filteredRows.length === 0">
-                        <td colspan="6" class="text-center py-4 opacity-75">
-                            {{ hasActiveFilters ? 'No rows match the selected filters.' : 'No stand-up logged for today.' }}
-                        </td>
-                    </tr>
-                    <tr *ngFor="let row of filteredRows">
-                        <td class="fw-medium">{{ row.jobDescription || '-' }}</td>
-                        <td>{{ row.teamName || '-' }}</td>
-                        <td>{{ row.nameA || '-' }}</td>
-                        <td>{{ row.workstatus || '-' }}</td>
-                        <td>{{ row.timeWillTake || '-' }}</td>
-                        <td>{{ row.expectedFinishDate || '-' }}</td>
-                    </tr>
+                <tbody *ngIf="!isLoading">
+                    <ng-container *ngFor="let group of groupedRows">
+                        <tr class="workflow-group-row" *ngFor="let row of group.rows; let first = first; let last = last"
+                            [class.workflow-group-start]="first"
+                            [class.workflow-group-end]="last && !group.statusContent">
+                            <td *ngIf="first" [attr.rowspan]="group.rows.length" class="fw-semibold associate-cell">{{ group.associate }}</td>
+                            <td class="fw-medium job-name-cell">{{ row.jobDescription || '-' }}</td>
+                            <td>{{ row.workstatus || '-' }}</td>
+                            <td class="text-center">{{ row.timeWillTake || '-' }}</td>
+                            <td class="text-center">{{ row.budgetTime }}</td>
+                            <td class="text-center">{{ row.totalBillable }}</td>
+                            <td class="text-center" [class.workflow-over-budget]="row.isOverBudget">{{ row.remainingBalance }}</td>
+                            <td>{{ row.expectedFinishDate || '-' }}</td>
+                        </tr>
+                        <tr class="workflow-group-row workflow-status-row" *ngIf="group.statusContent">
+                            <td colspan="8">
+                                <span class="workflow-status-dot" [style.background-color]="group.statusColour"></span>
+                                {{ group.statusContent }}
+                            </td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
+        </div>
+
+        <div class="workflow-table-overlay" *ngIf="isLoading">
+            <span class="grid-spinner"></span>
+        </div>
+        <div class="workflow-table-overlay" *ngIf="!isLoading && filteredRows.length === 0">
+            <span class="workflow-table-empty-text">{{ hasActiveFilters ? 'No rows match the selected filters.' : 'No stand-up logged for today.' }}</span>
         </div>
     </div>
 </section>

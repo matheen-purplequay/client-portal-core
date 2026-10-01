@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { JobData, Job } from '../../../models/jobs';
 import { JobStatusService } from '../../../services/dashboard/job-status/job-status.service';
 import { LocalStorageService } from '../../../services/app/storage/local-storage.service';
@@ -8,7 +8,7 @@ import { LocalStorageService } from '../../../services/app/storage/local-storage
   templateUrl: './job-details.component.html',
   styleUrls: ['./job-details.component.scss']
 })
-export class JobDetailsComponent implements OnInit {
+export class JobDetailsComponent implements OnInit, OnChanges {
 
   @Input() job: JobData = Job.defaultJob();
   rating = 0;
@@ -37,6 +37,18 @@ export class JobDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.localStorageService.getItem('userdata');
     this.setupAmbiance();
+  }
+
+  // The popup on some pages (Turnaround, Open Jobs) mounts this component
+  // once for the whole page instead of recreating it per open (as the Job
+  // Status page's *ngIf-toggled usage does), so a changed [job] input is
+  // the only signal that a different job was clicked — refetch on it.
+  ngOnChanges(changes: SimpleChanges): void {
+    const jobChange = changes['job'];
+    if (jobChange && !jobChange.firstChange && jobChange.previousValue?.Aid !== jobChange.currentValue?.Aid) {
+      this.timeline = [];
+      this.getJobDetails();
+    }
   }
 
   setupAmbiance() {

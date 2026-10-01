@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { PqUiModule } from 'pq-ui';
 import { BudgetOverviewComponent } from './budget-overview.component';
+import { FilterPanelPositionModule } from '../../../shared/directives/filter-panel-position.module';
+import { JobDetailsModule } from '../job-details/job-details.module';
 
 const routes: Routes = [
   { path: '', component: BudgetOverviewComponent }
@@ -17,6 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     PqUiModule,
+    FilterPanelPositionModule,
+    JobDetailsModule,
     RouterModule.forChild(routes)
   ]
 })

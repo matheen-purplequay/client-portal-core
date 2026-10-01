@@ -148,6 +148,12 @@ export class ProductionReportComponent implements OnInit {
     this.fetchTimeUtilisation();
   }
 
+  selectVertical(id: number) {
+    if (this.selectedServiceId === id) return;
+    this.selectedServiceId = id;
+    this.onVerticalChange();
+  }
+
   fetchProductivityReport() {
     this.isLoading = true;
     this.reportService.getProductivityReport(this.monthYear, this.selectedServiceId).subscribe({

@@ -213,7 +213,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const body = {
       master_id: master_id
     };
-    this.loginService.getClientsByMaster(body).subscribe((res: any) => {
+    this.loginService.getClientsByMasterSP(body).subscribe((res: any) => {
       this.isFetchingClients = false;
       if(res.status) {
         this.clients.companies = res.data;
@@ -251,7 +251,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       const body = {
         client_id: this.clients.selectedClient.id
       };
-      this.clientService.getClientUsers(body).subscribe({
+      this.clientService.getClientUsersSP(body).subscribe({
         next: (res: any) => {
           this.loadingText = '';
           this.clientUsers.list = res.data;

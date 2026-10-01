@@ -6,6 +6,7 @@ const ACCOUNTS_HOST = env.api_production.hosts.accounts_server;
 const REPORTS_HOST = env.api_production.hosts.reports_server;
 
 const GET_HOLIDAYS = `${REPORTS_HOST}/get-holidays`;
+const GET_NEXT_HOLIDAYS = `${REPORTS_HOST}/get-next-holidays`;
 const GET_UPCOMING_EVENTS = `${REPORTS_HOST}/get-upcoming-events`;
 const GET_MY_TEAM = `${REPORTS_HOST}/get-my-team`;
 const GET_KNOWLEDGE_CENTER = `${REPORTS_HOST}/get-articles`;
@@ -26,6 +27,11 @@ export class CommonService {
 
   getHolidaysData() {
     return this.dataService.doGet(`${GET_HOLIDAYS}`);
+  }
+
+  // Home page's Holidays panel - next upcoming AUS + India holiday.
+  getNextHolidays() {
+    return this.dataService.doGet(`${GET_NEXT_HOLIDAYS}`);
   }
 
   getUpcomingEvents() {

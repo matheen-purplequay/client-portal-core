@@ -1,0 +1,98 @@
+<section class="container">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+      <div class="h3 fw-bold mb-1">Job Status</div>
+      <div class="text-slate-600">Select a status to view the jobs within it.</div>
+    </div>
+    <div class="col-sm-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+      <div class="vertical-tabs hstack gap-3 flex-wrap mt-3">
+        <div class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</div>
+        <div class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</div>
+      </div>
+    </div>
+    <div class="col-sm-1"></div>
+  </div>
+</section>
+
+<section class="container mt-4">
+  <div class="row g-3">
+    <div class="col-sm-1"></div>
+
+    <div class="col-sm-5">
+      <div class="job-status-card job-status-card--open job-status-card--clickable" role="button" routerLink="/dashboard/job/open">
+        <div class="job-status-card-top">
+          <span class="job-status-icon job-status-icon--open">
+            <span class="material-symbols-rounded">folder_open</span>
+          </span>
+          <div class="job-status-count">
+            <div class="job-status-count-value">
+              <span class="loading-dots" *ngIf="isLoadingOpen"><i></i><i></i><i></i></span>
+              <ng-container *ngIf="!isLoadingOpen">{{ totalLiveJobs }}</ng-container>
+            </div>
+            <div class="job-status-count-label job-status-count-label--open">Open</div>
+          </div>
+        </div>
+        <div class="job-status-title job-status-title--open">Open Jobs</div>
+        <div class="job-status-desc">Jobs still in progress, split by the party currently holding the job.</div>
+        <div class="job-status-footer">
+          <div>
+            <div class="job-status-footer-label">With Carisma</div>
+            <div class="job-status-footer-value job-status-footer-value--open">
+              <span class="loading-dots" *ngIf="isLoadingOpen"><i></i><i></i><i></i></span>
+              <ng-container *ngIf="!isLoadingOpen">{{ withCarisma }}</ng-container>
+            </div>
+          </div>
+          <div>
+            <div class="job-status-footer-label">With Client</div>
+            <div class="job-status-footer-value job-status-footer-value--open">
+              <span class="loading-dots" *ngIf="isLoadingOpen"><i></i><i></i><i></i></span>
+              <ng-container *ngIf="!isLoadingOpen">{{ withClient }}</ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-5">
+      <div class="job-status-card job-status-card--closed job-status-card--clickable" role="button" routerLink="/dashboard/job/closed">
+        <div class="job-status-card-top">
+          <span class="job-status-icon job-status-icon--closed">
+            <span class="material-symbols-rounded">check_circle</span>
+          </span>
+          <div class="job-status-count">
+            <div class="job-status-count-value">
+              <span class="loading-dots" *ngIf="isLoadingClosed"><i></i><i></i><i></i></span>
+              <ng-container *ngIf="!isLoadingClosed">{{ totalClosed }}</ng-container>
+            </div>
+            <div class="job-status-count-label job-status-count-label--closed">Closed</div>
+          </div>
+        </div>
+        <div class="job-status-title job-status-title--closed">Closed Jobs</div>
+        <div class="job-status-desc">Completed and delivered jobs, searchable by a date range.</div>
+        <div class="job-status-footer">
+          <div>
+            <div class="job-status-footer-label">This Month</div>
+            <div class="job-status-footer-value job-status-footer-value--closed">
+              <span class="loading-dots" *ngIf="isLoadingClosed"><i></i><i></i><i></i></span>
+              <ng-container *ngIf="!isLoadingClosed">{{ closedThisMonth }}</ng-container>
+            </div>
+          </div>
+          <div>
+            <div class="job-status-footer-label">Last Month</div>
+            <div class="job-status-footer-value job-status-footer-value--closed">
+              <span class="loading-dots" *ngIf="isLoadingClosed"><i></i><i></i><i></i></span>
+              <ng-container *ngIf="!isLoadingClosed">{{ closedLastMonth }}</ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-1"></div>
+  </div>
+</section>

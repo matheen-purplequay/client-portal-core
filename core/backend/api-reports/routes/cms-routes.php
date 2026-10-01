@@ -13,6 +13,7 @@ use App\Models\Team;
 use App\Models\UsefulTools;
 use App\Models\WeeklyReports;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -108,6 +109,39 @@ Route::post('/delete-newsletter', function (Request $request) {
         return ['status' => false, 'mesage' => 'Something went wrong while updating newsletter', 'error' => $e->getMessage()];
     }
 
+});
+
+// Home page's Holidays panel - next upcoming AUS holiday (holidays table,
+// cp_reports_dev, next 30 days) and next upcoming India holiday
+// (CALL SP_GetIndianHolidays(); on the Works Manager DB, already scoped to
+// the next 30 days and sorted by the procedure itself).
+Route::get('/get-next-holidays', function () {
+    $australian = Holidays::where('iso_country_alpha3_code', 'AUS')
+        ->whereRaw("STR_TO_DATE(date, '%d-%m-%Y') BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)")
+        ->orderByRaw("STR_TO_DATE(date, '%d-%m-%Y') ASC")
+        ->first();
+
+    try {
+        $indianRows = DB::connection('wm_mysql')->select('CALL SP_GetIndianHolidays()');
+        $indian = $indianRows[0] ?? null;
+    } catch (Exception $e) {
+        $indian = null;
+    }
+
+    return [
+        'status' => true,
+        'data' => [
+            'australian' => $australian ? [
+                'reason' => $australian->reason,
+                'type' => $australian->type,
+                'date' => $australian->date,
+            ] : null,
+            'indian' => $indian ? [
+                'reason' => $indian->HolidayName,
+                'date' => $indian->HolidayDate,
+            ] : null,
+        ]
+    ];
 });
 
 Route::get('/get-holidays', function () {

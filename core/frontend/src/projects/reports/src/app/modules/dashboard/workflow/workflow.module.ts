@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { PqUiModule } from 'pq-ui';
 import { WorkflowComponent } from './workflow.component';
+import { FilterPanelPositionModule } from '../../../shared/directives/filter-panel-position.module';
 
 const routes: Routes = [
   { path: '', component: WorkflowComponent }
@@ -17,6 +18,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     PqUiModule,
+    FilterPanelPositionModule,
     RouterModule.forChild(routes)
   ]
 })

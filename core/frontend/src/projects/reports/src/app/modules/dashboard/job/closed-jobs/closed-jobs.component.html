@@ -1,0 +1,361 @@
+<section class="container">
+    <div class="closed-jobs-header-row mb-2 mt-2">
+        <a class="back-link" routerLink="/dashboard/job">
+            <span class="material-symbols-rounded">arrow_back</span>
+            Back to Job Status
+        </a>
+
+        <div class="closed-jobs-page-title fw-bold mb-0">Closed Jobs</div>
+
+        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2">
+            <div class="view-tabs">
+                <button type="button" class="view-tab" [class.active]="viewMode === 'status'" (click)="setViewMode('status')">Status View</button>
+                <button type="button" class="view-tab" [class.active]="viewMode === 'manager'" (click)="setViewMode('manager')">Manager View</button>
+            </div>
+            <div class="vertical-tabs">
+                <button type="button" class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</button>
+                <button type="button" class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-3">
+    <div class="closed-jobs-date-row-standalone rounded-4 shadow-sm bg-white px-3 py-3 d-flex align-items-end gap-2 flex-wrap">
+        <div>
+            <label class="small d-block mb-1 opacity-75">From</label>
+            <input type="date" class="closed-jobs-date" [(ngModel)]="dateFrom" (ngModelChange)="onDateFilterChange()">
+        </div>
+        <div>
+            <label class="small d-block mb-1 opacity-75">To</label>
+            <input type="date" class="closed-jobs-date" [(ngModel)]="dateTo" (ngModelChange)="onDateFilterChange()">
+        </div>
+        <button type="button" class="clear-date-btn" (click)="clearDateFilter()" *ngIf="dateFrom || dateTo">
+            Clear
+        </button>
+        <div class="ms-auto small text-muted" *ngIf="viewMode === 'status'">{{ filteredRows.length }} closed jobs</div>
+    </div>
+</section>
+
+<section class="container mt-3" *ngIf="viewMode === 'status'">
+    <div class="closed-jobs-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="closed-jobs-toolbar d-flex align-items-center justify-content-end px-3 py-2 flex-wrap gap-2">
+            <button type="button" class="clear-filters-btn" (click)="clearFilters()" [disabled]="!hasActiveFilters">
+                Clear Filters
+            </button>
+            <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="isExporting || isLoadingRows">
+                <span class="material-symbols-rounded" style="font-size: 16px;">file_export</span>
+                {{ isExporting ? 'Exporting...' : 'Export To Excel' }}
+            </button>
+        </div>
+
+        <div class="closed-jobs-table-wrap">
+            <table class="closed-jobs-table w-100">
+                <thead>
+                    <tr>
+                        <th class="sno-col col-frozen col-frozen--1">S.No</th>
+                        <th class="col-frozen col-frozen--2">Job Name</th>
+                        <th>Group Job Name</th>
+                        <th>Job Status</th>
+                        <th>Nature of Job</th>
+                        <th>Received From</th>
+                        <th>Partner</th>
+                        <th>Associate</th>
+                        <th>FY</th>
+                        <th>Received Date</th>
+                        <th>Commenced Date</th>
+                        <th>Job Completed</th>
+                        <th>Budget Time</th>
+                        <th>Time Taken</th>
+                        <th>Variance</th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th class="sno-col col-frozen col-frozen--1"></th>
+                        <th class="col-frozen col-frozen--2"><input type="text" [(ngModel)]="jobNameSearch" placeholder="Search..."></th>
+                        <th></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('status')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('status') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'status'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.status" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.status && optionsFor('status').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('status')" (change)="toggleSelectAll('status')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('status')">
+                                    <input type="checkbox" [checked]="isOptionSelected('status', opt)" (change)="toggleFilterOption('status', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('status').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('natureOfJob')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('natureOfJob') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.natureOfJob" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.natureOfJob && optionsFor('natureOfJob').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('natureOfJob')" (change)="toggleSelectAll('natureOfJob')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('natureOfJob')">
+                                    <input type="checkbox" [checked]="isOptionSelected('natureOfJob', opt)" (change)="toggleFilterOption('natureOfJob', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('natureOfJob').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('receivedFrom')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('receivedFrom') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.receivedFrom" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.receivedFrom && optionsFor('receivedFrom').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('receivedFrom')" (change)="toggleSelectAll('receivedFrom')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('receivedFrom')">
+                                    <input type="checkbox" [checked]="isOptionSelected('receivedFrom', opt)" (change)="toggleFilterOption('receivedFrom', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('receivedFrom').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('partner')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('partner') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'partner'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.partner" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.partner && optionsFor('partner').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('partner')" (change)="toggleSelectAll('partner')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('partner')">
+                                    <input type="checkbox" [checked]="isOptionSelected('partner', opt)" (change)="toggleFilterOption('partner', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('partner').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('associate')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('associate') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'associate'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.associate" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.associate && optionsFor('associate').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('associate')" (change)="toggleSelectAll('associate')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('associate')">
+                                    <input type="checkbox" [checked]="isOptionSelected('associate', opt)" (change)="toggleFilterOption('associate', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('associate').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('fy')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('fy') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'fy'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.fy" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.fy && optionsFor('fy').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('fy')" (change)="toggleSelectAll('fy')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('fy')">
+                                    <input type="checkbox" [checked]="isOptionSelected('fy', opt)" (change)="toggleFilterOption('fy', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('fy').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!isLoadingRows">
+                    <tr *ngFor="let row of filteredRows; let i = index">
+                        <td class="sno-col col-frozen col-frozen--1 text-center">{{ i + 1 }}</td>
+                        <td class="fw-medium job-name-cell col-frozen col-frozen--2" [title]="row.jobName" data-bs-toggle="modal"
+                            data-bs-target="#closedJobDetailsPopup" (click)="openJobDetails(row)">{{ row.jobName }}</td>
+                        <td>{{ row.groupJobName }}</td>
+                        <td>{{ row.status }}</td>
+                        <td>{{ row.natureOfJob }}</td>
+                        <td>{{ row.receivedFrom }}</td>
+                        <td>{{ row.partner }}</td>
+                        <td>{{ row.associate }}</td>
+                        <td class="text-center">{{ row.fy }}</td>
+                        <td>{{ row.received }}</td>
+                        <td>{{ row.commenced }}</td>
+                        <td>{{ row.jobCompleted }}</td>
+                        <td class="text-center">{{ row.budgetTime }}</td>
+                        <td class="text-center">{{ row.timeTaken }}</td>
+                        <td class="text-center fw-semibold" [ngClass]="isOverBudget(row) ? 'variance-over' : 'variance-under'">
+                            {{ varianceLabel(row) }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="closed-jobs-table-overlay" *ngIf="isLoadingRows">
+            <span class="grid-spinner"></span>
+        </div>
+        <div class="closed-jobs-table-overlay" *ngIf="!isLoadingRows && filteredRows.length === 0">
+            <span class="closed-jobs-table-empty-text">No closed jobs found.</span>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-3" *ngIf="viewMode === 'manager'">
+    <!-- Pivot matrix — stays visible even after drilling into a cell -->
+    <div class="closed-jobs-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="closed-jobs-toolbar d-flex align-items-center justify-content-end px-3 py-2">
+            <button type="button" class="export-btn" (click)="exportManagerView()" [disabled]="isExporting || isLoadingPartnerWise">
+                <span class="material-symbols-rounded" style="font-size: 16px;">file_export</span>
+                {{ isExporting ? 'Exporting...' : 'Export To Excel' }}
+            </button>
+        </div>
+
+        <div class="closed-jobs-table-wrap">
+            <table class="closed-jobs-table w-100" *ngIf="!isLoadingPartnerWise">
+                <thead>
+                    <tr>
+                        <th class="pw-status-col">Job Status</th>
+                        <th class="text-center" *ngFor="let p of managerPartners">{{ p }}</th>
+                        <th class="text-center">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let s of managerStatuses">
+                        <td class="pw-status-col">{{ s }}</td>
+                        <td *ngFor="let p of managerPartners" class="text-center">
+                            <a class="pw-count" *ngIf="managerCount(s, p); else pwZero" (click)="showManagerCellJobs(s, p)">{{ managerCount(s, p) }}</a>
+                            <ng-template #pwZero>0</ng-template>
+                        </td>
+                        <td class="fw-bold text-center">{{ managerTotalForStatus(s) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="closed-jobs-table-overlay pw-table-overlay" *ngIf="isLoadingPartnerWise">
+            <span class="grid-spinner"></span>
+        </div>
+        <div class="closed-jobs-table-overlay pw-table-overlay" *ngIf="!isLoadingPartnerWise && !managerPartners.length">
+            <span class="closed-jobs-table-empty-text">No jobs match this filter.</span>
+        </div>
+    </div>
+
+    <div class="back-to-matrix-row mb-2 mt-3" *ngIf="managerDrillDown">
+        <a class="back-link" (click)="backToPartnerWise()">
+            <span class="material-symbols-rounded">close</span>
+            Clear selection
+        </a>
+    </div>
+
+    <div class="closed-jobs-card rounded-4 shadow-sm overflow-hidden bg-white" *ngIf="managerDrillDown">
+        <div class="closed-jobs-toolbar d-flex align-items-center justify-content-start px-3 py-2">
+            <div class="fw-bold small text-white">
+                {{ managerDrillDown!.partner }}
+                <span class="opacity-75" *ngIf="managerDrillDown!.status">&middot; {{ managerDrillDown!.status }}</span>
+            </div>
+        </div>
+
+        <div class="closed-jobs-table-wrap">
+            <table class="closed-jobs-table w-100">
+                <thead>
+                    <tr>
+                        <th class="sno-col col-frozen col-frozen--1">S.No</th>
+                        <th class="col-frozen col-frozen--2">Job Name</th>
+                        <th>Group Job Name</th>
+                        <th>Job Status</th>
+                        <th>Nature of Job</th>
+                        <th>Received From</th>
+                        <th>Partner</th>
+                        <th>Associate</th>
+                        <th>FY</th>
+                        <th>Received Date</th>
+                        <th>Commenced Date</th>
+                        <th>Job Completed</th>
+                        <th>Budget Time</th>
+                        <th>Time Taken</th>
+                        <th>Variance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of managerDrillDownRows; let i = index">
+                        <td class="sno-col col-frozen col-frozen--1 text-center">{{ i + 1 }}</td>
+                        <td class="fw-medium job-name-cell col-frozen col-frozen--2" [title]="row.jobName" data-bs-toggle="modal"
+                            data-bs-target="#closedJobDetailsPopup" (click)="openJobDetails(row)">{{ row.jobName }}</td>
+                        <td>{{ row.groupJobName }}</td>
+                        <td>{{ row.status }}</td>
+                        <td>{{ row.natureOfJob }}</td>
+                        <td>{{ row.receivedFrom }}</td>
+                        <td>{{ row.partner }}</td>
+                        <td>{{ row.associate }}</td>
+                        <td class="text-center">{{ row.fy }}</td>
+                        <td>{{ row.received }}</td>
+                        <td>{{ row.commenced }}</td>
+                        <td>{{ row.jobCompleted }}</td>
+                        <td class="text-center">{{ row.budgetTime }}</td>
+                        <td class="text-center">{{ row.timeTaken }}</td>
+                        <td class="text-center fw-semibold" [ngClass]="isOverBudget(row) ? 'variance-over' : 'variance-under'">
+                            {{ varianceLabel(row) }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="closed-jobs-table-overlay" *ngIf="managerDrillDownRows.length === 0">
+            <span class="closed-jobs-table-empty-text">No jobs match this filter.</span>
+        </div>
+    </div>
+</section>
+
+<!-- Job Information Modal -->
+<div class="modal" id="closedJobDetailsPopup" tabindex="-1" aria-labelledby="closedJobDetailsPopup"
+    aria-hidden="true" style="z-index: 9999999;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+            <div class="ji-modal-header">
+                <span class="ji-modal-title">{{ job.JobName }}</span>
+                <button type="button" class="ji-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="material-symbols-rounded">close</span> Close
+                </button>
+            </div>
+            <div class="modal-body p-0" style="max-height: calc(100vh - 160px); overflow: auto;">
+                <app-job-information [job]="job"></app-job-information>
+            </div>
+        </div>
+    </div>
+</div>

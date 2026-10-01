@@ -1,8 +1,11 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ReportService } from '../../../services/reports/report.service';
 import { ClientService } from '../../../services/entities/client.service';
 import { LocalStorageService } from '../../../services/app/storage/local-storage.service';
+import { ClientUserService } from '../../../shared/services/navquery/wm-client.service';
+import { Job, JobData } from '../../../models/jobs';
 
 interface VerticalOption {
   id: number;
@@ -12,6 +15,7 @@ interface VerticalOption {
 type MultiSelectFilterKey = 'receivedFrom' | 'natureOfJob' | 'accountant' | 'jobStatus';
 
 interface BudgetRow {
+  aid: number;
   receivedFrom: string;
   jobName: string;
   natureOfJob: string;
@@ -20,6 +24,7 @@ interface BudgetRow {
   budgetSeconds: number;
   timeTakenSeconds: number;
   varianceSeconds: number;
+  receivedDate: string;
 }
 
 interface BudgetFilters {
@@ -41,7 +46,8 @@ type BudgetSelection = 'all' | 'within' | 'over';
   templateUrl: './budget-overview.component.html',
   styleUrls: ['./budget-overview.component.scss']
 })
-export class BudgetOverviewComponent implements OnInit {
+export class BudgetOverviewComponent implements OnInit, OnDestroy {
+  private clientUserSub?: Subscription;
 
   rows: BudgetRow[] = [];
   isLoading = false;
@@ -67,7 +73,18 @@ export class BudgetOverviewComponent implements OnInit {
     receivedFrom: '', natureOfJob: '', accountant: '', jobStatus: ''
   };
 
+  // Counts for the 3 summary cards, fetched from SP_clientportalBudgetOverviewCount
+  // — the SAME proc the Home page's Budget panel uses — instead of being
+  // derived client-side from `rows`.
+  budgetCounts = { underBudget: 0, overBudget: 0 };
+  isLoadingCounts = false;
+
   selectedServiceId = 0; // 0 = all verticals
+
+  // Job Details popup — same app-job-information component/modal used on
+  // the Open Jobs/Closed Jobs/Turnaround pages, opened by clicking a row's
+  // job name.
+  job: JobData = Job.defaultJob();
 
   // Same client-scoped vertical source (and same tab UI) as the dashboard
   // home page / Turnaround Report, so this page can be scoped to the same
@@ -80,7 +97,8 @@ export class BudgetOverviewComponent implements OnInit {
     private route: ActivatedRoute,
     private elementRef: ElementRef,
     private clientService: ClientService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private clientUserService: ClientUserService
   ) { }
 
   // Close whichever multi-select panel is open when clicking outside it.
@@ -152,25 +170,58 @@ export class BudgetOverviewComponent implements OnInit {
     }
     this.fetchVerticals();
     this.fetchBudgetOverview();
+    this.fetchBudgetOverviewCount();
+
+    // Keep the grid/counts in sync when the navbar's client-user (Cid)
+    // dropdown changes, since this page otherwise only reads it once via
+    // getSelectedContactId() inside ReportService.
+    this.clientUserSub = this.clientUserService.userChanged$.subscribe(() => {
+      this.fetchBudgetOverview();
+      this.fetchBudgetOverviewCount();
+    });
   }
 
-  // Mirrors DashboardPageComponent.fetchVerticals() / TurnaroundReportComponent.fetchVerticals().
+  ngOnDestroy(): void {
+    this.clientUserSub?.unsubscribe();
+  }
+
+  fetchBudgetOverviewCount() {
+    this.isLoadingCounts = true;
+    this.reportService.getBudgetOverviewCount(this.selectedServiceId).subscribe({
+      next: (res: any) => {
+        this.isLoadingCounts = false;
+        const data = (res.status && res.data) ? res.data : null;
+        this.budgetCounts = {
+          underBudget: data ? Number(data.under_budget) || 0 : 0,
+          overBudget: data ? Number(data.over_budget) || 0 : 0
+        };
+      },
+      error: () => {
+        this.isLoadingCounts = false;
+        this.budgetCounts = { underBudget: 0, overBudget: 0 };
+      }
+    });
+  }
+
+  // Loaded via the sp_get_client_verticals stored procedure — same source
+  // as the Jobs page (open-jobs-by-holder) and the Movement page, instead
+  // of the query-builder-based client/get-verticals endpoint.
   fetchVerticals() {
     this.isLoadingVerticals = true;
     const body = {
       client_id: this.localStorageService.getItem('userdata').company_id
     };
-    this.clientService.getClientVerticals(body).subscribe({
+    this.clientService.getClientVerticalsSP(body).subscribe({
       next: (res: any) => {
         this.isLoadingVerticals = false;
         const rows = (res.status && Array.isArray(res.data)) ? res.data : [];
-        const byId = new Map<number, string>();
+        const byTitle = new Map<string, number>();
         rows.forEach((row: any) => {
-          if (row.new_service_id != null && !byId.has(row.new_service_id)) {
-            byId.set(row.new_service_id, row.title);
+          if (row.title && !byTitle.has(row.title)) {
+            byTitle.set(row.title, row.new_service_id);
           }
         });
-        this.verticals = Array.from(byId, ([id, title]) => ({ id, title }));
+        this.verticals = Array.from(byTitle, ([title, id]) => ({ id, title }));
       },
       error: () => {
         this.isLoadingVerticals = false;
@@ -183,6 +234,7 @@ export class BudgetOverviewComponent implements OnInit {
     if (this.selectedServiceId === id) return;
     this.selectedServiceId = id;
     this.fetchBudgetOverview();
+    this.fetchBudgetOverviewCount();
   }
 
   fetchBudgetOverview() {
@@ -192,6 +244,7 @@ export class BudgetOverviewComponent implements OnInit {
         this.isLoading = false;
         const data = (res.status && Array.isArray(res.data)) ? res.data : [];
         this.rows = data.map((row: any) => ({
+          aid: row.aid,
           receivedFrom: row.received_from || '',
           jobName: row.job_name || '',
           natureOfJob: row.nature_of_job || '',
@@ -199,7 +252,8 @@ export class BudgetOverviewComponent implements OnInit {
           jobStatus: row.job_status || '',
           budgetSeconds: Number(row.budget_seconds) || 0,
           timeTakenSeconds: Number(row.time_taken_seconds) || 0,
-          varianceSeconds: Number(row.variance_seconds) || 0
+          varianceSeconds: Number(row.variance_seconds) || 0,
+          receivedDate: row.received_date || ''
         } as BudgetRow));
 
         const distinct = (values: string[]) => values.filter((v, i, self) => v && self.indexOf(v) === i);
@@ -219,6 +273,20 @@ export class BudgetOverviewComponent implements OnInit {
     this.selection = selection;
   }
 
+  openJobDetails(row: BudgetRow) {
+    this.job = {
+      ...Job.defaultJob(),
+      Aid: row.aid,
+      JobName: row.jobName,
+      Status: row.jobStatus,
+      ClientContact: row.receivedFrom,
+      NatureOfJob: row.natureOfJob,
+      ReceivedFrom: row.receivedFrom,
+      ReceivedDate: row.receivedDate,
+      Accountant: row.accountant
+    };
+  }
+
   get withinBudgetRows(): BudgetRow[] {
     return this.rows.filter(row => row.varianceSeconds <= 0);
   }
@@ -233,6 +301,25 @@ export class BudgetOverviewComponent implements OnInit {
 
   get totalTimeTakenSeconds(): number {
     return this.rows.reduce((sum, row) => sum + row.timeTakenSeconds, 0);
+  }
+
+  get totalOpenJobsCount(): number {
+    return this.budgetCounts.underBudget + this.budgetCounts.overBudget;
+  }
+
+  get withinBudgetPct(): number {
+    const total = this.totalOpenJobsCount;
+    return total > 0 ? Math.round((this.budgetCounts.underBudget / total) * 100) : 0;
+  }
+
+  get overBudgetPct(): number {
+    const total = this.totalOpenJobsCount;
+    return total > 0 ? Math.round((this.budgetCounts.overBudget / total) * 100) : 0;
+  }
+
+  get selectedVerticalLabel(): string {
+    if (this.selectedServiceId === 0) return 'All Verticals';
+    return this.verticals.find(v => v.id === this.selectedServiceId)?.title || 'All Verticals';
   }
 
   get selectedRows(): BudgetRow[] {
@@ -251,14 +338,51 @@ export class BudgetOverviewComponent implements OnInit {
       (f.jobStatus.length === 0 || f.jobStatus.includes(row.jobStatus)) &&
       this.formatSigned(row.budgetSeconds).toLowerCase().includes(f.budgetTime.trim().toLowerCase()) &&
       this.formatSigned(row.timeTakenSeconds).toLowerCase().includes(f.timeTaken.trim().toLowerCase()) &&
-      this.formatSigned(row.varianceSeconds, true).toLowerCase().includes(f.variance.trim().toLowerCase())
+      this.matchesVarianceFilter(row.varianceSeconds, f.variance)
     );
+  }
+
+  // Supports ">1", ">=2", "<1", "<=2" (hours, signed) as well as the plain
+  // substring match the other time columns use — e.g. ">1" matches every
+  // job more than 1 hour over budget, "<-1" matches jobs more than 1 hour
+  // under budget.
+  matchesVarianceFilter(varianceSeconds: number, filterText: string): boolean {
+    const text = filterText.trim();
+    if (!text) return true;
+
+    const match = /^(>=|<=|>|<)\s*(-?\d+(?:\.\d+)?)$/.exec(text);
+    if (match) {
+      const operator = match[1];
+      const hours = parseFloat(match[2]);
+      const varianceHours = varianceSeconds / 3600;
+      if (operator === '>') return varianceHours > hours;
+      if (operator === '>=') return varianceHours >= hours;
+      if (operator === '<') return varianceHours < hours;
+      return varianceHours <= hours;
+    }
+
+    return this.formatSigned(varianceSeconds, true).toLowerCase().includes(text.toLowerCase());
   }
 
   get tableTitle(): string {
     if (this.selection === 'within') return 'Within Budget Jobs';
     if (this.selection === 'over') return 'Over Budget Jobs';
-    return 'All Open Jobs';
+    return 'Open Jobs';
+  }
+
+  get hasActiveFilters(): boolean {
+    const f = this.filters;
+    return f.receivedFrom.length > 0 || !!f.jobName || f.natureOfJob.length > 0 ||
+      f.accountant.length > 0 || f.jobStatus.length > 0 || !!f.budgetTime || !!f.timeTaken || !!f.variance ||
+      this.selection !== 'all';
+  }
+
+  clearFilters() {
+    this.filters = {
+      receivedFrom: [], jobName: '', natureOfJob: [], accountant: [], jobStatus: [],
+      budgetTime: '', timeTaken: '', variance: ''
+    };
+    this.selection = 'all';
   }
 
   formatSigned(seconds: number, showSign = false): string {

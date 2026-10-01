@@ -1,15 +1,20 @@
 <section class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="h3 fw-bold mb-0">Meeting</div>
-        </div>
+    <div class="mom-header-row mb-2 mt-2">
+        <a class="back-link" routerLink="/dashboard/overview">
+            <span class="material-symbols-rounded">arrow_back</span>
+            Back to Home
+        </a>
+
+        <div class="mom-page-title fw-bold mb-0">Meeting</div>
     </div>
 </section>
 
-<section class="container mt-4">
+<section class="container mt-3">
     <div class="mom-card rounded-4 shadow-sm overflow-hidden bg-white">
-        <div class="mom-header px-4 py-3">
-            <div class="fw-bold text-white">Meetings</div>
+        <div class="mom-toolbar d-flex align-items-center justify-content-end px-3 py-2 flex-wrap gap-2">
+            <button type="button" class="clear-filters-btn" (click)="clearFilters()" [disabled]="!hasActiveFilters">
+                Clear Filters
+            </button>
         </div>
 
         <div class="p-3 d-flex align-items-end gap-2 flex-wrap">
@@ -26,14 +31,11 @@
             </button>
         </div>
 
-        <div *ngIf="isLoading" class="p-5 text-center opacity-75">
-            Loading meetings...
-        </div>
-
-        <div *ngIf="!isLoading" class="table-responsive">
+        <div class="mom-table-wrap">
             <table class="mom-table w-100">
                 <thead>
                     <tr>
+                        <th class="sno-col">S.No</th>
                         <th>Client</th>
                         <th>Date</th>
                         <th>Client Present</th>
@@ -41,12 +43,95 @@
                         <th>Description</th>
                         <th>Vertical</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr *ngIf="filteredRows.length === 0">
-                        <td colspan="6" class="text-center py-4 opacity-75">No meetings found.</td>
+                    <tr class="filter-row">
+                        <th class="sno-col"></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('clientName')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('clientName') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'clientName'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.clientName" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.clientName && optionsFor('clientName').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('clientName')" (change)="toggleSelectAll('clientName')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('clientName')">
+                                    <input type="checkbox" [checked]="isOptionSelected('clientName', opt)" (change)="toggleFilterOption('clientName', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('clientName').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('clientPresent')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('clientPresent') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'clientPresent'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.clientPresent" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.clientPresent && optionsFor('clientPresent').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('clientPresent')" (change)="toggleSelectAll('clientPresent')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('clientPresent')">
+                                    <input type="checkbox" [checked]="isOptionSelected('clientPresent', opt)" (change)="toggleFilterOption('clientPresent', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('clientPresent').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('purpose')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('purpose') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'purpose'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.purpose" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.purpose && optionsFor('purpose').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('purpose')" (change)="toggleSelectAll('purpose')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('purpose')">
+                                    <input type="checkbox" [checked]="isOptionSelected('purpose', opt)" (change)="toggleFilterOption('purpose', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('purpose').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('vertical')">
+                                <span class="ms-filter-btn-label">{{ filterSummaryLabel('vertical') }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'vertical'" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.vertical" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!filterSearch.vertical && optionsFor('vertical').length > 0">
+                                    <input type="checkbox" [checked]="isAllSelected('vertical')" (change)="toggleSelectAll('vertical')">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of filteredOptionsFor('vertical')">
+                                    <input type="checkbox" [checked]="isOptionSelected('vertical', opt)" (change)="toggleFilterOption('vertical', opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="filteredOptionsFor('vertical').length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
                     </tr>
-                    <tr *ngFor="let row of filteredRows">
+                </thead>
+                <tbody *ngIf="!isLoading">
+                    <tr *ngFor="let row of filteredRows; let i = index">
+                        <td class="sno-col text-center">{{ i + 1 }}</td>
                         <td class="fw-medium">{{ row.clientName }}</td>
                         <td>{{ row.date }}</td>
                         <td>{{ row.clientPresent }}</td>
@@ -60,6 +145,13 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="mom-table-overlay" *ngIf="isLoading">
+            <span class="grid-spinner"></span>
+        </div>
+        <div class="mom-table-overlay" *ngIf="!isLoading && filteredRows.length === 0">
+            <span class="mom-table-empty-text">No meetings found.</span>
         </div>
     </div>
 </section>

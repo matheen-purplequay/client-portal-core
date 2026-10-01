@@ -12,9 +12,11 @@ import { ItComponent } from './it/it.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'workflow', pathMatch: 'full' },
+  { path: 'landing', loadChildren: () => import('./home-landing/home-landing.module').then(m => m.HomeLandingModule) },
   { path: 'home', loadChildren: () => import('./dashboard-home/dashboard-home.module').then(m => m.DashboardHomeModule) },
   { path: 'overview', loadChildren: () => import('./dashboard-page/dashboard-page.module').then(m => m.DashboardPageModule) },
   { path: 'job-status', loadChildren: () => import('./job-status-view/job-status-view.module').then(m => m.JobStatusViewModule) },
+  { path: 'job', loadChildren: () => import('./job/job.module').then(m => m.JobModule) },
   { path: 'production-report', loadChildren: () => import('./production-report/production-report.module').then(m => m.ProductionReportModule) },
   { path: 'turnaround-report', loadChildren: () => import('./turnaround-report/turnaround-report.module').then(m => m.TurnaroundReportModule) },
   { path: 'budget-overview', loadChildren: () => import('./budget-overview/budget-overview.module').then(m => m.BudgetOverviewModule) },

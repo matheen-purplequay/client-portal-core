@@ -9,9 +9,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from '../../../shared/shared.module';
 import { MovementWidgetModule } from '../dashboards/business-service/movement-widget.module';
 
+import { JobDetailsModule } from '../job-details/job-details.module';
+
 import { DashboardHomeComponent } from './dashboard-home.component';
 import { JobStatusComponent } from '../job-movement/job-status/job-status.component';
-import { JobDetailsComponent } from '../job-details/job-details.component';
 import { JobsTableComponent } from '../jobs-table/jobs-table.component';
 import { DashboardFeedbackComponent } from '../feedback/dashboard-feedback/dashboard-feedback.component';
 import { FeedbackHomeComponent } from '../feedback-home/feedback-home.component';
@@ -40,7 +41,6 @@ const routes: Routes = [
   declarations: [
     DashboardHomeComponent,
     JobStatusComponent,
-    JobDetailsComponent,
     JobsTableComponent,
     DashboardFeedbackComponent,
     FeedbackHomeComponent,
@@ -66,6 +66,7 @@ const routes: Routes = [
     NgxPaginationModule,
     PqUiModule,
     MovementWidgetModule,
+    JobDetailsModule,
     RouterModule.forChild(routes)
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -1,0 +1,438 @@
+:host {
+  display: block;
+}
+
+// .loading-dots is now a shared global style (styles.scss).
+
+.vertical-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid #d8dee6;
+  background: #fff;
+}
+
+.vertical-tab {
+  border: none;
+  border-right: 1px solid #d8dee6;
+  background: transparent;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #495057;
+  cursor: pointer;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &.active {
+    background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.08);
+    color: var(--primary-color, #7a1f2b);
+  }
+}
+
+.home-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.home-panel {
+  background: #fff;
+  border: 1px solid #e2e5e9;
+  border-radius: 10px;
+  padding: 14px;
+  min-width: 260px;
+}
+
+.clickable-panel {
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    border-color: #d8dee6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  &:hover .panel-title,
+  &:hover .dp-title {
+    text-decoration: underline;
+  }
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.panel-icon {
+  font-size: 18px;
+  color: var(--primary-color, #7a1f2b);
+}
+
+.panel-title {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #1f2a6b;
+}
+
+.panel-arrow {
+  font-size: 16px;
+  color: #9aa1ac;
+}
+
+.panel-meta {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.wf-mini-stat {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  background: #f5f5f6;
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+
+  b {
+    color: #1f2a6b;
+    font-weight: 800;
+    margin-left: 3px;
+  }
+}
+
+.tile-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tile {
+  flex: 1 1 104px;
+  min-width: 104px;
+  height: 88px;
+  background: #fff;
+  border: 1px solid #e2e5e9;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &.accent {
+    border-color: var(--primary-color, #7a1f2b);
+  }
+
+  &.accent .tile-value {
+    color: var(--primary-color, #7a1f2b);
+  }
+}
+
+.tile-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #1f2a6b;
+  line-height: 1.2;
+}
+
+.tile-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.15;
+}
+
+.tile-unit {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #9aa1ac;
+}
+
+// Daily Planner — compact card design (accent-bar tiles), distinct from the
+// bigger centered tiles used by the other panels below it.
+.daily-planner-panel {
+  background: #fff;
+  border: 1px solid #e2e5e9;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.dp-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.dp-icon {
+  font-size: 16px;
+  color: #1f2a6b;
+}
+
+.dp-title {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #1f2a6b;
+}
+
+.dp-arrow {
+  font-size: 14px;
+  color: #1f2a6b;
+}
+
+.dp-tile-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dp-tile {
+  flex: 1 1 100px;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #fff;
+  border: 1px solid #eef0f2;
+  border-left: 3px solid #1f2a6b;
+  border-radius: 8px;
+  padding: 8px 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.dp-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1f2a6b;
+  line-height: 1.25;
+  margin-bottom: 2px;
+}
+
+.dp-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.2;
+}
+
+.dp-unit {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #5b6bb5;
+}
+
+.dp-colour-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.dp-colour-chip {
+  flex: 1 1 100px;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #eef0f2;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.dp-colour-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dp-colour-count {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.dp-colour-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.dp-colour-chip--green .dp-colour-dot { background: #15803d; }
+.dp-colour-chip--yellow .dp-colour-dot { background: #ca8a04; }
+.dp-colour-chip--red .dp-colour-dot { background: #b91c1c; }
+
+// Compact accent-bar stat tiles (same look as the Daily Planner tiles above),
+// used by the Jobs panel. .accent switches the bar/label/value to the primary
+// (maroon) brand color for the tiles worth calling out.
+.stat-tile-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stat-tile {
+  flex: 1 1 100px;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #fff;
+  border: 1px solid #eef0f2;
+  border-left: 3px solid #1f2a6b;
+  border-radius: 8px;
+  padding: 8px 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+  &.clickable-tile {
+    cursor: pointer;
+    transition: box-shadow 0.15s ease;
+
+    &:hover {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &.accent {
+    border-left-color: var(--primary-color, #7a1f2b);
+  }
+
+  &.accent .stat-label,
+  &.accent .stat-value {
+    color: var(--primary-color, #7a1f2b);
+  }
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1f2a6b;
+  line-height: 1.25;
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.2;
+}
+
+.stat-unit {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #5b6bb5;
+}
+
+// Holiday cards — accent-bar row layout: narrow two-line label on the left,
+// holiday name + meta stacked on the right.
+.holiday-card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.holiday-card {
+  flex: 1 1 180px;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #eef0f2;
+  border-left: 3px solid #1f2a6b;
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.holiday-label-col {
+  flex: 0 0 auto;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1f2a6b;
+  line-height: 1.3;
+}
+
+.holiday-info-col {
+  min-width: 0;
+}
+
+.holiday-name-text {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.25;
+}
+
+.holiday-meta {
+  margin-top: 2px;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #9aa1ac;
+}
+
+.yesterday-table-wrap {
+  // Fixed to ~5 rows tall (header + 5 data rows); more jobs scroll within
+  // this box instead of growing the panel.
+  max-height: 157px;
+  overflow-y: auto;
+}
+
+.yesterday-table {
+  border-collapse: collapse;
+  font-size: 12px;
+
+  th, td {
+    padding: 4px 10px;
+    border-bottom: 1px solid #e2e5e9;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #6b7280;
+    background: #f5f5f6;
+    position: sticky;
+    top: 0;
+  }
+}
+
+.job-link {
+  font-weight: 600;
+  color: var(--primary-color, #7a1f2b);
+}
+
+.status-chip {
+  display: inline-block;
+  background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.08);
+  color: var(--primary-color, #7a1f2b);
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-arrow {
+  font-size: 14px;
+  color: #9aa1ac;
+  vertical-align: middle;
+  margin-left: 4px;
+}

@@ -1,0 +1,150 @@
+<div class="ji-header">
+    <div class="ji-header-row">
+        <div class="ji-header-title">
+            <div class="h6 fw-bold mb-0">{{ job.JobName }}</div>
+            <div class="ji-last-modified small" *ngIf="job.LastModified">Last Modified {{ job.LastModified }}</div>
+        </div>
+
+        <span class="material-symbols-rounded ji-info-icon">badge</span>
+
+        <div class="ji-info-col" *ngIf="job.Accountant">
+            <div class="ji-info-label">Accountant</div>
+            <div class="ji-info-value">{{ job.Accountant }}</div>
+        </div>
+        <div class="ji-info-col">
+            <div class="ji-info-label">Job Status</div>
+            <div class="ji-info-value">{{ job.Status }}</div>
+        </div>
+        <div class="ji-info-col" *ngIf="job.GroupJobName">
+            <div class="ji-info-label">Group Job Name</div>
+            <div class="ji-info-value">{{ job.GroupJobName }}</div>
+        </div>
+        <div class="ji-info-col" *ngIf="job.NatureOfJob">
+            <div class="ji-info-label">Nature of Job</div>
+            <div class="ji-info-value">{{ job.NatureOfJob }}</div>
+        </div>
+        <div class="ji-info-col" *ngIf="job.ReceivedFrom">
+            <div class="ji-info-label">Received From</div>
+            <div class="ji-info-value">{{ job.ReceivedFrom }}</div>
+        </div>
+        <div class="ji-info-col" *ngIf="job.ReceivedDate">
+            <div class="ji-info-label">Received Date</div>
+            <div class="ji-info-value">{{ job.ReceivedDate }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="ji-body">
+    <div class="ji-timeline-col">
+        <div class="ji-section-title">
+            <span class="material-symbols-rounded">timeline</span> Job Timeline
+        </div>
+
+        <div class="ji-timeline-loading" *ngIf="isLoadingTimeline">
+            <span class="grid-spinner"></span>
+        </div>
+
+        <div class="ji-timeline" *ngIf="!isLoadingTimeline">
+            <div class="ji-timeline-empty" *ngIf="timeline.length === 0">No timeline data available for this job.</div>
+            <div class="ji-timeline-item" *ngFor="let tl of timeline; let last = last">
+                <div class="ji-timeline-marker" [class.ji-timeline-marker--current]="last"></div>
+                <div class="ji-timeline-line" *ngIf="!last"></div>
+                <div class="ji-timeline-content">
+                    <div class="ji-timeline-date">{{ tl.LastModdate | date: 'dd-MM-yyyy' }}</div>
+                    <div class="ji-timeline-status" [class.ji-timeline-status--current]="last">
+                        {{ tl.NewWorkStatus }}
+                        <span class="ji-timeline-current-badge" *ngIf="last">Current</span>
+                    </div>
+                    <div class="ji-timeline-meta" *ngIf="tl.TimeTaken">Time taken: {{ formatTimeTaken(tl.TimeTaken) }} hrs</div>
+                    <div class="ji-timeline-duration">{{ tl.duration }} {{ tl.duration === 1 ? 'day' : 'days' }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ji-cards-col">
+        <div class="ji-card">
+            <div class="ji-card-title">
+                <span class="material-symbols-rounded">swap_vert</span> Under / Over Budget
+            </div>
+            <div class="ji-card-body" *ngIf="!isLoadingBudget && budget">
+                <div class="ji-budget-row">
+                    <div><span class="ji-budget-label">Budget</span> <span class="ji-budget-value">{{ formatHM(budget.budgetSeconds) }}</span></div>
+                    <div><span class="ji-budget-label">Time taken</span> <span class="ji-budget-value">{{ formatHM(budget.timeTakenSeconds) }}</span></div>
+                    <div><span class="ji-budget-label">Variance</span> <span class="ji-budget-value" [ngClass]="isOverBudget ? 'ji-over' : 'ji-under'">{{ varianceLabel }}</span></div>
+                    <div><span class="ji-budget-label">Utilisation</span> <span class="ji-budget-value">{{ utilisationPct }}%</span></div>
+                </div>
+                <span class="ji-budget-pill" [ngClass]="isOverBudget ? 'ji-budget-pill--over' : 'ji-budget-pill--under'">
+                    {{ isOverBudget ? 'Over budget' : 'Under budget' }}
+                </span>
+            </div>
+            <div class="ji-card-empty" *ngIf="!isLoadingBudget && !budget">No budget data available.</div>
+        </div>
+
+        <div class="ji-card" *ngIf="turnaround">
+            <div class="ji-card-title">
+                <span class="material-symbols-rounded">schedule</span> Turnaround
+            </div>
+            <div class="ji-turnaround-row">
+                <div class="ji-turnaround-tile">
+                    <div class="ji-turnaround-value">{{ turnaround.withCarisma }}</div>
+                    <div class="ji-turnaround-label">With Carisma</div>
+                </div>
+                <div class="ji-turnaround-tile ji-turnaround-tile--client">
+                    <div class="ji-turnaround-value">{{ turnaround.withClient }}</div>
+                    <div class="ji-turnaround-label">With Client</div>
+                </div>
+                <div class="ji-turnaround-tile">
+                    <div class="ji-turnaround-value">{{ turnaround.total }}</div>
+                    <div class="ji-turnaround-label">Total Turnaround</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ji-card">
+            <div class="ji-card-title">
+                <span class="material-symbols-rounded">assignment</span> Instructions
+            </div>
+            <div class="ji-card-body">
+                <div class="ji-instructions-list" *ngIf="!isLoadingInstructions && instructions.length > 0">
+                    <div class="ji-instruction-item" *ngFor="let i of instructions">{{ i.Comments || i.comments }}</div>
+                </div>
+                <div class="ji-card-empty" *ngIf="!isLoadingInstructions && instructions.length === 0">No instructions found</div>
+
+                <div class="ji-instruction-composer">
+                    <input type="text" placeholder="Type an instruction..." [(ngModel)]="newInstruction"
+                        (keydown.enter)="sendInstruction()" [disabled]="isSendingInstruction">
+                    <button type="button" (click)="sendInstruction()" [disabled]="isSendingInstruction || !newInstruction.trim()">
+                        <span class="material-symbols-rounded">send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ji-card">
+            <div class="ji-card-title">
+                <span class="material-symbols-rounded">forum</span> Queries
+            </div>
+            <div class="ji-card-empty">No queries found</div>
+        </div>
+
+        <div class="ji-card">
+            <div class="ji-card-title-row">
+                <div class="ji-card-title">
+                    <span class="material-symbols-rounded">favorite</span> Appreciation and Feedback
+                </div>
+                <a class="ji-view-feedback-link">View Feedback</a>
+            </div>
+            <div class="ji-card-body" *ngIf="!isLoadingAppreciation && appreciation.length > 0">
+                <div class="ji-appreciation-item" *ngFor="let a of appreciation">
+                    <div class="small opacity-75">{{ a.message }}</div>
+                    <div class="ji-appreciation-footer">
+                        <span class="ji-appreciation-tag" *ngIf="a.appreciation_for">{{ a.appreciation_for }}</span>
+                        <span class="ji-appreciation-date">{{ a.received_date | date: 'dd-MM-yyyy' }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ji-card-empty" *ngIf="!isLoadingAppreciation && appreciation.length === 0">No appreciation received for this job yet</div>
+        </div>
+    </div>
+</div>

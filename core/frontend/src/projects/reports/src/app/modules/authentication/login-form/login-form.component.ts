@@ -99,7 +99,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.executeImportantAction();
+    //this.executeImportantAction();
     // const token = this.dataService.getToken().subscribe((res: any) => {
     //   console.log('api token ', res);
     //   if(res) {

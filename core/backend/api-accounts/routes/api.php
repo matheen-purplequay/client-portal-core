@@ -30,6 +30,7 @@ use Spatie\Async\Pool;
 use Stevebauman\Location\Facades\Location;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
 
 
@@ -992,6 +993,20 @@ Route::middleware('guest')->post('/get/clients-by-master', function (Request $re
         return ['status' => true, 'data' => $companies];
     }
 
+});
+
+// Same data as /get/clients-by-master above, but loaded via the
+// sp_get_clients_by_master stored procedure instead of a query builder call —
+// used by the navbar's company-switcher dropdown.
+Route::middleware('guest')->post('/get/clients-by-master-sp', function (Request $request) {
+    $master_company_id = (int) $request->input('master_id');
+
+    try {
+        $companies = DB::select('CALL sp_get_clients_by_master(?)', [$master_company_id]);
+        return ['status' => true, 'data' => $companies];
+    } catch (Exception $e) {
+        return ['status' => false, 'message' => 'Something went wrong while loading clients.', 'error' => $e->getMessage()];
+    }
 });
 
 Route::middleware('guest')->post('/get/client', function (Request $request) {

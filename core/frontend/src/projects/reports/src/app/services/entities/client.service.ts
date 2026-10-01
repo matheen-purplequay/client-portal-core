@@ -11,7 +11,9 @@ const REPORTS_HOST = env.api_production.hosts.reports_server;
 
 const GET_VERTICALS = `${REPORTS_HOST}/get-client-verticals`;
 const GET_CLIENT_VERTICALS = `${REPORTS_HOST}/client/get-verticals`;
+const GET_CLIENT_VERTICALS_SP = `${REPORTS_HOST}/client/get-verticals-sp`;
 const GET_CLIENT_USERS_BY_CLIENT = `${ACCOUNTS_HOST}/client/get-users-by-client`;
+const GET_CLIENT_USERS_BY_CLIENT_SP = `${ACCOUNTS_HOST}/client/get-users-by-client-sp`;
 
 @Injectable({
   providedIn: 'root'
@@ -40,9 +42,21 @@ export class ClientService {
   getClientVerticals(body: any) {
     return this.dataService.doPost(`${GET_CLIENT_VERTICALS}`, body);
   }
+
+  // Same shape as getClientVerticals(), but loaded via the sp_get_client_verticals
+  // stored procedure instead of a query builder call. Used by the Home landing page.
+  getClientVerticalsSP(body: any) {
+    return this.dataService.doPost(`${GET_CLIENT_VERTICALS_SP}`, body);
+  }
   
   getClientUsers(body: any) {
     return this.dataService.doPost(`${GET_CLIENT_USERS_BY_CLIENT}`, body);
+  }
+
+  // Same shape as getClientUsers(), but loaded via the sp_get_users_by_client
+  // stored procedure instead of a query builder call.
+  getClientUsersSP(body: any) {
+    return this.dataService.doPost(`${GET_CLIENT_USERS_BY_CLIENT_SP}`, body);
   }
 
   // getClientsList() {

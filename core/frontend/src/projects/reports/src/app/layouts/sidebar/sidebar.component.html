@@ -37,7 +37,7 @@
                             </ng-container>
                             <ng-container *ngIf="pl.type == 'link'">
                                 <button type="button"
-                                    class="list-group-item list-group-item-action sidebar-link small rounded-end-pill position-relative overflow-hidden"
+                                    class="list-group-item list-group-item-action sidebar-link small rounded-pill position-relative overflow-hidden"
                                     [attr.data-link]="currentURL"
                                     [ngClass]="isLinkActive(pl)? 'active' : ''" [attr.data-link]="pl.link"
                                     [attr.current-link]="currentURL" [attr.data-include]="currentURL.includes(pl.link)"

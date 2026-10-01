@@ -133,6 +133,20 @@ Route::prefix('client')->group(function () {
         return ['status' => true, 'data' => $services, 'sql' => $servicesSQL];
     });
 
+    // Same data as /get-verticals above, but loaded via the sp_get_client_verticals
+    // stored procedure (accounts DB) instead of a query builder call — used by the
+    // Home landing page's vertical tabs.
+    Route::post('/get-verticals-sp', function (Request $request) {
+        $client_id = (int) $request->input('client_id');
+
+        try {
+            $rows = DB::connection('accounts_mysql')->select('CALL sp_get_client_verticals(?)', [$client_id]);
+            return ['status' => true, 'data' => $rows];
+        } catch (\Exception $e) {
+            return ['status' => false, 'message' => 'Something went wrong while loading verticals.', 'error' => $e->getMessage()];
+        }
+    });
+
 });
 
 

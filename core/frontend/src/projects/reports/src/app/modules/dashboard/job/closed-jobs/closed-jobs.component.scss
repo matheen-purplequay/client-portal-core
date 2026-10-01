@@ -1,0 +1,552 @@
+// Title left, back-link + vertical tabs right — same header-row pattern as
+// the Turnaround/Movement/Budget Overview/Open Jobs pages.
+.closed-jobs-header-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    column-gap: 16px;
+
+    > .back-link {
+        justify-self: start;
+    }
+
+    > .closed-jobs-page-title {
+        justify-self: center;
+        text-align: center;
+    }
+
+    > .vertical-tabs {
+        justify-self: end;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        row-gap: 10px;
+
+        > .back-link,
+        > .closed-jobs-page-title,
+        > .vertical-tabs {
+            justify-self: stretch;
+            text-align: left;
+        }
+    }
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 1;
+
+    .material-symbols-rounded {
+        font-size: 16px;
+    }
+
+    &:hover {
+        color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.closed-jobs-page-title {
+    font-size: 18px;
+    line-height: 1;
+    color: #1e293b;
+}
+
+.vertical-tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid #d8dee6;
+    background: #fff;
+}
+
+.vertical-tab {
+    border: none;
+    border-right: 1px solid #d8dee6;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #495057;
+    cursor: pointer;
+
+    &:last-child {
+        border-right: none;
+    }
+
+    &.is-active {
+        background: rgba(31, 42, 107, 0.08);
+        color: #1f2a6b;
+        font-weight: 700;
+    }
+}
+
+.view-tabs {
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid #d8dee6;
+    background: #fff;
+}
+
+.view-tab {
+    border: none;
+    border-right: 1px solid #d8dee6;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #495057;
+    cursor: pointer;
+
+    &:last-child {
+        border-right: none;
+    }
+
+    &.active {
+        background: var(--primary-color, #7a1f2b);
+        color: #fff;
+    }
+}
+
+.closed-jobs-card {
+    position: relative;
+}
+
+.closed-jobs-date-row {
+    border-bottom: 1px solid #eef0f2;
+}
+
+.back-to-matrix-row .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 1;
+
+    .material-symbols-rounded {
+        font-size: 16px;
+    }
+
+    &:hover {
+        color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.pw-status-col {
+    min-width: 160px;
+}
+
+.pw-count {
+    color: var(--primary-color, #7a1f2b);
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.75;
+    }
+}
+
+.pw-total-row {
+    font-weight: 700;
+    background: #fdf2f2;
+
+    td {
+        color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.closed-jobs-date {
+    background: #fff;
+    color: #333;
+    border: 1px solid #d8dee6;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 13px;
+
+    &:focus {
+        outline: none;
+        border-color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.clear-date-btn {
+    background: transparent;
+    border: 1px solid #d8dee6;
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 13px;
+    color: #6b7280;
+    cursor: pointer;
+
+    &:hover {
+        border-color: var(--primary-color, #7a1f2b);
+        color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.closed-jobs-toolbar {
+    background: var(--primary-color, #7a1f2b);
+}
+
+.clear-filters-btn {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.export-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    color: var(--primary-color, #7a1f2b);
+    border: 1px solid #fff;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+
+    &:hover:not(:disabled) {
+        opacity: 0.9;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+// Same grid design as the Jobs/Turnaround/Budget Overview/Movement/Meeting/
+// Workflow pages — solid maroon sticky header, sticky filter row beneath
+// it, scrollable body with a max-height, and a centered overlay for
+// loading/empty states.
+.closed-jobs-table-wrap {
+    overflow: auto;
+    // Header + filter row (~61px) + ~12 data rows (~33px each).
+    max-height: 460px;
+    min-height: 160px;
+}
+
+.closed-jobs-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    white-space: nowrap;
+
+    th, td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #eef0f2;
+        text-align: left;
+    }
+
+    thead tr:not(.filter-row) th {
+        font-size: 11px;
+        color: #fff;
+        font-weight: 700;
+        background: var(--primary-color, #7a1f2b);
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    .filter-row th {
+        position: sticky;
+        top: 33px;
+        z-index: 2;
+        background: #fff;
+        padding: 4px 10px;
+
+        input:not([type="checkbox"]) {
+            width: 100%;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+
+            &:focus {
+                outline: none;
+                border-color: var(--primary-color, #7a1f2b);
+            }
+        }
+    }
+
+    .job-name-cell {
+        color: var(--primary-color, #7a1f2b);
+        text-decoration: underline;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.75;
+        }
+    }
+
+    .variance-under {
+        color: #15803d;
+    }
+
+    .variance-over {
+        color: #b91c1c;
+    }
+
+    .sno-col {
+        width: 50px;
+        // Keeps the rendered column exactly 50px (padding included) so the
+        // frozen Job Name column's left offset (also 50px) lines up flush
+        // against it instead of leaving a gap/overlap.
+        box-sizing: border-box;
+    }
+
+    // Freezes S.No + Job Name so they stay visible while scrolling the wide
+    // grid horizontally, in addition to the header/filter row staying
+    // visible while scrolling vertically.
+    .col-frozen {
+        position: sticky;
+        z-index: 3;
+    }
+
+    .col-frozen--1 {
+        left: 0;
+    }
+
+    .col-frozen--2 {
+        left: 50px;
+        min-width: 200px;
+    }
+
+    thead tr:not(.filter-row) th.col-frozen {
+        z-index: 4;
+    }
+
+    .filter-row th.col-frozen {
+        z-index: 4;
+    }
+
+    tbody td.col-frozen {
+        background: #fff;
+        z-index: 1;
+    }
+
+    tbody tr:hover {
+        background: #f9fafb;
+
+        td.col-frozen {
+            background: #f9fafb;
+        }
+    }
+}
+
+.closed-jobs-table-overlay {
+    position: absolute;
+    inset: 0;
+    // Clears the date-range row + toolbar + sticky column-header row +
+    // sticky filter row.
+    top: 160px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.85);
+    pointer-events: none;
+}
+
+// The Manager View matrix card has only its own single header row (no
+// toolbar/date-row/filter-row inside it - those live in sections above),
+// so it needs a much smaller top offset, and sits right under the header
+// instead of centering in the (mostly empty) remaining space.
+.pw-table-overlay {
+    top: 33px;
+    align-items: flex-start;
+    padding-top: 24px;
+}
+
+.closed-jobs-table-empty-text {
+    color: #9aa1ac;
+    font-size: 13px;
+}
+
+.ms-filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    width: 100%;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 12px;
+    background: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+
+    .ms-filter-btn-label {
+        display: inline-block;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #374151;
+    }
+
+    .material-symbols-rounded {
+        font-size: 16px;
+        color: #6b7280;
+        flex-shrink: 0;
+    }
+
+    &:hover {
+        border-color: var(--primary-color, #7a1f2b);
+    }
+}
+
+.ms-filter-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 20;
+    margin-top: 4px;
+    width: 180px;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 6px 0;
+    white-space: normal;
+    font-weight: 400;
+    text-align: left;
+}
+
+.ms-filter-cell {
+    position: relative;
+}
+
+.ms-filter-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    text-align: left;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #374151;
+    white-space: normal;
+
+    input[type="checkbox"] {
+        flex: 0 0 auto;
+        width: 14px;
+        height: 14px;
+        margin: 2px 0 0 0;
+        padding: 0;
+    }
+
+    .ms-filter-option-text {
+        flex: 1 1 auto;
+        color: #374151;
+    }
+
+    &:hover {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.06);
+    }
+}
+
+.ms-filter-option--all {
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 2px;
+}
+
+.ms-filter-search {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding: 4px 10px 6px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid #eee;
+
+    input {
+        width: 100%;
+        border: 1px solid #dcdcdc;
+        border-radius: 4px;
+        padding: 3px 8px;
+        font-size: 12px;
+
+        &:focus {
+            outline: none;
+            border-color: var(--primary-color, #7a1f2b);
+        }
+    }
+}
+
+.ms-filter-empty {
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+// Compact centered Job Information popup — dark navy title bar + Close
+// button, matching the real Jobs page's job-details.tsx shell.
+.ji-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #1f2a6b;
+    color: #fff;
+}
+
+.ji-modal-title {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.ji-modal-close {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+
+    .material-symbols-rounded {
+        font-size: 16px;
+    }
+
+    &:hover {
+        opacity: 0.8;
+    }
+}

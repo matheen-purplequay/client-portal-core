@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { PqUiModule } from 'pq-ui';
 import { TurnaroundReportComponent } from './turnaround-report.component';
+import { JobDetailsModule } from '../job-details/job-details.module';
+import { FilterPanelPositionModule } from '../../../shared/directives/filter-panel-position.module';
 
 const routes: Routes = [
   { path: '', component: TurnaroundReportComponent }
@@ -17,6 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     PqUiModule,
+    JobDetailsModule,
+    FilterPanelPositionModule,
     RouterModule.forChild(routes)
   ]
 })

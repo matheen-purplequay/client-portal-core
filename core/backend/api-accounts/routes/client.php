@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\ContactFormRecipients;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
 
 Route::prefix('client')->group(function() { 
@@ -166,6 +167,20 @@ Route::prefix('client')->group(function() {
 
 
         return ['status' => true, 'data' => $client_users];
+    });
+
+    // Same data as get-users-by-client above, but loaded via the
+    // sp_get_users_by_client stored procedure instead of a query builder call —
+    // used by the navbar's client user-switcher dropdown.
+    Route::post('get-users-by-client-sp', function(Request $request) {
+        $client_id = (int) $request->input('client_id');
+
+        try {
+            $client_users = DB::select('CALL sp_get_users_by_client(?)', [$client_id]);
+            return ['status' => true, 'data' => $client_users];
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => 'Something went wrong while loading client users.', 'error' => $e->getMessage()];
+        }
     });
 
 

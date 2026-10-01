@@ -1,0 +1,285 @@
+<section class="container">
+  <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
+    <div>
+      <div class="h4 fw-bold mb-0">Good day{{ firstName ? ', ' + firstName : '' }}</div>
+    </div>
+    <div class="vertical-tabs" *ngIf="!isLoadingVerticals && verticals.length">
+      <button type="button" *ngFor="let v of verticals" class="vertical-tab"
+        [class.active]="activeVertical === v" (click)="setVertical(v)">{{ v }}</button>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="home-row">
+    <div class="home-panel daily-planner-panel clickable-panel" style="flex: 3 1 336px;" routerLink="/dashboard/workflow">
+      <div class="dp-header">
+        <span class="material-symbols-rounded dp-icon">calendar_month</span>
+        <span class="dp-title">Daily Planner</span>
+        <span class="material-symbols-rounded dp-arrow">arrow_forward</span>
+      </div>
+      <div class="dp-tile-row">
+        <div class="dp-tile">
+          <div class="dp-label">Stand-Up Jobs<br>Today</div>
+          <div class="dp-value">
+            <span class="loading-dots" *ngIf="isLoadingPlanner"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingPlanner">{{ standUpJobsToday }}</ng-container>
+          </div>
+          <div class="dp-unit">Jobs</div>
+        </div>
+        <div class="dp-tile">
+          <div class="dp-label">Est. Time<br>Today</div>
+          <div class="dp-value">
+            <span class="loading-dots" *ngIf="isLoadingPlanner"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingPlanner">{{ estTimeToday }}</ng-container>
+          </div>
+          <div class="dp-unit">HH:MM</div>
+        </div>
+        <div class="dp-tile">
+          <div class="dp-label">Finishing Today<br>&nbsp;</div>
+          <div class="dp-value">
+            <span class="loading-dots" *ngIf="isLoadingPlanner"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingPlanner">{{ finishingToday }}</ng-container>
+          </div>
+          <div class="dp-unit">Jobs</div>
+        </div>
+      </div>
+
+      <div class="dp-colour-row">
+        <div class="dp-colour-chip dp-colour-chip--green">
+          <span class="dp-colour-dot"></span>
+          <span class="dp-colour-count">
+            <span class="loading-dots" *ngIf="isLoadingPlannerColours"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingPlannerColours">{{ sufficientCount }}</ng-container>
+          </span>
+          <span class="dp-colour-label">Sufficient Jobs</span>
+        </div>
+        <div class="dp-colour-chip dp-colour-chip--yellow">
+          <span class="dp-colour-dot"></span>
+          <span class="dp-colour-count">
+            <span class="loading-dots" *ngIf="isLoadingPlannerColours"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingPlannerColours">{{ insufficientCount }}</ng-container>
+          </span>
+          <span class="dp-colour-label">Insufficient</span>
+        </div>
+        <div class="dp-colour-chip dp-colour-chip--red">
+          <span class="dp-colour-dot"></span>
+          <span class="dp-colour-count">
+            <span class="loading-dots" *ngIf="isLoadingPlannerColours"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingPlannerColours">{{ noJobsCount }}</ng-container>
+          </span>
+          <span class="dp-colour-label">No Jobs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-panel" style="flex: 6 1 696px;">
+      <div class="panel-header">
+        <span class="material-symbols-rounded panel-icon">schedule</span>
+        <span class="panel-title">Yesterday's Workflow</span>
+        <span class="wf-mini-stat" *ngIf="!isLoadingSentCounts">Sent for Query <b>{{ sentForQuery }}</b></span>
+        <span class="wf-mini-stat" *ngIf="!isLoadingSentCounts">Sent for Review <b>{{ sentForReview }}</b></span>
+        <span class="panel-meta ms-auto" *ngIf="yesterdayMeta">{{ yesterdayMeta }}</span>
+      </div>
+      <div class="yesterday-table-wrap">
+        <table class="yesterday-table w-100" *ngIf="!isLoadingYesterday && yesterdayRows.length">
+          <thead>
+            <tr>
+              <th>Job</th>
+              <th>Yesterday</th>
+              <th>Current Status</th>
+              <th>Billable</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of yesterdayRows">
+              <td class="job-link">{{ r.job }}</td>
+              <td class="text-muted">{{ r.yesterday }}</td>
+              <td>
+                <span class="status-chip">{{ r.current }}</span>
+                <span class="material-symbols-rounded status-arrow">arrow_forward</span>
+              </td>
+              <td class="text-muted">{{ r.billable }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-muted small py-3" *ngIf="isLoadingYesterday">Loading…</div>
+        <div class="text-muted small py-3" *ngIf="!isLoadingYesterday && !yesterdayRows.length">No workflow changes to show.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-row">
+    <div class="home-panel clickable-panel" style="flex: 4 1 448px;" routerLink="/dashboard/job">
+      <div class="panel-header">
+        <span class="material-symbols-rounded panel-icon">work_outline</span>
+        <span class="panel-title">Jobs</span>
+        <span class="material-symbols-rounded panel-arrow">arrow_forward</span>
+      </div>
+      <div class="stat-tile-row">
+        <div class="stat-tile clickable-tile" routerLink="/dashboard/job/open" (click)="$event.stopPropagation()">
+          <div class="stat-label">Total Live Jobs</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingJobsCounts"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingJobsCounts">{{ totalLiveJobs }}</ng-container>
+          </div>
+          <div class="stat-unit">Jobs</div>
+        </div>
+        <div class="stat-tile clickable-tile" routerLink="/dashboard/job/open" (click)="$event.stopPropagation()">
+          <div class="stat-label">With Carisma</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingJobsCounts"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingJobsCounts">{{ withCarisma }}</ng-container>
+          </div>
+          <div class="stat-unit">Jobs</div>
+        </div>
+        <div class="stat-tile accent clickable-tile" routerLink="/dashboard/job/open" (click)="$event.stopPropagation()">
+          <div class="stat-label">With Client</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingJobsCounts"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingJobsCounts">{{ withClient }}</ng-container>
+          </div>
+          <div class="stat-unit">Jobs</div>
+        </div>
+        <div class="stat-tile accent">
+          <div class="stat-label">New Jobs</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingJobsCounts"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingJobsCounts">{{ newJobs }}</ng-container>
+          </div>
+          <div class="stat-unit">Jobs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-panel clickable-panel" style="flex: 3 1 336px;" routerLink="/dashboard/budget-overview">
+      <div class="panel-header">
+        <span class="material-symbols-rounded panel-icon">account_balance_wallet</span>
+        <span class="panel-title">Budget</span>
+        <span class="material-symbols-rounded panel-arrow">arrow_forward</span>
+      </div>
+      <div class="stat-tile-row">
+        <div class="stat-tile">
+          <div class="stat-label">Total</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingBudget"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingBudget">{{ totalOpenJobs }}</ng-container>
+          </div>
+          <div class="stat-unit">Open Jobs</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Within Budget</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingBudget"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingBudget">{{ withinBudgetPct }}%</ng-container>
+          </div>
+          <div class="stat-unit">{{ isLoadingBudget ? '' : withinBudgetJobs + ' Jobs' }}</div>
+        </div>
+        <div class="stat-tile accent">
+          <div class="stat-label">Over Budget</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingBudget"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingBudget">{{ overBudgetPct }}%</ng-container>
+          </div>
+          <div class="stat-unit">{{ isLoadingBudget ? '' : overBudgetJobs + ' Jobs' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-panel clickable-panel" style="flex: 2 1 224px;" routerLink="/dashboard/turnaround-report">
+      <div class="panel-header">
+        <span class="material-symbols-rounded panel-icon">schedule</span>
+        <span class="panel-title">Turnaround</span>
+        <span class="material-symbols-rounded panel-arrow">arrow_forward</span>
+      </div>
+      <div class="stat-tile-row">
+        <div class="stat-tile">
+          <div class="stat-label">Total Jobs Closed</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingTurnaround"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingTurnaround">{{ totalJobsClosed }}</ng-container>
+          </div>
+          <div class="stat-unit">Jobs</div>
+        </div>
+        <div class="stat-tile accent">
+          <div class="stat-label">Average Days in Carisma</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingTurnaround"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingTurnaround">{{ avgDaysInCarisma }}</ng-container>
+          </div>
+          <div class="stat-unit">Days</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-row">
+    <div class="home-panel" style="flex: 5 1 448px;">
+      <div class="panel-header">
+        <span class="material-symbols-rounded panel-icon">calendar_month</span>
+        <span class="panel-title">Holidays</span>
+        <span class="material-symbols-rounded panel-arrow">arrow_forward</span>
+      </div>
+      <div class="holiday-card-row">
+        <div class="holiday-card">
+          <div class="holiday-label-col">Australia<br>Holiday</div>
+          <div class="holiday-info-col">
+            <ng-container *ngIf="ausHoliday; else noAusHoliday">
+              <div class="holiday-name-text">{{ ausHoliday.name }}</div>
+              <div class="holiday-meta">{{ ausHoliday.meta }}</div>
+            </ng-container>
+            <ng-template #noAusHoliday>
+              <div class="holiday-meta">{{ isLoadingHolidays ? 'Loading…' : 'None in the next 30 days' }}</div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="holiday-card">
+          <div class="holiday-label-col">India<br>Holiday</div>
+          <div class="holiday-info-col">
+            <ng-container *ngIf="indiaHoliday; else noIndiaHoliday">
+              <div class="holiday-name-text">{{ indiaHoliday.name }}</div>
+              <div class="holiday-meta">{{ indiaHoliday.meta }}</div>
+            </ng-container>
+            <ng-template #noIndiaHoliday>
+              <div class="holiday-meta">{{ isLoadingHolidays ? 'Loading…' : 'None in the next 30 days' }}</div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-panel" style="flex: 5 1 448px;">
+      <div class="panel-header">
+        <span class="material-symbols-rounded panel-icon">feedback</span>
+        <span class="panel-title">Feedback</span>
+        <span class="material-symbols-rounded panel-arrow">arrow_forward</span>
+      </div>
+      <div class="stat-tile-row">
+        <div class="stat-tile">
+          <div class="stat-label">Feedback Received</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingFeedback"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingFeedback">{{ feedbackReceived }}</ng-container>
+          </div>
+          <div class="stat-unit">Closed Jobs</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Improvement</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingFeedback"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingFeedback">{{ improvements }}</ng-container>
+          </div>
+          <div class="stat-unit">Suggestions</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Appreciation</div>
+          <div class="stat-value">
+            <span class="loading-dots" *ngIf="isLoadingFeedback"><i></i><i></i><i></i></span>
+            <ng-container *ngIf="!isLoadingFeedback">{{ appreciation }}</ng-container>
+          </div>
+          <div class="stat-unit">Received</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

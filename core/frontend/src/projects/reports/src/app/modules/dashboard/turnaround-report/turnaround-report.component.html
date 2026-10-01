@@ -1,44 +1,47 @@
 <section class="container">
-    <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
-            <div class="vstack justify-content-center align-items-center text-center">
-                <div class="h4 mb-1">Turnaround by Bucket</div>
-                <div class="text-slate-600 small">
-                    Closed jobs grouped by elapsed time against the agreed turnaround standard.
-                </div>
+    <div class="turnaround-header-row mb-2 mt-2">
+        <a class="back-link" routerLink="/dashboard/landing">
+            <span class="material-symbols-rounded">arrow_back</span>
+            Back to Home
+        </a>
+
+        <div class="turnaround-page-title fw-bold mb-0">Turnaround by Bucket</div>
+
+        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2">
+            <div class="view-tabs">
+                <button type="button" class="view-tab" [class.active]="viewMode === 'status'" (click)="setViewMode('status')">Status View</button>
+                <button type="button" class="view-tab" [class.active]="viewMode === 'manager'" (click)="setViewMode('manager')">Manager View</button>
+            </div>
+            <div class="vertical-tabs">
+                <button type="button" class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</button>
+                <button type="button" class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</button>
             </div>
         </div>
-        <div class="col-sm-1"></div>
-    </div>
-    <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
-            <div class="vertical-tabs hstack gap-3 flex-wrap mt-3">
-                <div class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</div>
-                <div class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</div>
-            </div>
-        </div>
-        <div class="col-sm-1"></div>
     </div>
 </section>
+
+<ng-container *ngIf="viewMode === 'status'">
 
 <section class="container mt-4">
     <div class="row g-3">
         <div class="col-6 col-sm-6">
-            <div class="turnaround-toggle-card rounded-4 p-2 text-center cursor-pointer h-100"
+            <div class="turnaround-toggle-card turnaround-toggle-card--open cursor-pointer h-100"
                 [class.is-selected]="jobStatus === 'open'" (click)="selectStatus('open')">
-                <div class="text-uppercase small fw-semibold turnaround-stat-label mb-1">Open Jobs</div>
-                <div class="turnaround-stat-value">{{ openJobsCount }}</div>
-                <div class="text-uppercase turnaround-stat-unit">Jobs</div>
+                <div class="turnaround-toggle-card-label">Open Jobs</div>
+                <div class="turnaround-toggle-card-figure">
+                    <div class="turnaround-toggle-card-value">{{ openJobsCount }}</div>
+                    <div class="turnaround-toggle-card-unit">Jobs</div>
+                </div>
             </div>
         </div>
         <div class="col-6 col-sm-6">
-            <div class="turnaround-toggle-card rounded-4 p-2 text-center cursor-pointer h-100"
+            <div class="turnaround-toggle-card turnaround-toggle-card--closed cursor-pointer h-100"
                 [class.is-selected]="jobStatus === 'closed'" (click)="selectStatus('closed')">
-                <div class="text-uppercase small fw-semibold turnaround-stat-label mb-1">Closed Jobs</div>
-                <div class="turnaround-stat-value">{{ closedJobsCount }}</div>
-                <div class="text-uppercase turnaround-stat-unit">Jobs</div>
+                <div class="turnaround-toggle-card-label">Closed Jobs</div>
+                <div class="turnaround-toggle-card-figure">
+                    <div class="turnaround-toggle-card-value">{{ closedJobsCount }}</div>
+                    <div class="turnaround-toggle-card-unit">Jobs</div>
+                </div>
             </div>
         </div>
     </div>
@@ -46,11 +49,14 @@
 
 <section class="container mt-3">
     <div class="row g-2">
-        <div class="col-6 col-sm-4 col-lg-2" *ngFor="let bucket of buckets">
-            <div class="turnaround-stat-card turnaround-stat-card--{{ bucket.variant }} rounded-4 p-2 text-center h-100">
-                <div class="text-uppercase small fw-semibold turnaround-stat-label mb-1">{{ bucket.label }}</div>
-                <div class="turnaround-stat-value" [class.opacity-50]="isLoading">{{ bucket.value }}</div>
-                <div class="text-uppercase turnaround-stat-unit">Jobs</div>
+        <div class="col-6 col-sm-4 col-lg" *ngFor="let bucket of buckets">
+            <div class="turnaround-stat-card turnaround-stat-card--{{ bucket.variant }} rounded-4 h-100 cursor-pointer"
+                [class.is-selected]="selectedBucket === bucket.key" (click)="selectBucket(bucket.key)">
+                <div class="turnaround-stat-label text-uppercase">{{ bucket.label }}</div>
+                <div class="turnaround-stat-value">
+                    <span class="loading-dots" *ngIf="isLoading"><i></i><i></i><i></i></span>
+                    <ng-container *ngIf="!isLoading">{{ bucket.value }}</ng-container>
+                </div>
             </div>
         </div>
     </div>
@@ -58,18 +64,19 @@
 
 <section class="container mt-4">
     <div class="turnaround-card rounded-4 shadow-sm overflow-hidden bg-white">
-        <div class="turnaround-header d-flex align-items-center justify-content-between px-4 py-3 flex-wrap gap-2">
-            <div class="fw-bold text-white">{{ jobsTableTitle }}</div>
+        <div class="turnaround-toolbar d-flex align-items-center justify-content-between px-3 py-2 flex-wrap gap-2">
+            <div class="fw-bold small">{{ jobsTableTitle }} <span class="opacity-75">&middot;</span> Turnaround</div>
+            <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="isExporting || isLoadingJobs">
+                <span class="material-symbols-rounded" style="font-size: 16px;">file_export</span>
+                {{ isExporting ? 'Exporting...' : 'Export To Excel' }}
+            </button>
         </div>
 
-        <div *ngIf="isLoadingJobs" class="p-5 text-center opacity-75">
-            Loading {{ jobStatus }} jobs...
-        </div>
-
-        <div *ngIf="!isLoadingJobs" class="table-responsive">
+        <div class="turnaround-table-wrap">
             <table class="turnaround-table">
                 <thead>
                     <tr>
+                        <th class="sno-col">S.No</th>
                         <th style="width: 160px;">Received From</th>
                         <th style="width: 200px;">Job Name</th>
                         <th style="width: 160px;">Nature of Job</th>
@@ -82,12 +89,13 @@
                         <th style="width: 80px;">Time Taken<br>(hh:mm)</th>
                     </tr>
                     <tr class="filter-row">
+                        <th class="sno-col"></th>
                         <th class="ms-filter-cell">
                             <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('receivedFrom')">
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('receivedFrom') }}</span>
                                 <span class="material-symbols-rounded">arrow_drop_down</span>
                             </button>
-                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'receivedFrom'" (click)="$event.stopPropagation()">
                                 <div class="ms-filter-search">
                                     <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.receivedFrom" (click)="$event.stopPropagation()">
                                 </div>
@@ -102,13 +110,13 @@
                                 <div *ngIf="filteredOptionsFor('receivedFrom').length === 0" class="ms-filter-empty">No options</div>
                             </div>
                         </th>
-                        <th><input type="text" [(ngModel)]="filters.jobName" placeholder=""></th>
+                        <th><input type="text" [(ngModel)]="filters.jobName" (ngModelChange)="currentPage = 1" placeholder=""></th>
                         <th class="ms-filter-cell">
                             <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('natureOfJob')">
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('natureOfJob') }}</span>
                                 <span class="material-symbols-rounded">arrow_drop_down</span>
                             </button>
-                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'natureOfJob'" (click)="$event.stopPropagation()">
                                 <div class="ms-filter-search">
                                     <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.natureOfJob" (click)="$event.stopPropagation()">
                                 </div>
@@ -128,7 +136,7 @@
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('accountant') }}</span>
                                 <span class="material-symbols-rounded">arrow_drop_down</span>
                             </button>
-                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'accountant'" (click)="$event.stopPropagation()">
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'accountant'" (click)="$event.stopPropagation()">
                                 <div class="ms-filter-search">
                                     <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.accountant" (click)="$event.stopPropagation()">
                                 </div>
@@ -148,7 +156,7 @@
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('jobStatus') }}</span>
                                 <span class="material-symbols-rounded">arrow_drop_down</span>
                             </button>
-                            <div class="ms-filter-panel" *ngIf="openFilterDropdown === 'jobStatus'" (click)="$event.stopPropagation()">
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openFilterDropdown === 'jobStatus'" (click)="$event.stopPropagation()">
                                 <div class="ms-filter-search">
                                     <input type="text" placeholder="Search..." [(ngModel)]="filterSearch.jobStatus" (click)="$event.stopPropagation()">
                                 </div>
@@ -170,13 +178,12 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr *ngIf="filteredJobRows.length === 0">
-                        <td colspan="9" class="text-center py-4 opacity-75">No {{ jobStatus }} jobs found.</td>
-                    </tr>
-                    <tr *ngFor="let row of filteredJobRows">
+                <tbody *ngIf="!isLoadingJobs">
+                    <tr *ngFor="let row of pagedJobRows; let i = index">
+                        <td class="sno-col text-center">{{ pageRangeStart + i }}</td>
                         <td>{{ row.receivedFrom }}</td>
-                        <td class="fw-medium job-name-cell" [title]="row.jobName">{{ row.jobName }}</td>
+                        <td class="fw-medium job-name-cell" [title]="row.jobName" data-bs-toggle="modal"
+                            data-bs-target="#turnaroundJobDetailsPopup" (click)="openJobDetails(row)">{{ row.jobName }}</td>
                         <td>{{ row.natureOfJob }}</td>
                         <td>{{ row.accountant }}</td>
                         <td>{{ row.jobStatus }}</td>
@@ -189,5 +196,210 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="turnaround-table-overlay" *ngIf="isLoadingJobs">
+            <span class="grid-spinner"></span>
+        </div>
+        <div class="turnaround-table-overlay" *ngIf="!isLoadingJobs && filteredJobRows.length === 0">
+            <span class="turnaround-table-empty-text">No {{ jobStatus }} jobs found.</span>
+        </div>
+
+        <div class="turnaround-pagination px-3 py-2 d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="page-size-group">
+                <button type="button" class="page-size" *ngFor="let size of pageSizeOptions"
+                    [class.active]="pageSize === size" (click)="setPageSize(size)">{{ size }}</button>
+            </div>
+            <div class="page-range small">Showing {{ pageRangeStart }}-{{ pageRangeEnd }} of {{ filteredJobRows.length }}</div>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="bookmark-btn">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">bookmark</span>
+                    Bookmark Page
+                </button>
+                <div class="page-nav-group">
+                    <button type="button" class="page-nav-btn" [disabled]="currentPage <= 1" (click)="goToPage(1)">
+                        <span class="material-symbols-rounded">first_page</span>
+                    </button>
+                    <button type="button" class="page-nav-btn" [disabled]="currentPage <= 1" (click)="goToPage(currentPage - 1)">
+                        <span class="material-symbols-rounded">chevron_left</span>
+                    </button>
+                    <span class="page-nav-current">{{ currentPage }}</span>
+                    <button type="button" class="page-nav-btn" [disabled]="currentPage >= totalPages" (click)="goToPage(currentPage + 1)">
+                        <span class="material-symbols-rounded">chevron_right</span>
+                    </button>
+                    <button type="button" class="page-nav-btn" [disabled]="currentPage >= totalPages" (click)="goToPage(totalPages)">
+                        <span class="material-symbols-rounded">last_page</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+</ng-container>
+
+<section class="container mt-4" *ngIf="viewMode === 'manager'">
+    <div class="turnaround-card manager-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="manager-title-bar px-3 py-2">Manager Wise Turnaround</div>
+        <div class="manager-note px-3 py-2 small">
+            For jobs in that bucket: Total = average turnaround days, With Carisma / With Client = average days spent on each side.
+        </div>
+
+        <div class="manager-table-wrap">
+            <table class="manager-table">
+                <thead>
+                    <tr>
+                        <th class="manager-col" rowspan="2">Manager</th>
+                        <th class="manager-group-header" colspan="3" *ngFor="let b of managerBuckets">{{ b.label }}</th>
+                    </tr>
+                    <tr>
+                        <ng-container *ngFor="let b of managerBuckets">
+                            <th>Total</th>
+                            <th>With Carisma</th>
+                            <th>With Client</th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!isLoadingManager">
+                    <tr *ngFor="let row of managerRowsList">
+                        <td class="manager-col manager-name manager-clickable" (click)="showManagerJobs(row.managerCid, row.manager)">{{ row.manager }}</td>
+                        <ng-container *ngFor="let b of managerBuckets">
+                            <td class="text-center">
+                                <a class="manager-count" *ngIf="row[b.key].total !== null; else dash0" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].total }}</a>
+                            </td>
+                            <td class="text-center manager-carisma">
+                                <a class="manager-count" *ngIf="row[b.key].carisma !== null; else dash0" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].carisma }}</a>
+                            </td>
+                            <td class="text-center manager-client">
+                                <a class="manager-count" *ngIf="row[b.key].client !== null; else dash0" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].client }}</a>
+                            </td>
+                        </ng-container>
+                    </tr>
+                    <tr class="manager-total-row" *ngIf="managerTotalRow as total">
+                        <td class="manager-col manager-name manager-clickable" (click)="showManagerJobs(null, 'All Managers')">Total</td>
+                        <ng-container *ngFor="let b of managerBuckets">
+                            <td class="text-center">
+                                <a class="manager-count" *ngIf="total[b.key].total !== null; else dash0" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].total }}</a>
+                            </td>
+                            <td class="text-center">
+                                <a class="manager-count" *ngIf="total[b.key].carisma !== null; else dash0" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].carisma }}</a>
+                            </td>
+                            <td class="text-center">
+                                <a class="manager-count" *ngIf="total[b.key].client !== null; else dash0" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].client }}</a>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+            <ng-template #dash0>-</ng-template>
+        </div>
+
+        <div class="manager-table-overlay" *ngIf="isLoadingManager">
+            <span class="grid-spinner"></span>
+        </div>
+        <div class="manager-table-overlay" *ngIf="!isLoadingManager && managerRowsList.length === 0">
+            <span class="turnaround-table-empty-text">No manager-wise turnaround data found.</span>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-3" *ngIf="viewMode === 'manager' && managerDrillDown">
+    <div class="back-to-matrix-row mb-2">
+        <a class="back-link" (click)="backToManagerPivot()">
+            <span class="material-symbols-rounded">close</span>
+            Clear selection
+        </a>
+    </div>
+
+    <div class="turnaround-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="turnaround-toolbar d-flex align-items-center px-3 py-2">
+            <div class="fw-bold small">
+                {{ managerDrillDown.managerLabel }}
+                <span class="opacity-75" *ngIf="managerDrillDown.bucketLabel">&middot; {{ managerDrillDown.bucketLabel }}</span>
+            </div>
+        </div>
+
+        <div class="turnaround-table-wrap">
+            <table class="turnaround-table">
+                <thead>
+                    <tr>
+                        <th class="sno-col">S.No</th>
+                        <th>Received From</th>
+                        <th>Job Name</th>
+                        <th style="width: 80px;">Budget Hrs<br>(hh:mm)</th>
+                        <th style="width: 80px;">Time Taken<br>(hh:mm)</th>
+                        <th style="width: 100px;">Turnaround (Days)</th>
+                        <th style="width: 100px;">Turnaround in Carisma</th>
+                        <th style="width: 100px;">Turnaround in Client</th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th class="sno-col"></th>
+                        <th class="ms-filter-cell">
+                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleManagerFilterDropdown()">
+                                <span class="ms-filter-btn-label">{{ managerReceivedFromSummaryLabel() }}</span>
+                                <span class="material-symbols-rounded">arrow_drop_down</span>
+                            </button>
+                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openManagerFilterDropdown" (click)="$event.stopPropagation()">
+                                <div class="ms-filter-search">
+                                    <input type="text" placeholder="Search..." [(ngModel)]="managerFilterSearch" (click)="$event.stopPropagation()">
+                                </div>
+                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!managerFilterSearch && managerReceivedFromOptions.length > 0">
+                                    <input type="checkbox" [checked]="isManagerReceivedFromAllSelected()" (change)="toggleManagerReceivedFromSelectAll()">
+                                    <span class="ms-filter-option-text">Select all</span>
+                                </label>
+                                <label class="ms-filter-option" *ngFor="let opt of managerFilteredReceivedFromOptions">
+                                    <input type="checkbox" [checked]="isManagerReceivedFromSelected(opt)" (change)="toggleManagerReceivedFromOption(opt)">
+                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                </label>
+                                <div *ngIf="managerFilteredReceivedFromOptions.length === 0" class="ms-filter-empty">No options</div>
+                            </div>
+                        </th>
+                        <th><input type="text" [(ngModel)]="managerJobFilters.jobName" placeholder="Search..."></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!isLoadingManagerJobs">
+                    <tr *ngFor="let row of managerDrillDownRows; let i = index">
+                        <td class="sno-col text-center">{{ i + 1 }}</td>
+                        <td>{{ row.receivedFrom }}</td>
+                        <td class="fw-medium job-name-cell" [title]="row.jobName" data-bs-toggle="modal"
+                            data-bs-target="#turnaroundJobDetailsPopup" (click)="openManagerJobDetails(row)">{{ row.jobName }}</td>
+                        <td class="text-center">{{ row.budgetTime }}</td>
+                        <td class="text-center">{{ row.timeTaken }}</td>
+                        <td class="text-center fw-semibold">{{ row.turnaroundDays }}</td>
+                        <td class="text-center">{{ row.turnaroundInCarisma }}</td>
+                        <td class="text-center">{{ row.turnaroundInClient }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="turnaround-table-overlay" *ngIf="isLoadingManagerJobs">
+            <span class="grid-spinner"></span>
+        </div>
+        <div class="turnaround-table-overlay" *ngIf="!isLoadingManagerJobs && managerDrillDownRows.length === 0">
+            <span class="turnaround-table-empty-text">No jobs found.</span>
+        </div>
+    </div>
+</section>
+
+<!-- Job Information Modal -->
+<div class="modal" id="turnaroundJobDetailsPopup" tabindex="-1" aria-labelledby="turnaroundJobDetailsPopup"
+    aria-hidden="true" style="z-index: 9999999;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+            <div class="ji-modal-header">
+                <span class="ji-modal-title">{{ job.JobName }}</span>
+                <button type="button" class="ji-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="material-symbols-rounded">close</span> Close
+                </button>
+            </div>
+            <div class="modal-body p-0" style="max-height: calc(100vh - 160px); overflow: auto;">
+                <app-job-information [job]="job" [turnaround]="jobTurnaround"></app-job-information>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,282 @@
+<section class="container-fluid px-4">
+
+  <div class="job-header-row mb-3 mt-2">
+    <a class="back-link" routerLink="/dashboard/job">
+      <span class="material-symbols-rounded">arrow_back</span>
+      Back to Job Status
+    </a>
+
+    <div class="job-page-title fw-bold mb-0">Open Jobs</div>
+
+    <div class="d-flex flex-wrap align-items-center justify-content-end gap-2">
+      <div class="view-tabs">
+        <button type="button" class="view-tab" [class.active]="viewMode === 'status'" (click)="setViewMode('status')">Status View</button>
+        <button type="button" class="view-tab" [class.active]="viewMode === 'manager'" (click)="setViewMode('manager')">Manager View</button>
+      </div>
+      <div class="vertical-tabs" *ngIf="!isLoadingVerticals && verticals.length">
+        <button type="button" *ngFor="let v of verticals" class="vertical-tab"
+          [class.active]="activeVertical === v" (click)="setVertical(v)">{{ v }}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="holder-card-row mb-3">
+    <button type="button" class="holder-card holder-card--carisma" [class.selected]="selectedHolder === 'carisma'" (click)="selectHolder('carisma')">
+      <span class="holder-icon"><span class="material-symbols-rounded">apartment</span></span>
+      <div class="holder-card-title">With Carisma</div>
+      <div class="holder-count">
+        <div class="holder-count-value">
+          <span class="loading-dots" *ngIf="isLoadingOpenCounts"><i></i><i></i><i></i></span>
+          <ng-container *ngIf="!isLoadingOpenCounts">{{ withCarisma }}</ng-container>
+        </div>
+        <div class="holder-count-label">Jobs</div>
+      </div>
+    </button>
+    <button type="button" class="holder-card holder-card--client" [class.selected]="selectedHolder === 'client'" (click)="selectHolder('client')">
+      <span class="holder-icon"><span class="material-symbols-rounded">person</span></span>
+      <div class="holder-card-title">With Client</div>
+      <div class="holder-count">
+        <div class="holder-count-value">
+          <span class="loading-dots" *ngIf="isLoadingOpenCounts"><i></i><i></i><i></i></span>
+          <ng-container *ngIf="!isLoadingOpenCounts">{{ withClient }}</ng-container>
+        </div>
+        <div class="holder-count-label">Jobs</div>
+      </div>
+    </button>
+  </div>
+
+  <ng-container *ngIf="viewMode === 'status'">
+  <div class="status-tile-row mb-3">
+    <button type="button" class="status-tile" [class.status-tile--carisma]="t.holder === 'carisma'"
+      [class.selected]="selectedWsid === t.wsid" (click)="selectStatus(t.wsid)" *ngFor="let t of visibleStatusTiles">
+      <span class="status-tile-label">{{ t.label }}</span>
+      <span class="status-tile-value">
+        <span class="loading-dots" *ngIf="isLoadingStatusTiles"><i></i><i></i><i></i></span>
+        <ng-container *ngIf="!isLoadingStatusTiles">{{ t.value }}</ng-container>
+      </span>
+    </button>
+  </div>
+  </ng-container>
+
+  <div class="jobs-list-card partner-wise-card" *ngIf="viewMode === 'manager'">
+    <div class="partner-wise-toolbar px-3 py-2">
+      <div class="fw-bold small">Open Jobs by Partner <span class="opacity-75">&middot;</span> {{ activeVertical }}</div>
+    </div>
+    <div class="partner-wise-wrap">
+      <table class="partner-wise-table" *ngIf="!isLoadingPartnerWise">
+        <thead>
+          <tr>
+            <th class="pw-status-col">Job Status</th>
+            <th *ngFor="let p of managerPartners">{{ p }}</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of visibleManagerStatuses">
+            <td class="pw-status-col">{{ s }}</td>
+            <td *ngFor="let p of managerPartners" [class.pw-zero]="!managerCount(s, p)">
+              <a class="pw-count" *ngIf="managerCount(s, p); else pwZero" (click)="showManagerCellJobs(s, p)">{{ managerCount(s, p) }}</a>
+              <ng-template #pwZero>0</ng-template>
+            </td>
+            <td class="fw-bold">{{ managerTotalForStatus(s) }}</td>
+          </tr>
+          <tr class="pw-total-row">
+            <td class="pw-status-col">Total Jobs</td>
+            <td *ngFor="let p of managerPartners">
+              <a class="pw-count" *ngIf="managerTotalForPartner(p); else pwZeroTotal" (click)="showManagerCellJobs(null, p)">{{ managerTotalForPartner(p) }}</a>
+              <ng-template #pwZeroTotal>0</ng-template>
+            </td>
+            <td class="fw-bold">{{ managerGrandTotal }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="jobs-table-overlay" *ngIf="isLoadingPartnerWise">
+      <span class="spinner"></span>
+    </div>
+    <div class="jobs-table-overlay" *ngIf="!isLoadingPartnerWise && !managerPartners.length">
+      <span class="jobs-table-empty-text">No jobs match this filter.</span>
+    </div>
+  </div>
+
+  <div class="back-to-matrix-row mb-2 mt-3" *ngIf="viewMode === 'manager' && managerDrillDown">
+    <a class="back-link" (click)="backToPartnerWise()">
+      <span class="material-symbols-rounded">close</span>
+      Clear selection
+    </a>
+  </div>
+
+  <ng-container *ngIf="viewMode === 'status' || (viewMode === 'manager' && managerDrillDown)">
+  <div class="jobs-list-card">
+    <div class="jobs-grid-toolbar d-flex align-items-center justify-content-end px-3 py-2">
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="isExporting || isLoadingRows">
+        <span class="material-symbols-rounded" style="font-size: 16px;">file_export</span>
+        {{ isExporting ? 'Exporting...' : 'Export To Excel' }}
+      </button>
+    </div>
+    <div class="jobs-table-wrap">
+      <table class="jobs-table">
+        <colgroup>
+          <col style="width: 40px">
+          <col style="width: 160px">
+          <col style="width: 220px">
+          <col style="width: 130px">
+          <col style="width: 130px">
+          <col style="width: 140px">
+          <col style="width: 130px">
+          <col style="width: 130px">
+          <col style="width: 130px">
+          <col style="width: 70px">
+          <col style="width: 110px">
+          <col style="width: 120px">
+          <col style="width: 110px">
+          <col style="width: 120px">
+          <col style="width: 120px">
+          <col style="width: 200px">
+          <col style="width: 130px">
+          <col style="width: 120px">
+          <col style="width: 190px">
+          <col style="width: 120px">
+          <col style="width: 200px">
+          <col style="width: 130px">
+          <col style="width: 140px">
+          <col style="width: 100px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="col-sticky col-sticky--1">#</th>
+            <th class="col-sticky col-sticky--2">GroupJobName</th>
+            <th class="col-sticky col-sticky--3">Job Name</th>
+            <th>Job Status</th>
+            <th>Naturejob</th>
+            <th>ReceivedFrom</th>
+            <th>Partner</th>
+            <th>Associate</th>
+            <th>Director</th>
+            <th>FY</th>
+            <th>ReceivedDate</th>
+            <th>CommencedDate</th>
+            <th>Yet To Start</th>
+            <th>WIP Processing</th>
+            <th>Sent For Queries</th>
+            <th>Query Replies Rcvd/Yet To Attend</th>
+            <th>WIP Query Replies</th>
+            <th>Internal Review</th>
+            <th>WIP Internal Review Replies</th>
+            <th>Sent For Review</th>
+            <th>Review Replies Rcvd/Yet To Attend</th>
+            <th>WIP Review Replies</th>
+            <th>Sent For Final Review</th>
+            <th>On Hold</th>
+          </tr>
+          <tr class="filter-row">
+            <th class="col-sticky col-sticky--1"></th>
+            <th class="col-sticky col-sticky--2">
+              <input type="text" class="col-filter-input" placeholder="Search..." [(ngModel)]="textFilters.groupJobName">
+            </th>
+            <th class="col-sticky col-sticky--3">
+              <input type="text" class="col-filter-input" placeholder="Search..." [(ngModel)]="textFilters.jobDescription">
+            </th>
+            <th class="filter-cell"><ng-container *ngTemplateOutlet="multiFilter; context: { field: 'status' }"></ng-container></th>
+            <th class="filter-cell"><ng-container *ngTemplateOutlet="multiFilter; context: { field: 'natureOfJob' }"></ng-container></th>
+            <th class="filter-cell"><ng-container *ngTemplateOutlet="multiFilter; context: { field: 'receivedFrom' }"></ng-container></th>
+            <th class="filter-cell"><ng-container *ngTemplateOutlet="multiFilter; context: { field: 'partner' }"></ng-container></th>
+            <th class="filter-cell"><ng-container *ngTemplateOutlet="multiFilter; context: { field: 'associate' }"></ng-container></th>
+            <th></th>
+            <th class="filter-cell"><ng-container *ngTemplateOutlet="multiFilter; context: { field: 'fy' }"></ng-container></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="!isLoadingRows">
+          <tr *ngFor="let r of visibleRows; let i = index">
+            <td class="col-sticky col-sticky--1">{{ i + 1 }}</td>
+            <td class="col-sticky col-sticky--2">{{ r.groupJobName }}</td>
+            <td class="col-sticky col-sticky--3 job-link" [title]="r.jobDescription" data-bs-toggle="modal"
+                data-bs-target="#openJobsDetailsPopup" (click)="openJobDetails(r)">{{ r.jobDescription }}</td>
+            <td>{{ r.status }}</td>
+            <td>{{ r.natureOfJob }}</td>
+            <td>{{ r.receivedFrom }}</td>
+            <td>{{ r.partner }}</td>
+            <td>{{ r.associate }}</td>
+            <td>{{ r.director }}</td>
+            <td>{{ r.fy }}</td>
+            <td>{{ r.received }}</td>
+            <td>{{ r.commenced }}</td>
+            <td>{{ r.yetToStart }}</td>
+            <td>{{ r.wipProcessing }}</td>
+            <td>{{ r.sentForQueries }}</td>
+            <td>{{ r.queryRepliesReceivedYetToAttend }}</td>
+            <td>{{ r.wipQueryReplies }}</td>
+            <td>{{ r.internalReview }}</td>
+            <td>{{ r.wipInternalReviewReplies }}</td>
+            <td>{{ r.sentForReview }}</td>
+            <td>{{ r.reviewRepliesReceivedYetToAttend }}</td>
+            <td>{{ r.wipReviewReplies }}</td>
+            <td>{{ r.sentForFinalReview }}</td>
+            <td>{{ r.onHold }}</td>
+          </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="jobs-table-overlay" *ngIf="isLoadingRows">
+      <span class="spinner"></span>
+    </div>
+    <div class="jobs-table-overlay" *ngIf="!isLoadingRows && !visibleRows.length">
+      <span class="jobs-table-empty-text">No jobs match this filter.</span>
+    </div>
+
+  </div>
+  </ng-container>
+
+  <ng-template #multiFilter let-field="field">
+    <button type="button" class="col-filter-btn" (click)="toggleFilterDropdown(field)">
+      {{ filterSummary(field) }}
+      <span class="material-symbols-rounded">expand_more</span>
+    </button>
+    <div class="col-filter-panel" filterPanelPosition *ngIf="openFilterKey === field">
+      <label class="col-filter-option col-filter-all" *ngIf="fieldOptions(field).length">
+        <input type="checkbox" [checked]="isAllChecked(field)" (change)="toggleAll(field)">
+        <span>All</span>
+      </label>
+      <label class="col-filter-option" *ngFor="let opt of fieldOptions(field)">
+        <input type="checkbox" [checked]="isOptionChecked(field, opt)" (change)="toggleOption(field, opt)">
+        <span>{{ opt }}</span>
+      </label>
+      <div class="col-filter-empty" *ngIf="!fieldOptions(field).length">No values</div>
+    </div>
+  </ng-template>
+
+</section>
+
+<!-- Job Information Modal -->
+<div class="modal" id="openJobsDetailsPopup" tabindex="-1" aria-labelledby="openJobsDetailsPopup"
+    aria-hidden="true" style="z-index: 9999999;">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+            <div class="ji-modal-header">
+                <span class="ji-modal-title">{{ job.JobName }}</span>
+                <button type="button" class="ji-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="material-symbols-rounded">close</span> Close
+                </button>
+            </div>
+            <div class="modal-body p-0" style="max-height: calc(100vh - 160px); overflow: auto;">
+                <app-job-information [job]="job"></app-job-information>
+            </div>
+        </div>
+    </div>
+</div>

@@ -42,14 +42,18 @@
         }
 
         &.active {
-            background: rgba(var(--primary-color-rgb), .2);
+            background: rgba(var(--primary-color-rgb), .12);
             // background: linear-gradient(90deg, #ff6f61, #d4fc79); /* Example gradient */
-            background-size: 200% 100%; 
+            background-size: 200% 100%;
             color: rgba(var(--primary-color-rgb), 1);
             font-weight: 600 !important;
             // text-shadow: 0 4px 6px rgba(0,0,0,.3) !important;
-            
-            .material-symbols-outlined {
+
+            // Bug fix: the icons actually use material-symbols-rounded (see
+            // the template), not -outlined, so this rule never matched and
+            // the icon stayed the default dark color instead of following
+            // the active link's text color.
+            .material-symbols-rounded {
                 color: rgba(var(--primary-color-rgb), 1) !important;
             }
             &.animated-bg {

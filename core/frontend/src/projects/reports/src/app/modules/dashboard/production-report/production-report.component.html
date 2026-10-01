@@ -1,26 +1,26 @@
 <section class="container">
-    <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
-            <div class="vstack justify-content-center align-items-center">
-                <div class="h4 mb-0">Production Report</div>
-            </div>
+    <div class="production-header-row mb-2 mt-2">
+        <a class="back-link" routerLink="/dashboard/overview">
+            <span class="material-symbols-rounded">arrow_back</span>
+            Back to Home
+        </a>
+
+        <div class="production-page-title fw-bold mb-0">Production Report</div>
+
+        <div class="vertical-tabs">
+            <button type="button" class="vertical-tab" [class.is-active]="selectedServiceId === 0" (click)="selectVertical(0)">All</button>
+            <button type="button" class="vertical-tab" *ngFor="let v of verticals" [class.is-active]="selectedServiceId === v.id" (click)="selectVertical(v.id)">{{ v.title }}</button>
         </div>
-        <div class="col-sm-1"></div>
     </div>
 </section>
 
-<section class="container">
+<section class="container mt-3">
     <div class="productivity-card rounded-4 shadow-sm overflow-hidden bg-white">
-        <div class="productivity-header d-flex align-items-center justify-content-between px-4 py-3 flex-wrap gap-2">
-            <div class="fw-bold text-white">Associate Productivity - Month on Month</div>
+        <div class="productivity-header d-flex align-items-center justify-content-between px-3 py-2 flex-wrap gap-2">
+            <div class="fw-bold text-white small">Associate Productivity - Month on Month</div>
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <select class="header-select" [(ngModel)]="monthYear" (ngModelChange)="onMonthChange()">
                     <option *ngFor="let m of monthOptions" [value]="m.value">{{ m.label }}</option>
-                </select>
-                <select class="header-select" [(ngModel)]="selectedServiceId" (ngModelChange)="onVerticalChange()">
-                    <option [ngValue]="0">All Verticals</option>
-                    <option *ngFor="let v of verticals" [ngValue]="v.id">{{ v.title }}</option>
                 </select>
             </div>
         </div>
@@ -99,8 +99,8 @@
 
 <section class="container mt-4">
     <div class="productivity-card rounded-4 shadow-sm overflow-hidden bg-white">
-        <div class="productivity-header d-flex align-items-center justify-content-between px-4 py-3 flex-wrap gap-2">
-            <div class="fw-bold text-white">Associate Time Utilisation - Current Month ({{ currentMonthLabel }})</div>
+        <div class="productivity-header d-flex align-items-center justify-content-between px-3 py-2 flex-wrap gap-2">
+            <div class="fw-bold text-white small">Associate Time Utilisation - Current Month ({{ currentMonthLabel }})</div>
         </div>
 
         <div *ngIf="isLoadingTimeUtilisation" class="p-5 text-center opacity-75">

@@ -12,6 +12,7 @@ const CHANGE_PASSWORD = `${ACCOUNTS_SERVER}/change-password`;
 const CHECK_LOGIN = `${ACCOUNTS_SERVER}/check-login`;
 const GET_CLIENTS = `${ACCOUNTS_SERVER}/get/clients`;
 const GET_CLIENTS_BY_MASTER = `${ACCOUNTS_SERVER}/get/clients-by-master`;
+const GET_CLIENTS_BY_MASTER_SP = `${ACCOUNTS_SERVER}/get/clients-by-master-sp`;
 const GET_CLIENT = `${ACCOUNTS_SERVER}/get/client`;
 const GET_LOGIN_ACTIVITIES = `${ACCOUNTS_SERVER}/client/get-login-activity`;
 const SET_STAGING_ENV = `${ACCOUNTS_SERVER}/client/set-staging-env`;
@@ -87,6 +88,12 @@ export class LoginService {
 
   getClientsByMaster(body: any) {
     return this.dataService.doPost(`${GET_CLIENTS_BY_MASTER}`, body);
+  }
+
+  // Same shape as getClientsByMaster(), but loaded via the sp_get_clients_by_master
+  // stored procedure instead of a query builder call.
+  getClientsByMasterSP(body: any) {
+    return this.dataService.doPost(`${GET_CLIENTS_BY_MASTER_SP}`, body);
   }
 
   getClient(body: any) {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { CRITICALITIES, CATEGORIESFILTER, JobQueries, MasterFilter, MasterFilterKeys, MasterFiltersMeta, QueryFilters, QUERYSTATUSFILTER, QueryTemplate, Query, DownloadableJobsFieldOption, DownloadableQueriesFieldOption } from '../models/queries';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -7,6 +7,8 @@ import { QueriesService } from 'projects/reports/src/app/services/dashboard/quer
 import { ClientUserService } from 'projects/reports/src/app/shared/services/navquery/wm-client.service';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { AssociateQueriesComponent } from '../associate-queries/associate-queries.component';
+
 
 @Component({
   selector: 'app-queries-home',
@@ -14,6 +16,7 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./queries-home.component.scss']
 })
 export class QueriesHomeComponent implements OnInit, OnDestroy {
+  @ViewChild('associateQueries') associateQueriesComponent?: AssociateQueriesComponent;
 
   // Set by the parent (dashboard-home, from ?jobId=... on the Queries tab
   // route) when the user should land directly on a specific job's queries
@@ -260,14 +263,23 @@ export class QueriesHomeComponent implements OnInit, OnDestroy {
         this.job.isJobSelected = true;
         this.activities.selectedActivity = this.activitiesList.queries;
         this.isGettingQueries = false;
-        this.queries = [];
-        this.queries = res.queries;
+        this.queries = this.sortQueriesByStatus(res.queries);
         this.selectQuery(this.queries[0]);
       },
       error: (err: any) => {
         this.isGettingQueries = false;
         this.switchActivity(this.activitiesList.jobs);
       }
+    });
+  }
+  
+  // Open queries (status id 2) need attention first, everything else keeps its original order
+  sortQueriesByStatus(queries: Query[]): Query[] {
+    const OPEN_STATUS_ID = 2;
+    return [...queries].sort((a, b) => {
+      const aIsOpen = a.query_status_id === OPEN_STATUS_ID;
+      const bIsOpen = b.query_status_id === OPEN_STATUS_ID;
+      return aIsOpen === bIsOpen ? 0 : aIsOpen ? -1 : 1;
     });
   }
 
@@ -431,9 +443,40 @@ export class QueriesHomeComponent implements OnInit, OnDestroy {
     console.log('selected activity in queries home - ', this.activities.selectedActivity);
   }
 
-  generatePDF(containerId: string) {
+
+  // Waits until every query's replies have been fetched (no "Getting all replies..." loader left),
+  // instead of guessing with a fixed delay. Gives up after timeoutMs so export never hangs.
+  private async waitForRepliesToLoad(containerId: string, timeoutMs = 60000) {
+    const start = Date.now();
+    while (Date.now() - start < timeoutMs) {
+      const container = document.getElementById(containerId);
+      if (container) {
+        const expected = container.querySelectorAll(':scope > .row').length;
+        const rendered = container.querySelectorAll('app-card-query-replies').length;
+        const loading = container.querySelectorAll('app-simple-time-loading').length;
+        if (rendered >= expected && loading === 0) break;
+      }
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+    // let the last replies paint before capturing
+    await new Promise(resolve => setTimeout(resolve, 300));
+  }
+
+  async generatePDF(containerId: string) {
+    // Expand every query's description/documents section (normally only the
+    // selected one is rendered) so the PDF captures all of them, not just one.
+    if (this.associateQueriesComponent) {
+      this.associateQueriesComponent.isGeneratingPdf = true;
+      this.cdr.detectChanges();
+      await this.waitForRepliesToLoad(containerId);
+    }
+
     const content = document.getElementById(containerId);
-    if (!content) return;
+    if (!content) {
+      if (this.associateQueriesComponent) this.associateQueriesComponent.isGeneratingPdf = false;
+      this.isDownloadingExcel = false;
+      return;
+    }
 
     // Step 1: Create wrapper
     const wrapper = document.createElement('div');
@@ -457,29 +500,53 @@ export class QueriesHomeComponent implements OnInit, OnDestroy {
 
     document.body.appendChild(wrapper); // Add wrapper to DOM for rendering
 
-    // Step 4: Hide unwanted elements inside content
-    const elementsToHide = wrapper.querySelectorAll('pq-button, .query-replies-list');
+    // Step 4: Hide unwanted elements inside content (keep reply history visible, just hide interactive controls)
+    const elementsToHide = wrapper.querySelectorAll('pq-button, .query-reply-controls');
     elementsToHide.forEach(el => (el as HTMLElement).style.display = 'none');
 
     // Step 5: Render wrapper to canvas
+    // Measure each query block (bottom edge, in CSS px, relative to the wrapper) so pages
+    // can be broken between queries instead of through the middle of one.
+    const wrapperTop = wrapper.getBoundingClientRect().top;
+    const blockBottoms = Array.from(content.querySelectorAll(':scope > .row'))
+      .map(el => el.getBoundingClientRect().bottom - wrapperTop);
+
     html2canvas(wrapper).then(canvas => {
       const imgWidth = 208;
       const pageHeight = 295;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-      let heightLeft = imgHeight;
+      const scale = canvas.width / wrapper.offsetWidth;          // canvas px per CSS px
+      const pageHeightPx = (pageHeight * canvas.width / imgWidth) / scale; // page height in CSS px
+      const totalHeightPx = canvas.height / scale;
 
-      const contentDataURL = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
-      let position = 0;
+      let pageStart = 0;
+      let firstPage = true;
 
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      while (pageStart < totalHeightPx - 1) {
+        const limit = pageStart + pageHeightPx;
+        let pageEnd = totalHeightPx <= limit ? totalHeightPx : limit;
+        if (totalHeightPx > limit) {
+          // break after the last query that fully fits; if a single query is taller than a page, hard cut
+          const fitting = blockBottoms.filter(b => b > pageStart + 1 && b <= limit);
+          if (fitting.length > 0) pageEnd = fitting[fitting.length - 1];
+        }
 
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+        const sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = Math.max(1, Math.round((pageEnd - pageStart) * scale));
+        sliceCanvas.getContext('2d')!.drawImage(
+          canvas,
+          0, Math.round(pageStart * scale), canvas.width, sliceCanvas.height,
+          0, 0, canvas.width, sliceCanvas.height
+        );
+
+        if (!firstPage) pdf.addPage();
+        firstPage = false;
+        pdf.addImage(
+          sliceCanvas.toDataURL('image/png'), 'PNG', 0, 0,
+          imgWidth, sliceCanvas.height * imgWidth / sliceCanvas.width
+        );
+        pageStart = pageEnd;
       }
 
       pdf.save(`${this.job.selectedJob.job_name} - queries.pdf`);
@@ -488,9 +555,10 @@ export class QueriesHomeComponent implements OnInit, OnDestroy {
       elementsToHide.forEach(el => (el as HTMLElement).style.display = '');
       parent.insertBefore(content, nextSibling); // Put content back in original place
       document.body.removeChild(wrapper); // Clean up wrapper
-    });
 
-    this.isDownloadingExcel = false;
+      if (this.associateQueriesComponent) this.associateQueriesComponent.isGeneratingPdf = false;
+      this.isDownloadingExcel = false;
+    });
   }
 
 }

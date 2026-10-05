@@ -1,6 +1,6 @@
 <section class="container">
     <div class="workflow-header-row mb-2 mt-2">
-        <a class="back-link" routerLink="/dashboard/overview">
+        <a class="back-link" routerLink="/dashboard/landing">
             <span class="material-symbols-rounded">arrow_back</span>
             Back to Home
         </a>
@@ -17,7 +17,7 @@
 <section class="container mt-3">
     <div class="workflow-card rounded-4 shadow-sm overflow-hidden bg-white">
         <div class="workflow-toolbar d-flex align-items-center justify-content-between px-3 py-2 flex-wrap gap-2">
-            <div class="fw-bold small">Today's Stand-Up</div>
+            <div class="fw-bold small">Daily Planner</div>
             <div class="hstack gap-2">
                 <button type="button" class="clear-filters-btn" (click)="clearFilters()" [disabled]="!hasActiveFilters">
                     Clear Filters

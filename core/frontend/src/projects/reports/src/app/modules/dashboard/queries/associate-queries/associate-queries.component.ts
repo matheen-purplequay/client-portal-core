@@ -20,6 +20,8 @@ export class AssociateQueriesComponent implements OnInit {
   @Input() masterFilters: MasterFiltersMeta = MasterFiltersMeta.defaultMasterFiltersMeta();
   @Input() job: any;
   @Input() queries: Query[] = [];
+  @Input() isGeneratingPdf: boolean = false;
+
 
   public Editor = ClassicEditor;
   public queryReplyEditorConfig = {

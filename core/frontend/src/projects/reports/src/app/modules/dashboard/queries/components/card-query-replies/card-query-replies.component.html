@@ -32,7 +32,8 @@
     </ng-container>
 
     <ng-container *ngIf="!isGettingQueryReplies">
-        <div class="query-replies query-replies-list vstack gap-1">
+        <!-- Reply History: always kept visible (incl. in PDF export) -->
+        <div class="query-replies query-replies-history vstack gap-1">
             <ng-container *ngFor="let qr of queryReplies; let index = index; let last = last;">
                 <div class="vstack gap-2 align-items-start shadow-sm bg-white p-2">
                     <div class="hstack gap-2 align-items-start justify-content-between p-2">
@@ -58,8 +59,11 @@
                     </div>
                 </div>
             </ng-container>
-    
-            <!-- Query Reply Input -->
+        </div>
+        <!-- End of Reply History -->
+
+        <!-- Query Reply Input: interactive controls only, hidden in PDF export -->
+        <div class="query-reply-controls vstack gap-1">
             <ng-container *ngIf="(isTester && isTesterCanReply) || !isTester">
                 <ng-container *ngIf="!showQueryReply">
                     <div class="py-1 flex-fill hstack justify-content-start align-items-center">
@@ -132,11 +136,12 @@
                     </pq-button>
                 </div>
             </ng-container>
-            <!-- End of Query Reply Input -->
+
             
             
     
         </div>
+        <!-- End of Query Reply Input -->
     </ng-container>
 </section>
 

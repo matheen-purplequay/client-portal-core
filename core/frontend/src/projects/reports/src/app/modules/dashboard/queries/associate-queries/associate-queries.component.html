@@ -15,9 +15,15 @@
 
                 <!-- Query Details -->
                 <div class="vstack">
-                    <div class="fw-semibold color-secondary cursor-pointer hover-underline mb-3"
-                        (click)="selectQuery(q);" [innerHTML]="q.query_code + ' - ' + q.title">
-                        {{ q.query_code }} - {{ q.title }}
+                    <div class="hstack gap-2 align-items-center mb-3">
+                        <div class="fw-semibold color-secondary cursor-pointer hover-underline"
+                            (click)="selectQuery(q);" [innerHTML]="q.query_code + ' - ' + q.title">
+                            {{ q.query_code }} - {{ q.title }}
+                        </div>
+                        <span *ngIf="q.query_status_id === 2"
+                            class="badge rounded-pill bg-danger-subtle text-danger needs-attention-badge hstack gap-1 align-items-center">
+                            <span class="needs-attention-dot"></span> Needs Attention
+                        </span>
                     </div>
 
                     <!-- Query Meta Data -->
@@ -27,9 +33,9 @@
                     <!-- End of Query Meta Data -->
 
                     <!-- Query Replies -->
-                    <ng-container *ngIf="query.selectedQuery && q.query_code == query.selectedQuery.query_code">
+                    <ng-container *ngIf="isGeneratingPdf || (query.selectedQuery && q.query_code == query.selectedQuery.query_code)">
                         <div class="vstack gap-2 pe-4">
-                            <app-card-query-replies [query]="query.selectedQuery"></app-card-query-replies>
+                            <app-card-query-replies [query]="isGeneratingPdf ? q : query.selectedQuery"></app-card-query-replies>
                         </div>
                     </ng-container>
                     <!-- End of Query Replies -->

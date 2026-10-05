@@ -1,0 +1,23 @@
+.needs-attention-badge {
+  font-size: 11px;
+  padding: 0.3em 0.6em;
+}
+
+.needs-attention-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(var(--bs-danger-rgb), 1);
+  animation: needs-attention-blink 1.4s ease-in-out infinite;
+}
+
+@keyframes needs-attention-blink {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(var(--bs-danger-rgb), 0.6);
+  }
+  50% {
+    opacity: 0.4;
+    box-shadow: 0 0 0 4px rgba(var(--bs-danger-rgb), 0);
+  }
+}

@@ -293,7 +293,7 @@
     
     <!-- Queries CARDS Placeholder -->
     <ng-template #tplQueriesCards>
-        <app-associate-queries [job]="job.selectedJob" [queries]="queries" [refreshQueries]="refreshQueries"
+        <app-associate-queries #associateQueries [job]="job.selectedJob" [queries]="queries" [refreshQueries]="refreshQueries"
             (querySelected)="selectQuery($event);" (queryUnSelected)="unselectQuery();" (goBackToJobs)="switchActivity(activitiesList.jobs);"></app-associate-queries>
     </ng-template>
     <!-- End of Queries CARDS Placeholder -->

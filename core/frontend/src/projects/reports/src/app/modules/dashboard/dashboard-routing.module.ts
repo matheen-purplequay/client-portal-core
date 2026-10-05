@@ -11,7 +11,7 @@ import { MyTeamComponent } from './my-team/my-team.component';
 import { ItComponent } from './it/it.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'workflow', pathMatch: 'full' },
+  { path: '', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'landing', loadChildren: () => import('./home-landing/home-landing.module').then(m => m.HomeLandingModule) },
   { path: 'home', loadChildren: () => import('./dashboard-home/dashboard-home.module').then(m => m.DashboardHomeModule) },
   { path: 'overview', loadChildren: () => import('./dashboard-page/dashboard-page.module').then(m => m.DashboardPageModule) },

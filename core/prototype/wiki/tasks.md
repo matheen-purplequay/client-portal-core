@@ -45,3 +45,4 @@
 ## 2026-10-05
 
 - [TSK-20261005-01] [no-req] Removed the Move up / Move down queue reorder buttons (and unused `move()`) from Job Intake — complete
+- [TSK-20261005-02] [no-req] Added icon-only up/down queue reorder buttons as a last column in the Job Intake table (visible only with the queue tile filter active); restored `move()` — complete

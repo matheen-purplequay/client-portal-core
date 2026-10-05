@@ -1,5 +1,11 @@
 # Logs
 
+## 2026-10-05 — Job Intake: queue reorder moved into the table (icons only)
+
+- After the Move up / Move down buttons came off the job tab, the user (who also moved Allocate to Carisma to the top of the tab themselves) asked for reordering to live in the table instead: when the "In prioritisation queue" tile is selected, show up/down arrows at the end of each row, icons only.
+- Added a trailing column (header + cell both `x-show="status === 'queued'"`) with `arrow_upward` / `arrow_downward` icon buttons, disabled at the ends of the queue; `@click.stop` so they don't trigger the row's open-tab click. Restored `move()` in `job-intake.js` with two small helpers (`queuedJobs`, `queueIndex`), and it clears `tbl.sortKey` so the visible order is the queue order after a move.
+- Verified against the already-running server on 8000 (not started/stopped by me): arrows hidden without the filter, shown for both queued rows with the right ends disabled, a move swaps the rows, no tab opens, no console errors.
+
 ## 2026-10-05 — Job Intake: removed Move up / Move down
 
 - User said the queue reorder buttons aren't needed. Removed the ▲ Move up / ▼ Move down buttons from the job tab's actions and the now-unused `move()` method in `job-intake.js`. Queue position is still assigned (appended) when a job is moved to the prioritisation queue, and still shown as "Queue #" in the table and "Queue position" in Job details — there is just no manual reordering any more.

@@ -176,6 +176,15 @@ document.addEventListener('alpine:init', () => {
     daysInStage(j) { return CP.daysBetween(j.created_on, CP.TODAY) + ' d'; },
 
     queueIt(j) { j.status = 'queued'; j.priority = this.jobs.filter((x) => x.status === 'queued').length; CP.toast('Moved to the prioritisation queue.'); },
+    /* queue order = ascending `priority`; arrows in the table (queue filter only) swap a job with its neighbour */
+    get queuedJobs() { return this.jobs.filter((x) => x.status === 'queued').sort((a, b) => a.priority - b.priority); },
+    queueIndex(j) { return this.queuedJobs.indexOf(j); },
+    move(j, dir) {
+      const q = this.queuedJobs, i = q.indexOf(j), k = i + dir;
+      if (i < 0 || k < 0 || k >= q.length) return;
+      [q[i].priority, q[k].priority] = [q[k].priority, q[i].priority];
+      this.tbl.sortKey = null; // show the queue order, not whichever column was sorted last
+    },
     allocate(j) {
       this.jobs = this.jobs.filter((x) => x.intake_id !== j.intake_id);
       this.closeJob(j.intake_id);

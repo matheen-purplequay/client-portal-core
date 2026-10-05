@@ -1,5 +1,9 @@
 # Logs
 
+## 2026-10-05 — Job Intake: removed Move up / Move down
+
+- User said the queue reorder buttons aren't needed. Removed the ▲ Move up / ▼ Move down buttons from the job tab's actions and the now-unused `move()` method in `job-intake.js`. Queue position is still assigned (appended) when a job is moved to the prioritisation queue, and still shown as "Queue #" in the table and "Queue position" in Job details — there is just no manual reordering any more.
+
 ## 2026-10-01 — Job Intake: side drawer replaced with folder tabs, two-column detail
 
 - User asked for the Jobs page's own folder-tab pattern (click a row → opens as a tab, "Jobs List"-equivalent tab always present, × to close) instead of a side drawer, pointing at `modules/client-side/dp-dash-movement`'s screenshots. Confirmed in the real source: `JobTabBar`/`JobTabButton` components, shared across all four vertical job tables (`bs/smsf/fp/bk-job-table`) — a permanent "Jobs List" tab + one numbered tab per opened job, selected tab lifted/solid-coloured, Shift+click opens a background tab (confirmed via the seed copy "Use SHIFT + Click to open job details in background tab"). Matches what we'd already built for our own Jobs page from earlier screenshots, so reused that same `open[]`/`active`/`openJob(j, ev)`/`closeJob(id)` pattern directly rather than inventing a new one.

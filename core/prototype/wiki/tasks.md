@@ -41,3 +41,7 @@
 - [TSK-20261001-04] [no-req] Fixed completeness-gauge text centering, added a truncated Job column, and replaced the Filters button with Stage/Waiting on/Step inline dropdowns (synthetic, derived from status) — complete
 - [TSK-20261001-05] [no-req] Moved Stage/Waiting on/Step filters into the toolbar before Refresh, restyled as Show-Columns-style toggle buttons instead of native selects — complete
 - [TSK-20261001-06] [no-req] Replaced Job Intake's side drawer with the Jobs page's folder-tab pattern (confirmed against the real dp-dash-movement source); rebuilt content as a two-column layout (Received/Follow-up/Timeline left, Job details/Completeness/Reminders right); fixed an unguarded timeline day-gap expression found during testing — complete
+
+## 2026-10-05
+
+- [TSK-20261005-01] [no-req] Removed the Move up / Move down queue reorder buttons (and unused `move()`) from Job Intake — complete

@@ -181,11 +181,6 @@ document.addEventListener('alpine:init', () => {
       this.closeJob(j.intake_id);
       CP.toast(`${j.client_name}'s job allocated to Carisma — it will appear on the Jobs page (prototype: not wired to live data).`);
     },
-    move(j, dir) {
-      const q = this.jobs.filter((x) => x.status === 'queued').sort((a, b) => a.priority - b.priority);
-      const i = q.indexOf(j), k = i + dir; if (k < 0 || k >= q.length) return;
-      [q[i].priority, q[k].priority] = [q[k].priority, q[i].priority];
-    },
 
     openNew() { this.form = { name: '', profession: 'nurse', notes: '' }; this.showNew = true; },
     createJob() {

@@ -43,18 +43,21 @@
 .home-panel {
   background: #fff;
   border: 1px solid #e2e5e9;
-  border-radius: 10px;
+  border-left: 4px solid var(--primary-color, #7a1f2b);
+  border-radius: 12px;
   padding: 14px;
   min-width: 260px;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.04);
 }
 
 .clickable-panel {
   cursor: pointer;
-  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 
   &:hover {
     border-color: #d8dee6;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 6px 16px rgba(16, 24, 40, 0.08);
+    transform: translateY(-1px);
   }
 
   &:hover .panel-title,
@@ -66,13 +69,20 @@
 .panel-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 12px;
 }
 
 .panel-icon {
-  font-size: 18px;
-  color: var(--primary-color, #7a1f2b);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  font-size: 16px;
+  background: var(--primary-color, #7a1f2b);
+  color: #fff;
 }
 
 .panel-title {
@@ -162,8 +172,10 @@
 .daily-planner-panel {
   background: #fff;
   border: 1px solid #e2e5e9;
-  border-radius: 10px;
+  border-left: 4px solid #1f2a6b;
+  border-radius: 12px;
   padding: 14px;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.04);
 }
 
 .dp-header {
@@ -174,8 +186,15 @@
 }
 
 .dp-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  flex-shrink: 0;
   font-size: 16px;
-  color: #1f2a6b;
+  background: #1f2a6b;
+  color: #fff;
 }
 
 .dp-title {

@@ -209,20 +209,22 @@ export class ReportService {
     return this.dataService.doPost(`${GET_TURNAROUND_JOBS_LIST}`, body);
   }
 
-  getTurnaroundManagerWise(serviceId: number = 0) {
+  getTurnaroundManagerWise(serviceId: number = 0, status: 'open' | 'closed' = 'closed') {
     const body = {
       project_id: this.project_id,
       service_id: serviceId,
-      client_id: this.getSelectedContactId()
+      client_id: this.getSelectedContactId(),
+      status: status
     };
     return this.dataService.doPost(`${GET_TURNAROUND_MANAGER_WISE}`, body);
   }
 
-  getTurnaroundManagerJobs(serviceId: number = 0, managerCid: number = 0) {
+  getTurnaroundManagerJobs(serviceId: number = 0, managerCid: number = 0, status: 'open' | 'closed' = 'closed') {
     const body = {
       project_id: this.project_id,
       service_id: serviceId,
-      manager_cid: managerCid
+      manager_cid: managerCid,
+      status: status
     };
     return this.dataService.doPost(`${GET_TURNAROUND_MANAGER_JOBS}`, body);
   }

@@ -58,6 +58,7 @@ export class HomeLandingComponent implements OnInit, OnDestroy {
     const userdata = this.localStorageService.isItemExists('userdata') ? this.localStorageService.getItem('userdata') : null;
     this.firstName = userdata?.first_name || '';
     this.loadVerticals(userdata?.company_id);
+    this.setVertical('All');
     this.loadHolidays();
 
     // Keep the Daily Planner counts in sync when the navbar's client-user
@@ -229,7 +230,13 @@ export class HomeLandingComponent implements OnInit, OnDestroy {
         this.isLoadingYesterday = false;
         const rows = (res?.status && Array.isArray(res.data)) ? res.data : [];
         const moved = rows.filter((r: any) => r.yesterday !== r.current_status).length;
-        this.yesterdayMeta = rows.length ? `${this.formatDDMMYYYY(new Date(this.today.getTime() - 86400000))} · ${moved} of ${rows.length} moved on` : '';
+        // Backend-provided last working day (from the workingdays table, same
+        // one the stored procedure itself compared against) - not just
+        // today-minus-one-calendar-day, which can land on a weekend/holiday.
+        const lastWorkingDay = res?.last_working_day ? new Date(`${res.last_working_day}T00:00:00`) : null;
+        this.yesterdayMeta = rows.length && lastWorkingDay
+          ? `${this.formatDDMMYYYY(lastWorkingDay)} · ${moved} of ${rows.length} moved on`
+          : '';
         this.yesterdayRows = rows.map((r: any) => ({
           job: r.job || '',
           yesterday: r.yesterday || '-',

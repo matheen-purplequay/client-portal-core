@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ClientService } from '../../../../services/entities/client.service';
 import { ReportService } from '../../../../services/reports/report.service';
@@ -42,7 +42,7 @@ type FilterState = Record<MultiSelectFilterKey, any[]>;
   templateUrl: './closed-jobs.component.html',
   styleUrls: ['./closed-jobs.component.scss']
 })
-export class ClosedJobsComponent implements OnInit, OnDestroy {
+export class ClosedJobsComponent implements OnInit, OnDestroy, AfterViewInit {
   private clientUserSub?: Subscription;
 
   verticals: VerticalOption[] = [];
@@ -100,6 +100,26 @@ export class ClosedJobsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clientUserSub?.unsubscribe();
+    document.getElementById('closedJobDetailsPopup')?.removeEventListener('hidden.bs.modal', this.reopenManagerPopupOnJobPopupClose);
+  }
+
+  // Bootstrap only tracks one modal/backdrop at a time by default, so
+  // opening the job-details popup on top of the Manager View drill-down
+  // popup and then closing the job-details one cascades into closing both.
+  // Re-showing the manager popup here (only when we're actually mid
+  // drill-down) makes closing the job popup return to the manager popup
+  // instead of dropping out of it entirely.
+  private reopenManagerPopupOnJobPopupClose = (): void => {
+    if (!this.managerDrillDown) return;
+    const el = document.getElementById('managerCellJobsPopup');
+    const bs = (window as any).bootstrap;
+    if (el && bs?.Modal) {
+      bs.Modal.getOrCreateInstance(el).show();
+    }
+  };
+
+  ngAfterViewInit(): void {
+    document.getElementById('closedJobDetailsPopup')?.addEventListener('hidden.bs.modal', this.reopenManagerPopupOnJobPopupClose);
   }
 
   @HostListener('document:click')

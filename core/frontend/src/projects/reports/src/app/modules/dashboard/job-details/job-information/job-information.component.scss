@@ -21,7 +21,7 @@
 
 .ji-info-icon {
     font-size: 20px;
-    color: var(--primary-color, #7a1f2b);
+    color: var(--primary-color, #0F766E);
     opacity: 0.6;
 }
 
@@ -72,7 +72,7 @@
     gap: 6px;
     font-weight: 700;
     margin-bottom: 14px;
-    color: var(--primary-color, #7a1f2b);
+    color: var(--primary-color, #0F766E);
 
     .material-symbols-rounded {
         font-size: 18px;
@@ -103,7 +103,7 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: var(--primary-color, #7a1f2b);
+    background: var(--primary-color, #0F766E);
     margin-top: 4px;
     z-index: 1;
 
@@ -111,7 +111,7 @@
         width: 16px;
         height: 16px;
         margin-top: 2px;
-        border: 3px solid var(--primary-color, #7a1f2b);
+        border: 3px solid var(--primary-color, #0F766E);
         background: #fff;
     }
 }
@@ -142,7 +142,7 @@
     gap: 8px;
 
     &--current {
-        color: var(--primary-color, #7a1f2b);
+        color: var(--primary-color, #0F766E);
         font-weight: 700;
     }
 }
@@ -188,7 +188,7 @@
     align-items: center;
     gap: 6px;
     font-weight: 700;
-    color: var(--primary-color, #7a1f2b);
+    color: var(--primary-color, #0F766E);
     font-size: 13px;
 
     .material-symbols-rounded {
@@ -199,7 +199,7 @@
 .ji-view-feedback-link {
     font-size: 12px;
     font-weight: 600;
-    color: var(--primary-color, #7a1f2b);
+    color: var(--primary-color, #0F766E);
     text-decoration: underline;
     cursor: pointer;
 
@@ -324,7 +324,7 @@
 
         &:focus {
             outline: none;
-            border-color: var(--primary-color, #7a1f2b);
+            border-color: var(--primary-color, #0F766E);
         }
     }
 
@@ -333,7 +333,7 @@
         align-items: center;
         justify-content: center;
         border: none;
-        background: var(--primary-color, #7a1f2b);
+        background: var(--primary-color, #0F766E);
         color: #fff;
         border-radius: 6px;
         width: 34px;
@@ -371,8 +371,8 @@
 .ji-appreciation-tag {
     font-size: 10px;
     font-weight: 700;
-    color: var(--primary-color, #7a1f2b);
-    background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.1);
+    color: var(--primary-color, #0F766E);
+    background: rgba(var(--primary-color-rgb, 15, 118, 110), 0.1);
     border-radius: 999px;
     padding: 2px 8px;
 }

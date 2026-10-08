@@ -51,68 +51,36 @@
 </section>
 
 <section class="container mt-4" *ngIf="viewMode === 'status'">
-    <div class="row g-3">
-        <div class="col-6 col-sm-4">
-            <div class="movement-stat-tile movement-stat-tile--all cursor-pointer h-100"
-                [class.is-selected]="selection === 'all'" (click)="selectCard('all')">
-                <div class="movement-stat-tile-label">Total</div>
-                <div class="movement-stat-tile-figure">
-                    <div class="movement-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingSummary">{{ totalMovementCount }}</ng-container>
-                    </div>
-                    <div class="movement-stat-tile-unit">Records</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4">
-            <div class="movement-stat-tile movement-stat-tile--carisma cursor-pointer h-100"
-                [class.is-selected]="selection === 'carisma'" (click)="selectCard('carisma')">
-                <div class="movement-stat-tile-label">With Carisma</div>
-                <div class="movement-stat-tile-figure">
-                    <div class="movement-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingSummary">{{ holderCount('carisma') }}</ng-container>
-                    </div>
-                    <div class="movement-stat-tile-unit">Jobs</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4">
-            <div class="movement-stat-tile movement-stat-tile--client cursor-pointer h-100"
-                [class.is-selected]="selection === 'client'" (click)="selectCard('client')">
-                <div class="movement-stat-tile-label">With Client</div>
-                <div class="movement-stat-tile-figure">
-                    <div class="movement-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingSummary">{{ holderCount('client') }}</ng-container>
-                    </div>
-                    <div class="movement-stat-tile-unit">Jobs</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    <div class="filter-chip-row">
+        <button type="button" class="filter-chip filter-chip--all" [class.selected]="selection === 'all'" (click)="selectCard('all')">
+            <span class="material-symbols-rounded filter-chip-icon">swap_horiz</span>
+            Total
+            <span class="filter-chip-count">
+                <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
+                <ng-container *ngIf="!isLoadingSummary">{{ totalMovementCount }}</ng-container>
+            </span>
+        </button>
+        <span class="filter-chip-divider" *ngIf="visibleMovementCards.length"></span>
 
-<section class="container mt-3" *ngIf="viewMode === 'status'">
-    <div class="row g-3">
-        <div class="col-6 col-sm-4 col-lg-2" *ngFor="let card of visibleMovementCards">
-            <div class="movement-stat-tile movement-stat-tile--{{ card.accent }} cursor-pointer h-100"
-                [class.is-selected]="selection === card.key" (click)="selectCard(card.key)">
-                <div class="movement-stat-tile-label">{{ card.label }}</div>
-                <div class="movement-stat-tile-figure">
-                    <div class="movement-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingSummary">{{ summaryCounts[card.key] }}</ng-container>
-                    </div>
-                    <div class="movement-stat-tile-unit">Jobs</div>
-                </div>
-            </div>
-        </div>
+        <button type="button" class="filter-chip filter-chip--{{ card.accent }}" *ngFor="let card of visibleMovementCards"
+            [class.selected]="selection === card.key" (click)="selectCard(card.key)">
+            {{ card.label }}
+            <span class="filter-chip-count">
+                <span class="loading-dots" *ngIf="isLoadingSummary"><i></i><i></i><i></i></span>
+                <ng-container *ngIf="!isLoadingSummary">{{ summaryCounts[card.key] }}</ng-container>
+            </span>
+        </button>
     </div>
 </section>
 
 <section class="container mt-4" *ngIf="viewMode === 'status'">
+    <nav class="filter-breadcrumb mb-2" aria-label="Selected filters">
+        <span class="filter-breadcrumb-item">Movement</span>
+        <span class="filter-breadcrumb-sep material-symbols-rounded">chevron_right</span>
+        <span class="filter-breadcrumb-item">Status View</span>
+        <span class="filter-breadcrumb-sep material-symbols-rounded">chevron_right</span>
+        <span class="filter-breadcrumb-item is-current">{{ selectedVerticalLabel }}</span>
+    </nav>
     <div class="movement-card rounded-4 shadow-sm overflow-hidden bg-white">
         <div class="movement-toolbar d-flex align-items-center justify-content-end gap-2 px-3 py-2">
             <button type="button" class="clear-filters-btn" (click)="clearFilters()" [disabled]="!hasActiveFilters">
@@ -270,71 +238,37 @@
 
 <!-- Manager View: Status x Partner matrix (Sp_WorkStatusMovementsforpartners) -->
 <section class="container mt-4" *ngIf="viewMode === 'manager'">
-    <div class="row g-3">
-        <div class="col-6 col-sm-4">
-            <div class="movement-stat-tile movement-stat-tile--all cursor-pointer h-100"
-                [class.is-selected]="managerSelection === 'all'" (click)="selectManagerCard('all')">
-                <div class="movement-stat-tile-label">Total</div>
-                <div class="movement-stat-tile-figure">
-                    <div class="movement-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingManager">{{ managerGrandTotal }}</ng-container>
-                    </div>
-                    <div class="movement-stat-tile-unit">Records</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4">
-            <div class="movement-stat-tile movement-stat-tile--carisma cursor-pointer h-100"
-                [class.is-selected]="managerSelection === 'carisma'" (click)="selectManagerCard('carisma')">
-                <div class="movement-stat-tile-label">With Carisma</div>
-                <div class="movement-stat-tile-figure">
-                    <div class="movement-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingManager">{{ managerWithCarisma }}</ng-container>
-                    </div>
-                    <div class="movement-stat-tile-unit">Jobs</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4">
-            <div class="movement-stat-tile movement-stat-tile--client cursor-pointer h-100"
-                [class.is-selected]="managerSelection === 'client'" (click)="selectManagerCard('client')">
-                <div class="movement-stat-tile-label">With Client</div>
-                <div class="movement-stat-tile-figure">
-                    <div class="movement-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingManager">{{ managerWithClient }}</ng-container>
-                    </div>
-                    <div class="movement-stat-tile-unit">Jobs</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    <div class="filter-chip-row">
+        <button type="button" class="filter-chip filter-chip--all" [class.selected]="managerSelection === 'all'" (click)="selectManagerCard('all')">
+            <span class="material-symbols-rounded filter-chip-icon">swap_horiz</span>
+            Total
+            <span class="filter-chip-count">
+                <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
+                <ng-container *ngIf="!isLoadingManager">{{ managerGrandTotal }}</ng-container>
+            </span>
+        </button>
+        <span class="filter-chip-divider" *ngIf="visibleManagerCards.length"></span>
 
-<section class="container mt-3" *ngIf="viewMode === 'manager'">
-    <div class="row g-3">
-        <div class="col-6 col-sm-4 col-lg-2" *ngFor="let card of visibleManagerCards">
-            <div class="movement-stat-tile movement-stat-tile--{{ card.accent }} cursor-pointer h-100"
-                [class.is-selected]="managerSelection === card.key" (click)="selectManagerCard(card.key)">
-                <div class="movement-stat-tile-label">{{ card.label }}</div>
-                <div class="movement-stat-tile-figure">
-                    <div class="movement-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingManager">
-                            {{ managerTotalForStatus(card.key) }}
-                        </ng-container>
-                    </div>
-                    <div class="movement-stat-tile-unit">Jobs</div>
-                </div>
-            </div>
-        </div>
+        <button type="button" class="filter-chip filter-chip--{{ card.accent }}" *ngFor="let card of visibleManagerCards"
+            [class.selected]="managerSelection === card.key" (click)="selectManagerCard(card.key)">
+            {{ card.label }}
+            <span class="filter-chip-count">
+                <span class="loading-dots" *ngIf="isLoadingManager"><i></i><i></i><i></i></span>
+                <ng-container *ngIf="!isLoadingManager">{{ managerTotalForStatus(card.key) }}</ng-container>
+            </span>
+        </button>
     </div>
 </section>
 
 <section class="container mt-4" *ngIf="viewMode === 'manager'">
     <!-- Pivot matrix — stays visible even after drilling into a cell -->
+    <nav class="filter-breadcrumb mb-2" aria-label="Selected filters">
+        <span class="filter-breadcrumb-item">Movement</span>
+        <span class="filter-breadcrumb-sep material-symbols-rounded">chevron_right</span>
+        <span class="filter-breadcrumb-item">Manager View</span>
+        <span class="filter-breadcrumb-sep material-symbols-rounded">chevron_right</span>
+        <span class="filter-breadcrumb-item is-current">{{ selectedVerticalLabel }}</span>
+    </nav>
     <div class="movement-card rounded-4 shadow-sm overflow-hidden bg-white">
         <div class="movement-toolbar d-flex align-items-center justify-content-start px-3 py-2">
             <div class="fw-bold small">Job Movement by Partner <span class="opacity-75">&middot;</span> {{ selectedVerticalLabel }}</div>
@@ -352,15 +286,19 @@
                 <tbody *ngIf="!isLoadingManager">
                     <tr *ngFor="let card of visibleManagerCards">
                         <td class="fw-medium job-name-cell">{{ card.label }}</td>
-                        <td class="text-center" *ngFor="let p of managerPartners" [class.opacity-50]="!managerCount(card.key, p)">
-                            <a class="job-name-cell" style="cursor: pointer;" (click)="showManagerCellJobs(card.key, p)">{{ managerCount(card.key, p) }}</a>
+                        <td class="text-center" *ngFor="let p of managerPartners" [class.pw-zero]="!managerCount(card.key, p)">
+                            <a class="pw-count" *ngIf="managerCount(card.key, p); else pwZero" data-bs-toggle="modal"
+                                data-bs-target="#managerCellJobsPopup" (click)="showManagerCellJobs(card.key, p)">{{ managerCount(card.key, p) }}</a>
+                            <ng-template #pwZero>0</ng-template>
                         </td>
                         <td class="text-center fw-semibold">{{ managerTotalForStatus(card.key) }}</td>
                     </tr>
                     <tr class="fw-bold">
                         <td>Total</td>
-                        <td class="text-center" *ngFor="let p of managerPartners">
-                            <a class="job-name-cell" style="cursor: pointer;" (click)="showManagerCellJobs(null, p)">{{ managerTotalForPartner(p) }}</a>
+                        <td class="text-center" *ngFor="let p of managerPartners" [class.pw-zero]="!managerTotalForPartner(p)">
+                            <a class="pw-count" *ngIf="managerTotalForPartner(p); else pwZeroTotal" data-bs-toggle="modal"
+                                data-bs-target="#managerCellJobsPopup" (click)="showManagerCellJobs(null, p)">{{ managerTotalForPartner(p) }}</a>
+                            <ng-template #pwZeroTotal>0</ng-template>
                         </td>
                         <td class="text-center">{{ managerGrandTotal }}</td>
                     </tr>
@@ -376,18 +314,20 @@
         </div>
     </div>
 
-    <!-- Drill-down: same detail rows as Status View, filtered to the clicked status/partner.
-         Appears below the matrix rather than replacing it. -->
-    <div class="movement-card rounded-4 shadow-sm overflow-hidden bg-white mt-4" *ngIf="managerDrillDown">
-        <div class="movement-toolbar d-flex align-items-center justify-content-between px-3 py-2">
-            <div class="fw-bold small">{{ managerDrillDownTitle }}</div>
-            <a class="back-link" (click)="backToPartnerMatrix()">
-                <span class="material-symbols-rounded">close</span>
-                Clear selection
-            </a>
-        </div>
+</section>
 
-        <div class="movement-table-wrap">
+<!-- Manager View drill-down popup -->
+<div class="modal" id="managerCellJobsPopup" tabindex="-1" aria-labelledby="managerCellJobsPopup" aria-hidden="true" style="z-index: 9999999;">
+    <div class="modal-dialog modal-xl modal-dialog-centered manager-cell-modal-dialog">
+        <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+            <div class="ji-modal-header manager-cell-modal-header">
+                <span class="ji-modal-title">{{ managerDrillDownTitle }}</span>
+                <button type="button" class="ji-modal-close" data-bs-dismiss="modal" (click)="backToPartnerMatrix()" aria-label="Close">
+                    <span class="material-symbols-rounded">close</span> Close
+                </button>
+            </div>
+
+        <div class="movement-table-wrap" style="max-height: calc(100vh - 200px);">
             <table class="movement-table w-100">
                 <thead>
                     <tr>
@@ -525,8 +465,9 @@
         <div class="movement-table-overlay" *ngIf="managerDrillDownFilteredRows.length === 0">
             <span class="movement-table-empty-text">No jobs found.</span>
         </div>
+        </div>
     </div>
-</section>
+</div>
 
 <!-- Job Information Modal -->
 <div class="modal" id="movementJobDetailsPopup" tabindex="-1" aria-labelledby="movementJobDetailsPopup"

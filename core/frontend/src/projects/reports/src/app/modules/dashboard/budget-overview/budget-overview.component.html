@@ -15,50 +15,42 @@
 </section>
 
 <section class="container mt-3">
-    <div class="row g-3">
-        <div class="col-6 col-sm-4">
-            <div class="budget-stat-tile budget-stat-tile--navy cursor-pointer h-100"
-                [class.is-selected]="selection === 'all'" (click)="selectCard('all')">
-                <div class="budget-stat-tile-label">Total</div>
-                <div class="budget-stat-tile-figure">
-                    <div class="budget-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingCounts"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingCounts">{{ totalOpenJobsCount }}</ng-container>
-                    </div>
-                    <div class="budget-stat-tile-unit">Open Jobs</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4">
-            <div class="budget-stat-tile budget-stat-tile--green cursor-pointer h-100"
-                [class.is-selected]="selection === 'within'" (click)="selectCard('within')">
-                <div class="budget-stat-tile-label">Within Budget</div>
-                <div class="budget-stat-tile-figure">
-                    <div class="budget-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingCounts"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingCounts">{{ withinBudgetPct }}%</ng-container>
-                    </div>
-                    <div class="budget-stat-tile-unit">{{ budgetCounts.underBudget }} Jobs</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-4">
-            <div class="budget-stat-tile budget-stat-tile--maroon cursor-pointer h-100"
-                [class.is-selected]="selection === 'over'" (click)="selectCard('over')">
-                <div class="budget-stat-tile-label">Over Budget</div>
-                <div class="budget-stat-tile-figure">
-                    <div class="budget-stat-tile-value">
-                        <span class="loading-dots" *ngIf="isLoadingCounts"><i></i><i></i><i></i></span>
-                        <ng-container *ngIf="!isLoadingCounts">{{ overBudgetPct }}%</ng-container>
-                    </div>
-                    <div class="budget-stat-tile-unit">{{ budgetCounts.overBudget }} Jobs</div>
-                </div>
-            </div>
-        </div>
+    <div class="filter-chip-row">
+        <button type="button" class="filter-chip filter-chip--navy" [class.selected]="selection === 'all'" (click)="selectCard('all')">
+            <span class="material-symbols-rounded filter-chip-icon">folder_open</span>
+            Total
+            <span class="filter-chip-count">
+                <span class="loading-dots" *ngIf="isLoadingCounts"><i></i><i></i><i></i></span>
+                <ng-container *ngIf="!isLoadingCounts">{{ totalOpenJobsCount }}</ng-container>
+            </span>
+        </button>
+        <button type="button" class="filter-chip filter-chip--green" [class.selected]="selection === 'within'" (click)="selectCard('within')">
+            <span class="material-symbols-rounded filter-chip-icon">check_circle</span>
+            Within Budget
+            <span class="filter-chip-count">
+                <span class="loading-dots" *ngIf="isLoadingCounts"><i></i><i></i><i></i></span>
+                <ng-container *ngIf="!isLoadingCounts">{{ withinBudgetPct }}%</ng-container>
+            </span>
+        </button>
+        <button type="button" class="filter-chip filter-chip--maroon" [class.selected]="selection === 'over'" (click)="selectCard('over')">
+            <span class="material-symbols-rounded filter-chip-icon">warning</span>
+            Over Budget
+            <span class="filter-chip-count">
+                <span class="loading-dots" *ngIf="isLoadingCounts"><i></i><i></i><i></i></span>
+                <ng-container *ngIf="!isLoadingCounts">{{ overBudgetPct }}%</ng-container>
+            </span>
+        </button>
     </div>
 </section>
 
 <section class="container mt-4">
+    <nav class="filter-breadcrumb mb-2" aria-label="Selected filters">
+        <span class="filter-breadcrumb-item">Budget Overview</span>
+        <span class="filter-breadcrumb-sep material-symbols-rounded">chevron_right</span>
+        <span class="filter-breadcrumb-item">{{ selectedVerticalLabel }}</span>
+        <span class="filter-breadcrumb-sep material-symbols-rounded">chevron_right</span>
+        <span class="filter-breadcrumb-item is-current">{{ tableTitle }}</span>
+    </nav>
     <div class="budget-card rounded-4 shadow-sm overflow-hidden bg-white">
         <div class="budget-toolbar d-flex align-items-center justify-content-between px-3 py-2 flex-wrap gap-2">
             <div class="fw-bold small">{{ tableTitle }} <span class="opacity-75">&middot;</span> {{ selectedVerticalLabel }}</div>

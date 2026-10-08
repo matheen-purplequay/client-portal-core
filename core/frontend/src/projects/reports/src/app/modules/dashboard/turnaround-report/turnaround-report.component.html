@@ -23,46 +23,37 @@
 <ng-container *ngIf="viewMode === 'status'">
 
 <section class="container mt-4">
-    <div class="row g-3">
-        <div class="col-6 col-sm-6">
-            <div class="turnaround-toggle-card turnaround-toggle-card--open cursor-pointer h-100"
-                [class.is-selected]="jobStatus === 'open'" (click)="selectStatus('open')">
-                <div class="turnaround-toggle-card-label">Open Jobs</div>
-                <div class="turnaround-toggle-card-figure">
-                    <div class="turnaround-toggle-card-value">{{ openJobsCount }}</div>
-                    <div class="turnaround-toggle-card-unit">Jobs</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-sm-6">
-            <div class="turnaround-toggle-card turnaround-toggle-card--closed cursor-pointer h-100"
-                [class.is-selected]="jobStatus === 'closed'" (click)="selectStatus('closed')">
-                <div class="turnaround-toggle-card-label">Closed Jobs</div>
-                <div class="turnaround-toggle-card-figure">
-                    <div class="turnaround-toggle-card-value">{{ closedJobsCount }}</div>
-                    <div class="turnaround-toggle-card-unit">Jobs</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    <div class="filter-chip-row">
+        <button type="button" class="filter-chip filter-chip--open" [class.selected]="jobStatus === 'open'" (click)="selectStatus('open')">
+            <span class="material-symbols-rounded filter-chip-icon">folder_open</span>
+            Open Job Aging
+            <span class="filter-chip-count">{{ openJobsCount }}</span>
+        </button>
+        <button type="button" class="filter-chip filter-chip--closed" [class.selected]="jobStatus === 'closed'" (click)="selectStatus('closed')">
+            <span class="material-symbols-rounded filter-chip-icon">task_alt</span>
+            Closed Job Turnaround
+            <span class="filter-chip-count">{{ closedJobsCount }}</span>
+        </button>
 
-<section class="container mt-3">
-    <div class="row g-2">
-        <div class="col-6 col-sm-4 col-lg" *ngFor="let bucket of buckets">
-            <div class="turnaround-stat-card turnaround-stat-card--{{ bucket.variant }} rounded-4 h-100 cursor-pointer"
-                [class.is-selected]="selectedBucket === bucket.key" (click)="selectBucket(bucket.key)">
-                <div class="turnaround-stat-label text-uppercase">{{ bucket.label }}</div>
-                <div class="turnaround-stat-value">
-                    <span class="loading-dots" *ngIf="isLoading"><i></i><i></i><i></i></span>
-                    <ng-container *ngIf="!isLoading">{{ bucket.value }}</ng-container>
-                </div>
-            </div>
-        </div>
+        <span class="filter-chip-divider"></span>
+
+        <button type="button" class="filter-chip filter-chip--{{ bucket.variant }}" *ngFor="let bucket of buckets"
+            [class.selected]="selectedBucket === bucket.key" (click)="selectBucket(bucket.key)">
+            {{ bucket.label }}
+            <span class="filter-chip-count">
+                <span class="loading-dots" *ngIf="isLoading"><i></i><i></i><i></i></span>
+                <ng-container *ngIf="!isLoading">{{ bucket.value }}</ng-container>
+            </span>
+        </button>
     </div>
 </section>
 
 <section class="container mt-4">
+    <nav class="filter-breadcrumb mb-2" aria-label="Selected filters">
+        <span class="filter-breadcrumb-item">Turnaround by Bucket</span>
+        <span class="filter-breadcrumb-sep material-symbols-rounded">chevron_right</span>
+        <span class="filter-breadcrumb-item is-current">{{ jobsTableTitle }}</span>
+    </nav>
     <div class="turnaround-card rounded-4 shadow-sm overflow-hidden bg-white">
         <div class="turnaround-toolbar d-flex align-items-center justify-content-between px-3 py-2 flex-wrap gap-2">
             <div class="fw-bold small">{{ jobsTableTitle }} <span class="opacity-75">&middot;</span> Turnaround</div>
@@ -110,7 +101,7 @@
                                 <div *ngIf="filteredOptionsFor('receivedFrom').length === 0" class="ms-filter-empty">No options</div>
                             </div>
                         </th>
-                        <th><input type="text" [(ngModel)]="filters.jobName" (ngModelChange)="currentPage = 1" placeholder=""></th>
+                        <th><input type="text" [(ngModel)]="filters.jobName" placeholder=""></th>
                         <th class="ms-filter-cell">
                             <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleFilterDropdown('natureOfJob')">
                                 <span class="ms-filter-btn-label">{{ filterSummaryLabel('natureOfJob') }}</span>
@@ -179,8 +170,8 @@
                     </tr>
                 </thead>
                 <tbody *ngIf="!isLoadingJobs">
-                    <tr *ngFor="let row of pagedJobRows; let i = index">
-                        <td class="sno-col text-center">{{ pageRangeStart + i }}</td>
+                    <tr *ngFor="let row of filteredJobRows; let i = index">
+                        <td class="sno-col text-center">{{ i + 1 }}</td>
                         <td>{{ row.receivedFrom }}</td>
                         <td class="fw-medium job-name-cell" [title]="row.jobName" data-bs-toggle="modal"
                             data-bs-target="#turnaroundJobDetailsPopup" (click)="openJobDetails(row)">{{ row.jobName }}</td>
@@ -205,32 +196,11 @@
         </div>
 
         <div class="turnaround-pagination px-3 py-2 d-flex align-items-center justify-content-between flex-wrap gap-2">
-            <div class="page-size-group">
-                <button type="button" class="page-size" *ngFor="let size of pageSizeOptions"
-                    [class.active]="pageSize === size" (click)="setPageSize(size)">{{ size }}</button>
-            </div>
-            <div class="page-range small">Showing {{ pageRangeStart }}-{{ pageRangeEnd }} of {{ filteredJobRows.length }}</div>
-            <div class="d-flex align-items-center gap-2">
-                <button type="button" class="bookmark-btn">
-                    <span class="material-symbols-rounded" style="font-size: 16px;">bookmark</span>
-                    Bookmark Page
-                </button>
-                <div class="page-nav-group">
-                    <button type="button" class="page-nav-btn" [disabled]="currentPage <= 1" (click)="goToPage(1)">
-                        <span class="material-symbols-rounded">first_page</span>
-                    </button>
-                    <button type="button" class="page-nav-btn" [disabled]="currentPage <= 1" (click)="goToPage(currentPage - 1)">
-                        <span class="material-symbols-rounded">chevron_left</span>
-                    </button>
-                    <span class="page-nav-current">{{ currentPage }}</span>
-                    <button type="button" class="page-nav-btn" [disabled]="currentPage >= totalPages" (click)="goToPage(currentPage + 1)">
-                        <span class="material-symbols-rounded">chevron_right</span>
-                    </button>
-                    <button type="button" class="page-nav-btn" [disabled]="currentPage >= totalPages" (click)="goToPage(totalPages)">
-                        <span class="material-symbols-rounded">last_page</span>
-                    </button>
-                </div>
-            </div>
+            <div class="page-range small">Showing {{ filteredJobRows.length }} of {{ filteredJobRows.length }}</div>
+            <button type="button" class="bookmark-btn">
+                <span class="material-symbols-rounded" style="font-size: 16px;">bookmark</span>
+                Bookmark Page
+            </button>
         </div>
     </div>
 </section>
@@ -238,59 +208,83 @@
 </ng-container>
 
 <section class="container mt-4" *ngIf="viewMode === 'manager'">
-    <div class="turnaround-card manager-card rounded-4 shadow-sm overflow-hidden bg-white">
-        <div class="manager-title-bar px-3 py-2">Manager Wise Turnaround</div>
-        <div class="manager-note px-3 py-2 small">
-            For jobs in that bucket: Total = average turnaround days, With Carisma / With Client = average days spent on each side.
-        </div>
+    <div class="manager-title-bar px-3 py-2 mb-3 rounded-3">{{ jobStatus === 'open' ? 'Manager Wise Open Job Aging' : 'Manager Wise Turnaround' }}</div>
 
+    <div class="filter-chip-row mb-3">
+        <button type="button" class="filter-chip filter-chip--open" [class.selected]="jobStatus === 'open'" (click)="selectStatus('open')">
+            <span class="material-symbols-rounded filter-chip-icon">folder_open</span>
+            Open Job Aging
+            <span class="filter-chip-count">{{ openJobsCount }}</span>
+        </button>
+        <button type="button" class="filter-chip filter-chip--closed" [class.selected]="jobStatus === 'closed'" (click)="selectStatus('closed')">
+            <span class="material-symbols-rounded filter-chip-icon">task_alt</span>
+            Closed Job Turnaround
+            <span class="filter-chip-count">{{ closedJobsCount }}</span>
+        </button>
+    </div>
+
+    <div class="turnaround-card manager-card rounded-4 shadow-sm overflow-hidden bg-white">
         <div class="manager-table-wrap">
             <table class="manager-table">
                 <thead>
                     <tr>
                         <th class="manager-col" rowspan="2">Manager</th>
-                        <th class="manager-group-header" colspan="3" *ngFor="let b of managerBuckets">{{ b.label }}</th>
+                        <th rowspan="2">Total Jobs</th>
+                        <th class="manager-group-header" colspan="4" *ngFor="let b of managerBuckets">{{ b.label }}</th>
                     </tr>
                     <tr>
                         <ng-container *ngFor="let b of managerBuckets">
-                            <th>Total</th>
-                            <th>With Carisma</th>
-                            <th>With Client</th>
+                            <th class="manager-bucket-start">No. of Job</th>
+                            <th>Total Days</th>
+                            <th>Days in Carisma</th>
+                            <th>Days in Client</th>
                         </ng-container>
                     </tr>
                 </thead>
                 <tbody *ngIf="!isLoadingManager">
                     <tr *ngFor="let row of managerRowsList">
-                        <td class="manager-col manager-name manager-clickable" (click)="showManagerJobs(row.managerCid, row.manager)">{{ row.manager }}</td>
+                        <td class="manager-col manager-name manager-clickable" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager)">{{ row.manager }}</td>
+                        <td class="text-center fw-semibold">
+                            <a class="manager-count" *ngIf="row.totalJobs; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager)">{{ row.totalJobs }}</a>
+                        </td>
                         <ng-container *ngFor="let b of managerBuckets">
+                            <td class="text-center manager-bucket-start">
+                                <a class="manager-jobs-pill" [class.is-zero]="!row[b.key].jobs" *ngIf="row[b.key].jobs; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].jobs }}</a>
+                            </td>
                             <td class="text-center">
-                                <a class="manager-count" *ngIf="row[b.key].total !== null; else dash0" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].total }}</a>
+                                <a class="manager-count" *ngIf="row[b.key].total !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].total }}</a>
                             </td>
                             <td class="text-center manager-carisma">
-                                <a class="manager-count" *ngIf="row[b.key].carisma !== null; else dash0" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].carisma }}</a>
+                                <a class="manager-count" *ngIf="row[b.key].carisma !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].carisma }}</a>
                             </td>
                             <td class="text-center manager-client">
-                                <a class="manager-count" *ngIf="row[b.key].client !== null; else dash0" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].client }}</a>
+                                <a class="manager-count" *ngIf="row[b.key].client !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].client }}</a>
                             </td>
                         </ng-container>
                     </tr>
                     <tr class="manager-total-row" *ngIf="managerTotalRow as total">
-                        <td class="manager-col manager-name manager-clickable" (click)="showManagerJobs(null, 'All Managers')">Total</td>
+                        <td class="manager-col manager-name manager-clickable" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers')">Total</td>
+                        <td class="text-center fw-semibold">
+                            <a class="manager-count" *ngIf="total.totalJobs; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers')">{{ total.totalJobs }}</a>
+                        </td>
                         <ng-container *ngFor="let b of managerBuckets">
-                            <td class="text-center">
-                                <a class="manager-count" *ngIf="total[b.key].total !== null; else dash0" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].total }}</a>
+                            <td class="text-center manager-bucket-start">
+                                <a class="manager-jobs-pill" [class.is-zero]="!total[b.key].jobs" *ngIf="total[b.key].jobs; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].jobs }}</a>
                             </td>
                             <td class="text-center">
-                                <a class="manager-count" *ngIf="total[b.key].carisma !== null; else dash0" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].carisma }}</a>
+                                <a class="manager-count" *ngIf="total[b.key].total !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].total }}</a>
                             </td>
                             <td class="text-center">
-                                <a class="manager-count" *ngIf="total[b.key].client !== null; else dash0" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].client }}</a>
+                                <a class="manager-count" *ngIf="total[b.key].carisma !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].carisma }}</a>
+                            </td>
+                            <td class="text-center">
+                                <a class="manager-count" *ngIf="total[b.key].client !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].client }}</a>
                             </td>
                         </ng-container>
                     </tr>
                 </tbody>
             </table>
-            <ng-template #dash0>-</ng-template>
+            <ng-template #dash0><span class="manager-dash">-</span></ng-template>
         </div>
 
         <div class="manager-table-overlay" *ngIf="isLoadingManager">
@@ -302,89 +296,89 @@
     </div>
 </section>
 
-<section class="container mt-3" *ngIf="viewMode === 'manager' && managerDrillDown">
-    <div class="back-to-matrix-row mb-2">
-        <a class="back-link" (click)="backToManagerPivot()">
-            <span class="material-symbols-rounded">close</span>
-            Clear selection
-        </a>
-    </div>
+<div class="modal" id="managerCellJobsPopup" tabindex="-1" aria-labelledby="managerCellJobsPopup" aria-hidden="true" style="z-index: 999999;">
+    <div class="modal-dialog manager-cell-modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+            <div class="manager-cell-modal-header d-flex align-items-center justify-content-between px-3 py-2" *ngIf="managerDrillDown as md">
+                <div class="fw-bold small">
+                    {{ md.managerLabel }}
+                    <span class="opacity-75" *ngIf="md.bucketLabel">&middot; {{ md.bucketLabel }}</span>
+                </div>
+                <button type="button" class="ji-modal-close" data-bs-dismiss="modal" aria-label="Close" (click)="backToManagerPivot()">
+                    <span class="material-symbols-rounded">close</span> Close
+                </button>
+            </div>
 
-    <div class="turnaround-card rounded-4 shadow-sm overflow-hidden bg-white">
-        <div class="turnaround-toolbar d-flex align-items-center px-3 py-2">
-            <div class="fw-bold small">
-                {{ managerDrillDown.managerLabel }}
-                <span class="opacity-75" *ngIf="managerDrillDown.bucketLabel">&middot; {{ managerDrillDown.bucketLabel }}</span>
+            <div class="modal-body p-0 position-relative" style="max-height: calc(100vh - 160px); overflow: auto;">
+                <div class="turnaround-table-wrap">
+                    <table class="turnaround-table">
+                        <thead>
+                            <tr>
+                                <th class="sno-col">S.No</th>
+                                <th>Received From</th>
+                                <th>Job Name</th>
+                                <th style="width: 80px;">Budget Hrs<br>(hh:mm)</th>
+                                <th style="width: 80px;">Time Taken<br>(hh:mm)</th>
+                                <th style="width: 100px;">Turnaround (Days)</th>
+                                <th style="width: 100px;">Turnaround in Carisma</th>
+                                <th style="width: 100px;">Turnaround in Client</th>
+                            </tr>
+                            <tr class="filter-row">
+                                <th class="sno-col"></th>
+                                <th class="ms-filter-cell">
+                                    <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleManagerFilterDropdown()">
+                                        <span class="ms-filter-btn-label">{{ managerReceivedFromSummaryLabel() }}</span>
+                                        <span class="material-symbols-rounded">arrow_drop_down</span>
+                                    </button>
+                                    <div class="ms-filter-panel" filterPanelPosition *ngIf="openManagerFilterDropdown" (click)="$event.stopPropagation()">
+                                        <div class="ms-filter-search">
+                                            <input type="text" placeholder="Search..." [(ngModel)]="managerFilterSearch" (click)="$event.stopPropagation()">
+                                        </div>
+                                        <label class="ms-filter-option ms-filter-option--all" *ngIf="!managerFilterSearch && managerReceivedFromOptions.length > 0">
+                                            <input type="checkbox" [checked]="isManagerReceivedFromAllSelected()" (change)="toggleManagerReceivedFromSelectAll()">
+                                            <span class="ms-filter-option-text">Select all</span>
+                                        </label>
+                                        <label class="ms-filter-option" *ngFor="let opt of managerFilteredReceivedFromOptions">
+                                            <input type="checkbox" [checked]="isManagerReceivedFromSelected(opt)" (change)="toggleManagerReceivedFromOption(opt)">
+                                            <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
+                                        </label>
+                                        <div *ngIf="managerFilteredReceivedFromOptions.length === 0" class="ms-filter-empty">No options</div>
+                                    </div>
+                                </th>
+                                <th><input type="text" [(ngModel)]="managerJobFilters.jobName" placeholder="Search..."></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="!isLoadingManagerJobs">
+                            <tr *ngFor="let row of managerDrillDownRows; let i = index">
+                                <td class="sno-col text-center">{{ i + 1 }}</td>
+                                <td>{{ row.receivedFrom }}</td>
+                                <td class="fw-medium job-name-cell" [title]="row.jobName" data-bs-toggle="modal"
+                                    data-bs-target="#turnaroundJobDetailsPopup" (click)="openManagerJobDetails(row)">{{ row.jobName }}</td>
+                                <td class="text-center">{{ row.budgetTime }}</td>
+                                <td class="text-center">{{ row.timeTaken }}</td>
+                                <td class="text-center fw-semibold">{{ row.turnaroundDays }}</td>
+                                <td class="text-center">{{ row.turnaroundInCarisma }}</td>
+                                <td class="text-center">{{ row.turnaroundInClient }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="turnaround-table-overlay" *ngIf="isLoadingManagerJobs">
+                    <span class="grid-spinner"></span>
+                </div>
+                <div class="turnaround-table-overlay" *ngIf="!isLoadingManagerJobs && managerDrillDownRows.length === 0">
+                    <span class="turnaround-table-empty-text">No jobs found.</span>
+                </div>
             </div>
         </div>
-
-        <div class="turnaround-table-wrap">
-            <table class="turnaround-table">
-                <thead>
-                    <tr>
-                        <th class="sno-col">S.No</th>
-                        <th>Received From</th>
-                        <th>Job Name</th>
-                        <th style="width: 80px;">Budget Hrs<br>(hh:mm)</th>
-                        <th style="width: 80px;">Time Taken<br>(hh:mm)</th>
-                        <th style="width: 100px;">Turnaround (Days)</th>
-                        <th style="width: 100px;">Turnaround in Carisma</th>
-                        <th style="width: 100px;">Turnaround in Client</th>
-                    </tr>
-                    <tr class="filter-row">
-                        <th class="sno-col"></th>
-                        <th class="ms-filter-cell">
-                            <button type="button" class="ms-filter-btn" (click)="$event.stopPropagation(); toggleManagerFilterDropdown()">
-                                <span class="ms-filter-btn-label">{{ managerReceivedFromSummaryLabel() }}</span>
-                                <span class="material-symbols-rounded">arrow_drop_down</span>
-                            </button>
-                            <div class="ms-filter-panel" filterPanelPosition *ngIf="openManagerFilterDropdown" (click)="$event.stopPropagation()">
-                                <div class="ms-filter-search">
-                                    <input type="text" placeholder="Search..." [(ngModel)]="managerFilterSearch" (click)="$event.stopPropagation()">
-                                </div>
-                                <label class="ms-filter-option ms-filter-option--all" *ngIf="!managerFilterSearch && managerReceivedFromOptions.length > 0">
-                                    <input type="checkbox" [checked]="isManagerReceivedFromAllSelected()" (change)="toggleManagerReceivedFromSelectAll()">
-                                    <span class="ms-filter-option-text">Select all</span>
-                                </label>
-                                <label class="ms-filter-option" *ngFor="let opt of managerFilteredReceivedFromOptions">
-                                    <input type="checkbox" [checked]="isManagerReceivedFromSelected(opt)" (change)="toggleManagerReceivedFromOption(opt)">
-                                    <span class="ms-filter-option-text" [title]="opt">{{ opt }}</span>
-                                </label>
-                                <div *ngIf="managerFilteredReceivedFromOptions.length === 0" class="ms-filter-empty">No options</div>
-                            </div>
-                        </th>
-                        <th><input type="text" [(ngModel)]="managerJobFilters.jobName" placeholder="Search..."></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody *ngIf="!isLoadingManagerJobs">
-                    <tr *ngFor="let row of managerDrillDownRows; let i = index">
-                        <td class="sno-col text-center">{{ i + 1 }}</td>
-                        <td>{{ row.receivedFrom }}</td>
-                        <td class="fw-medium job-name-cell" [title]="row.jobName" data-bs-toggle="modal"
-                            data-bs-target="#turnaroundJobDetailsPopup" (click)="openManagerJobDetails(row)">{{ row.jobName }}</td>
-                        <td class="text-center">{{ row.budgetTime }}</td>
-                        <td class="text-center">{{ row.timeTaken }}</td>
-                        <td class="text-center fw-semibold">{{ row.turnaroundDays }}</td>
-                        <td class="text-center">{{ row.turnaroundInCarisma }}</td>
-                        <td class="text-center">{{ row.turnaroundInClient }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="turnaround-table-overlay" *ngIf="isLoadingManagerJobs">
-            <span class="grid-spinner"></span>
-        </div>
-        <div class="turnaround-table-overlay" *ngIf="!isLoadingManagerJobs && managerDrillDownRows.length === 0">
-            <span class="turnaround-table-empty-text">No jobs found.</span>
-        </div>
     </div>
-</section>
+</div>
 
 <!-- Job Information Modal -->
 <div class="modal" id="turnaroundJobDetailsPopup" tabindex="-1" aria-labelledby="turnaroundJobDetailsPopup"

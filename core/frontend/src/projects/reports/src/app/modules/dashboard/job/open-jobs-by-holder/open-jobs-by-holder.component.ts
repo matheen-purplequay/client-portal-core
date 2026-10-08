@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ClientService } from '../../../../services/entities/client.service';
 import { ReportService } from '../../../../services/reports/report.service';
@@ -23,7 +23,7 @@ interface VerticalOption {
   templateUrl: './open-jobs-by-holder.component.html',
   styleUrls: ['./open-jobs-by-holder.component.scss']
 })
-export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
+export class OpenJobsByHolderComponent implements OnInit, OnDestroy, AfterViewInit {
   private clientUserSub?: Subscription;
 
   verticalOptions: VerticalOption[] = [];
@@ -60,6 +60,26 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clientUserSub?.unsubscribe();
+    document.getElementById('openJobsDetailsPopup')?.removeEventListener('hidden.bs.modal', this.reopenManagerPopupOnJobPopupClose);
+  }
+
+  // Bootstrap only tracks one modal/backdrop at a time by default, so
+  // opening the job-details popup on top of the Manager View drill-down
+  // popup and then closing the job-details one cascades into closing both.
+  // Re-showing the manager popup here (only when we're actually mid
+  // drill-down) makes closing the job popup return to the manager popup
+  // instead of dropping out of it entirely.
+  private reopenManagerPopupOnJobPopupClose = (): void => {
+    if (!this.managerDrillDown) return;
+    const el = document.getElementById('managerCellJobsPopup');
+    const bs = (window as any).bootstrap;
+    if (el && bs?.Modal) {
+      bs.Modal.getOrCreateInstance(el).show();
+    }
+  };
+
+  ngAfterViewInit(): void {
+    document.getElementById('openJobsDetailsPopup')?.addEventListener('hidden.bs.modal', this.reopenManagerPopupOnJobPopupClose);
   }
 
   get verticals(): string[] {
@@ -203,6 +223,33 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
     this.loadJobs(this.currentServiceId, this.selectedWsid || 0);
   }
 
+  get breadcrumbs(): string[] {
+    const crumbs = ['Open Jobs', this.viewMode === 'manager' ? 'Manager View' : 'Status View'];
+    if (this.selectedHolder) crumbs.push(this.selectedHolder === 'client' ? 'With Client' : 'With Carisma');
+    if (this.managerDrillPartner) crumbs.push(this.managerDrillPartner);
+    if (this.selectedWsid) {
+      const statusLabel = Object.keys(this.managerStatusToWsid).find(k => this.managerStatusToWsid[k] === this.selectedWsid)
+        ?? this.statusTiles.find(t => t.wsid === this.selectedWsid)?.label;
+      if (statusLabel) crumbs.push(statusLabel);
+    }
+    return crumbs;
+  }
+
+  isFullscreen = false;
+
+  @HostListener('document:fullscreenchange')
+  onFullscreenChange(): void {
+    this.isFullscreen = !!document.fullscreenElement;
+  }
+
+  toggleFullscreen(): void {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  }
+
   // --- Column filter row ---------------------------------------------------
   // Text filters (GroupJobName, Job Name) and multi-select-with-checkboxes
   // filters (Job Status, Naturejob, ReceivedFrom, Partner, Associate, FY).
@@ -232,6 +279,11 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
       if (v !== '' && v !== null && v !== undefined) values.add(v);
     });
     return Array.from(values).sort();
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.openFilterKey = null;
   }
 
   toggleFilterDropdown(field: string): void {
@@ -272,10 +324,11 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
     // Unchecking every box is treated as "All" (see isFieldFiltered) rather
     // than showing an empty grid, so the label matches that behaviour.
     if (!set || set.size === 0 || set.size >= options.length) return 'All';
+    if (set.size === 1) return String(set.values().next().value);
     return `${set.size} selected`;
   }
 
-  private isFieldFiltered(field: string): boolean {
+  isFieldFiltered(field: string): boolean {
     const set = this.columnFilters[field];
     // size === 0 (every box unchecked) is treated the same as "all selected" -
     // otherwise the grid would go blank the moment someone clears every box,
@@ -400,6 +453,7 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
   setViewMode(mode: string): void {
     this.viewMode = mode;
     this.managerDrillDown = false;
+    this.managerDrillPartner = null;
   }
 
   openJobDetails(row: {
@@ -429,7 +483,7 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
     'Job In Yet To Start', 'WIP Processing', 'Sent For Queries',
     'Query Replies Rcvd. Yet To Attend', 'WIP Query Replies', 'Internal Review',
     'WIP Internal Review Replies', 'Sent For Review', 'Review Replies Rcvd. Yet To Attend',
-    'WIP Review Replies', 'Sent For Final Review', 'Job Completed', 'On Hold', 'Cancelled'
+    'WIP Review Replies', 'Sent For Final Review', 'On Hold', 'Cancelled'
   ];
 
   // Sp_PartnerWiseJobsStatus's Status text uses the workstatus table's
@@ -456,7 +510,9 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
   // WithClient/WithCarisma flags) - only "Sent For..."/On Hold/Cancelled are
   // client-held, everything else sits with Carisma. Used to scope the
   // Partner Wise matrix's rows/totals to the selected holder card.
-  private managerStatusHolder: { [label: string]: 'client' | 'carisma' } = {
+  // Not private - the matrix template uses this directly for the row-accent
+  // left border (client = brand maroon, carisma = navy).
+  managerStatusHolder: { [label: string]: 'client' | 'carisma' } = {
     'Job In Yet To Start': 'carisma',
     'WIP Processing': 'carisma',
     'Sent For Queries': 'client',
@@ -538,7 +594,12 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
           const count = Number(r.Count) || 0;
           partners.add(partner);
           totals[partner] = (totals[partner] || 0) + count;
-          if (status) {
+          // status can alias to a label no longer in managerStatuses (e.g.
+          // 'Job Completed', deliberately excluded from the matrix rows) -
+          // guard against writing into a matrix slot that doesn't exist,
+          // which would otherwise throw mid-loop and abort before
+          // managerPartners/managerTotalsByPartner below ever get set.
+          if (status && matrix[status]) {
             matrix[status][partner] = (matrix[status][partner] || 0) + count;
           }
         });
@@ -573,10 +634,12 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
   // holder filter - otherwise the grid would show more jobs than the total
   // it was opened from implied.
   managerDrillDown = false;
+  managerDrillPartner: string | null = null;
 
   showManagerCellJobs(status: string | null, partner: string): void {
     const wsid = status ? (this.managerStatusToWsid[status] || 0) : 0;
     this.managerDrillDown = true;
+    this.managerDrillPartner = partner;
     this.selectedWsid = wsid || null;
     this.loadJobs(this.currentServiceId, wsid);
     this.columnFilters['receivedFrom'] = new Set([partner]);
@@ -584,6 +647,8 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy {
 
   backToPartnerWise(): void {
     this.managerDrillDown = false;
+    this.managerDrillPartner = null;
+    this.selectedWsid = null;
   }
 
   // Client-side export of the currently visible (filtered) rows — this grid

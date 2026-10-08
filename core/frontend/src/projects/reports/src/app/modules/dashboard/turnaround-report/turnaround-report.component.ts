@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ReportService } from '../../../services/reports/report.service';
@@ -38,6 +38,7 @@ interface TurnaroundJobRow {
 }
 
 interface TurnaroundManagerBucket {
+  jobs: number;
   total: number | null;
   carisma: number | null;
   client: number | null;
@@ -46,6 +47,7 @@ interface TurnaroundManagerBucket {
 interface TurnaroundManagerRow {
   managerCid: number | null;
   manager: string;
+  totalJobs: number;
   isTotal: boolean;
   b0_5: TurnaroundManagerBucket;
   b6_10: TurnaroundManagerBucket;
@@ -81,7 +83,7 @@ interface TurnaroundJobFilters {
   templateUrl: './turnaround-report.component.html',
   styleUrls: ['./turnaround-report.component.scss']
 })
-export class TurnaroundReportComponent implements OnInit, OnDestroy {
+export class TurnaroundReportComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private clientUserSub?: Subscription;
 
@@ -159,11 +161,6 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
     receivedFrom: '', natureOfJob: '', accountant: '', jobStatus: ''
   };
 
-  // Pagination for the jobs grid.
-  pageSizeOptions = [10, 20, 30];
-  pageSize = 10;
-  currentPage = 1;
-
   // Job Details popup — same app-job-details component/modal used on the
   // Job Status page, opened by clicking a row's job name.
   job: JobData = Job.defaultJob();
@@ -214,7 +211,6 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
     this.filters[key] = current.includes(option)
       ? current.filter(v => v !== option)
       : [...current, option];
-    this.currentPage = 1;
   }
 
   optionsFor(key: MultiSelectFilterKey): string[] {
@@ -234,7 +230,6 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
 
   toggleSelectAll(key: MultiSelectFilterKey) {
     this.filters[key] = this.isAllSelected(key) ? [] : [...this.optionsFor(key)];
-    this.currentPage = 1;
   }
 
   filterSummaryLabel(key: MultiSelectFilterKey): string {
@@ -273,32 +268,6 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
     };
   }
 
-  setPageSize(size: number) {
-    this.pageSize = size;
-    this.currentPage = 1;
-  }
-
-  get totalPages(): number {
-    return Math.max(1, Math.ceil(this.filteredJobRows.length / this.pageSize));
-  }
-
-  get pagedJobRows(): TurnaroundJobRow[] {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.filteredJobRows.slice(start, start + this.pageSize);
-  }
-
-  get pageRangeStart(): number {
-    return this.filteredJobRows.length === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
-  }
-
-  get pageRangeEnd(): number {
-    return Math.min(this.currentPage * this.pageSize, this.filteredJobRows.length);
-  }
-
-  goToPage(page: number) {
-    this.currentPage = Math.min(Math.max(1, page), this.totalPages);
-  }
-
   ngOnInit(): void {
     // Arriving from the dashboard home's vertical tabs (?service_id=...)
     // should scope this page to that vertical, not all verticals.
@@ -314,7 +283,6 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
 
     this.clientUserSub = this.clientUserService.userChanged$.subscribe(() => {
       this.selectedBucket = null;
-      this.currentPage = 1;
       this.backToManagerPivot();
       this.fetchStatusCounts();
       this.fetchTurnaroundReport();
@@ -325,6 +293,25 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clientUserSub?.unsubscribe();
+    document.getElementById('turnaroundJobDetailsPopup')?.removeEventListener('hidden.bs.modal', this.reopenManagerPopupOnJobPopupClose);
+  }
+
+  // Bootstrap 5 only tracks one open modal/backdrop at a time, so closing
+  // the job-details popup while it's stacked on top of the manager
+  // drill-down popup would otherwise close both. Re-show the manager
+  // popup once the job popup finishes closing, same fix as the other
+  // dashboard pages' Manager View drill-downs.
+  private reopenManagerPopupOnJobPopupClose = (): void => {
+    if (!this.managerDrillDown) return;
+    const el = document.getElementById('managerCellJobsPopup');
+    const bs = (window as any).bootstrap;
+    if (el && bs?.Modal) {
+      bs.Modal.getOrCreateInstance(el).show();
+    }
+  };
+
+  ngAfterViewInit(): void {
+    document.getElementById('turnaroundJobDetailsPopup')?.addEventListener('hidden.bs.modal', this.reopenManagerPopupOnJobPopupClose);
   }
 
   // Same sp_get_client_verticals source as the Job page's Open Jobs view
@@ -359,7 +346,6 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
     if (this.selectedServiceId === id) return;
     this.selectedServiceId = id;
     this.selectedBucket = null;
-    this.currentPage = 1;
     this.fetchStatusCounts();
     this.fetchTurnaroundReport();
     this.fetchTurnaroundJobsList();
@@ -393,9 +379,10 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
     this.filters = { receivedFrom: [], jobName: '', natureOfJob: [], accountant: [], jobStatus: [] };
     this.openFilterDropdown = null;
     this.selectedBucket = null;
-    this.currentPage = 1;
     this.fetchTurnaroundReport();
     this.fetchTurnaroundJobsList();
+    this.backToManagerPivot();
+    this.fetchTurnaroundManagerWise();
   }
 
   get bucketTotalLabel(): string {
@@ -462,17 +449,19 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
   fetchTurnaroundManagerWise() {
     this.isLoadingManager = true;
     const toBucket = (b: any): TurnaroundManagerBucket => ({
+      jobs: Number(b?.jobs) || 0,
       total: b?.total ?? null,
       carisma: b?.carisma ?? null,
       client: b?.client ?? null
     });
-    this.reportService.getTurnaroundManagerWise(this.selectedServiceId).subscribe({
+    this.reportService.getTurnaroundManagerWise(this.selectedServiceId, this.jobStatus).subscribe({
       next: (res: any) => {
         this.isLoadingManager = false;
         const data = (res?.status && Array.isArray(res.data)) ? res.data : [];
         this.managerRows = data.map((row: any) => ({
           managerCid: row.manager_cid,
           manager: row.manager,
+          totalJobs: Number(row.total_jobs) || 0,
           isTotal: !!row.is_total,
           b0_5: toBucket(row.b0_5),
           b6_10: toBucket(row.b6_10),
@@ -503,7 +492,7 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
     this.managerJobFilters = { receivedFrom: [], jobName: '' };
     this.openManagerFilterDropdown = false;
     this.isLoadingManagerJobs = true;
-    this.reportService.getTurnaroundManagerJobs(this.selectedServiceId, cid).subscribe({
+    this.reportService.getTurnaroundManagerJobs(this.selectedServiceId, cid, this.jobStatus).subscribe({
       next: (res: any) => {
         this.isLoadingManagerJobs = false;
         const data = (res?.status && Array.isArray(res.data)) ? res.data : [];
@@ -601,7 +590,6 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy {
     // "Total Jobs Closed/Open" clears the filter; any day-range bucket
     // toggles (clicking the same one again clears it too).
     this.selectedBucket = key === 'total_jobs_closed' ? null : (this.selectedBucket === key ? null : key);
-    this.currentPage = 1;
   }
 
   matchesSelectedBucket(turnaroundDays: number): boolean {

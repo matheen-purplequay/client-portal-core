@@ -258,7 +258,8 @@
                     <tr *ngFor="let s of managerStatuses">
                         <td class="pw-status-col">{{ s }}</td>
                         <td *ngFor="let p of managerPartners" class="text-center">
-                            <a class="pw-count" *ngIf="managerCount(s, p); else pwZero" (click)="showManagerCellJobs(s, p)">{{ managerCount(s, p) }}</a>
+                            <a class="pw-count" *ngIf="managerCount(s, p); else pwZero" data-bs-toggle="modal"
+                                data-bs-target="#managerCellJobsPopup" (click)="showManagerCellJobs(s, p)">{{ managerCount(s, p) }}</a>
                             <ng-template #pwZero>0</ng-template>
                         </td>
                         <td class="fw-bold text-center">{{ managerTotalForStatus(s) }}</td>
@@ -274,73 +275,74 @@
             <span class="closed-jobs-table-empty-text">No jobs match this filter.</span>
         </div>
     </div>
+</section>
 
-    <div class="back-to-matrix-row mb-2 mt-3" *ngIf="managerDrillDown">
-        <a class="back-link" (click)="backToPartnerWise()">
-            <span class="material-symbols-rounded">close</span>
-            Clear selection
-        </a>
-    </div>
+<!-- Manager View drill-down popup -->
+<div class="modal" id="managerCellJobsPopup" tabindex="-1" aria-labelledby="managerCellJobsPopup" aria-hidden="true" style="z-index: 9999999;">
+    <div class="modal-dialog modal-xl modal-dialog-centered manager-cell-modal-dialog">
+        <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+            <div class="ji-modal-header manager-cell-modal-header">
+                <span class="ji-modal-title">
+                    {{ managerDrillDown?.partner }}
+                    <span class="opacity-75" *ngIf="managerDrillDown?.status">&middot; {{ managerDrillDown?.status }}</span>
+                </span>
+                <button type="button" class="ji-modal-close" data-bs-dismiss="modal" (click)="backToPartnerWise()" aria-label="Close">
+                    <span class="material-symbols-rounded">close</span> Close
+                </button>
+            </div>
 
-    <div class="closed-jobs-card rounded-4 shadow-sm overflow-hidden bg-white" *ngIf="managerDrillDown">
-        <div class="closed-jobs-toolbar d-flex align-items-center justify-content-start px-3 py-2">
-            <div class="fw-bold small text-white">
-                {{ managerDrillDown!.partner }}
-                <span class="opacity-75" *ngIf="managerDrillDown!.status">&middot; {{ managerDrillDown!.status }}</span>
+            <div class="closed-jobs-table-wrap" style="max-height: calc(100vh - 200px);">
+                <table class="closed-jobs-table w-100">
+                    <thead>
+                        <tr>
+                            <th class="sno-col col-frozen col-frozen--1">S.No</th>
+                            <th class="col-frozen col-frozen--2">Job Name</th>
+                            <th>Group Job Name</th>
+                            <th>Job Status</th>
+                            <th>Nature of Job</th>
+                            <th>Received From</th>
+                            <th>Partner</th>
+                            <th>Associate</th>
+                            <th>FY</th>
+                            <th>Received Date</th>
+                            <th>Commenced Date</th>
+                            <th>Job Completed</th>
+                            <th>Budget Time</th>
+                            <th>Time Taken</th>
+                            <th>Variance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of managerDrillDownRows; let i = index">
+                            <td class="sno-col col-frozen col-frozen--1 text-center">{{ i + 1 }}</td>
+                            <td class="fw-medium job-name-cell col-frozen col-frozen--2" [title]="row.jobName" data-bs-toggle="modal"
+                                data-bs-target="#closedJobDetailsPopup" (click)="openJobDetails(row)">{{ row.jobName }}</td>
+                            <td>{{ row.groupJobName }}</td>
+                            <td>{{ row.status }}</td>
+                            <td>{{ row.natureOfJob }}</td>
+                            <td>{{ row.receivedFrom }}</td>
+                            <td>{{ row.partner }}</td>
+                            <td>{{ row.associate }}</td>
+                            <td class="text-center">{{ row.fy }}</td>
+                            <td>{{ row.received }}</td>
+                            <td>{{ row.commenced }}</td>
+                            <td>{{ row.jobCompleted }}</td>
+                            <td class="text-center">{{ row.budgetTime }}</td>
+                            <td class="text-center">{{ row.timeTaken }}</td>
+                            <td class="text-center fw-semibold" [ngClass]="isOverBudget(row) ? 'variance-over' : 'variance-under'">
+                                {{ varianceLabel(row) }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="closed-jobs-table-overlay" *ngIf="managerDrillDownRows.length === 0">
+                <span class="closed-jobs-table-empty-text">No jobs match this filter.</span>
             </div>
         </div>
-
-        <div class="closed-jobs-table-wrap">
-            <table class="closed-jobs-table w-100">
-                <thead>
-                    <tr>
-                        <th class="sno-col col-frozen col-frozen--1">S.No</th>
-                        <th class="col-frozen col-frozen--2">Job Name</th>
-                        <th>Group Job Name</th>
-                        <th>Job Status</th>
-                        <th>Nature of Job</th>
-                        <th>Received From</th>
-                        <th>Partner</th>
-                        <th>Associate</th>
-                        <th>FY</th>
-                        <th>Received Date</th>
-                        <th>Commenced Date</th>
-                        <th>Job Completed</th>
-                        <th>Budget Time</th>
-                        <th>Time Taken</th>
-                        <th>Variance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let row of managerDrillDownRows; let i = index">
-                        <td class="sno-col col-frozen col-frozen--1 text-center">{{ i + 1 }}</td>
-                        <td class="fw-medium job-name-cell col-frozen col-frozen--2" [title]="row.jobName" data-bs-toggle="modal"
-                            data-bs-target="#closedJobDetailsPopup" (click)="openJobDetails(row)">{{ row.jobName }}</td>
-                        <td>{{ row.groupJobName }}</td>
-                        <td>{{ row.status }}</td>
-                        <td>{{ row.natureOfJob }}</td>
-                        <td>{{ row.receivedFrom }}</td>
-                        <td>{{ row.partner }}</td>
-                        <td>{{ row.associate }}</td>
-                        <td class="text-center">{{ row.fy }}</td>
-                        <td>{{ row.received }}</td>
-                        <td>{{ row.commenced }}</td>
-                        <td>{{ row.jobCompleted }}</td>
-                        <td class="text-center">{{ row.budgetTime }}</td>
-                        <td class="text-center">{{ row.timeTaken }}</td>
-                        <td class="text-center fw-semibold" [ngClass]="isOverBudget(row) ? 'variance-over' : 'variance-under'">
-                            {{ varianceLabel(row) }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="closed-jobs-table-overlay" *ngIf="managerDrillDownRows.length === 0">
-            <span class="closed-jobs-table-empty-text">No jobs match this filter.</span>
-        </div>
     </div>
-</section>
+</div>
 
 <!-- Job Information Modal -->
 <div class="modal" id="closedJobDetailsPopup" tabindex="-1" aria-labelledby="closedJobDetailsPopup"

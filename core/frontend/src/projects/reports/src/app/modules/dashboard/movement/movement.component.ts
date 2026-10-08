@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ReportService } from '../../../services/reports/report.service';
@@ -111,7 +111,7 @@ const PERIOD_LABELS: Record<MovementPeriod, string> = {
   templateUrl: './movement.component.html',
   styleUrls: ['./movement.component.scss']
 })
-export class MovementComponent implements OnInit, OnDestroy {
+export class MovementComponent implements OnInit, OnDestroy, AfterViewInit {
   private clientUserSub?: Subscription;
 
   // Job Details popup — same app-job-information component/modal used on
@@ -146,7 +146,7 @@ export class MovementComponent implements OnInit, OnDestroy {
 
   // Defaults to "With Carisma" rather than "All", so the grid opens already
   // filtered to the jobs the firm is actively holding.
-  selection: MovementSelection = 'carisma';
+  selection: MovementSelection = 'all';
 
   movementCards = MOVEMENT_CARDS;
   // Authoritative counts from Sp_WorkStatusMovements, keyed by category —
@@ -298,6 +298,26 @@ export class MovementComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clientUserSub?.unsubscribe();
+    document.getElementById('movementJobDetailsPopup')?.removeEventListener('hidden.bs.modal', this.reopenManagerPopupOnJobPopupClose);
+  }
+
+  // Bootstrap only tracks one modal/backdrop at a time by default, so
+  // opening the job-details popup on top of the Manager View drill-down
+  // popup and then closing the job-details one cascades into closing both.
+  // Re-showing the manager popup here (only when we're actually mid
+  // drill-down) makes closing the job popup return to the manager popup
+  // instead of dropping out of it entirely.
+  private reopenManagerPopupOnJobPopupClose = (): void => {
+    if (!this.managerDrillDown) return;
+    const el = document.getElementById('managerCellJobsPopup');
+    const bs = (window as any).bootstrap;
+    if (el && bs?.Modal) {
+      bs.Modal.getOrCreateInstance(el).show();
+    }
+  };
+
+  ngAfterViewInit(): void {
+    document.getElementById('movementJobDetailsPopup')?.addEventListener('hidden.bs.modal', this.reopenManagerPopupOnJobPopupClose);
   }
 
   fetchWorkStatusSummary() {
@@ -433,15 +453,10 @@ export class MovementComponent implements OnInit, OnDestroy {
     this.managerDrillDown = null;
   }
 
-  get managerActiveHolder(): 'carisma' | 'client' | null {
-    if (this.managerSelection === 'carisma' || this.managerSelection === 'client') return this.managerSelection;
-    if (this.managerSelection === 'all') return null;
-    return this.movementCards.find(c => c.key === this.managerSelection)?.accent ?? null;
-  }
-
   get visibleManagerCards(): MovementCard[] {
-    const holder = this.managerActiveHolder;
-    const cards = holder ? this.movementCards.filter(c => c.accent === holder) : this.movementCards;
+    // No longer narrowed by which status chip is selected - see
+    // visibleMovementCards' comment above for why.
+    const cards = this.movementCards;
     // Same loading guard as visibleMovementCards — nothing's loaded yet
     // means every count is 0, which would otherwise hide the whole row.
     if (this.isLoadingManager) return cards;
@@ -563,12 +578,6 @@ export class MovementComponent implements OnInit, OnDestroy {
     return this.rows.filter(row => keys.includes(row.category));
   }
 
-  holderCount(holder: 'carisma' | 'client'): number {
-    return this.movementCards
-      .filter(c => c.accent === holder)
-      .reduce((sum, c) => sum + (this.summaryCounts[c.key] || 0), 0);
-  }
-
   get selectedRows(): MovementRow[] {
     if (this.selection === 'all') return this.rows;
     if (this.selection === 'carisma' || this.selection === 'client') return this.rowsForHolder(this.selection);
@@ -580,15 +589,11 @@ export class MovementComponent implements OnInit, OnDestroy {
   // individual status card is selected — so picking a card within an
   // already-narrowed row keeps it narrowed instead of snapping back to all
   // 13 on every click. Only 'all' (Total) shows everything.
-  get activeHolder(): 'carisma' | 'client' | null {
-    if (this.selection === 'carisma' || this.selection === 'client') return this.selection;
-    if (this.selection === 'all') return null;
-    return this.movementCards.find(c => c.key === this.selection)?.accent ?? null;
-  }
-
   get visibleMovementCards(): MovementCard[] {
-    const holder = this.activeHolder;
-    const cards = holder ? this.movementCards.filter(c => c.accent === holder) : this.movementCards;
+    // No longer narrowed by which status chip is selected (there's no
+    // holder chip to select 'carisma'/'client' anymore) - every status
+    // chip stays visible regardless of which one is currently active.
+    const cards = this.movementCards;
     // Don't hide zero-count cards while the counts are still loading —
     // they're all 0 at that point (nothing fetched yet), which would empty
     // the whole row until the real data arrives.

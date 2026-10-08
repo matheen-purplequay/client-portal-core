@@ -58,61 +58,86 @@
     color: #1e293b;
 }
 
-// Horizontal tile design (label left, value+unit right, colored left
-// border), matching the Movement page's .movement-stat-tile.
-.budget-stat-tile {
+// Single-row filter chip bar (Jira/Linear/Asana style), matching the Open
+// Jobs page: pill chips with the count built in, instead of large KPI cards.
+.filter-chip-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
     gap: 8px;
-    background: #fff;
-    border: 1px solid #eef0f2;
-    border-left: 4px solid var(--primary-color, #7a1f2b);
-    border-radius: 10px;
-    padding: 10px 14px;
-    transition: box-shadow 0.15s ease;
-
-    &:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    }
-
-    &.is-selected {
-        box-shadow: 0 0 0 1px currentColor;
-    }
 }
 
-.budget-stat-tile-label {
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 7px 14px;
     font-size: 12px;
     font-weight: 600;
-    line-height: 1.25;
+    color: #4b5563;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+
+    &--navy:hover { border-color: #1f2a6b; }
+    &--navy.selected {
+        background: rgba(31, 42, 107, 0.1);
+        border-color: #1f2a6b;
+        color: #1f2a6b;
+        font-weight: 700;
+    }
+
+    &--green:hover { border-color: #15803d; }
+    &--green.selected {
+        background: rgba(21, 128, 61, 0.1);
+        border-color: #15803d;
+        color: #15803d;
+        font-weight: 700;
+    }
+
+    &--maroon:hover { border-color: var(--primary-color, #7a1f2b); }
+    &--maroon.selected {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.1);
+        border-color: var(--primary-color, #7a1f2b);
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 700;
+    }
 }
 
-.budget-stat-tile-figure {
-    flex-shrink: 0;
-    text-align: right;
+.filter-chip-icon {
+    font-size: 15px;
 }
 
-.budget-stat-tile-value {
-    font-size: 1.35rem;
+.filter-chip-count {
     font-weight: 800;
-    line-height: 1.1;
+    color: inherit;
 }
 
-.budget-stat-tile-unit {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
+.filter-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.filter-breadcrumb-item {
+    font-weight: 600;
+
+    &.is-current {
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 700;
+    }
+}
+
+.filter-breadcrumb-sep {
+    font-size: 16px;
     color: #9aa1ac;
 }
-
-@mixin budget-tile-accent($color) {
-    border-left-color: $color;
-    color: $color;
-}
-
-.budget-stat-tile--navy { @include budget-tile-accent(#1f2a6b); }
-.budget-stat-tile--green { @include budget-tile-accent(#15803d); }
-.budget-stat-tile--maroon { @include budget-tile-accent(var(--primary-color, #7a1f2b)); }
 
 .budget-toolbar {
     border-bottom: 1px solid #eef0f2;
@@ -392,33 +417,33 @@
 }
 
 // Same bordered-pill tab group as the Jobs/Movement pages.
+// QuickBooks-style toggle: a light grey track with the active tab as a
+// solid white floating pill with a soft shadow, matching the Open Jobs page.
 .vertical-tabs {
     display: inline-flex;
     flex-wrap: wrap;
-    overflow: hidden;
-    border-radius: 6px;
-    border: 1px solid #d8dee6;
-    background: #fff;
+    gap: 2px;
+    background: #f0f1f3;
+    border-radius: 999px;
+    padding: 3px;
 }
 
 .vertical-tab {
     border: none;
-    border-right: 1px solid #d8dee6;
     background: transparent;
-    padding: 6px 14px;
+    border-radius: 999px;
+    padding: 6px 16px;
     font-size: 12px;
     font-weight: 500;
-    color: #495057;
+    color: #6b7280;
     cursor: pointer;
-
-    &:last-child {
-        border-right: none;
-    }
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 
     &.active {
-        background: rgba(31, 42, 107, 0.08);
-        color: #1f2a6b;
+        background: #fff;
+        color: #175CD3;
         font-weight: 700;
+        box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12);
     }
 }
 
@@ -430,7 +455,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 16px;
-    background: #1f2a6b;
+    background: var(--primary-color, #0F766E);
     color: #fff;
 }
 

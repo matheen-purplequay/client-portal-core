@@ -58,135 +58,117 @@
     }
 }
 
+// QuickBooks-style toggle, matching the Open Jobs page.
 .view-tabs {
     display: inline-flex;
-    overflow: hidden;
-    border-radius: 6px;
-    border: 1px solid #d8dee6;
-    background: #fff;
+    gap: 2px;
+    background: #f0f1f3;
+    border-radius: 999px;
+    padding: 3px;
 }
 
 .view-tab {
     border: none;
-    border-right: 1px solid #d8dee6;
     background: transparent;
-    padding: 6px 14px;
+    border-radius: 999px;
+    padding: 6px 16px;
     font-size: 12px;
     font-weight: 600;
-    color: #495057;
+    color: #6b7280;
     cursor: pointer;
-
-    &:last-child {
-        border-right: none;
-    }
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 
     &.active {
-        background: var(--primary-color, #7a1f2b);
-        color: #fff;
+        background: #fff;
+        color: #175CD3;
+        box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12);
     }
 }
 
-// Rounded-rectangle card, colored left border, label left / value pushed to
-// the right edge — same format as the Open Jobs by Holder status tiles.
-.turnaround-stat-card {
+// Single-row filter chip bar (Jira/Linear/Asana style), matching the Open
+// Jobs page: pill chips with the count built in, instead of large KPI cards.
+.filter-chip-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    background: #fff;
-    border: 1px solid #eef0f2;
-    border-left: 4px solid var(--primary-color, #7a1f2b);
-    border-radius: 8px !important;
-    padding: 10px 16px;
-    transition: box-shadow 0.15s ease;
-
-    &:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    }
-
-    &.is-selected {
-        box-shadow: 0 0 0 1px currentColor;
-    }
-}
-
-.turnaround-stat-label {
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 1.25;
-}
-
-.turnaround-stat-value {
-    font-size: 1.1rem;
-    font-weight: 800;
-    line-height: 1.1;
-    flex-shrink: 0;
-}
-
-@mixin turnaround-tile-accent($color) {
-    border-left-color: $color;
-
-    .turnaround-stat-label,
-    .turnaround-stat-value {
-        color: $color;
-    }
-}
-
-.turnaround-stat-card--total { @include turnaround-tile-accent(#1f2a6b); }
-.turnaround-stat-card--green { @include turnaround-tile-accent(#15803d); }
-.turnaround-stat-card--teal { @include turnaround-tile-accent(#0f6a5c); }
-.turnaround-stat-card--blue { @include turnaround-tile-accent(#2a3f9d); }
-.turnaround-stat-card--orange { @include turnaround-tile-accent(#c2650a); }
-.turnaround-stat-card--maroon { @include turnaround-tile-accent(#7a1f2b); }
-.turnaround-stat-card--red { @include turnaround-tile-accent(#b91c1c); }
-
-// Same horizontal-tile design as Movement's .movement-stat-tile.
-.turnaround-toggle-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 8px;
-    background: #fff;
-    border: 1px solid #eef0f2;
-    border-left: 4px solid var(--primary-color, #7a1f2b);
-    border-radius: 10px;
-    padding: 10px 14px;
-    transition: box-shadow 0.15s ease;
-
-    &:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    }
-
-    &.is-selected {
-        box-shadow: 0 0 0 1px currentColor;
-    }
 }
 
-.turnaround-toggle-card-label {
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 7px 14px;
     font-size: 12px;
     font-weight: 600;
-    line-height: 1.25;
+    color: #4b5563;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
 }
 
-.turnaround-toggle-card-figure {
-    flex-shrink: 0;
-    text-align: right;
+@mixin chip-accent($color) {
+    &:hover { border-color: $color; }
+
+    &.selected {
+        background: rgba($color, 0.1);
+        border-color: $color;
+        color: $color;
+        font-weight: 700;
+    }
 }
 
-.turnaround-toggle-card-value {
-    font-size: 1.35rem;
+.filter-chip--open { @include chip-accent(#1f2a6b); }
+.filter-chip--closed { @include chip-accent(#0f6a5c); }
+.filter-chip--total { @include chip-accent(#1f2a6b); }
+.filter-chip--green { @include chip-accent(#15803d); }
+.filter-chip--teal { @include chip-accent(#0f6a5c); }
+.filter-chip--blue { @include chip-accent(#2a3f9d); }
+.filter-chip--orange { @include chip-accent(#c2650a); }
+.filter-chip--maroon { @include chip-accent(#7a1f2b); }
+.filter-chip--red { @include chip-accent(#b91c1c); }
+
+.filter-chip-icon {
+    font-size: 15px;
+}
+
+.filter-chip-count {
     font-weight: 800;
-    line-height: 1.1;
+    color: inherit;
 }
 
-.turnaround-toggle-card-unit {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
+.filter-chip-divider {
+    width: 1px;
+    height: 20px;
+    background: #e5e7eb;
+    margin: 0 2px;
+}
+
+.filter-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.filter-breadcrumb-item {
+    font-weight: 600;
+
+    &.is-current {
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 700;
+    }
+}
+
+.filter-breadcrumb-sep {
+    font-size: 16px;
     color: #9aa1ac;
 }
-
-.turnaround-toggle-card--open { border-left-color: #1f2a6b; color: #1f2a6b; }
-.turnaround-toggle-card--closed { border-left-color: #0f6a5c; color: #0f6a5c; }
 
 .turnaround-toolbar {
     border-bottom: 1px solid #eef0f2;
@@ -442,50 +424,74 @@
 .manager-table-wrap {
     overflow: auto;
     max-height: 500px;
+    // tbody is hidden while isLoadingManager is true, so without this the
+    // wrap collapses to just the sticky thead's height - leaving the
+    // overlay almost no room and clipping the spinner under the header.
+    min-height: 220px;
 }
 
 .manager-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    font-size: 13px;
+    font-size: 12.5px;
     white-space: nowrap;
 
     th, td {
-        padding: 8px 14px;
+        padding: 10px 14px;
         border-bottom: 1px solid #eef0f2;
-        text-align: left;
+        text-align: center;
+    }
+
+    tbody tr:nth-child(even) td:not(.manager-col):not(.manager-total-row td) {
+        background: #fafafa;
+    }
+
+    tbody tr:nth-child(even) .manager-col {
+        background: #f7f5f5;
     }
 
     thead th {
         position: sticky;
-        background: #fdf2f2;
-        color: var(--primary-color, #7a1f2b);
+        background: var(--primary-color, #7a1f2b);
+        color: #fff;
         font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.02em;
         text-align: center;
         z-index: 2;
     }
 
     thead tr:first-child th {
         top: 0;
-        border-bottom: 1px solid #f3d9db;
+        border-bottom: 2px solid #fff;
+    }
+
+    thead .manager-group-header {
+        border-bottom: 2px solid #fff;
     }
 
     thead tr:last-child th {
         top: 33px;
-        font-size: 11px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     }
 
+    // Sticky manager column, styled like the Job page's Partner Wise
+    // matrix status column (left accent border, tinted background).
     .manager-col {
         position: sticky;
         left: 0;
         z-index: 3;
-        background: #fff;
+        background: #fcfbfb;
+        border-right: 1px solid #eef0f2;
+        border-left: 4px solid var(--primary-color, #7a1f2b);
         text-align: left;
     }
 
     thead .manager-col {
-        background: #fdf2f2;
+        background: var(--primary-color, #7a1f2b);
+        border-right-color: rgba(255, 255, 255, 0.15);
+        border-left: none;
         z-index: 4;
     }
 
@@ -502,16 +508,57 @@
         color: var(--primary-color, #7a1f2b);
     }
 
-    tbody tr:hover {
-        background: #f9fafb;
+    .manager-bucket-start {
+        border-left: 2px solid #e5e7eb;
+    }
+
+    .manager-jobs-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.1);
+        color: var(--primary-color, #7a1f2b);
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+            background: var(--primary-color, #7a1f2b);
+            color: #fff;
+        }
+    }
+
+    .manager-jobs-pill.is-zero {
+        background: transparent;
+        color: #c7cdd6;
+
+        &:hover {
+            background: transparent;
+            color: #c7cdd6;
+        }
+    }
+
+    tbody tr:hover td:not(.manager-total-row td) {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.05);
     }
 
     .manager-total-row {
-        font-weight: 700;
-        background: #fdf2f2;
+        font-weight: 800;
 
         td {
-            color: var(--primary-color, #7a1f2b);
+            color: #1e293b;
+            background: #f4f0f1;
+            border-top: 2px solid #e2e5e9;
+            border-bottom: none;
+        }
+
+        .manager-col {
+            background: #f4f0f1;
         }
     }
 }
@@ -525,39 +572,38 @@
 }
 
 .manager-count {
-    color: inherit;
-    text-decoration: underline;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.1);
+    color: var(--primary-color, #7a1f2b);
+    font-weight: 700;
+    text-decoration: none;
     cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-        opacity: 0.75;
+        background: var(--primary-color, #7a1f2b);
+        color: #fff;
     }
 }
 
-.back-to-matrix-row .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #6b7280;
-    text-decoration: none;
-    cursor: pointer;
-    line-height: 1;
-
-    .material-symbols-rounded {
-        font-size: 16px;
-    }
-
-    &:hover {
-        color: var(--primary-color, #7a1f2b);
-    }
+.manager-dash {
+    color: #c7cdd6;
 }
 
 .manager-table-overlay {
     position: absolute;
     inset: 0;
-    top: 90px;
+    // Clears the two sticky thead rows (bucket group header + Jobs/Total/
+    // Carisma/Client sub-header), each 33px per the thead row sticky
+    // offsets below - the maroon title bar that used to sit above this
+    // card (accounted for in the old 90px) now lives outside it as its
+    // own page heading.
+    top: 66px;
     z-index: 5;
     display: flex;
     align-items: center;
@@ -573,7 +619,33 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 16px;
-    background: #1f2a6b;
+    background: var(--primary-color, #0F766E);
+    color: #fff;
+}
+
+// Manager View drill-down popup (job list for a manager/bucket) - same
+// blue header convention used for the other pages' Manager View popups.
+.manager-cell-modal-dialog {
+    max-width: 1400px;
+    width: 95vw;
+
+    // The overlay's default top/bottom offsets are tuned for the Status
+    // View's card (toolbar + header + filter row above, pagination below).
+    // This popup has neither - just the sticky header + filter row - so it
+    // needs its own, smaller offsets to actually cover the table instead of
+    // sitting too low/cut off.
+    .turnaround-table-overlay {
+        top: 66px;
+        bottom: 0;
+    }
+}
+
+.manager-cell-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #175CD3 !important;
     color: #fff;
 }
 
@@ -737,29 +809,27 @@
 .vertical-tabs {
     display: inline-flex;
     flex-wrap: wrap;
-    overflow: hidden;
-    border-radius: 6px;
-    border: 1px solid #d8dee6;
-    background: #fff;
+    gap: 2px;
+    background: #f0f1f3;
+    border-radius: 999px;
+    padding: 3px;
 }
 
 .vertical-tab {
     border: none;
-    border-right: 1px solid #d8dee6;
     background: transparent;
-    padding: 6px 14px;
+    border-radius: 999px;
+    padding: 6px 16px;
     font-size: 12px;
     font-weight: 500;
-    color: #495057;
+    color: #6b7280;
     cursor: pointer;
-
-    &:last-child {
-        border-right: none;
-    }
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 
     &.is-active {
-        background: rgba(31, 42, 107, 0.08);
-        color: #1f2a6b;
+        background: #fff;
+        color: #175CD3;
         font-weight: 700;
+        box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12);
     }
 }

@@ -9,8 +9,15 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 16px;
-    background: #1f2a6b;
+    background: var(--primary-color, #0F766E);
     color: #fff;
+}
+
+// Manager View drill-down popup - wider than the standard job-details
+// modal since it shows a full grid, not a single job's info.
+.manager-cell-modal-dialog {
+    max-width: 1400px;
+    width: 95vw;
 }
 
 .ji-modal-title {
@@ -100,31 +107,30 @@
     color: #1e293b;
 }
 
+// QuickBooks-style toggle, matching the Open Jobs page.
 .view-tabs {
     display: inline-flex;
-    overflow: hidden;
-    border-radius: 6px;
-    border: 1px solid #d8dee6;
-    background: #fff;
+    gap: 2px;
+    background: #f0f1f3;
+    border-radius: 999px;
+    padding: 3px;
 }
 
 .view-tab {
     border: none;
-    border-right: 1px solid #d8dee6;
     background: transparent;
-    padding: 6px 14px;
+    border-radius: 999px;
+    padding: 6px 16px;
     font-size: 12px;
     font-weight: 600;
-    color: #495057;
+    color: #6b7280;
     cursor: pointer;
-
-    &:last-child {
-        border-right: none;
-    }
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 
     &.active {
-        background: var(--primary-color, #7a1f2b);
-        color: #fff;
+        background: #fff;
+        color: #175CD3;
+        box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12);
     }
 }
 
@@ -189,62 +195,93 @@
     }
 }
 
-.movement-stat-tile {
+// Single-row filter chip bar (Jira/Linear/Asana style), matching the Open
+// Jobs page: pill chips with the count built in, instead of large KPI cards.
+.filter-chip-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
     gap: 8px;
-    background: #fff;
-    border: 1px solid #eef0f2;
-    border-left: 4px solid var(--primary-color, #7a1f2b);
-    border-radius: 10px;
-    padding: 10px 14px;
-    transition: box-shadow 0.15s ease;
-
-    &:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    }
-
-    &.is-selected {
-        box-shadow: 0 0 0 1px currentColor;
-    }
 }
 
-.movement-stat-tile-label {
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 7px 14px;
     font-size: 12px;
     font-weight: 600;
-    line-height: 1.25;
+    color: #4b5563;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+
+    &--all:hover { border-color: #0f6a5c; }
+    &--all.selected {
+        background: rgba(15, 106, 92, 0.1);
+        border-color: #0f6a5c;
+        color: #0f6a5c;
+        font-weight: 700;
+    }
+
+    &--carisma:hover { border-color: #1f2a6b; }
+    &--carisma.selected {
+        background: rgba(31, 42, 107, 0.1);
+        border-color: #1f2a6b;
+        color: #1f2a6b;
+        font-weight: 700;
+    }
+
+    &--client:hover { border-color: var(--primary-color, #7a1f2b); }
+    &--client.selected {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.1);
+        border-color: var(--primary-color, #7a1f2b);
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 700;
+    }
 }
 
-.movement-stat-tile-figure {
-    flex-shrink: 0;
-    text-align: right;
+.filter-chip-icon {
+    font-size: 15px;
 }
 
-.movement-stat-tile-value {
-    font-size: 1.35rem;
+.filter-chip-count {
     font-weight: 800;
-    line-height: 1.1;
+    color: inherit;
 }
 
-.movement-stat-tile-unit {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
+.filter-chip-divider {
+    width: 1px;
+    height: 20px;
+    background: #e5e7eb;
+    margin: 0 2px;
+}
+
+.filter-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.filter-breadcrumb-item {
+    font-weight: 600;
+
+    &.is-current {
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 700;
+    }
+}
+
+.filter-breadcrumb-sep {
+    font-size: 16px;
     color: #9aa1ac;
 }
-
-@mixin movement-tile-accent($color) {
-    border-left-color: $color;
-    color: $color;
-}
-
-// Two-holder split, matching the Jobs page's With Carisma (navy) / With
-// Client (maroon) cards. All Movement gets its own distinct teal, since
-// it's a total, not a holder.
-.movement-stat-tile--carisma { @include movement-tile-accent(#1f2a6b); }
-.movement-stat-tile--client { @include movement-tile-accent(var(--primary-color, #7a1f2b)); }
-.movement-stat-tile--all { @include movement-tile-accent(#0f6a5c); }
 
 .export-btn {
     display: flex;
@@ -334,6 +371,30 @@
 
     .job-name-cell {
         color: var(--primary-color, #7a1f2b);
+    }
+
+    .pw-zero {
+        color: #c7cdd6;
+    }
+
+    .pw-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.1);
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+            background: var(--primary-color, #7a1f2b);
+            color: #fff;
+        }
     }
 
     // Only the actual job-name grid cells (not the Manager View matrix's
@@ -511,29 +572,27 @@
 .vertical-tabs {
     display: inline-flex;
     flex-wrap: wrap;
-    overflow: hidden;
-    border-radius: 6px;
-    border: 1px solid #d8dee6;
-    background: #fff;
+    gap: 2px;
+    background: #f0f1f3;
+    border-radius: 999px;
+    padding: 3px;
 }
 
 .vertical-tab {
     border: none;
-    border-right: 1px solid #d8dee6;
     background: transparent;
-    padding: 6px 14px;
+    border-radius: 999px;
+    padding: 6px 16px;
     font-size: 12px;
     font-weight: 500;
-    color: #495057;
+    color: #6b7280;
     cursor: pointer;
-
-    &:last-child {
-        border-right: none;
-    }
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 
     &.active {
-        background: rgba(31, 42, 107, 0.08);
-        color: #1f2a6b;
+        background: #fff;
+        color: #175CD3;
         font-weight: 700;
+        box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12);
     }
 }

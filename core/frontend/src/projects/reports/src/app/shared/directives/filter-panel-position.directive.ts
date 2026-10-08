@@ -1,35 +1,58 @@
-import { AfterViewInit, Directive, ElementRef, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 
 /**
  * Every grid's multi-select filter dropdown ('.ms-filter-panel' /
- * '.col-filter-panel') lives inside a scrollable table wrapper
- * ('overflow: auto'), so a plain `position: absolute; top: 100%` panel gets
- * clipped at the wrapper's edge instead of floating above the page — only
- * the first row or two of options are visible, the rest is cut off.
+ * '.col-filter-panel') lives inside a scrollable table wrapper, and the
+ * page's ancestors use transforms/filters, so a `position: fixed` panel left
+ * in place is positioned relative to that ancestor instead of the viewport.
  *
- * This directive switches the panel to `position: fixed`, positioned from
- * the triggering filter button's actual viewport coordinates (computed
- * fresh each time the panel opens, since it's created via *ngIf), which
- * escapes the clipping ancestor entirely.
+ * This directive moves the open panel to <body> so nothing can offset it,
+ * anchors it to the triggering filter button's viewport coordinates, keeps it
+ * anchored while the page scrolls, and hides it when the button scrolls out
+ * of view.
  */
 @Directive({
   selector: '[filterPanelPosition]'
 })
-export class FilterPanelPositionDirective implements AfterViewInit {
+export class FilterPanelPositionDirective implements AfterViewInit, OnDestroy {
+
+  private panel!: HTMLElement;
+  private button: HTMLElement | null = null;
+  private readonly reposition = () => this.place();
 
   constructor(private el: ElementRef<HTMLElement>, private renderer: Renderer2) { }
 
   ngAfterViewInit(): void {
-    const panel = this.el.nativeElement;
-    const cell = panel.closest('th, td') as HTMLElement | null;
-    const button = cell?.querySelector('button');
-    if (!button) return;
+    this.panel = this.el.nativeElement;
+    const cell = this.panel.closest('th, td') as HTMLElement | null;
+    this.button = cell?.querySelector('button') ?? null;
+    if (!this.button) return;
 
-    const rect = button.getBoundingClientRect();
-    this.renderer.setStyle(panel, 'position', 'fixed');
-    this.renderer.setStyle(panel, 'margin', '0');
-    this.renderer.setStyle(panel, 'top', `${rect.bottom + 4}px`);
-    this.renderer.setStyle(panel, 'left', `${rect.left}px`);
+    this.renderer.appendChild(document.body, this.panel);
+    this.renderer.setStyle(this.panel, 'position', 'fixed');
+    this.renderer.setStyle(this.panel, 'margin', '0');
+    this.place();
+
+    window.addEventListener('scroll', this.reposition, true);
+    window.addEventListener('resize', this.reposition);
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.reposition, true);
+    window.removeEventListener('resize', this.reposition);
+    if (this.panel?.parentNode === document.body) {
+      this.renderer.removeChild(document.body, this.panel);
+    }
+  }
+
+  private place(): void {
+    if (!this.button) return;
+
+    const rect = this.button.getBoundingClientRect();
+    const offscreen = rect.bottom < 0 || rect.top > window.innerHeight;
+    this.renderer.setStyle(this.panel, 'display', offscreen ? 'none' : '');
+    this.renderer.setStyle(this.panel, 'top', `${rect.bottom + 4}px`);
+    this.renderer.setStyle(this.panel, 'left', `${rect.left}px`);
   }
 
 }

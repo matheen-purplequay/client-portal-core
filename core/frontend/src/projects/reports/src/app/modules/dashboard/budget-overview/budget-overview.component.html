@@ -2,7 +2,7 @@
     <div class="budget-header-row mb-2 mt-2">
         <a class="back-link" routerLink="/dashboard/landing">
             <span class="material-symbols-rounded">arrow_back</span>
-            Back to Home
+            Back to Dashboard
         </a>
 
         <div class="budget-page-title fw-bold mb-0">Budget Overview - Open Jobs</div>
@@ -29,7 +29,7 @@
             Within Budget
             <span class="filter-chip-count">
                 <span class="loading-dots" *ngIf="isLoadingCounts"><i></i><i></i><i></i></span>
-                <ng-container *ngIf="!isLoadingCounts">{{ withinBudgetPct }}%</ng-container>
+                <ng-container *ngIf="!isLoadingCounts">{{ budgetCounts.underBudget }} <span class="filter-chip-count-pct">({{ withinBudgetPct }}%)</span></ng-container>
             </span>
         </button>
         <button type="button" class="filter-chip filter-chip--maroon" [class.selected]="selection === 'over'" (click)="selectCard('over')">
@@ -37,7 +37,7 @@
             Over Budget
             <span class="filter-chip-count">
                 <span class="loading-dots" *ngIf="isLoadingCounts"><i></i><i></i><i></i></span>
-                <ng-container *ngIf="!isLoadingCounts">{{ overBudgetPct }}%</ng-container>
+                <ng-container *ngIf="!isLoadingCounts">{{ budgetCounts.overBudget }} <span class="filter-chip-count-pct">({{ overBudgetPct }}%)</span></ng-container>
             </span>
         </button>
     </div>

@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'closed-jobs-feedback', loadChildren: () => import('./feedback/feedback.module').then(m => m.FeedbackModule) },
   { path: 'movement', loadChildren: () => import('./movement/movement.module').then(m => m.MovementModule) },
   { path: 'mom', loadChildren: () => import('./mom/mom.module').then(m => m.MOMModule) },
+  { path: 'job-allocation', loadChildren: () => import('./job-allocation/job-allocation.module').then(m => m.JobAllocationModule) },
   { path: 'workflow', loadChildren: () => import('./workflow/workflow.module').then(m => m.WorkflowModule) },
   { path: 'connect-reports', component: ConnectReportComponent },
   { path: 'weekly-reports', component: WeeklyReportComponent },

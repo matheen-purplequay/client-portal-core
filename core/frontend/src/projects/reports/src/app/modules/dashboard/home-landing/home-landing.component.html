@@ -125,7 +125,7 @@
           </div>
           <div class="stat-unit">Jobs</div>
         </div>
-        <div class="stat-tile clickable-tile" routerLink="/dashboard/job/open" (click)="$event.stopPropagation()">
+        <div class="stat-tile clickable-tile" routerLink="/dashboard/job/open" [queryParams]="{ holder: 'carisma' }" (click)="$event.stopPropagation()">
           <div class="stat-label">With Carisma</div>
           <div class="stat-value">
             <span class="loading-dots" *ngIf="isLoadingJobsCounts"><i></i><i></i><i></i></span>
@@ -133,7 +133,7 @@
           </div>
           <div class="stat-unit">Jobs</div>
         </div>
-        <div class="stat-tile accent clickable-tile" routerLink="/dashboard/job/open" (click)="$event.stopPropagation()">
+        <div class="stat-tile accent clickable-tile" routerLink="/dashboard/job/open" [queryParams]="{ holder: 'client' }" (click)="$event.stopPropagation()">
           <div class="stat-label">With Client</div>
           <div class="stat-value">
             <span class="loading-dots" *ngIf="isLoadingJobsCounts"><i></i><i></i><i></i></span>

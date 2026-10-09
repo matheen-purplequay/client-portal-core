@@ -1,0 +1,113 @@
+<section class="container">
+    <div class="ja-page-title fw-bold mb-1 mt-2">Job Allocation</div>
+    <div class="ja-subtitle small text-slate-600 mb-3">
+        Type the job name and job no, choose an associate and add with +, then take each one its own way:
+        <strong>Stage 1</strong> right away, or <strong>Allocate</strong> once its checklist is done (client notes are optional).
+    </div>
+</section>
+
+<section class="container">
+    <div class="ja-card rounded-4 shadow-sm overflow-hidden bg-white mb-3">
+        <div class="ja-card-header px-3 py-2">Add Job</div>
+
+        <form class="ja-form p-3" (ngSubmit)="addJob()">
+            <div class="ja-form-row">
+                <div class="ja-field">
+                    <label>Job Name</label>
+                    <input type="text" [(ngModel)]="form.jobName" name="jobName" placeholder="Enter job name">
+                </div>
+                <div class="ja-field">
+                    <label>Job No</label>
+                    <input type="text" [(ngModel)]="form.jobNo" name="jobNo" placeholder="Enter job no">
+                </div>
+                <div class="ja-field">
+                    <label>Associate Name <span class="opacity-75">(optional)</span></label>
+                    <select [(ngModel)]="form.associateName" name="associateName">
+                        <option value="">Select associate...</option>
+                        <option *ngFor="let a of associateOptions" [value]="a">{{ a }}</option>
+                    </select>
+                </div>
+                <div class="ja-field ja-field--narrow">
+                    <label>Financial Year</label>
+                    <input type="text" [(ngModel)]="form.financialYear" name="financialYear" placeholder="2026">
+                </div>
+                <div class="ja-field ja-field--narrow">
+                    <label>Budget (hrs)</label>
+                    <input type="number" min="0" [(ngModel)]="form.budgetHours" name="budgetHours" placeholder="0">
+                </div>
+                <div class="ja-field ja-field--narrow">
+                    <label>Deadline</label>
+                    <input type="date" [(ngModel)]="form.deadline" name="deadline">
+                </div>
+            </div>
+
+            <div class="ja-form-row ja-form-row--comments">
+                <div class="ja-field ja-field--grow">
+                    <label>Comments</label>
+                    <input type="text" [(ngModel)]="form.comments" name="comments" placeholder="Add a comment (optional)">
+                </div>
+                <button type="submit" class="ja-add-btn" [disabled]="!canAddJob">
+                    <span class="material-symbols-rounded">add</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="ja-card rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="ja-card-header ja-card-header--table px-3 py-2 d-flex align-items-center justify-content-between">
+            <div>
+                Jobs to Allocate
+                <span class="ja-count-badge">{{ jobs.length }}</span>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="button" class="ja-stage-btn" [disabled]="!selectedJobs.length" (click)="moveToStage1()">Stage 1</button>
+                <button type="button" class="ja-allocate-btn" [disabled]="!selectedJobs.length" (click)="allocate()">Allocate</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="ja-table w-100">
+                <thead>
+                    <tr>
+                        <th class="ja-check-col">
+                            <input type="checkbox" [checked]="isAllSelected" (change)="toggleSelectAll()" [disabled]="!jobs.length">
+                        </th>
+                        <th class="ja-sno-col">#</th>
+                        <th>Job Name</th>
+                        <th>Job No</th>
+                        <th>Associate Name</th>
+                        <th class="text-center">FY</th>
+                        <th class="text-center">Budget (hrs)</th>
+                        <th class="text-center">Deadline</th>
+                        <th>Comments</th>
+                        <th>Status</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let job of jobs; let i = index">
+                        <td class="ja-check-col"><input type="checkbox" [(ngModel)]="job.selected"></td>
+                        <td class="ja-sno-col">{{ i + 1 }}</td>
+                        <td class="fw-medium">{{ job.jobName }}</td>
+                        <td>{{ job.jobNo }}</td>
+                        <td>{{ job.associateName || '-' }}</td>
+                        <td class="text-center">{{ job.financialYear }}</td>
+                        <td class="text-center">{{ job.budgetHours }}</td>
+                        <td class="text-center">{{ job.deadline || '-' }}</td>
+                        <td>{{ job.comments || '-' }}</td>
+                        <td><span class="ja-status-pill" [class]="'ja-status-pill--' + job.status.toLowerCase().replace(' ', '')">{{ job.status }}</span></td>
+                        <td class="text-center">
+                            <button type="button" class="ja-remove-btn" (click)="removeJob(job)" aria-label="Remove">
+                                <span class="material-symbols-rounded">delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ja-empty-state" *ngIf="!jobs.length">
+                No jobs added yet. Use the form above and click +.
+            </div>
+        </div>
+    </div>
+</section>

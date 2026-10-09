@@ -117,9 +117,10 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy, AfterViewIn
 
   // Manager View drill-down — jobs for one manager (or all managers, when
   // clicking the Total row), optionally narrowed to the bucket whose count
-  // cell was clicked. The pivot table stays visible above it, matching the
-  // Manager View pattern already used on the Jobs/Movement pages.
-  managerDrillDown: { managerCid: number, managerLabel: string, bucketKey: string | null, bucketLabel: string | null } | null = null;
+  // cell was clicked, and further to just the Carisma or Client side when
+  // that specific column was clicked (instead of always showing every job
+  // in the bucket regardless of which column triggered the popup).
+  managerDrillDown: { managerCid: number, managerLabel: string, bucketKey: string | null, bucketLabel: string | null, part: 'all' | 'carisma' | 'client' } | null = null;
   isLoadingManagerJobs = false;
   managerJobRows: TurnaroundManagerJobRow[] = [];
 
@@ -379,6 +380,10 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy, AfterViewIn
     this.filters = { receivedFrom: [], jobName: '', natureOfJob: [], accountant: [], jobStatus: [] };
     this.openFilterDropdown = null;
     this.selectedBucket = null;
+    // The Carisma/Client holder toggle above the matrix is Open-only (a
+    // closed job's current wsid has no Carisma/Client holder flag), so
+    // don't leave it stuck on a scope the buttons are now hidden for.
+    this.matrixPart = 'all';
     this.fetchTurnaroundReport();
     this.fetchTurnaroundJobsList();
     this.backToManagerPivot();
@@ -454,7 +459,7 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy, AfterViewIn
       carisma: b?.carisma ?? null,
       client: b?.client ?? null
     });
-    this.reportService.getTurnaroundManagerWise(this.selectedServiceId, this.jobStatus).subscribe({
+    this.reportService.getTurnaroundManagerWise(this.selectedServiceId, this.jobStatus, this.matrixPart).subscribe({
       next: (res: any) => {
         this.isLoadingManager = false;
         const data = (res?.status && Array.isArray(res.data)) ? res.data : [];
@@ -486,9 +491,32 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy, AfterViewIn
     return this.managerRows.find(r => r.isTotal);
   }
 
-  showManagerJobs(managerCid: number | null, managerLabel: string, bucketKey: string | null = null, bucketLabel: string | null = null) {
+  // All/With Carisma/With Client toggle inside the drill-down popup itself -
+  // the data's already loaded, so this just re-filters it client-side via
+  // managerDrillDownRows, same as clicking a different grid column would.
+  setDrillDownPart(part: 'all' | 'carisma' | 'client') {
+    if (!this.managerDrillDown) return;
+    this.managerDrillDown = { ...this.managerDrillDown, part };
+  }
+
+  // Same All/With Carisma/With Client toggle, but for the matrix itself.
+  // Unlike the drill-down popup's part filter (which narrows an already
+  // -loaded job list by historical day-split), this changes which jobs are
+  // counted in the first place - only those whose CURRENT status is held
+  // by Carisma/Client (same holder flag the Open Jobs page uses) - so it
+  // re-fetches the manager-wise data with that scope instead of filtering
+  // client-side.
+  matrixPart: 'all' | 'carisma' | 'client' = 'all';
+
+  setMatrixPart(part: 'all' | 'carisma' | 'client') {
+    if (this.matrixPart === part) return;
+    this.matrixPart = part;
+    this.fetchTurnaroundManagerWise();
+  }
+
+  showManagerJobs(managerCid: number | null, managerLabel: string, bucketKey: string | null = null, bucketLabel: string | null = null, part: 'all' | 'carisma' | 'client' = 'all') {
     const cid = managerCid ?? 0;
-    this.managerDrillDown = { managerCid: cid, managerLabel, bucketKey, bucketLabel };
+    this.managerDrillDown = { managerCid: cid, managerLabel, bucketKey, bucketLabel, part };
     this.managerJobFilters = { receivedFrom: [], jobName: '' };
     this.openManagerFilterDropdown = false;
     this.isLoadingManagerJobs = true;
@@ -521,8 +549,10 @@ export class TurnaroundReportComponent implements OnInit, OnDestroy, AfterViewIn
 
   get managerDrillDownRows(): TurnaroundManagerJobRow[] {
     const f = this.managerJobFilters;
+    const part = this.managerDrillDown?.part ?? 'all';
     return this.managerJobRows.filter(row =>
       (!this.managerDrillDown?.bucketKey || row.bucketKey === this.managerDrillDown!.bucketKey) &&
+      (part === 'all' || (part === 'carisma' ? (row.turnaroundInCarisma ?? 0) > 0 : (row.turnaroundInClient ?? 0) > 0)) &&
       (f.receivedFrom.length === 0 || f.receivedFrom.includes(row.receivedFrom)) &&
       row.jobName.toLowerCase().includes(f.jobName.trim().toLowerCase())
     );

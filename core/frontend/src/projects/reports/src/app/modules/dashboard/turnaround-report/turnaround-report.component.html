@@ -2,7 +2,7 @@
     <div class="turnaround-header-row mb-2 mt-2">
         <a class="back-link" routerLink="/dashboard/landing">
             <span class="material-symbols-rounded">arrow_back</span>
-            Back to Home
+            Back to Dashboard
         </a>
 
         <div class="turnaround-page-title fw-bold mb-0">Turnaround by Bucket</div>
@@ -223,6 +223,12 @@
         </button>
     </div>
 
+    <div class="manager-popup-toggle manager-popup-toggle--standalone mb-3" *ngIf="jobStatus === 'open'">
+        <button type="button" class="manager-popup-toggle-btn" [class.active]="matrixPart === 'all'" (click)="setMatrixPart('all')">All Jobs</button>
+        <button type="button" class="manager-popup-toggle-btn" [class.active]="matrixPart === 'carisma'" (click)="setMatrixPart('carisma')">With Carisma</button>
+        <button type="button" class="manager-popup-toggle-btn" [class.active]="matrixPart === 'client'" (click)="setMatrixPart('client')">With Client</button>
+    </div>
+
     <div class="turnaround-card manager-card rounded-4 shadow-sm overflow-hidden bg-white">
         <div class="manager-table-wrap">
             <table class="manager-table">
@@ -255,10 +261,10 @@
                                 <a class="manager-count" *ngIf="row[b.key].total !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].total }}</a>
                             </td>
                             <td class="text-center manager-carisma">
-                                <a class="manager-count" *ngIf="row[b.key].carisma !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].carisma }}</a>
+                                <a class="manager-count" *ngIf="row[b.key].carisma !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label, 'carisma')">{{ row[b.key].carisma }}</a>
                             </td>
                             <td class="text-center manager-client">
-                                <a class="manager-count" *ngIf="row[b.key].client !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label)">{{ row[b.key].client }}</a>
+                                <a class="manager-count" *ngIf="row[b.key].client !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(row.managerCid, row.manager, b.key, b.label, 'client')">{{ row[b.key].client }}</a>
                             </td>
                         </ng-container>
                     </tr>
@@ -275,10 +281,10 @@
                                 <a class="manager-count" *ngIf="total[b.key].total !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].total }}</a>
                             </td>
                             <td class="text-center">
-                                <a class="manager-count" *ngIf="total[b.key].carisma !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].carisma }}</a>
+                                <a class="manager-count" *ngIf="total[b.key].carisma !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers', b.key, b.label, 'carisma')">{{ total[b.key].carisma }}</a>
                             </td>
                             <td class="text-center">
-                                <a class="manager-count" *ngIf="total[b.key].client !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers', b.key, b.label)">{{ total[b.key].client }}</a>
+                                <a class="manager-count" *ngIf="total[b.key].client !== null; else dash0" data-bs-toggle="modal" data-bs-target="#managerCellJobsPopup" (click)="showManagerJobs(null, 'All Managers', b.key, b.label, 'client')">{{ total[b.key].client }}</a>
                             </td>
                         </ng-container>
                     </tr>
@@ -303,10 +309,18 @@
                 <div class="fw-bold small">
                     {{ md.managerLabel }}
                     <span class="opacity-75" *ngIf="md.bucketLabel">&middot; {{ md.bucketLabel }}</span>
+                    <span class="opacity-75" *ngIf="md.part === 'carisma'">&middot; With Carisma</span>
+                    <span class="opacity-75" *ngIf="md.part === 'client'">&middot; With Client</span>
                 </div>
                 <button type="button" class="ji-modal-close" data-bs-dismiss="modal" aria-label="Close" (click)="backToManagerPivot()">
                     <span class="material-symbols-rounded">close</span> Close
                 </button>
+            </div>
+
+            <div class="manager-popup-toggle px-3 py-2" *ngIf="managerDrillDown as md">
+                <button type="button" class="manager-popup-toggle-btn" [class.active]="md.part === 'all'" (click)="setDrillDownPart('all')">All Jobs</button>
+                <button type="button" class="manager-popup-toggle-btn" [class.active]="md.part === 'carisma'" (click)="setDrillDownPart('carisma')">With Carisma</button>
+                <button type="button" class="manager-popup-toggle-btn" [class.active]="md.part === 'client'" (click)="setDrillDownPart('client')">With Client</button>
             </div>
 
             <div class="modal-body p-0 position-relative" style="max-height: calc(100vh - 160px); overflow: auto;">

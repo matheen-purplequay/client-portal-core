@@ -4,6 +4,7 @@ import { ClientService } from '../../../services/entities/client.service';
 import { LocalStorageService } from '../../../services/app/storage/local-storage.service';
 
 type MultiSelectFilterKey = 'receivedFrom' | 'natureOfJob';
+type FeedbackSelection = 'all' | 'given' | 'pending';
 
 interface VerticalOption {
   id: number;
@@ -19,17 +20,17 @@ interface ClosedJobRow {
   budgetTime: string;
   timeTaken: string;
   turnaroundDays: number;
+  // Inline grid rating (1-5 stars, 0 = not yet rated) + comment, replacing
+  // the old popup's 5-question survey - mapped onto the same
+  // save-job-survey/get-job-survey API (overall_satisfaction doubles as
+  // responsiveness since there's only one rating control now, and the
+  // comment is stored in overall_insights) so no backend change was needed.
+  rating: number;
+  comment: string;
+  isSaving: boolean;
 }
 
 type SatisfactionRating = 'Extremely satisfied' | 'Very satisfied' | 'Somewhat satisfied' | 'Dissatisfied' | 'Very dissatisfied';
-
-interface FeedbackSurvey {
-  overallSatisfaction: SatisfactionRating | '';
-  overallInsights: string;
-  responsiveness: SatisfactionRating | '';
-  responsivenessInsights: string;
-  improvements: string;
-}
 
 interface ClosedJobFilters {
   // Empty array = "All" (no filter) for the multi-select columns.
@@ -44,6 +45,13 @@ interface ClosedJobFilters {
   styleUrls: ['./feedback.component.scss']
 })
 export class FeedbackComponent implements OnInit {
+
+  // Index 0 = 1 star ... index 4 = 5 stars, matching the legend row.
+  private static readonly STAR_LABELS: SatisfactionRating[] = [
+    'Very dissatisfied', 'Dissatisfied', 'Somewhat satisfied', 'Very satisfied', 'Extremely satisfied'
+  ];
+
+  readonly legendItems = FeedbackComponent.STAR_LABELS.map((label, i) => ({ stars: i + 1, label }));
 
   rows: ClosedJobRow[] = [];
   isLoading = false;
@@ -60,15 +68,11 @@ export class FeedbackComponent implements OnInit {
   openFilterDropdown: MultiSelectFilterKey | null = null;
   filterSearch: Record<MultiSelectFilterKey, string> = { receivedFrom: '', natureOfJob: '' };
 
-  isPopupOpen = false;
-  selectedJob: ClosedJobRow | null = null;
-
-  readonly ratingOptions: SatisfactionRating[] = [
-    'Extremely satisfied', 'Very satisfied', 'Somewhat satisfied', 'Dissatisfied', 'Very dissatisfied'
-  ];
-  survey: FeedbackSurvey = FeedbackComponent.emptySurvey();
-  isSubmitting = false;
-  submitError = '';
+  // Total Jobs / Feedback Given / Feedback Not Given chip row, same counts
+  // the dashboard home summary card already uses.
+  isLoadingCounts = false;
+  feedbackCounts = { closedJobs: 0, pendingFeedback: 0 };
+  selection: FeedbackSelection = 'all';
 
   constructor(
     private reportService: ReportService,
@@ -80,6 +84,7 @@ export class FeedbackComponent implements OnInit {
   ngOnInit(): void {
     this.fetchVerticals();
     this.fetchClosedJobs();
+    this.fetchFeedbackCounts();
   }
 
   // Mirrors DashboardPageComponent.fetchVerticals() / the same pattern on
@@ -112,6 +117,11 @@ export class FeedbackComponent implements OnInit {
     if (this.selectedServiceId === id) return;
     this.selectedServiceId = id;
     this.fetchClosedJobs();
+    this.fetchFeedbackCounts();
+  }
+
+  selectCard(sel: FeedbackSelection) {
+    this.selection = sel;
   }
 
   // Close whichever multi-select panel is open when clicking outside it.
@@ -165,13 +175,38 @@ export class FeedbackComponent implements OnInit {
     return `${selected.length} selected`;
   }
 
+  get feedbackGivenCount(): number {
+    return Math.max(0, this.feedbackCounts.closedJobs - this.feedbackCounts.pendingFeedback);
+  }
+
+  get feedbackNotGivenCount(): number {
+    return this.feedbackCounts.pendingFeedback;
+  }
+
   get filteredRows(): ClosedJobRow[] {
     const f = this.filters;
     return this.rows.filter(row =>
       (f.receivedFrom.length === 0 || f.receivedFrom.includes(row.receivedFrom)) &&
       row.jobName.toLowerCase().includes(f.jobName.trim().toLowerCase()) &&
-      (f.natureOfJob.length === 0 || f.natureOfJob.includes(row.natureOfJob))
+      (f.natureOfJob.length === 0 || f.natureOfJob.includes(row.natureOfJob)) &&
+      (this.selection === 'all' || (this.selection === 'given' ? row.surveySubmitted : !row.surveySubmitted))
     );
+  }
+
+  fetchFeedbackCounts() {
+    this.isLoadingCounts = true;
+    this.reportService.getClosedJobsFeedbackCount(this.selectedServiceId).subscribe({
+      next: (res: any) => {
+        this.isLoadingCounts = false;
+        this.feedbackCounts = res.status
+          ? { closedJobs: Number(res.data.closed_jobs) || 0, pendingFeedback: Number(res.data.pending_feedback) || 0 }
+          : { closedJobs: 0, pendingFeedback: 0 };
+      },
+      error: () => {
+        this.isLoadingCounts = false;
+        this.feedbackCounts = { closedJobs: 0, pendingFeedback: 0 };
+      }
+    });
   }
 
   fetchClosedJobs() {
@@ -189,12 +224,20 @@ export class FeedbackComponent implements OnInit {
           natureOfJob: row.nature_of_job || '',
           budgetTime: row.budget_time || '00:00',
           timeTaken: row.time_taken || '00:00',
-          turnaroundDays: Number(row.turnaround_days) || 0
+          turnaroundDays: Number(row.turnaround_days) || 0,
+          rating: 0,
+          comment: '',
+          isSaving: false
         } as ClosedJobRow));
 
         const distinct = (values: string[]) => values.filter((v, i, self) => v && self.indexOf(v) === i);
         this.receivedFromOptions = distinct(this.rows.map(r => r.receivedFrom));
         this.natureOfJobOptions = distinct(this.rows.map(r => r.natureOfJob));
+
+        // Only the jobs that already have feedback need their rating/comment
+        // preloaded - bounded by the (small) Feedback Given count, not every
+        // row on the page.
+        this.rows.filter(r => r.surveySubmitted).forEach(r => this.loadRowSurvey(r));
       },
       error: () => {
         this.isLoading = false;
@@ -203,71 +246,53 @@ export class FeedbackComponent implements OnInit {
     });
   }
 
-  private static emptySurvey(): FeedbackSurvey {
-    return { overallSatisfaction: '', overallInsights: '', responsiveness: '', responsivenessInsights: '', improvements: '' };
-  }
-
-  openFeedbackPopup(row: ClosedJobRow) {
-    this.selectedJob = row;
-    this.survey = FeedbackComponent.emptySurvey();
-    this.submitError = '';
-    this.isPopupOpen = true;
-
-    // Show the answers already given for this job, if any.
-    if (row.surveySubmitted) {
-      this.reportService.getJobSurvey(row.jobId).subscribe({
-        next: (res: any) => {
-          if (this.selectedJob !== row || !res?.data) return;
-          this.survey = {
-            overallSatisfaction: res.data.overall_satisfaction || '',
-            overallInsights: res.data.overall_insights || '',
-            responsiveness: res.data.responsiveness || '',
-            responsivenessInsights: res.data.responsiveness_insights || '',
-            improvements: res.data.improvements || ''
-          };
-        }
-      });
-    }
-  }
-
-  submitFeedback() {
-    if (!this.selectedJob || this.isSubmitting) return;
-    if (!this.survey.overallSatisfaction || !this.survey.responsiveness) {
-      this.submitError = 'Please answer questions 1 and 3 before submitting.';
-      return;
-    }
-
-    const job = this.selectedJob;
-    this.isSubmitting = true;
-    this.submitError = '';
-    this.reportService.saveJobSurvey({
-      job_id: job.jobId,
-      overall_satisfaction: this.survey.overallSatisfaction,
-      overall_insights: this.survey.overallInsights,
-      responsiveness: this.survey.responsiveness,
-      responsiveness_insights: this.survey.responsivenessInsights,
-      improvements: this.survey.improvements
-    }).subscribe({
+  private loadRowSurvey(row: ClosedJobRow) {
+    this.reportService.getJobSurvey(row.jobId).subscribe({
       next: (res: any) => {
-        this.isSubmitting = false;
-        if (res?.status) {
-          job.surveySubmitted = true;
-          this.closeFeedbackPopup();
-        } else {
-          this.submitError = res?.message || 'Could not submit the feedback. Please try again.';
-        }
-      },
-      error: () => {
-        this.isSubmitting = false;
-        this.submitError = 'Could not submit the feedback. Please try again.';
+        if (!res?.data) return;
+        const idx = FeedbackComponent.STAR_LABELS.indexOf(res.data.overall_satisfaction);
+        row.rating = idx >= 0 ? idx + 1 : 0;
+        row.comment = res.data.overall_insights || '';
       }
     });
   }
 
-  closeFeedbackPopup() {
-    this.isPopupOpen = false;
-    this.selectedJob = null;
-    this.survey = FeedbackComponent.emptySurvey();
+  rate(row: ClosedJobRow, stars: number) {
+    row.rating = stars;
+    this.saveRowFeedback(row);
+  }
+
+  onCommentBlur(row: ClosedJobRow) {
+    // The backend requires a rating to accept the save (it's one survey
+    // record per job/user) - a comment typed before rating is kept locally
+    // and sent as soon as a star is picked.
+    if (row.rating > 0) this.saveRowFeedback(row);
+  }
+
+  private saveRowFeedback(row: ClosedJobRow) {
+    if (!row.rating || row.isSaving) return;
+    const label = FeedbackComponent.STAR_LABELS[row.rating - 1];
+    row.isSaving = true;
+    this.reportService.saveJobSurvey({
+      job_id: row.jobId,
+      overall_satisfaction: label,
+      overall_insights: row.comment || '',
+      responsiveness: label,
+      responsiveness_insights: '',
+      improvements: ''
+    }).subscribe({
+      next: (res: any) => {
+        row.isSaving = false;
+        if (res?.status) {
+          const wasSubmitted = row.surveySubmitted;
+          row.surveySubmitted = true;
+          if (!wasSubmitted) this.fetchFeedbackCounts();
+        }
+      },
+      error: () => {
+        row.isSaving = false;
+      }
+    });
   }
 
 }

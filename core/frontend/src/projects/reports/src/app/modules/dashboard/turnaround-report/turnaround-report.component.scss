@@ -649,6 +649,44 @@
     color: #fff;
 }
 
+// All Jobs / With Carisma / With Client toggle inside the drill-down popup.
+.manager-popup-toggle {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid #eef0f2;
+    background: #fafbfc;
+}
+
+// Same toggle, standalone above the Manager View matrix (not inside the
+// popup) - no card background/border since it isn't nested in one here.
+.manager-popup-toggle--standalone {
+    border-bottom: none;
+    background: transparent;
+    padding: 0;
+}
+
+.manager-popup-toggle-btn {
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4b5563;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        border-color: #175CD3;
+    }
+
+    &.active {
+        background: rgba(23, 92, 211, 0.1);
+        border-color: #175CD3;
+        color: #175CD3;
+    }
+}
+
 .ji-modal-title {
     font-weight: 700;
     font-size: 14px;

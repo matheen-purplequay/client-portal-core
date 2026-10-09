@@ -1,0 +1,215 @@
+.ja-page-title {
+    font-size: 18px;
+    color: #1e293b;
+}
+
+.ja-subtitle {
+    line-height: 1.5;
+}
+
+.ja-card {
+    position: relative;
+}
+
+.ja-card-header {
+    background: var(--primary-color, #7a1f2b);
+    color: #fff;
+    font-weight: 700;
+}
+
+.ja-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    padding: 1px 6px;
+    margin-left: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.2);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.ja-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
+
+    &--comments {
+        align-items: flex-end;
+        margin-bottom: 0;
+    }
+}
+
+.ja-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1 1 160px;
+    min-width: 140px;
+
+    &--narrow {
+        flex: 0 1 120px;
+        min-width: 100px;
+    }
+
+    &--grow {
+        flex: 1 1 auto;
+    }
+
+    label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #4b5563;
+    }
+
+    input,
+    select {
+        border: 1px solid #dcdcdc;
+        border-radius: 6px;
+        padding: 8px 10px;
+        font-size: 13px;
+        background: #fff;
+
+        &:focus {
+            outline: none;
+            border-color: var(--primary-color, #7a1f2b);
+        }
+    }
+}
+
+.ja-add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary-color, #7a1f2b);
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+
+    &:hover:not(:disabled) {
+        opacity: 0.9;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    .material-symbols-rounded {
+        font-size: 20px;
+    }
+}
+
+.ja-stage-btn,
+.ja-allocate-btn {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-radius: 6px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+
+    &:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.22);
+    }
+
+    &:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+}
+
+.ja-table {
+    border-collapse: collapse;
+    font-size: 13px;
+    white-space: nowrap;
+
+    th, td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #f0e5e7;
+        text-align: left;
+    }
+
+    th {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.08);
+        color: var(--primary-color, #7a1f2b);
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    tbody tr:hover {
+        background: rgba(var(--primary-color-rgb, 122, 31, 43), 0.03);
+    }
+}
+
+.ja-check-col {
+    width: 36px;
+    text-align: center;
+}
+
+.ja-sno-col {
+    width: 40px;
+}
+
+.ja-status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+
+    &--pending {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    &--stage1 {
+        background: rgba(31, 42, 107, 0.1);
+        color: #1f2a6b;
+    }
+
+    &--allocated {
+        background: rgba(21, 128, 61, 0.1);
+        color: #15803d;
+    }
+}
+
+.ja-remove-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 4px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: rgba(220, 38, 38, 0.08);
+        color: #dc2626;
+    }
+
+    .material-symbols-rounded {
+        font-size: 18px;
+    }
+}
+
+.ja-empty-state {
+    padding: 28px 16px;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 13px;
+}

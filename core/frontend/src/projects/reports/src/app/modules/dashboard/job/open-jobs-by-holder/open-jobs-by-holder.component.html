@@ -3,7 +3,7 @@
   <div class="job-header-row mb-3 mt-2">
     <a class="back-link" routerLink="/dashboard/job">
       <span class="material-symbols-rounded">arrow_back</span>
-      Back to Job Status
+      Back to Jobs
     </a>
 
     <div class="job-page-title fw-bold mb-0">Open Jobs</div>
@@ -14,6 +14,7 @@
         <button type="button" class="view-tab" [class.active]="viewMode === 'manager'" (click)="setViewMode('manager')">Manager View</button>
       </div>
       <div class="vertical-tabs" *ngIf="!isLoadingVerticals && verticals.length">
+        <button type="button" class="vertical-tab" [class.active]="activeVertical === 'All'" (click)="setVertical('All')">All</button>
         <button type="button" *ngFor="let v of verticals" class="vertical-tab"
           [class.active]="activeVertical === v" (click)="setVertical(v)">{{ v }}</button>
       </div>

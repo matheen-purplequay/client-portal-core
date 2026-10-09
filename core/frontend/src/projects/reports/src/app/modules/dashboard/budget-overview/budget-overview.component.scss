@@ -116,6 +116,15 @@
     color: inherit;
 }
 
+// The percentage is secondary context for the job count, not a second
+// number of equal weight, so it reads visibly smaller/lighter.
+.filter-chip-count-pct {
+    font-weight: 600;
+    font-size: 0.8em;
+    opacity: 0.65;
+    margin-left: 2px;
+}
+
 .filter-breadcrumb {
     display: flex;
     flex-wrap: wrap;

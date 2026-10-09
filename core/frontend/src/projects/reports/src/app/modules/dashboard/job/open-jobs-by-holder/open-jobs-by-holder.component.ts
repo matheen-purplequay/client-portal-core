@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ClientService } from '../../../../services/entities/client.service';
 import { ReportService } from '../../../../services/reports/report.service';
@@ -27,7 +28,11 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy, AfterViewIn
   private clientUserSub?: Subscription;
 
   verticalOptions: VerticalOption[] = [];
-  activeVertical = '';
+  // 'All' (service_id 0) is the default, same scope as the Home page's
+  // vertical tabs - previously this page had no "All" option and silently
+  // defaulted to the first specific vertical, which made its counts (e.g.
+  // With Carisma) disagree with Home's all-verticals total.
+  activeVertical = 'All';
   isLoadingVerticals = true;
   viewMode = 'status';
 
@@ -44,10 +49,18 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy, AfterViewIn
     private clientService: ClientService,
     private reportService: ReportService,
     private localStorageService: LocalStorageService,
-    private clientUserService: ClientUserService
+    private clientUserService: ClientUserService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    // Arriving from the Home page's With Carisma/With Client tile (?holder=...)
+    // should land with that holder already selected, instead of always
+    // defaulting to 'client' regardless of which tile was clicked.
+    const holderParam = this.route.snapshot.queryParamMap.get('holder');
+    if (holderParam === 'carisma' || holderParam === 'client') {
+      this.selectedHolder = holderParam;
+    }
     this.fetchVerticals();
 
     // Keep the page in sync when the navbar's client-user (Cid) dropdown
@@ -104,25 +117,15 @@ export class OpenJobsByHolderComponent implements OnInit, OnDestroy, AfterViewIn
           }
         });
         this.verticalOptions = Array.from(byTitle, ([title, serviceId]) => ({ title, serviceId }));
-        if (this.verticalOptions.length && !this.verticals.includes(this.activeVertical)) {
-          this.setVertical(this.verticalOptions[0].title);
-        } else if (!this.verticalOptions.length) {
-          // No verticals configured for this account (e.g. an internal/tester
-          // login) - still fetch with service_id 0 rather than leaving the
-          // counts stuck on "Loading...".
-          this.loadOpenCounts(0);
-          this.loadStatusCounts(0);
-          this.loadJobs(0);
-          this.loadPartnerWiseJobs(0);
-        }
+        // setVertical resolves any title it doesn't recognize (including the
+        // 'All' default) to service_id 0, so this covers both the "no
+        // verticals configured" case and the normal "start on All" case.
+        this.setVertical(this.activeVertical);
       },
       error: () => {
         this.isLoadingVerticals = false;
         this.verticalOptions = [];
-        this.loadOpenCounts(0);
-        this.loadStatusCounts(0);
-        this.loadJobs(0);
-        this.loadPartnerWiseJobs(0);
+        this.setVertical(this.activeVertical);
       }
     });
   }
